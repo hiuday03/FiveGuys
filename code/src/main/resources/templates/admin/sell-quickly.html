@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Tabs</title>
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+    <style>
+        .nav-link.tab {
+            cursor: default;
+        }
+        .nav-link.tab.active {
+            color: white;
+        }
+
+        /* Đổi màu nền thành màu trắng và màu chữ thành màu đen */
+        .nav-link.tab.active {
+            background-color: white;
+            color: black !important;
+        }
+
+
+    </style>
+</head>
+<body>
+<nav class="navbar bg-primary">
+    <div class="container-fluid">
+        <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <div class="nav-link tab text-white active" id="bill-tabs-1" data-bs-toggle="pill" data-bs-target="#bill-1" role="tab" aria-controls="bill-1" aria-selected="true">Bill 1<i class="ri-close-line ms-3"></i></div>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="bill-1" role="tabpanel" aria-labelledby="bill-1">
+        Hóa đơn 1
+    </div>
+</div>
+
+<script>
+    let nextBillId = 2; // Bắt đầu với bill 2, do bill 1 đã có sẵn trong mã HTML
+
+    // Lắng nghe sự kiện click trên nút "+"
+    document.getElementById("add-tab-button").addEventListener("click", function() {
+        // Tạo một tab mới
+        let newTab = document.createElement("li");
+        newTab.classList.add("nav-item");
+        newTab.setAttribute("role", "presentation");
+
+        // Tạo nút tab mới
+        let newTabButton = document.createElement("div");
+        newTabButton.className = "nav-link text-white tab";
+        newTabButton.setAttribute("id", "bill-tabs-" + nextBillId);
+        newTabButton.setAttribute("data-bs-toggle", "pill");
+        newTabButton.setAttribute("data-bs-target", "#bill-" + nextBillId);
+        newTabButton.setAttribute("role", "tab");
+        newTabButton.setAttribute("aria-controls", "bill-" + nextBillId);
+        newTabButton.setAttribute("aria-selected", "false");
+        newTabButton.textContent = "Bill " + nextBillId;
+        function closeTab(tabId) {
+            // Tìm tab cần đóng
+            let tabToClose = document.getElementById("bill-tabs-" + tabId);
+
+            // Xóa tab và nội dung tab
+            tabToClose.parentElement.remove();
+            document.getElementById("bill-" + tabId).remove();
+        }
+        let closeButton = document.createElement("i");
+        closeButton.className = "ri-close-line ms-3";
+        closeButton.style.cursor = "pointer";
+        closeButton.addEventListener("click", function() {
+            closeTab(nextBillId);
+        });
+
+        newTabButton.appendChild(closeButton);
+        newTab.appendChild(newTabButton);
+
+        // Thêm tab mới vào danh sách tab
+        document.getElementById("pills-tab").insertBefore(newTab, document.getElementById("add-tab-button").parentElement);
+
+        // Tạo nội dung cho tab mới
+        let newTabContent = document.createElement("div");
+        newTabContent.classList.add("tab-pane", "fade");
+        newTabContent.setAttribute("id", "bill-" + nextBillId);
+        newTabContent.setAttribute("role", "tabpanel");
+        newTabContent.setAttribute("aria-labelledby", "bill-" + nextBillId);
+        newTabContent.textContent = "Hóa đơn " + nextBillId;
+
+        // Thêm nội dung tab mới vào danh sách nội dung tab
+        document.getElementById("pills-tabContent").appendChild(newTabContent);
+
+        // Tăng giá trị của nextBillId để sử dụng cho tab tiếp theo
+        nextBillId++;
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
