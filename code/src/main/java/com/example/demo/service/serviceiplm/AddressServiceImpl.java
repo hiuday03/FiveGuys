@@ -1,8 +1,8 @@
 package com.example.demo.service.serviceiplm;
 
-import com.example.demo.entity.CustomerEntity;
-import com.example.demo.repository.CustomerRepository;
-import com.example.demo.service.CustomerService;
+import com.example.demo.entity.AddressEntity;
+import com.example.demo.repository.AddressRepository;
+import com.example.demo.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,70 +14,72 @@ import java.util.Optional;
 
 @Service
 
-public class CustomerServiceImpl implements CustomerService {
+public class AddressServiceImpl implements AddressService {
 
-    private final CustomerRepository customerRepository;
+    private final AddressRepository addressRepository;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public AddressServiceImpl(AddressRepository addressRepository) {
+        this.addressRepository = addressRepository;
+    }
+
+
+    @Override
+    public List<AddressEntity> getAllAddress() {
+        return addressRepository.findAll();
     }
 
     @Override
-    public List<CustomerEntity> getAllCustomers() {
-        return customerRepository.findAll();
+    public AddressEntity getAddressById(Long addressId) {
+        return addressRepository.findById(addressId).orElse(null);
     }
 
     @Override
-    public CustomerEntity getCustomerById(Long customerId) {
-        return customerRepository.findById(customerId).orElse(null);
+    public Page<AddressEntity> getAllAddressPage(Integer page) {
+        Pageable pageable = PageRequest.of(page, 1);
+        return addressRepository.findAll(pageable);
     }
 
     @Override
-    public Page<CustomerEntity> getAllCustomersPage(Integer page) {Pageable pageable = PageRequest.of(page, 10);
-        return customerRepository.findAll(pageable);
+    public List<AddressEntity> getAddressesByCustomerId(Long customerId) {
+        return addressRepository.findByCustomerId(customerId);
     }
 
     @Override
-    public CustomerEntity createCustomer(CustomerEntity customerEntity) {
-        return customerRepository.save(customerEntity);
+    public AddressEntity createAddress(AddressEntity addressEntity) {
+        return addressRepository.save(addressEntity);
     }
 
     @Override
-    public CustomerEntity updateCustomer(CustomerEntity customerEntity, Long customerId) {
-        Optional<CustomerEntity> existingCustomer = customerRepository.findById(customerId);
+    public AddressEntity updateAddress(AddressEntity addressEntity, Long addressId) {
+        Optional<AddressEntity> existingCustomer = addressRepository.findById(addressId);
         if (existingCustomer.isPresent()) {
-            CustomerEntity customer = existingCustomer.get();
-            customer.setFullName(customerEntity.getFullName());
-            customer.setAvatar(customerEntity.getAvatar());
-            customer.setAccount(customerEntity.getAccount());
-            customer.setPassword(customerEntity.getPassword());
-            customer.setPhoneNumber(customerEntity.getPhoneNumber());
-            customer.setEmail(customerEntity.getEmail());
-            customer.setBirthDate(customerEntity.getBirthDate());
-            customer.setGender(customer.isGender());
-            customer.setAddress(customerEntity.getAddress());
-            customer.setCreateAt(customerEntity.getCreateAt());
-            customer.setUpdateAt(customerEntity.getUpdateAt());
-            customer.setCreateBy(customerEntity.getCreateBy());
-            customer.setUpdateBy(customerEntity.getUpdateBy());
-            customer.setStatus(customerEntity.getStatus());
-            return customerRepository.save(customer); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
+            AddressEntity address = existingCustomer.get();
+            address.setName(addressEntity.getName());
+            address.setPhoneNumber(addressEntity.getPhoneNumber());
+            address.setAddress(addressEntity.getAddress());
+            address.setAddressType(addressEntity.getAddressType());
+            address.setCustomer(addressEntity.getCustomer());
+            address.setCreateAt(addressEntity.getCreateAt());
+            address.setUpdateAt(addressEntity.getUpdateAt());
+            address.setStatus(addressEntity.getStatus());
+
+            return addressRepository.save(address); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {
             // Trả về null hoặc thông báo lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + customerId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + addressId);
 //            return null;
         }
     }
 
     @Override
-    public void deleteCustomer(Long customerId) {
+    public void deleteAddress(Long addressId) {
         // Kiểm tra xem khách hàng có tồn tại trước khi xóa
-        if (customerRepository.existsById(customerId)) {
-            customerRepository.deleteById(customerId);
+        if (addressRepository.existsById(addressId)) {
+            addressRepository.deleteById(addressId);
         } else {
             // Xử lý lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + customerId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + addressId);
         }
     }
 }

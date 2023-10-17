@@ -1,25 +1,26 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.CustomerEntity;
+import com.example.demo.entity.AddressEntity;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface CustomerService {
+public interface AddressService {
 
-    List<CustomerEntity> getAllCustomers();
+    List<AddressEntity> getAllAddress();
 
-//    Page<CustomerEntity> getAll(Integer page);
+//    Page<AddressEntity> getAll(Integer page);
 
-    CustomerEntity getCustomerById(Long customerId);
+    AddressEntity getAddressById(Long addressId);
 
-    Page<CustomerEntity> getAllCustomersPage(Integer page);
+    Page<AddressEntity> getAllAddressPage(Integer page);
 
-    CustomerEntity createCustomer(CustomerEntity customerEntity);
+    List<AddressEntity> getAddressesByCustomerId(Long customerId);
 
-    CustomerEntity updateCustomer(CustomerEntity customerEntity, Long customerId);
+    AddressEntity createAddress(AddressEntity addressEntity);
 
-    void deleteCustomer(Long customerId);
+    AddressEntity updateAddress(AddressEntity addressEntity, Long addressId);
+
+    void deleteAddress(Long addressId);
 
 }

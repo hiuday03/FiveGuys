@@ -1,10 +1,9 @@
-package com.example.demo.controller.Customers;
+package com.example.demo.controller.Address;
 
-import com.example.demo.entity.CustomerEntity;
-import com.example.demo.service.serviceiplm.CustomerServiceImpl;
+import com.example.demo.entity.AddressEntity;
+import com.example.demo.service.serviceiplm.AddressServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,31 +19,31 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/address")
 
-public class CustomerController {
+public class AddressController {
 
-    private final CustomerServiceImpl customerService;
+    private final AddressServiceImpl addressService;
 
     @Autowired
-    public CustomerController(CustomerServiceImpl customerService) {
-        this.customerService = customerService;
+    public AddressController(AddressServiceImpl addressService) {
+        this.addressService = addressService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
-        List<CustomerEntity> customers = customerService.getAllCustomers();
+    @GetMapping("/all")
+    public ResponseEntity<List<AddressEntity>> getAllCustomers() {
+        List<AddressEntity> customers = addressService.getAllAddress();
         return ResponseEntity.ok(customers);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<CustomerEntity>> getAllCustomersPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        return ResponseEntity.ok(customerService.getAllCustomersPage(page));
+    @GetMapping("/pageall")
+    public ResponseEntity<Page<AddressEntity>> getAllCustomersPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+        return ResponseEntity.ok(addressService.getAllAddressPage(page));
     }
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerEntity> getCustomerById(@PathVariable Long customerId) {
-        CustomerEntity customer = customerService.getCustomerById(customerId);
+    @GetMapping("/findby/{addressId}")
+    public ResponseEntity<AddressEntity> getCustomerById(@PathVariable Long addressId) {
+        AddressEntity customer = addressService.getAddressById(addressId);
         if (customer != null) {
             return ResponseEntity.ok(customer);
         } else {
@@ -52,19 +51,19 @@ public class CustomerController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customerEntity) {
+    @PostMapping("/create")
+    public ResponseEntity<?> createCustomer(@RequestBody AddressEntity addressEntity) {
         try {
-            CustomerEntity createdCustomer = customerService.createCustomer(customerEntity);
+            AddressEntity createdCustomer = addressService.createAddress(addressEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCustomer);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/{customerId}")
-    public ResponseEntity<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customerEntity, @PathVariable Long customerId) {
-        CustomerEntity customer = customerService.updateCustomer(customerEntity, customerId);
+    @PutMapping("/update/{addressId}")
+    public ResponseEntity<AddressEntity> updateCustomer(@RequestBody AddressEntity addressEntity, @PathVariable Long addressId) {
+        AddressEntity customer = addressService.updateAddress(addressEntity, addressId);
         if (customer != null) {
             return ResponseEntity.ok(customer);
         } else {
@@ -72,10 +71,10 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping("/{customerId}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
+    @DeleteMapping("/delete/{addressId}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long addressId) {
         try {
-            customerService.deleteCustomer(customerId);
+            addressService.deleteAddress(addressId);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
