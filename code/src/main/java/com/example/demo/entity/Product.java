@@ -45,10 +45,10 @@ public class Product {
     private Date updatedAt;
 
     @Column(name = "CreatedBy")
-    private Date createdby;
+    private String createdBy;
 
     @Column(name = "UpdatedBy")
-    private Date updatedby;
+    private String updatedBy;
 
     @Column(name = "Status")
     private Integer status;
