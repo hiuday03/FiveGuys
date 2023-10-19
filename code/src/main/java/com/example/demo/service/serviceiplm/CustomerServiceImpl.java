@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerEntity> getAllCustomers() {
+    public List<CustomerEntity> getAllCustomer() {
         return customerRepository.findAll();
     }
 
@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Page<CustomerEntity> getAllCustomersPage(Integer page) {
+    public Page<CustomerEntity> getAllCustomerPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 1);
         return customerRepository.findAll(pageable);
     }
@@ -58,10 +58,10 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setBirthDate(customerEntity.getBirthDate());
             customer.setGender(customer.isGender());
             customer.setAddress(customerEntity.getAddress());
-            customer.setCreateAt(customerEntity.getCreateAt());
-            customer.setUpdateAt(customerEntity.getUpdateAt());
-            customer.setCreateBy(customerEntity.getCreateBy());
-            customer.setUpdateBy(customerEntity.getUpdateBy());
+            customer.setCreatedAt(customerEntity.getCreatedAt());
+            customer.setUpdatedAt(customerEntity.getUpdatedAt());
+            customer.setCreatedBy(customerEntity.getCreatedBy());
+            customer.setUpdatedBy(customerEntity.getUpdatedBy());
             customer.setStatus(customerEntity.getStatus());
             return customerRepository.save(customer); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {
