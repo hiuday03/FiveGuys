@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerEntity> getAllCustomers() {
+    public List<CustomerEntity> getAllCustomer() {
         return customerRepository.findAll();
     }
 
@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Page<CustomerEntity> getAllCustomersPage(Integer page) {
+    public Page<CustomerEntity> getAllCustomerPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 1);
         return customerRepository.findAll(pageable);
     }

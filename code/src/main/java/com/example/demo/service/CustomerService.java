@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface CustomerService {
 
-    List<CustomerEntity> getAllCustomers();
+    List<CustomerEntity> getAllCustomer();
 
 //    Page<CustomerEntity> getAll(Integer page);
 
     CustomerEntity getCustomerById(Long customerId);
 
-    Page<CustomerEntity> getAllCustomersPage(Integer page);
+    Page<CustomerEntity> getAllCustomerPage(Integer page);
 
     CustomerEntity createCustomer(CustomerEntity customerEntity);
 

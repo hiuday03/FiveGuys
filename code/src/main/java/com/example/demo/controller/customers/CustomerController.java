@@ -1,4 +1,4 @@
-package com.example.demo.controller.Customers;
+package com.example.demo.controller.customers;
 
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.service.serviceiplm.CustomerServiceImpl;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/customer")
 
 public class CustomerController {
 
@@ -31,14 +31,14 @@ public class CustomerController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
-        List<CustomerEntity> customers = customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerEntity>> getAllCustomer() {
+        List<CustomerEntity> customers = customerService.getAllCustomer();
         return ResponseEntity.ok(customers);
     }
 
     @GetMapping("/pageall")
-    public ResponseEntity<Page<CustomerEntity>> getAllCustomersPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        return ResponseEntity.ok(customerService.getAllCustomersPage(page));
+    public ResponseEntity<Page<CustomerEntity>> getAllCustomerPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+        return ResponseEntity.ok(customerService.getAllCustomerPage(page));
     }
 
     @GetMapping("/findby/{customerId}")
