@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +29,21 @@ public class ProductDetail {
 
     @Column(name = "Quantity")
     private Integer quantity;
+
+    @Column(name = "CreatedAt")
+    private Date createdAt;
+
+    @Column(name = "UpdatedAt")
+    private Date updatedAt;
+
+    @Column(name = "CreatedBy")
+    private String createdBy;
+
+    @Column(name = "UpdatedBy")
+    private String updatedBy;
+
+    @Column(name = "Status")
+    private Integer status;
 
     @ManyToOne
     @JoinColumn(name = "IdProduct")
