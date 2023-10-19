@@ -15,11 +15,9 @@ public interface AddressService {
 
     Page<AddressEntity> getAllAddressPage(Integer page);
 
-    List<AddressEntity> getAddressesByCustomerId(Long customerId);
-
     AddressEntity createAddress(AddressEntity addressEntity);
 
-    AddressEntity updateAddress(AddressEntity addressEntity, Long addressIdz);
+    AddressEntity updateAddress(AddressEntity addressEntity, Long addressId);
 
     void deleteAddress(Long addressId);
 
