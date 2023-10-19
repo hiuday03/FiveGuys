@@ -60,8 +60,8 @@ public class AddressServiceImpl implements AddressService {
             address.setAddress(addressEntity.getAddress());
             address.setAddressType(addressEntity.getAddressType());
             address.setCustomer(addressEntity.getCustomer());
-            address.setCreateAt(addressEntity.getCreateAt());
-            address.setUpdateAt(addressEntity.getUpdateAt());
+            address.setCreatedAt(addressEntity.getCreatedAt());
+            address.setUpdatedAt(addressEntity.getUpdatedAt());
             address.setStatus(addressEntity.getStatus());
 
             return addressRepository.save(address); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu

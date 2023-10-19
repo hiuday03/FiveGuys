@@ -38,11 +38,11 @@ public class AddressEntity {
     @JoinColumn(name = "IdCustomer")
     private CustomerEntity customer;
 
-    @Column(name = "CreateAt")
-    private Date createAt;
+    @Column(name = "CreatedAt")
+    private Date createdAt;
 
-    @Column(name = "UpdateAt")
-    private Date updateAt;
+    @Column(name = "UpdatedAt")
+    private Date updatedAt;
 
     @Column(name = "Status")
     private int status;

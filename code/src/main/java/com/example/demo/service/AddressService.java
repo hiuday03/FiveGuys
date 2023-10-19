@@ -19,7 +19,7 @@ public interface AddressService {
 
     AddressEntity createAddress(AddressEntity addressEntity);
 
-    AddressEntity updateAddress(AddressEntity addressEntity, Long addressId);
+    AddressEntity updateAddress(AddressEntity addressEntity, Long addressIdz);
 
     void deleteAddress(Long addressId);
 

@@ -48,17 +48,17 @@ public class CustomerEntity {
     @Column(name = "Address")
     private String address;
 
-    @Column(name = "CreateAt")
-    private Date createAt;
+    @Column(name = "CreatedAt")
+    private Date createdAt;
 
-    @Column(name = "UpdateAt")
-    private Date updateAt;
+    @Column(name = "UpdatedAt")
+    private Date updatedAt;
 
-    @Column(name = "CreateBy")
-    private String createBy;
+    @Column(name = "CreatedBy")
+    private String createdBy;
 
-    @Column(name = "UpdateBy")
-    private String updateBy;
+    @Column(name = "UpdatedBy")
+    private String updatedBy;
 
     @Column(name = "Status")
     private int status;
