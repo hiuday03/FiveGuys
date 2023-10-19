@@ -1,3 +1,5 @@
+create database duantotnghiepdb
+go
 use duantotnghiepdb
 go
 
