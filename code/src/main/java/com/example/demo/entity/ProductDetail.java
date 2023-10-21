@@ -51,7 +51,7 @@ public class ProductDetail {
 
     @ManyToOne
     @JoinColumn(name = "IdSize")
-    private Product size;
+    private Size size;
 
     @ManyToOne
     @JoinColumn(name = "IdColor")
