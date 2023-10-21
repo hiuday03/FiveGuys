@@ -48,4 +48,15 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Employees> update(@PathVariable Long id,@RequestBody Employees employees ){
+        employeeService.update(id, employees);
+        if (employees != null) {
+            return ResponseEntity.ok(employees);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
 }
