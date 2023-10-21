@@ -3,10 +3,9 @@ package com.example.demo.restcontroller;
 import com.example.demo.entity.Category;
 import com.example.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,11 +24,35 @@ public class CategoryRestController {
         return ResponseEntity.ok(categories);
     }
 
+    @GetMapping("/page")
+    public ResponseEntity<?> page(@RequestParam("page") Integer page){
+        System.out.println("category");
+        Page<Category> categories = categoryService.getAll(page);
+        return ResponseEntity.ok(categories);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") Long id){
         System.out.println("category");
         Category category = categoryService.getById(id);
         System.out.println(category);
         return ResponseEntity.ok(category);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> add(@RequestBody Category categoryReq){
+        Category category = categoryService.save(categoryReq);
+        return ResponseEntity.ok(category);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Category categoryReq){
+        Category category = categoryService.update(categoryReq, id);
+        return ResponseEntity.ok(category);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id){
+        categoryService.delete(id);
     }
 }
