@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name="Roles")
 public class Roles {
     @Id
-    @GeneratedValue( strategy= GenerationType.AUTO)
+    @GeneratedValue( strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name="FullName")
     private String fullName;
