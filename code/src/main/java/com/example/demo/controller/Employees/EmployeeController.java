@@ -27,11 +27,6 @@ public class EmployeeController {
 
     //Thêm Employee
 
-//    public ResponseEntity<?> create(Employees employees) {
-//         employeeService.create(employees);
-//        return ResponseEntity.ok(employees);
-//
-//    }
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Employees employees) {
         try {
