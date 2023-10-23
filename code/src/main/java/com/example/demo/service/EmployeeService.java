@@ -9,5 +9,7 @@ public interface EmployeeService {
 
      Employees create(Employees employees);
 
-     public void delete(Long id);
+     void delete(Long id);
+
+     Employees update(Long id, Employees employees);
 }

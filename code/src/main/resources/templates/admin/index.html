@@ -296,6 +296,11 @@
                         <i class="bi bi-circle"></i><span>Pay Method</span>
                     </a>
                 </li>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-circle"></i><span>Carts</span>
+                    </a>
+                </li>
             </ul>
         </li><!-- End Forms Nav -->
 
@@ -305,27 +310,27 @@
             </a>
             <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>Users</span>
+                    <a th:href="@{/admin/account/customer}">
+                        <i class="bi bi-circle"></i><span>Customer</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
+                        <i class="bi bi-circle"></i><span>Empoyees</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/account/address}">
                         <i class="bi bi-circle"></i><span>Address</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>Carts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
+                    <a th:href="@{/admin/account/rating}">
                         <i class="bi bi-circle"></i><span>Raitings</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/account/favorite}">
                         <i class="bi bi-circle"></i><span>Favorites</span>
                     </a>
                 </li>
