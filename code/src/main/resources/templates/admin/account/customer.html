@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
     layout:decorate="~{admin/index}">
-
 <head>
     <meta charset="utf-8">
     <title>Dashboard - FiveGuys</title>
-
 </head>
-
+<script src="https://code.angularjs.org/1.8.2/angular.js"></script>
+<link rel="stylesheet" th:href="@{/asets/js/customer.js}">
 <body>
-
-    <main id="main" class="main" layout:fragment="content">
-
+    <main id="main" class="main" layout:fragment="content" ng-app="customer" ng-controller="customer-ctrl">
         <div class="pagetitle">
             <h1>Customers</h1>
             <nav>
@@ -89,7 +86,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
+                                    <label for="" class="col-sm-3 col-form-label">Gender</label>
                                     <div class="col-sm-9">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="gender"
@@ -136,7 +133,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                    <label for="" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example">
                                             <option selected>Open this select menu</option>
@@ -221,7 +218,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
+                                    <label for="" class="col-sm-3 col-form-label">Gender</label>
                                     <div class="col-sm-9">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="gender"
@@ -268,7 +265,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                    <label for="" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example">
                                             <option selected>Open this select menu</option>
@@ -324,21 +321,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>content</td>
-                                <td>Key</td>
-                                <td>Key</td>
-                                <td>Key</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
+                        <tr ng-repeat="customer in customers">
+                            <td>{{customer.name}}</td>
+                            <td>{{customer.image}}</td>
+                            <td>{{customer.account}}</td>
+                            <td>{{customer.passWord}}</td>
+                            <td>{{customer.phoneNumber}}</td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.birthDate}}</td>
+                            <td>{{customer.gender}}</td>
+                            <td>{{customer.address}}</td>
+                            <td>{{customer.createdAt}}</td>
+                            <td>{{customer.updatedAt}}</td>
+                            <td>{{customer.createdBy}}</td>
+                            <td>{{customer.updatedBy}}</td>
+                            <td>{{customer.status}}</td>
                                 <td>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                         data-bs-target="#modalUpdate"><i class="ri-refresh-line"></i></button>
@@ -365,6 +362,15 @@
                             </tr>
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
+                            <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button></li>
+                            <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
+                            <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
+                            <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>
