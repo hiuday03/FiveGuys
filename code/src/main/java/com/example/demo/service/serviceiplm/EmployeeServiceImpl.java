@@ -5,6 +5,9 @@ import com.example.demo.entity.Employees;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employees> getAll(){
         return employeeRepository.findAll();
+    }
+
+    @Override
+    public Page<Employees> phanTrang(Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        return employeeRepository.findAll(pageable);
     }
 
     @Override
