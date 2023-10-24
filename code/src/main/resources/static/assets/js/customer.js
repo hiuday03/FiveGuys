@@ -20,8 +20,11 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
     $scope.initialize = function () {
         // Thay đổi đường dẫn API cụ thể tới danh sách khách hàng
-        $http.get('http://localhost:8080/customer/all').then(resp => {
+        $http.get('/customer/all').then(function(resp) {
             $scope.customers = resp.data;
+        })
+        .catch(function(error) {
+            console.log('Error loading data:', error);
         });
     }
 
@@ -34,7 +37,7 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         // Thay đổi đường dẫn API cụ thể để tạo khách hàng
-        $http.post('http://localhost:8080/customer/create', item).then(resp => {
+        $http.post('/customer/create', item).then(resp => {
             $scope.showSuccessMessage("Create customer successfully");
             $scope.resetFormInput();
             $scope.initialize();
@@ -47,7 +50,7 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         // Thay đổi đường dẫn API cụ thể để cập nhật khách hàng
-        $http.put(`http://localhost:8080/customer/update/${item.customerId}`, item).then(resp => {
+        $http.put(`/customer/update/${item.customerId}`, item).then(resp => {
             $scope.showSuccessMessage("Update Customer successfully");
             $scope.resetFormUpdate();
             $scope.initialize();
@@ -59,7 +62,7 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
     $scope.delete = function (item) {
         // Thay đổi đường dẫn API cụ thể để xóa khách hàng
-        $http.delete(`http://localhost:8080/customer/delete/${item.customerId}`).then(resp => {
+        $http.delete(`/customer/delete/${item.customerId}`).then(resp => {
             $scope.showSuccessMessage("Delete Customer successfully");
             $scope.initialize();
         }).catch(error => {
