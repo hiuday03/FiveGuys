@@ -1,7 +1,7 @@
-let app_customer = angular.module("customer", []);
+let app_favorite = angular.module("favorite", []);
 
-app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
-    $scope.customer = [];
+app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
+    $scope.favorite = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
@@ -19,33 +19,21 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
     }
 
     $scope.initialize = function () {
-        $http.get("/customer").then(function (resp) {
-            $scope.customer = resp.data;
+        $http.get("/favorite").then(function (resp) {
+            $scope.favorite = resp.data;
         });
     }
-    $scope.getAddressDateOnly = function(dateTime) {
-        // Chuyển đổi datetime thành date (chỉ lấy ngày)
-        var date = new Date(dateTime);
-        return date;
-    };
-    
 
     $scope.initialize();
 
-    $scope.edit = function (customer) {
-        if ($scope.formUpdate.createdAt) {
-            $scope.formUpdate = angular.copy(customer);
-        } else {
-            $scope.formUpdate = angular.copy(customer);
-            $scope.formUpdate.createdAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-        }
+    $scope.edit = function (favorite) {
+        $scope.formUpdate = angular.copy(favorite);
     }
-    
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
-        $http.post("/customer", item).then(function (resp) {
-            $scope.showSuccessMessage("Create customer successfully");
+        $http.post("/favorite", item).then(function (resp) {
+            $scope.showSuccessMessage("Create favorite successfully");
             $scope.resetFormInput();
             $scope.initialize();
             $('#modalAdd').modal('hide');
@@ -56,10 +44,8 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
-        console.log(item)
-        $http.put(`/customer/${item.id}`, item).then(function (resp) {
-
-            $scope.showSuccessMessage("Update Customer successfully");
+        $http.put(`/favorite/${item.id}`, item).then(function (resp) {
+            $scope.showSuccessMessage("Update favorite successfully");
             $scope.resetFormUpdate();
             $scope.initialize();
             $('#modalUpdate').modal('hide');
@@ -69,8 +55,8 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
     }
 
     $scope.delete = function (item) {
-        $http.delete(`/customer/${item.id}`).then(function (resp) {
-            $scope.showSuccessMessage("Delete Customer successfully");
+        $http.delete(`/favorite/${item.id}`).then(function (resp) {
+            $scope.showSuccessMessage("Delete favorite successfully");
             $scope.initialize();
         }).catch(function (error) {
             console.log("Error", error);
@@ -79,25 +65,25 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
     $scope.resetFormUpdate = function () {
         $scope.formUpdate = {};
-        $scope.formUpdateCustomer.$setPristine();
-        $scope.formUpdateCustomer.$setUntouched();
+        $scope.formUpdatefavorite.$setPristine();
+        $scope.formUpdatefavorite.$setUntouched();
     }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
-        $scope.formCreateCustomer.$setPristine();
-        $scope.formCreateCustomer.$setUntouched();
+        $scope.formCreatefavorite.$setPristine();
+        $scope.formCreatefavorite.$setUntouched();
     }
 
-    $scope.paper = {
+    $scope.pager = {
         page: 0,
         size: 5,
         get items() {
             let start = this.page * this.size;
-            return $scope.customer.slice(start, start + this.size);
+            return $scope.favorite.slice(start, start + this.size);
         },
         get count() {
-            return Math.ceil(1.0 * $scope.customer.length / this.size);
+            return Math.ceil(1.0 * $scope.favorite.length / this.size);
         },
         first() {
             this.page = 0;

@@ -29,8 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerEntity getCustomerById(Long customerId) {
-        return customerRepository.findById(customerId).orElse(null);
+    public CustomerEntity getCustomerById(Long id) {
+        return customerRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -45,8 +45,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerEntity updateCustomer(CustomerEntity customerEntity, Long customerId) {
-        Optional<CustomerEntity> existingCustomer = customerRepository.findById(customerId);
+    public CustomerEntity updateCustomer(CustomerEntity customerEntity, Long id) {
+        Optional<CustomerEntity> existingCustomer = customerRepository.findById(id);
         if (existingCustomer.isPresent()) {
             CustomerEntity customer = existingCustomer.get();
             customer.setFullName(customerEntity.getFullName());
@@ -66,19 +66,19 @@ public class CustomerServiceImpl implements CustomerService {
             return customerRepository.save(customer); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {
             // Trả về null hoặc thông báo lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + customerId);
+            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
 //            return null;
         }
     }
 
     @Override
-    public void deleteCustomer(Long customerId) {
+    public void deleteCustomer(Long id) {
         // Kiểm tra xem khách hàng có tồn tại trước khi xóa
-        if (customerRepository.existsById(customerId)) {
-            customerRepository.deleteById(customerId);
+        if (customerRepository.existsById(id)) {
+            customerRepository.deleteById(id);
         } else {
             // Xử lý lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + customerId);
+            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
         }
     }
 }

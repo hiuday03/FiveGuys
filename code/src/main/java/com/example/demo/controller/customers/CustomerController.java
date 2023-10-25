@@ -30,28 +30,28 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<List<CustomerEntity>> getAllCustomer() {
         List<CustomerEntity> customers = customerService.getAllCustomer();
         return ResponseEntity.ok(customers);
     }
 
-    @GetMapping("/pageall")
-    public ResponseEntity<Page<CustomerEntity>> getAllCustomerPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        return ResponseEntity.ok(customerService.getAllCustomerPage(page));
-    }
+//    @GetMapping("/pageall")
+//    public ResponseEntity<Page<CustomerEntity>> getAllCustomerPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+//        return ResponseEntity.ok(customerService.getAllCustomerPage(page));
+//    }
+//
+//    @GetMapping("/findby/{customerId}")
+//    public ResponseEntity<CustomerEntity> getCustomerById(@PathVariable Long customerId) {
+//        CustomerEntity customer = customerService.getCustomerById(customerId);
+//        if (customer != null) {
+//            return ResponseEntity.ok(customer);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
-    @GetMapping("/findby/{customerId}")
-    public ResponseEntity<CustomerEntity> getCustomerById(@PathVariable Long customerId) {
-        CustomerEntity customer = customerService.getCustomerById(customerId);
-        if (customer != null) {
-            return ResponseEntity.ok(customer);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customerEntity) {
         try {
             CustomerEntity createdCustomer = customerService.createCustomer(customerEntity);
@@ -62,7 +62,7 @@ public class CustomerController {
 
     }
 
-    @PutMapping("/update/{customerId}")
+    @PutMapping("/{customerId}")
     public ResponseEntity<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customerEntity, @PathVariable Long customerId) {
         CustomerEntity customer = customerService.updateCustomer(customerEntity, customerId);
         if (customer != null) {
@@ -72,7 +72,7 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping("/delete/{customerId}")
+    @DeleteMapping("/{customerId}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
         try {
             customerService.deleteCustomer(customerId);
