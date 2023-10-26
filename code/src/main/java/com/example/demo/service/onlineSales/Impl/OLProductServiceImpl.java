@@ -32,7 +32,7 @@ public class OLProductServiceImpl implements OLProductService {
     @Override
     public List<OlProductRespone> getAllOlProductsRespone() {
         List<OlProductRespone> olProductResponeList = new ArrayList<>();
-        List<Product> productList = olProductRepository.getAllProducts();
+        List<Product> productList = olProductRepository.findAll();
 
         for (Product product : productList) {
             List<ProductDetail> productDetails = olProductDetailRepository.findByProduct(product);
