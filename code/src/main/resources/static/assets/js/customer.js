@@ -23,24 +23,20 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
             $scope.customer = resp.data;
         });
     }
-    $scope.getAddressDateOnly = function(dateTime) {
+    $scope.getDateOnly = function (dateTime) {
         // Chuyển đổi datetime thành date (chỉ lấy ngày)
         var date = new Date(dateTime);
         return date;
     };
-    
+
 
     $scope.initialize();
 
+
     $scope.edit = function (customer) {
-        if ($scope.formUpdate.createdAt) {
-            $scope.formUpdate = angular.copy(customer);
-        } else {
-            $scope.formUpdate = angular.copy(customer);
-            $scope.formUpdate.createdAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-        }
+        $scope.formUpdate = angular.copy(customer);
     }
-    
+
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);

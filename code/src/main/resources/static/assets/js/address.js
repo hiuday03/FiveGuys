@@ -23,12 +23,27 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
             $scope.address = resp.data;
         });
     }
+    $scope.getDateOnly = function(dateTime) {
+        // Chuyển đổi datetime thành date (chỉ lấy ngày)
+        var date = new Date(dateTime);
+        return date;
+    };
+    
 
     $scope.initialize();
 
+    // $scope.edit = function (address) {
+    //     if ($scope.formUpdate.createdAt) {
+    //         $scope.formUpdate = angular.copy(address);
+    //     } else {
+    //         $scope.formUpdate = angular.copy(address);
+    //         $scope.formUpdate.createdAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+    //     }
+    // }
     $scope.edit = function (address) {
         $scope.formUpdate = angular.copy(address);
     }
+    
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
@@ -44,7 +59,9 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
+        console.log(item)
         $http.put(`/address/${item.id}`, item).then(function (resp) {
+
             $scope.showSuccessMessage("Update address successfully");
             $scope.resetFormUpdate();
             $scope.initialize();
@@ -65,17 +82,17 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
 
     $scope.resetFormUpdate = function () {
         $scope.formUpdate = {};
-        $scope.formUpdateaddress.$setPristine();
-        $scope.formUpdateaddress.$setUntouched();
+        $scope.formUpdateAddress.$setPristine();
+        $scope.formUpdateAddress.$setUntouched();
     }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
-        $scope.formCreateaddress.$setPristine();
-        $scope.formCreateaddress.$setUntouched();
+        $scope.formCreateAddress.$setPristine();
+        $scope.formCreateAddress.$setUntouched();
     }
 
-    $scope.pager = {
+    $scope.paper = {
         page: 0,
         size: 5,
         get items() {

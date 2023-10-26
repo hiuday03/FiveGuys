@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
 import java.util.Date;
 
@@ -39,6 +41,7 @@ public class CustomerEntity {
     @Column(name = "Email")
     private String email;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "BirthDate")
     private Date birthDate;
 
@@ -48,9 +51,11 @@ public class CustomerEntity {
     @Column(name = "Address")
     private String address;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CreatedAt")
     private Date createdAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "UpdatedAt")
     private Date updatedAt;
 

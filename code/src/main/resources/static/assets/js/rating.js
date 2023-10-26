@@ -23,12 +23,19 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
             $scope.rating = resp.data;
         });
     }
+    $scope.getDateOnly = function(dateTime) {
+        // Chuyển đổi datetime thành date (chỉ lấy ngày)
+        var date = new Date(dateTime);
+        return date;
+    };
+    
 
     $scope.initialize();
 
     $scope.edit = function (rating) {
         $scope.formUpdate = angular.copy(rating);
     }
+    
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
@@ -44,7 +51,9 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
+        console.log(item)
         $http.put(`/rating/${item.id}`, item).then(function (resp) {
+
             $scope.showSuccessMessage("Update rating successfully");
             $scope.resetFormUpdate();
             $scope.initialize();
@@ -65,17 +74,17 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
     $scope.resetFormUpdate = function () {
         $scope.formUpdate = {};
-        $scope.formUpdaterating.$setPristine();
-        $scope.formUpdaterating.$setUntouched();
+        $scope.formUpdateRating.$setPristine();
+        $scope.formUpdateRating.$setUntouched();
     }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
-        $scope.formCreaterating.$setPristine();
-        $scope.formCreaterating.$setUntouched();
+        $scope.formCreateRating.$setPristine();
+        $scope.formCreateRating.$setUntouched();
     }
 
-    $scope.pager = {
+    $scope.paper = {
         page: 0,
         size: 5,
         get items() {

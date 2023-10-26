@@ -372,8 +372,8 @@
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
-                                            ng-model="formUpdate.createdAt" 
-                                            ng-value="formUpdate.createdAt | date:'mm-dd-yyyy'" >
+                                            ng-model="formUpdate.createdAt"
+                                            ng-value="formUpdate.createdAt | date:'yyyy-MM-dd'">
                                         <span ng-show="formUpdateCustomer.$submitted">
                                             <div ng-show="formUpdateCustomer.createdAt.$invalid"
                                                 class="error-message text-danger form-text">
@@ -386,7 +386,7 @@
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
                                             ng-model="formUpdate.updatedAt"
-                                            ng-value="formUpdate.updatedAt | date:'mm-dd-yyyy'" >
+                                            ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
                                         <span ng-show="formUpdateCustomer.$submitted">
                                             <div ng-show="formUpdateCustomer.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
@@ -488,11 +488,11 @@
                                 <td>{{customer.password}}</td>
                                 <td>{{customer.phoneNumber}}</td>
                                 <td>{{customer.email}}</td>
-                                <td>{{getAddressDateOnly(customer.birthDate) | date:'yyyy-MM-dd'}}</td>
+                                <td>{{getDateOnly(customer.birthDate) | date:'yyyy-MM-dd'}}</td>
                                 <td>{{customer.gender}}</td>
                                 <td>{{customer.address}}</td>
-                                <td>{{getAddressDateOnly(customer.createdAt) | date:'yyyy-MM-dd'}}</td>
-                                <td>{{getAddressDateOnly(customer.updatedAt) | date:'yyyy-MM-dd'}}</td>
+                                <td>{{getDateOnly(customer.createdAt) | date:'yyyy-MM-dd'}}</td>
+                                <td>{{getDateOnly(customer.updatedAt) | date:'yyyy-MM-dd'}}</td>
                                 <td>{{customer.createdBy}}</td>
                                 <td>{{customer.updatedBy}}</td>
                                 <td>{{customer.status}}</td>

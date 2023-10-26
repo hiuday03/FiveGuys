@@ -42,8 +42,8 @@ public class FavoriteController {
 //    }
 //
 //    @GetMapping("/findby/{favoriteId}")
-//    public ResponseEntity<FavoriteEntity> getFavoriteById(@PathVariable Long favoriteId) {
-//        FavoriteEntity favorite = favoriteService.getFavoriteById(favoriteId);
+//    public ResponseEntity<FavoriteEntity> getFavoriteById(@PathVariable Long id) {
+//        FavoriteEntity favorite = favoriteService.getFavoriteById(id);
 //        if (favorite != null) {
 //            return ResponseEntity.ok(favorite);
 //        } else {
@@ -61,9 +61,9 @@ public class FavoriteController {
         }
     }
 
-    @PutMapping("/{favoriteId}")
-    public ResponseEntity<FavoriteEntity> updateFavorite(@RequestBody FavoriteEntity favoriteEntity, @PathVariable Long favoriteId) {
-        FavoriteEntity favorite = favoriteService.updateFavorite(favoriteEntity, favoriteId);
+    @PutMapping("/{id}")
+    public ResponseEntity<FavoriteEntity> updateFavorite(@RequestBody FavoriteEntity favoriteEntity, @PathVariable Long id) {
+        FavoriteEntity favorite = favoriteService.updateFavorite(favoriteEntity, id);
         if (favorite != null) {
             return ResponseEntity.ok(favorite);
         } else {
@@ -71,10 +71,10 @@ public class FavoriteController {
         }
     }
 
-    @DeleteMapping("/{favoriteId}")
-    public ResponseEntity<Void> deleteFavorite(@PathVariable Long favoriteId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFavorite(@PathVariable Long id) {
         try {
-            favoriteService.deleteFavorite(favoriteId);
+            favoriteService.deleteFavorite(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

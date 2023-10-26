@@ -41,8 +41,8 @@ public class RatingController {
 //    }
 //
 //    @GetMapping("/findby/{ratingId}")
-//    public ResponseEntity<RatingEntity> getRatingById(@PathVariable Long ratingId) {
-//        RatingEntity rating = ratingService.getRatingById(ratingId);
+//    public ResponseEntity<RatingEntity> getRatingById(@PathVariable Long id) {
+//        RatingEntity rating = ratingService.getRatingById(id);
 //        if (rating != null) {
 //            return ResponseEntity.ok(rating);
 //        } else {
@@ -60,9 +60,9 @@ public class RatingController {
         }
     }
 
-    @PutMapping("/{ratingId}")
-    public ResponseEntity<RatingEntity> updateRating(@RequestBody RatingEntity ratingEntity, @PathVariable Long ratingId) {
-        RatingEntity rating = ratingService.updateRating(ratingEntity, ratingId);
+    @PutMapping("/{id}")
+    public ResponseEntity<RatingEntity> updateRating(@RequestBody RatingEntity ratingEntity, @PathVariable Long id) {
+        RatingEntity rating = ratingService.updateRating(ratingEntity, id);
         if (rating != null) {
             return ResponseEntity.ok(rating);
         } else {
@@ -70,10 +70,10 @@ public class RatingController {
         }
     }
 
-    @DeleteMapping("/{ratingId}")
-    public ResponseEntity<Void> deleteRating(@PathVariable Long ratingId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRating(@PathVariable Long id) {
         try {
-            ratingService.deleteRating(ratingId);
+            ratingService.deleteRating(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
