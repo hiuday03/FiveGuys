@@ -25,7 +25,7 @@ public class ProductRestController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> page(@RequestParam("page") Integer page){
+    public ResponseEntity<?> page(@RequestParam(value = "page", defaultValue = "0") Integer page){
         Page<Product> products = productService.getAll(page);
         return ResponseEntity.ok(products);
     }

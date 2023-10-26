@@ -15,8 +15,19 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("")
-    public String index(Model model){
-        model.addAttribute("products", productService.getAll());
-        return "admin/products/product-list";
+    public String index(){
+        return "admin/products/product/product-list";
+    }
+
+    @GetMapping("/create")
+    public String create(Model model){
+        model.addAttribute("formtype", "add");
+        return "admin/products/product/product-form";
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(Model model){
+        model.addAttribute("formtype", "update");
+        return "admin/products/product/product-form";
     }
 }
