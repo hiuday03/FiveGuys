@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -34,6 +35,8 @@ public class Employees {
     @Column(name= "Email")
     private String email;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name= "BirthDate")
     private Date birthDate;
 

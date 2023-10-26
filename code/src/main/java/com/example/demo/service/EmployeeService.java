@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface EmployeeService {
      List<Employees> getAll();
+     Employees getById(Long id);
 
      Page<Employees> phanTrang(Integer pageNum, Integer pageNo);
 

@@ -19,47 +19,22 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @GetMapping("/account/employee")
-    public String ViewEmployee(@RequestParam(defaultValue = "0", name = "page")Integer p ,Model model) {
-        Page<Employees> employees = employeeService.phanTrang(p, 5);
-        model.addAttribute("list", employees);
-        return "/admin/account/employee";
+    public String viewEmployee(){
+        return "/admin/account/employee/employee_home";
     }
-
-    // select all dư liệu
-    @GetMapping("/get-all")
-    public ResponseEntity<List<Employees>> getAll( ){
-        List<Employees> customers = employeeService.getAll();
-        return ResponseEntity.ok(customers);
+    @PostMapping("/account/employee/create")
+    public String addEmployee(){
+        return "/admin/account/employee/employee_add";
     }
 
 
-    //Thêm Employee
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Employees employees) {
-        try {
-            Employees createdEmployee = employeeService.create(employees);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
 
-    }
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        employeeService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Employees> update(@PathVariable Long id,@RequestBody Employees employees ){
-        employeeService.update(id, employees);
-        if (employees != null) {
-            return ResponseEntity.ok(employees);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-
-    }
+//    public String ViewEmployee(@RequestParam(defaultValue = "0", name = "page")Integer p ,Model model) {
+//        Page<Employees> employees = employeeService.phanTrang(p, 5);
+//        model.addAttribute("list", employees);
+//        return "/admin/account/employee";
+//    }
+//
 
 }

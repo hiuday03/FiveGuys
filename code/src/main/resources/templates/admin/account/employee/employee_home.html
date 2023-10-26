@@ -3,10 +3,10 @@
       layout:decorate="~{admin/index}">
 
 
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:thnum="http://www.thymeleaf.org/extras/numbers">
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:thnum="http://www.thymeleaf.org/extras/numbers">-->
 <body>
 
-<main id="main" class="main" layout:fragment="content">
+<main id="main" class="main" layout:fragment="content" ng-app="employee-list-app" ng-controller="employee-list-controller">
 
     <div class="pagetitle">
         <h1>Employee</h1>
@@ -23,6 +23,10 @@
         <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
             Create Employee</button>
+        <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
+                data-bs-target="#modalAdd">
+            Create Employee</button>
+
         <!-- Modal Add -->
         <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -32,32 +36,41 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form name="addformEmployee" ng-submit="addformEmployee.$valid  && addEmploy()">
                             <div class="row mb-3">
-                                <label for="inputName" class="col-sm-3 col-form-label">Full Name</label>
+                                <label for="inputFullName" class="col-sm-3 col-form-label">Full Name</label>
                                 <div class="col-sm-9">
-                                    <input name="name" id="inputName" type="text" class="form-control">
+                                    <input name="fullName" id="inputFullName" type="text" class="form-control"
+                                           ng-model="formInput.fullName" >
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.fullName.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
                                 </div>
+
                             </div>
                             <div class="row mb-3">
-                                <label for="inputImage" class="col-sm-3 col-form-label">Avatar</label>
+                                <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
                                 <div class="col-sm-9">
-                                    <input name="image" id="inputImage" type="file" class="form-control">
+                                    <input name="avatar" id="inputAvatar" type="image" class="form-control"
+                                           ng-model="formInput.avatar" >
                                 </div>
                                 <img src="" alt="" sizes="" srcset="">
                             </div>
                             <div class="row mb-3">
                                 <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                 <div class="col-sm-9">
-                                    <input name="account" id="inputAccount" type="text" class="form-control">
+                                    <input name="account" id="inputAccount" type="text" class="form-control"
+                                           ng-model="formInput.account" >
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <label for="inputPassWord" class="col-sm-3 col-form-label">PassWord</label>
-                                <div class="col-sm-9">
-                                    <input name="passWord" id="inputPassWord" type="password" class="form-control">
-                                </div>
-                            </div>
+<!--                            <div class="row mb-3">-->
+<!--                                <label for="inputPassWord" class="col-sm-3 col-form-label">PassWord</label>-->
+<!--                                <div class="col-sm-9">-->
+<!--                                    <input name="passWord" id="" type="password" class="form-control">-->
+<!--                                </div>-->
+<!--                            </div>-->
 <!--                            <div class="row mb-3">-->
 <!--                                <label for="inputEnterPass" class="col-sm-3 col-form-label">Enter PassWord</label>-->
 <!--                                <div class="col-sm-9">-->
@@ -68,20 +81,22 @@
                             <div class="row mb-3">
                                 <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
                                 <div class="col-sm-9">
-                                    <input name="phoneNumber" id="inputPhoneNumber" type="text"
-                                           class="form-control">
+                                    <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
+                                           ng-model="formInput.phoneNumber" >
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
-                                    <input name="email" id="inputEmail" type="email" class="form-control">
+                                    <input name="email" id="inputEmail" type="email" class="form-control"
+                                           ng-model="formInput.email" >
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
                                 <div class="col-sm-9">
-                                    <input name="birthDate" id="inputBirthDate" type="date" class="form-control">
+                                    <input name="bỉrthDate" id="inputBirthDate" type="date" ng-value="yyyy/MM/dd" class="form-control"
+                                           ng-model="formInput.birthDate" >
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -89,13 +104,13 @@
                                 <div class="col-sm-9">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="gender"
-                                               id="gender1">
+                                               id="gender1" ng-model="formInput.gender">
                                         <label class="form-check-label" for="gender1">Nam
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="gender"
-                                               id="gender2" checked>
+                                               id="gender2" ng-model="formInput.gender" checked>
                                         <label class="form-check-label" for="gender2">Nữ
                                         </label>
                                     </div>
@@ -104,7 +119,8 @@
                             <div class="row mb-3">
                                 <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-9">
-                                    <input name="address" id="inputAddress" type="text" class="form-control">
+                                    <input name="addresss" id="inputAddress" type="text" class="form-control"
+                                           ng-model="formInput.addresss" >
                                 </div>
                             </div>
 <!--                            <div class="row mb-3">-->
@@ -132,34 +148,33 @@
 <!--                                </div>-->
 <!--                            </div>-->
                             <div class="row mb-3">
-                                <label for="inputStatus" class="col-sm-3 col-form-label">Role</label>
+                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
                                 <div class="col-sm-9">
-                                    <select class="form-select form-select-sm" aria-label="Small select example">
-                                        <option selected>Open this select menu</option>
-                                        <option value="0">One</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <select name="roles" id="inputRole" class="form-select form-select-sm" aria-label="Small select example"
+                                    ng-model="formInput.roles.id">
+                                        <option ng-repeat="r in listRole" ng-value="r.id" >{{r.fullName}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                 <div class="col-sm-9">
-                                    <select class="form-select form-select-sm" aria-label="Small select example">
+                                    <select name="status"  class="form-select form-select-sm" aria-label="Small select example"
+                                    ng-model="formInput.status">
                                         <option selected>Open this select menu</option>
-                                        <option value="0">One</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        <option value="0">Nghỉ làm</option>
+                                        <option value="1">Đang làm</option>
+
                                     </select>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Save</button>
+
+                                <button type="submit" class="btn btn-primary" >Save</button>
                                 <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -176,56 +191,56 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form name="formUpdateEmployee" ng-submit="formUpdateEmployee.$valid && updateEmploy()">
                             <div class="row mb-3">
-                                <label for="inputName" class="col-sm-3 col-form-label">Name</label>
+                                <label for="inputFullName" class="col-sm-3 col-form-label">Name</label>
                                 <div class="col-sm-9">
-                                    <input name="name" id="inputName" type="text" class="form-control">
+                                    <input name="fullName" id="inputFullName" ng-model="formUpdate.fullName" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputImage" class="col-sm-3 col-form-label">Avatar</label>
+                                <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
                                 <div class="col-sm-9">
-                                    <input name="image" id="inputImage" type="file" class="form-control">
+                                    <input name="avatar" id="inputAvatar" ng-model="formUpdate.avatar" type="file" class="form-control">
                                 </div>
                                 <img src="" alt="" sizes="" srcset="">
                             </div>
                             <div class="row mb-3">
                                 <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                 <div class="col-sm-9">
-                                    <input name="account" id="inputAccount" type="text" class="form-control">
+                                    <input name="account" id="inputAccount" ng-model="formUpdate.account" type="text" class="form-control">
                                 </div>
                             </div>
+<!--                            <div class="row mb-3">-->
+<!--                                <label for="inputPassWord" class="col-sm-3 col-form-label">PassWord</label>-->
+<!--                                <div class="col-sm-9">-->
+<!--                                    <input name="passWord" id="inputPassWord" type="password" class="form-control">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mb-3">-->
+<!--                                <label for="inputEnterPass" class="col-sm-3 col-form-label">Enter PassWord</label>-->
+<!--                                <div class="col-sm-9">-->
+<!--                                    <input name="enterPass" id="inputEnterPass" type="password"-->
+<!--                                           class="form-control">-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="row mb-3">
-                                <label for="inputPassWord" class="col-sm-3 col-form-label">PassWord</label>
+                                <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone</label>
                                 <div class="col-sm-9">
-                                    <input name="passWord" id="inputPassWord" type="password" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputEnterPass" class="col-sm-3 col-form-label">Enter PassWord</label>
-                                <div class="col-sm-9">
-                                    <input name="enterPass" id="inputEnterPass" type="password"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
-                                <div class="col-sm-9">
-                                    <input name="phoneNumber" id="inputPhoneNumber" type="text"
+                                    <input name="phoneNumber" id="inputPhoneNumber" ng-model="formUpdate.phoneNumber" type="text"
                                            class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
-                                    <input name="email" id="inputEmail" type="email" class="form-control">
+                                    <input name="email" id="inputEmail" ng-model="formUpdate.email" type="email" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
                                 <div class="col-sm-9">
-                                    <input name="birthDate" id="inputBirthDate" type="date" class="form-control">
+                                    <input name="birthDate" id="inputBirthDate" type="date" ng-date-format="yyyy/MM/dd" ng-model="formUpdate.birthDate" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -233,13 +248,13 @@
                                 <div class="col-sm-9">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="gender"
-                                               id="gender1">
+                                               id="gender1" ng-model="formUpdate.gender">
                                         <label class="form-check-label" for="gender1">Nam
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="gender"
-                                               id="gender2" checked>
+                                               id="gender2" ng-model="formUpdate.gender"checked>
                                         <label class="form-check-label" for="gender2">Nữ
                                         </label>
                                     </div>
@@ -248,7 +263,7 @@
                             <div class="row mb-3">
                                 <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-9">
-                                    <input name="address" id="inputAddress" type="text" class="form-control">
+                                    <input name="address" id="inputAddress" ng-model="formUpdate.address" type="text" class="form-control">
                                 </div>
                             </div>
 <!--                            <div class="row mb-3">-->
@@ -276,26 +291,22 @@
 <!--                                </div>-->
 <!--                            </div>-->
                             <div class="row mb-3">
-                                <label for="inputStatus" class="col-sm-3 col-form-label">Role</label>
+                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
                                 <div class="col-sm-9">
-                                    <select class="form-select form-select-sm" aria-label="Small select example">
-                                        <option selected>Open this select menu</option>
-                                        <option value="0">One</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.roles.id">
+                                        <option ng-repeat="r in listRole" ng-value="r.id" >{{r.fullName}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                 <div class="col-sm-9">
-                                    <select class="form-select form-select-sm" aria-label="Small select example">
-                                        <option selected>Open this select menu</option>
-                                        <option value="0">One</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <select name="status" id="inputStatus" class="form-select form-select-sm" aria-label="Small select example"
+                                    ng-model="formUpdate.status">
+
+                                        <option value="0">Nghỉ làm</option>
+                                        <option value="1">Đang làm</option>
                                     </select>
                                 </div>
                             </div>
@@ -326,15 +337,16 @@
                 <table class="table">
                     <thead>
                     <tr>
+                        <th scope="col">STT</th>
                         <th scope="col">Full Name</th>
                         <th scope="col">Avatar</th>
                         <th scope="col">Account</th>
 <!--                        <th scope="col">PassWord</th>-->
                         <th scope="col">Phone Number</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Birth Date</th>
+<!--                        <th scope="col">Email</th>-->
+<!--                        <th scope="col">Birth Date</th>-->
                         <th scope="col">Gender</th>
-                        <th scope="col">Address</th>
+<!--                        <th scope="col">Addres</th>-->
                         <th scope="col">Role</th>
 <!--                        <th scope="col">Created At</th>-->
 <!--                        <th scope="col">Updated At</th>-->
@@ -345,20 +357,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="l : ${list.content}">
-                        <td th:text="${l.fullName}"></td>
-                        <td th:text="${l.avatar}"></td>
-                        <td th:text="${l.account}"></td>
-                        <td th:text="${l.phoneNumber}"></td>
-                        <td th:text="${l.email}"></td>
-                        <td th:text="${l.birthDate}"></td>
-                        <td th:text="${l.gender == True ? 'Nam' : 'Nữ'}"></td>
-                        <td th:text="${l.address}"></td>
-                        <td th:text="${l.roles.fullName}"></td>
-                        <td th:text="${l.status == 1 ? 'Đang làm' : 'Đã nghỉ'}"></td>
+                    <tr ng-repeat="l in listEm">
+                        <td >{{count+1}}</td>
+                        <td >{{l.fullName}}</td>
+                        <td >{{l.avatar}}</td>
+                        <td >{{l.account}}</td>
+                        <td >{{l.phoneNumber}}</td>
+<!--                        <td >{{l.email}}</td>-->
+<!--                        <td >{{l.birthDate}}</td>-->
+                        <td >{{l.gender == True ? 'Nam' : 'Nữ'}}</td>
+<!--                        <td >{{l.address}}</td>-->
+                        <td >{{l.roles.fullName}}</td>
+                        <td >{{l.status}}</td>
+
 
                         <td>
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                            <button ng-click="edit(l)" type="button" class="btn btn-info" data-bs-toggle="modal"
                                     data-bs-target="#modalUpdate"><i class="ri-refresh-line"></i></button>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal"><i class="ri-delete-bin-fill"></i></button>
@@ -371,7 +385,7 @@
                                                 không?</h5>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"
+                                            <button type="button" ng-click="delete(l)" class="btn btn-primary"
                                                     data-bs-dismiss="modal">Delete</button>
                                             <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
@@ -383,29 +397,29 @@
                     </tr>
                     </tbody>
                 </table>
-                <nav aria-label="Page navigation example" class="flex">
-                    <ul class="pagination">
+<!--                <nav aria-label="Page navigation example" class="flex">-->
+<!--                    <ul class="pagination">-->
 
-                        <li class="page-item" th:classappend="${list.number == 0} ? disabled">
-                            <a class="page-link" th:href="@{/admin/account/employee(page=${list.number - 1})}">
-                                Previous
-                            </a>
-                        </li>
-                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, list.totalPages - 1)}">
-                            <a class="page-link" th:href="@{/admin/account/employee(page=${pageNumber})}"
-                               th:text="${pageNumber + 1}" th:classappend="${pageNumber == list.number} ? active">
-                            </a>
-                        </li>
-                        <li class="page-item" th:classappend="${list.number == list.totalPages - 1} ? disabled">
-                            <a class="page-link" th:href="@{/admin/account/employee(page=${list.number + 1})}">
-                                Next
-                            </a>
-                        </li>
-                        <!--                    <li class="page-item" th:classappend="${list.number == list.totalPages - 1} ? disabled"><a-->
-                        <!--                            class="page-link" th:href="@{/vouchers(page=${list.totalPages - 1}, size=${list.size})}">Last</a>-->
-                        <!--                    </li>-->
-                    </ul>
-                </nav>
+<!--                        <li class="page-item" th:classappend="${listEm.number == 0} ? disabled">-->
+<!--                            <a class="page-link" th:href="@{/admin/account/employee(page=${listEm.number - 1})}">-->
+<!--                                Previous-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, listEm.totalPages - 1)}">-->
+<!--                            <a class="page-link" th:href="@{/admin/account/employee(page=${pageNumber})}"-->
+<!--                               th:text="${pageNumber + 1}" th:classappend="${pageNumber == listEm.number} ? active">-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item" th:classappend="${listEm.number == listEm.totalPages - 1} ? disabled">-->
+<!--                            <a class="page-link" th:href="@{/admin/account/employee(page=${listEm.number + 1})}">-->
+<!--                                Next-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        &lt;!&ndash;                    <li class="page-item" th:classappend="${list.number == list.totalPages - 1} ? disabled"><a&ndash;&gt;-->
+<!--                        &lt;!&ndash;                            class="page-link" th:href="@{/vouchers(page=${list.totalPages - 1}, size=${list.size})}">Last</a>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                    </li>&ndash;&gt;-->
+<!--                    </ul>-->
+<!--                </nav>-->
             </div>
         </div>
     </section>

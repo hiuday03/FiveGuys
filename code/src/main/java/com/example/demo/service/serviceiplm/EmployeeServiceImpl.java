@@ -24,6 +24,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employees getById(Long id){
+        return employeeRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public Page<Employees> phanTrang(Integer page, Integer size){
         Pageable pageable = PageRequest.of(page, size);
         return employeeRepository.findAll(pageable);
