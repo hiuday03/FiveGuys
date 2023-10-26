@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CartDetailOnlineSalesRepository extends JpaRepository<CartDetail, Long> {
+public interface OLCartDetailRepository extends JpaRepository<CartDetail, Long> {
 }
