@@ -37,5 +37,5 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name = "IdProductDetail")
-    private Product productDetail;
+    private ProductDetail productDetail;
 }
