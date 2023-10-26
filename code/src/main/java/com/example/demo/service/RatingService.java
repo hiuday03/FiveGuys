@@ -10,14 +10,14 @@ public interface RatingService {
 
 //    Page<RatingEntity> getAll(Integer page);
 
-    RatingEntity getRatingById(Long ratingId);
+    RatingEntity getRatingById(Long id);
 
     Page<RatingEntity> getAllRatingPage(Integer page);
 
     RatingEntity createRating(RatingEntity ratingEntity);
 
-    RatingEntity updateRating(RatingEntity ratingEntity, Long ratingId);
+    RatingEntity updateRating(RatingEntity ratingEntity, Long id);
 
-    void deleteRating(Long ratingId);
+    void deleteRating(Long id);
 
 }

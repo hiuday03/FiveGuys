@@ -10,14 +10,14 @@ public interface FavoriteService {
 
 //    Page<FavoriteEntity> getAll(Integer page);
 
-    FavoriteEntity getFavoriteById(Long favoriteId);
+    FavoriteEntity getFavoriteById(Long id);
 
     Page<FavoriteEntity> getAllFavoritePage(Integer page);
 
     FavoriteEntity createFavorite(FavoriteEntity favoriteEntity);
 
-    FavoriteEntity updateFavorite(FavoriteEntity favoriteEntity, Long favoriteId);
+    FavoriteEntity updateFavorite(FavoriteEntity favoriteEntity, Long id);
 
-    void deleteFavorite(Long favoriteId);
+    void deleteFavorite(Long id);
 
 }

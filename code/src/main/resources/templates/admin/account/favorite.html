@@ -8,7 +8,7 @@
 
 </head>
 
-<body>
+<body ng-app="favorite" ng-controller="favorite-ctrl">
 
     <main id="main" class="main" layout:fragment="content">
 
@@ -184,6 +184,7 @@
                             <tr>
                                 <th scope="col">Name Custoemr(Id Custoemr)</th>
                                 <th scope="col">Name ProductDetail(ID ProductDetail)</th>
+                                <!-- <th scope="col">Image ProductDetail</th> -->
                                 <th scope="col">Created At</th>
                                 <th scope="col">Updated At</th>
                                 <th scope="col">Status</th>
@@ -191,12 +192,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
+                            <tr ng-repeat="favorite in favorite">
+                                <td>{{favorite.customer.fullName}}</td>
+                                <td>{{favorite.productDetail.product.name}}, {{favorite.productDetail.product.material.name}}, {{favorite.productDetail.product.category.name}}, {{favorite.productDetail.color.name}}, {{favorite.productDetail.size.name}}</td>
+                                <!-- <td>{{favorite.productDetail.image.name}}</td> -->
+                                <td>{{favorite.createdAt}}</td>
+                                <td>{{favorite.updatedAt}}</td>
+                                <td>{{favorite.status}}</td>
                                 <td>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                         data-bs-target="#modalUpdate"><i class="ri-refresh-line"></i></button>
@@ -223,6 +225,16 @@
                             </tr>
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
+                            <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
+                            </li>
+                            <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
+                            <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
+                            <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>
