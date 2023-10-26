@@ -29,28 +29,28 @@ public class RatingController {
         this.ratingService = ratingService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<List<RatingEntity>> getAllRating() {
         List<RatingEntity> rating = ratingService.getAllRating();
         return ResponseEntity.ok(rating);
     }
 
-    @GetMapping("/pageall")
-    public ResponseEntity<Page<RatingEntity>> getAllRatingPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        return ResponseEntity.ok(ratingService.getAllRatingPage(page));
-    }
+//    @GetMapping("/pageall")
+//    public ResponseEntity<Page<RatingEntity>> getAllRatingPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+//        return ResponseEntity.ok(ratingService.getAllRatingPage(page));
+//    }
+//
+//    @GetMapping("/findby/{ratingId}")
+//    public ResponseEntity<RatingEntity> getRatingById(@PathVariable Long ratingId) {
+//        RatingEntity rating = ratingService.getRatingById(ratingId);
+//        if (rating != null) {
+//            return ResponseEntity.ok(rating);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
-    @GetMapping("/findby/{ratingId}")
-    public ResponseEntity<RatingEntity> getRatingById(@PathVariable Long ratingId) {
-        RatingEntity rating = ratingService.getRatingById(ratingId);
-        if (rating != null) {
-            return ResponseEntity.ok(rating);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> createRating(@RequestBody RatingEntity ratingEntity) {
         try {
             RatingEntity createdRating = ratingService.createRating(ratingEntity);
@@ -60,7 +60,7 @@ public class RatingController {
         }
     }
 
-    @PutMapping("/update/{ratingId}")
+    @PutMapping("/{ratingId}")
     public ResponseEntity<RatingEntity> updateRating(@RequestBody RatingEntity ratingEntity, @PathVariable Long ratingId) {
         RatingEntity rating = ratingService.updateRating(ratingEntity, ratingId);
         if (rating != null) {
@@ -70,7 +70,7 @@ public class RatingController {
         }
     }
 
-    @DeleteMapping("/delete/{ratingId}")
+    @DeleteMapping("/{ratingId}")
     public ResponseEntity<Void> deleteRating(@PathVariable Long ratingId) {
         try {
             ratingService.deleteRating(ratingId);

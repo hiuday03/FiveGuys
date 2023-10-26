@@ -27,11 +27,6 @@ public class EmployeeController {
 
     //Thêm Employee
 
-//    public ResponseEntity<?> create(Employees employees) {
-//         employeeService.create(employees);
-//        return ResponseEntity.ok(employees);
-//
-//    }
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Employees employees) {
         try {
@@ -46,6 +41,17 @@ public class EmployeeController {
     public ResponseEntity<Void> delete(@PathVariable Long id){
         employeeService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Employees> update(@PathVariable Long id,@RequestBody Employees employees ){
+        employeeService.update(id, employees);
+        if (employees != null) {
+            return ResponseEntity.ok(employees);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 }
