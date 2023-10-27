@@ -31,6 +31,9 @@ public class ProductDetail {
     @Column(name = "Quantity")
     private Integer quantity;
 
+    @Column(name = "Barcode")
+    private String barcode;
+
     @Column(name = "CreatedAt")
     private Date createdAt;
 

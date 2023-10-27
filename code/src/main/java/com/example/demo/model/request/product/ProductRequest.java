@@ -1,2 +1,4 @@
-package com.example.demo.model.request.product;public class ProductRequest {
+package com.example.demo.model.request.product;
+
+public class ProductRequest {
 }

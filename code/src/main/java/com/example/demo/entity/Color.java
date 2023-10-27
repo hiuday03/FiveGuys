@@ -23,6 +23,9 @@ public class Color {
     @Column(name = "Name")
     private String name;
 
+    @Column(name = "ColorCode")
+    private String colorCode;
+
     @Column(name = "CreatedAt")
     private Date createdAt;
 
