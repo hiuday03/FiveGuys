@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -31,6 +32,9 @@ public class ProductDetail {
     @Column(name = "Quantity")
     private Integer quantity;
 
+    @Column(name = "Barcode")
+    private String barcode;
+
     @Column(name = "CreatedAt")
     private Date createdAt;
 
@@ -58,7 +62,7 @@ public class ProductDetail {
     @JoinColumn(name = "IdColor")
     private Color color;
 
-    // Hải thêm vào
+    @JsonIgnore
     @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 }

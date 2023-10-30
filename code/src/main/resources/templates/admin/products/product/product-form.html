@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{admin/index}">
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="utf-8">
+    <title>Dashboard - FiveGuys</title>
+
 </head>
-<body>
-$END$
+
+<body ng-app="product-list-app" ng-controller="product-list-ctrl">
+
+<main id="main" class="main" layout:fragment="content">
+
+    <div class="pagetitle">
+        <h1>Colors</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
+                <li class="breadcrumb-item">Products</li>
+                <li class="breadcrumb-item active">Form product</li>
+            </ol>
+        </nav>
+    </div>
+    <!--  Begin code  -->
+    <section class="section">
+        <h2>{{productById.name}}</h2>
+        <form class="row g-3 needs-validation" novalidate>
+            <div class="col-md-4">
+                <label class="form-label">Tên sản phẩm</label>
+                <input type="text" class="form-control" ng-model="name" required>
+
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Cổ áo</label>
+                <input type="text" class="form-control" ng-model="collar" required>
+
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Cổ tay</label>
+                <input type="text" class="form-control" ng-model="wrist" required>
+
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Loại sản phẩm</label>
+                <select class="form-select" ng-model="idCategory" required>
+                    <option selected disabled value="">Choose...</option>
+                    <option ng-repeat="c in categories" value="{{c.id}}">{{ c.name }}</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Chất liệu</label>
+                <select class="form-select" ng-model="idMaterial" required>
+                    <option selected disabled value="">Choose...</option>
+                    <option ng-repeat="m in materials" value="{{m.id}}">{{ m.name }}</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Thương hiệu</label>
+                <input type="text" class="form-control" ng-model="brand" required>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Mô tả</label>
+                <div class="form-floating">
+                    <textarea class="form-control"
+                              placeholder="Leave a comment here" id="floatingTextarea2"
+                              style="height: 200px" ng-model="describe"></textarea>
+                    <label for="floatingTextarea2">Mô tả sản phẩm</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <button ng-click="cc()"> c</button>
+                <button class="btn btn-primary" ng-click="createProduct()" type="submit">Submit form</button>
+                <a class="btn btn-outline-secondary" th:href="@{/admin/product1}" type="submit">Back</a>
+            </div>
+        </form>
+    </section>
+    <!--  End Code  -->
+</main>
 </body>
+
 </html>

@@ -37,6 +37,9 @@ public class AddressEntity {
     @Column(name = "AddressType")
     private String addressType;
 
+    @Column(name = "DefaultAddress")
+    private Boolean defaultAddress;
+
     @ManyToOne
     @JoinColumn(name = "IdCustomer")
     private CustomerEntity customer;
