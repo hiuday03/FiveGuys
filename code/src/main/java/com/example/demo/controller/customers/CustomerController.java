@@ -41,9 +41,9 @@ public class CustomerController {
 //        return ResponseEntity.ok(customerService.getAllCustomerPage(page));
 //    }
 //
-//    @GetMapping("/findby/{customerId}")
-//    public ResponseEntity<CustomerEntity> getCustomerById(@PathVariable Long customerId) {
-//        CustomerEntity customer = customerService.getCustomerById(customerId);
+//    @GetMapping("/findby/{id}")
+//    public ResponseEntity<CustomerEntity> getCustomerById(@PathVariable Long id) {
+//        CustomerEntity customer = customerService.getCustomerById(id);
 //        if (customer != null) {
 //            return ResponseEntity.ok(customer);
 //        } else {
@@ -62,9 +62,9 @@ public class CustomerController {
 
     }
 
-    @PutMapping("/{customerId}")
-    public ResponseEntity<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customerEntity, @PathVariable Long customerId) {
-        CustomerEntity customer = customerService.updateCustomer(customerEntity, customerId);
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customerEntity, @PathVariable Long id) {
+        CustomerEntity customer = customerService.updateCustomer(customerEntity, id);
         if (customer != null) {
             return ResponseEntity.ok(customer);
         } else {
@@ -72,10 +72,10 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping("/{customerId}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         try {
-            customerService.deleteCustomer(customerId);
+            customerService.deleteCustomer(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
