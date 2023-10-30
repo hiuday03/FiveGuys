@@ -28,7 +28,6 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
         var date = new Date(dateTime);
         return date;
     };
-    
 
     $scope.initialize();
 

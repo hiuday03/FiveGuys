@@ -1,10 +1,10 @@
-var app = angular.module("category-app", []);
+var app = angular.module("color-app", []);
 
-app.controller("category-ctrl", function ($scope, $http, $timeout) {
+app.controller("color-ctrl", function ($scope, $http, $timeout) {
 
-    const apiUrlCategory = "http://localhost:8080/api/category"
+    const apiUrlColor = "http://localhost:8080/api/color"
 
-    $scope.categories = [];
+    $scope.colors = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
@@ -19,8 +19,8 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
         $scope.showAlert = false;
     }
     $scope.initialize = function() {
-        $http.get(apiUrlCategory + "/page").then(resp => {
-            $scope.categories = resp.data.content;
+        $http.get(apiUrlColor + "/page").then(resp => {
+            $scope.colors = resp.data.content;
             $scope.totalPages = resp.data.totalPages
         });
     }
@@ -31,11 +31,11 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
     }
     $scope.create = function() {
         let item = angular.copy($scope.formInput);
-        $http.post(apiUrlCategory, item).then(resp => {
-            $scope.showSuccessMessage("Create category successfully!")
+        $http.post(apiUrlColor, item).then(resp => {
+            $scope.showSuccessMessage("Create color successfully!")
+            $scope.resetFormInput();
             $scope.initialize();
             $('#modalAdd').modal('hide');
-            $scope.resetFormInput();
         }).catch(error => {
             console.log("Error", error);
         })
@@ -43,18 +43,18 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function() {
         let item = angular.copy($scope.formUpdate);
-        $http.put(`${apiUrlCategory}/${item.id}`, item).then(resp => {
-            $scope.showSuccessMessage("Update category successfully!")
+        $http.put(`${apiUrlColor}/${item.id}`, item).then(resp => {
+            $scope.showSuccessMessage("Update color successfully!")
+            $scope.resetFormUpdate();
             $scope.initialize();
             $('#modalUpdate').modal('hide');
-            $scope.resetFormUpdate();
         }).catch(error => {
             console.log("Error", error);
         })
     }
 
     $scope.delete = function(item) {
-        $http.delete(`${apiUrlCategory}/${item.id}`).then(resp => {
+        $http.delete(`${apiUrlColor}/${item.id}`).then(resp => {
             $scope.showSuccessMessage("Delete color successfully!")
             $scope.initialize();
         }).catch(error => {
@@ -74,6 +74,16 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
         $scope.formAddColor.$setUntouched();
     }
 
+    // //ham lay tat ca san pham co phan trang
+    // $scope.getProduct = function () {
+    //     $http.get(apiUrlProduct + "/page")
+    //         .then(function (response) {
+    //             $scope.products = response.data.content;
+    //             $scope.totalPages = response.data.totalPages;
+    //         });
+    // }
+    // $scope.getProduct();
+
     //ham hien thi nut phan trang
     $scope.displayPageRange = function () {
         var range = [];
@@ -85,13 +95,31 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
 
     //ham hien thi trang
     $scope.setPage = function (page) {
-        $currentPage = page
         page = page - 1;
-        $http.get(apiUrlCategory + "/page?page=" + page)
+        $http.get(apiUrlColor + "/page?page=" + page)
             .then(function (response) {
-                $scope.categories = response.data.content;
+                console.log(response)
+                $scope.colors = response.data.content;
                 $scope.totalPage = response.data.totalPages
             });
     }
+
+    //tao doi tuong
+    // const getProduct = function () {
+    //     return {
+    //         "name": $scope.name,
+    //         "collar": $scope.collar,
+    //         "wrist": $scope.wrist,
+    //         "describe": $scope.describe,
+    //         "brand": $scope.brand,
+    //         "color": {
+    //             id: $scope.idColor,
+    //         },
+    //         "material": {
+    //             id: $scope.idMaterial,
+    //         },
+    //     }
+    // }
+
 
 });

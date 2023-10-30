@@ -19,4 +19,6 @@ public interface ProductDetailService {
     ProductDetail update(ProductDetail productDetail, Long id);
 
     void delete(Long id);
+
+    Page<ProductDetail> getAllByPId(Long pid, Integer page);
 }

@@ -24,7 +24,7 @@ public class SizeRestController{
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> page(@RequestParam("page") Integer page){
+    public ResponseEntity<?> page(@RequestParam(value = "page", defaultValue = "0") Integer page){
         Page<Size> sizes = sizeService.getAll(page);
         return ResponseEntity.ok(sizes);
     }
@@ -41,9 +41,9 @@ public class SizeRestController{
         return ResponseEntity.ok(size);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Size sizeReq, @PathVariable("id") Long id){
-        Size size = sizeService.update(sizeReq, id);
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id){
+        Size size = sizeService.updateStatus(id);
         return ResponseEntity.ok(size);
     }
 
