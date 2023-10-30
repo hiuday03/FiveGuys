@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/favorite")
+@RequestMapping("")
 
 public class FavoriteController {
 
@@ -30,8 +31,8 @@ public class FavoriteController {
         this.favoriteService = favoriteService;
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<FavoriteEntity>> getAllFavorite() {
+    @GetMapping("/favorite")
+    public ResponseEntity<List<FavoriteEntity>> getAllAddress() {
         List<FavoriteEntity> favorite = favoriteService.getAllFavorite();
         return ResponseEntity.ok(favorite);
     }
@@ -42,8 +43,8 @@ public class FavoriteController {
 //    }
 //
 //    @GetMapping("/findby/{favoriteId}")
-//    public ResponseEntity<FavoriteEntity> getFavoriteById(@PathVariable Long id) {
-//        FavoriteEntity favorite = favoriteService.getFavoriteById(id);
+//    public ResponseEntity<FavoriteEntity> getFavoriteById(@PathVariable Long favoriteId) {
+//        FavoriteEntity favorite = favoriteService.getFavoriteById(favoriteId);
 //        if (favorite != null) {
 //            return ResponseEntity.ok(favorite);
 //        } else {
@@ -61,9 +62,9 @@ public class FavoriteController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FavoriteEntity> updateFavorite(@RequestBody FavoriteEntity favoriteEntity, @PathVariable Long id) {
-        FavoriteEntity favorite = favoriteService.updateFavorite(favoriteEntity, id);
+    @PutMapping("/{favoriteId}")
+    public ResponseEntity<FavoriteEntity> updateFavorite(@RequestBody FavoriteEntity favoriteEntity, @PathVariable Long favoriteId) {
+        FavoriteEntity favorite = favoriteService.updateFavorite(favoriteEntity, favoriteId);
         if (favorite != null) {
             return ResponseEntity.ok(favorite);
         } else {
@@ -71,10 +72,10 @@ public class FavoriteController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFavorite(@PathVariable Long id) {
+    @DeleteMapping("/{favoriteId}")
+    public ResponseEntity<Void> deleteFavorite(@PathVariable Long favoriteId) {
         try {
-            favoriteService.deleteFavorite(id);
+            favoriteService.deleteFavorite(favoriteId);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

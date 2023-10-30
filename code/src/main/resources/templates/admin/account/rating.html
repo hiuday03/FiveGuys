@@ -66,8 +66,9 @@
                                 <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
-                                            ng-model="formInput.createdAt" required>
+                                        <input name="createdAt" id="inputCreatedAt" type="text" class="form-control"
+                                            ng-model="currentDate | date:'yyyy-MM-dd'"
+                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formCreateRating.$submitted">
                                             <div ng-show="formCreateRating.createdAt.$invalid"
                                                 class="error-message text-danger form-text">
@@ -75,7 +76,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <!-- <div class="row mb-3">
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
@@ -86,14 +87,14 @@
                                                 UpdatedAt cannot be blank</div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.customer.id">
-                                            <option ng-repeat="rating in rating" ng-value="rating.customer.id">
-                                                {{rating.customer.fullName}}</option>
+                                            <option ng-repeat="customer in customers" ng-value="customer.id">
+                                                {{customer.fullName}}</option>
                                         </select>
                                         <span ng-show="formCreateRating.$submitted">
                                             <div ng-show="formCreateRating.customer.$invalid"
@@ -108,8 +109,7 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.productDetail.id">
-                                            <option ng-repeat="rating in rating"
-                                                ng-value="rating.productDetail.id">
+                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
                                                 {{rating.productDetail.product.name}},
                                                 {{rating.productDetail.product.material.name}},
                                                 {{rating.productDetail.product.category.name}},
@@ -188,7 +188,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <!-- <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
@@ -200,11 +200,11 @@
                                                 CreatedAt cannot be blank</div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
+                                        <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
                                             ng-model="formUpdate.updatedAt"
                                             ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
                                         <span ng-show="formUpdateRating.$submitted">
@@ -219,8 +219,8 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.customer.id">
-                                            <option ng-repeat="rating in rating" ng-value="rating.customer.id">
-                                                {{rating.customer.fullName}}</option>
+                                            <option ng-repeat="customer in customers" ng-value="customer.id">
+                                                {{customer.fullName}}</option>
                                         </select>
                                         <span ng-show="formUpdateRating.$submitted">
                                             <div ng-show="formUpdateRating.customer.$invalid"
@@ -235,8 +235,7 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.productDetail.id">
-                                            <option ng-repeat="rating in rating"
-                                                ng-value="rating.productDetail.id">
+                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
                                                 {{rating.productDetail.product.name}},
                                                 {{rating.productDetail.product.material.name}},
                                                 {{rating.productDetail.product.category.name}},
@@ -306,8 +305,8 @@
                                     {{rating.productDetail.product.category.name}}, {{rating.productDetail.color.name}},
                                     {{rating.productDetail.size.name}}</td>
                                 <!-- <td>{{rating.productDetail.image.name}}</td> -->
-                                <td>{{getDateOnly(rating.createdAt) | date:'yyyy-MM-dd'}}</td>
-                                <td>{{getDateOnly(rating.updatedAt) | date:'yyyy-MM-dd'}}</td>
+                                <td>{{rating.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{rating.updatedAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{rating.status}}</td>
                                 <td>
                                     <button ng-click="edit(rating)" type="button" class="btn btn-info"

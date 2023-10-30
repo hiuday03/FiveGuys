@@ -5,6 +5,7 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.currentDate = new Date();
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -23,23 +24,23 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
             $scope.customer = resp.data;
         });
     }
-    $scope.getDateOnly = function (dateTime) {
-        // Chuyển đổi datetime thành date (chỉ lấy ngày)
-        var date = new Date(dateTime);
-        return date;
-    };
-
 
     $scope.initialize();
 
 
     $scope.edit = function (customer) {
-        $scope.formUpdate = angular.copy(customer);
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(customer);
+        } else {
+            $scope.formUpdate = angular.copy(customer);
+            $scope.formUpdate.updatedAt = new Date();
+        }
     }
 
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
         $http.post("/customer", item).then(function (resp) {
             $scope.showSuccessMessage("Create customer successfully");
             $scope.resetFormInput();
@@ -54,7 +55,6 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
         $http.put(`/customer/${item.id}`, item).then(function (resp) {
-
             $scope.showSuccessMessage("Update Customer successfully");
             $scope.resetFormUpdate();
             $scope.initialize();

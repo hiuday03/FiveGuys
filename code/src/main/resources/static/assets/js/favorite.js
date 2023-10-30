@@ -5,6 +5,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.currentDate = new Date();
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -23,22 +24,34 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
             $scope.favorite = resp.data;
         });
     }
-    $scope.getDateOnly = function(dateTime) {
-        // Chuyển đổi datetime thành date (chỉ lấy ngày)
-        var date = new Date(dateTime);
-        return date;
-    };
     
-
     $scope.initialize();
 
+    $scope.loadCustomers = function () {
+        $http.get("/customer") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.customers = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading customers", error);
+            });
+    }
+
+    $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+
     $scope.edit = function (favorite) {
-        $scope.formUpdate = angular.copy(favorite);
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(favorite);
+        } else {
+            $scope.formUpdate = angular.copy(favorite);
+            $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+        }
     }
     
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
         $http.post("/favorite", item).then(function (resp) {
             $scope.showSuccessMessage("Create favorite successfully");
             $scope.resetFormInput();

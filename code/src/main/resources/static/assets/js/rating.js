@@ -5,6 +5,7 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.currentDate = new Date();
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -23,22 +24,35 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
             $scope.rating = resp.data;
         });
     }
-    $scope.getDateOnly = function(dateTime) {
-        // Chuyển đổi datetime thành date (chỉ lấy ngày)
-        var date = new Date(dateTime);
-        return date;
-    };
-    
+
 
     $scope.initialize();
 
+    $scope.loadCustomers = function () {
+        $http.get("/customer") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.customers = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading customers", error);
+            });
+    }
+
+    $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+
     $scope.edit = function (rating) {
-        $scope.formUpdate = angular.copy(rating);
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(rating);
+        } else {
+            $scope.formUpdate = angular.copy(rating);
+            $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+        }
     }
     
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
         $http.post("/rating", item).then(function (resp) {
             $scope.showSuccessMessage("Create rating successfully");
             $scope.resetFormInput();

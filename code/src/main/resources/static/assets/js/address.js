@@ -5,6 +5,7 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.currentDate = new Date();
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -23,30 +24,39 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
             $scope.address = resp.data;
         });
     }
-    $scope.getDateOnly = function(dateTime) {
-        // Chuyển đổi datetime thành date (chỉ lấy ngày)
-        var date = new Date(dateTime);
-        return date;
-    };
-    
 
     $scope.initialize();
 
-    // $scope.edit = function (address) {
-    //     if ($scope.formUpdate.createdAt) {
-    //         $scope.formUpdate = angular.copy(address);
-    //     } else {
-    //         $scope.formUpdate = angular.copy(address);
-    //         $scope.formUpdate.createdAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-    //     }
-    // }
-    $scope.edit = function (address) {
-        $scope.formUpdate = angular.copy(address);
+    // $scope.customers = []; // Khởi tạo danh sách khách hàng
+
+    $scope.loadCustomers = function () {
+        $http.get("/customer") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.customers = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading customers", error);
+            });
     }
+
+    $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+
+    $scope.edit = function (address) {
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(address);
+        } else {
+            $scope.formUpdate = angular.copy(address);
+            $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+        }
+    }
+    // $scope.edit = function (address) {
+    //     $scope.formUpdate = angular.copy(address);
+    // }
     
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
         $http.post("/address", item).then(function (resp) {
             $scope.showSuccessMessage("Create address successfully");
             $scope.resetFormInput();

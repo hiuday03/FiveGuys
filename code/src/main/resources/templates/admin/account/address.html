@@ -7,6 +7,7 @@
     <title>Dashboard - FiveGuys</title>
 </head>
 <link rel="stylesheet" th:href="@{/assets/js/address.js}">
+<!-- <link rel="stylesheet" th:href="@{/assets/js/customer.js}"> -->
 
 <body ng-app="address" ng-controller="address-ctrl">
     <main id="main" class="main" layout:fragment="content">
@@ -92,7 +93,8 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.customer.id">
-                                            <option ng-repeat="address in address" ng-value="address.customer.id">{{address.customer.fullName}}</option>
+                                            <option ng-repeat="customer in customers" ng-value="customer.id">
+                                                {{customer.fullName}}</option>
                                         </select>
                                         <span ng-show="formCreateAddress.$submitted">
                                             <div ng-show="formCreateAddress.customer.$invalid"
@@ -104,8 +106,9 @@
                                 <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
-                                            ng-model="formInput.createdAt" required>
+                                        <input name="createdAt" id="inputCreatedAt" type="text"
+                                            class="form-control ng-pristine ng-untouched ng-valid"
+                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formCreateAddress.$submitted">
                                             <div ng-show="formCreateAddress.createdAt.$invalid"
                                                 class="error-message text-danger form-text">
@@ -113,7 +116,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <!-- <div class="row mb-3">
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
@@ -124,7 +127,7 @@
                                                 UpdatedAt cannot be blank</div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
@@ -218,7 +221,8 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.customer.id">
-                                            <option ng-repeat="address in address" ng-value="address.customer.id">{{address.customer.fullName}}</option>
+                                            <<option ng-repeat="customer in customers" ng-value="customer.id">
+                                                {{customer.fullName}}</option>
                                         </select>
                                         <span ng-show="formUpdateAddress.$submitted">
                                             <div ng-show="formUpdateAddress.customer.$invalid"
@@ -227,7 +231,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <!-- <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
@@ -239,11 +243,11 @@
                                                 CreatedAt cannot be blank</div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
+                                        <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
                                             ng-model="formUpdate.updatedAt"
                                             ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
                                         <span ng-show="formUpdateAddress.$submitted">
@@ -305,8 +309,8 @@
                                 <td>{{address.address}}</td>
                                 <td>{{address.addressType}}</td>
                                 <td>{{address.customer.fullName}}</td>
-                                <td>{{getDateOnly(address.createdAt) | date:'yyyy-MM-dd'}}</td>
-                                <td>{{getDateOnly(address.updatedAt) | date:'yyyy-MM-dd'}}</td>
+                                <td>{{address.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{address.updatedAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{address.status}}</td>
                                 <td>
                                     <button ng-click="edit(address)" type="button" class="btn btn-info"
