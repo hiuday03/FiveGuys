@@ -1231,3 +1231,55 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+
+/*
+Style Employee
+*/
+.heading-breadcrumb-style {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.btn-style-add-data {
+  font-size: 14px;
+  padding: 3px 8px;
+  border: 0.5px solid #ccc;
+  outline: none;
+  cursor: pointer;
+  color: #000;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.btn-style-add-data:hover {
+  background: #0a58ca;
+  color: #fff;
+}
+
+.btn-action-form-data, .btn-pagination-style {
+  font-size: 14px;
+  padding: 1px 4px;
+  border: 1px solid #ccc;
+  outline: none;
+  cursor: pointer;
+  color: #000;
+  background: #fff;
+  border-radius: 4px;
+  min-width: 25px;
+}
+
+.btn-action-form-data.btn-action-edit-from-data:hover {
+  border: 1px solid yellow;
+  background: yellow;
+}
+
+.btn-action-form-data.btn-action-delete-from-data:hover {
+  border: 1px solid red;
+  background: red;
+  color: #fff;
+}
+
+.btn-pagination-style:hover {
+  border: 1px solid blue;
+}
