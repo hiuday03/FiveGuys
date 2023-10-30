@@ -16,6 +16,13 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
         })
     }
     $scope.getAll();
+    $scope.getPage= function () {
+        $http.get(apiUrlEmployee).then(function (response) {
+            $scope.pageEm = response.data;
+            // $scope.totalPages = response.totalPages;
+        })
+    }
+    $scope.getAll();
 
     // getById Employee
     $scope.getById = function (item) {
@@ -35,7 +42,6 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
         })
     }
 
-    $scope.getAll();
 
     // get Role
     $scope.getRole = function () {
@@ -46,6 +52,7 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
     }
     $scope.getRole();
 
+    //detaol Employee
     $scope.edit = function (employee) {
         $scope.formUpdate = angular.copy(employee);
         $scope.formUpdate.valid_form = new Date(employee.valid_form)

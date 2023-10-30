@@ -27,9 +27,9 @@
                 </button>
             </div>
             <div class="col-10">
-                <form ng-submit="getByMa(l.code)">
-                    <input type="text" name="code"  placeholder="Nhập tên sản phẩm để tìm">
-                    <button type="submit"  class="btn-style-add-data mb-2"  >
+                <form>
+                    <input type="text" name="code" ng-model="searchEm" class="btn-style-add-data mb-2" placeholder="Nhập mã cần tìm">
+                    <button type="submit"  class="btn-style-add-data mb-2">
                         Search
                     </button>
                 </form>
@@ -385,7 +385,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="l in paper.items">
+                    <tr ng-repeat="l in paper.items | filter : searchEm">
 
                         <td class="">{{l.code}}</td>
                         <td class="">{{l.fullName}}</td>
@@ -447,7 +447,20 @@
                                     class="fa-solid fa-forward"></i></button>
                         </li>
                     </ul>
-                </nav>
+<!--                </nav>-->
+<!--                <nav aria-label="Page navigation example">-->
+<!--                    <ul class="pagination justify-content-center">-->
+<!--                        <li class="page-item disabled">-->
+<!--                            <a class="page-link">Previous</a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                        <li class="page-item">-->
+<!--                            <a class="page-link" href="#">Next</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </nav>-->
             </div>
         </div>
     </section>
