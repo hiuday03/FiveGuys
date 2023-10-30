@@ -29,8 +29,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public FavoriteEntity getFavoriteById(Long favoriteId) {
-        return favoriteRepository.findById(favoriteId).orElse(null);
+    public FavoriteEntity getFavoriteById(Long id) {
+        return favoriteRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -45,11 +45,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public FavoriteEntity updateFavorite(FavoriteEntity favoriteEntity, Long favoriteId) {
-        Optional<FavoriteEntity> existingFavorite = favoriteRepository.findById(favoriteId);
+    public FavoriteEntity updateFavorite(FavoriteEntity favoriteEntity, Long id) {
+        Optional<FavoriteEntity> existingFavorite = favoriteRepository.findById(id);
         if (existingFavorite.isPresent()) {
             FavoriteEntity favorite = existingFavorite.get();
-            favorite.setCustomerEntity(favoriteEntity.getCustomerEntity());
+            favorite.setCustomer(favoriteEntity.getCustomer());
             favorite.setProductDetail(favoriteEntity.getProductDetail());
             favorite.setCreatedAt(favoriteEntity.getCreatedAt());
             favorite.setUpdatedAt(favoriteEntity.getUpdatedAt());
@@ -58,19 +58,19 @@ public class FavoriteServiceImpl implements FavoriteService {
             return favoriteRepository.save(favorite); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {
             // Trả về null hoặc thông báo lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + favoriteId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + id);
 //            return null;
         }
     }
 
     @Override
-    public void deleteFavorite(Long favoriteId) {
+    public void deleteFavorite(Long id) {
         // Kiểm tra xem khách hàng có tồn tại trước khi xóa
-        if (favoriteRepository.existsById(favoriteId)) {
-            favoriteRepository.deleteById(favoriteId);
+        if (favoriteRepository.existsById(id)) {
+            favoriteRepository.deleteById(id);
         } else {
             // Xử lý lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + favoriteId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + id);
         }
     }
 }

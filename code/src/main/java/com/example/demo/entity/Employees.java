@@ -2,12 +2,13 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-
+@Data
 @Getter
 @Setter
 @Entity
@@ -16,6 +17,9 @@ public class Employees {
     @Id
     @GeneratedValue( strategy= GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name= "Code")
+    private String code;
 
     @Column(name= "FullName")
     private String fullName;

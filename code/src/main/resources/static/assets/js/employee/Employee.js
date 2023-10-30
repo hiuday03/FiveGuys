@@ -1,5 +1,5 @@
 var app = angular.module("employee-list-app", [])
-app.controller("employee-list-controller", function ($scope, $http,$timeout) {
+app.controller("employee-list-controller", function ($scope, $http, $timeout) {
 
     const apiUrlEmployee = "http://localhost:8080/api/employee";
     const apiUrlRole = "http://localhost:8080/api/roles";
@@ -24,6 +24,17 @@ app.controller("employee-list-controller", function ($scope, $http,$timeout) {
             console.log(item.id);
         })
     }
+
+    // search code employee
+    $scope.getByMa = function (item) {
+        // console.log(item.id);
+        $http.get(`/api/employee/search/${item.id}`).then(function (response) {
+            console.log(item.code);
+            $scope.listEm = response.data;
+            // console.log(item.code);
+        })
+    }
+
     $scope.getAll();
 
     // get Role
@@ -35,24 +46,14 @@ app.controller("employee-list-controller", function ($scope, $http,$timeout) {
     }
     $scope.getRole();
 
-    // $scope.addEmploy = function (event){
-    //     // event.preventDefault();
-    //     $http.post(apiUrl+"/create", $scope.addformEmployee). then(function (response){
-    //         $scope.event.push(response.data);
-    //         $scope.getAll();
-    //     })
-    // }
     $scope.edit = function (employee) {
-        if ($scope.formUpdate.createdAt) {
-            $scope.formUpdate = angular.copy(employee);
-        } else {
-            $scope.formUpdate = angular.copy(employee);
-            $scope.formUpdate.createdAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-        }
+        $scope.formUpdate = angular.copy(employee);
+        $scope.formUpdate.valid_form = new Date(employee.valid_form)
+        $scope.formUpdate.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
     }
 
     //delete Employ
-    $scope.delete = function (item){
+    $scope.delete = function (item) {
         $http.delete(`/api/employee/${item.id}`).then(function (response) {
             $scope.getAll();
             console.log(item.id);
@@ -87,6 +88,13 @@ app.controller("employee-list-controller", function ($scope, $http,$timeout) {
             console.log("Error", error);
         });
     }
+    $scope.updateStatusEmployee = function (item) {
+        console.log(item)
+        $http.put(`/api/employee/delete/${item.id}`, item).then(function (resp) {
+            $scope.getAll();
+            console.log(item.id);
+        })
+    }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
@@ -110,34 +118,38 @@ app.controller("employee-list-controller", function ($scope, $http,$timeout) {
         $scope.showAlert = false;
     }
 
-    // $scope.paper = {
-    //     page: 0,
-    //     size: 5,
-    //     get items() {
-    //         let start = this.page * this.size;
-    //         return $scope.customer.slice(start, start + this.size);
-    //     },
-    //     get count() {
-    //         return Math.ceil(1.0 * $scope.customer.length / this.size);
-    //     },
-    //     first() {
-    //         this.page = 0;
-    //     },
-    //     prev() {
-    //         this.page--;
-    //         if (this.page < 0) {
-    //             this.last();
-    //         }
-    //     },
-    //     next() {
-    //         this.page++;
-    //         if (this.page >= this.count) {
-    //             this.first();
-    //         }
-    //     },
-    //     last() {
-    //         this.page = this.count - 1;
-    //     }
-    // }
+    $scope.paper = {
+        page: 0,
+        size: 5,
+        get items() {
+            let start = this.page * this.size;
+            if ($scope.listEm) {
+                return $scope.listEm.slice(start, start + this.size);
+            }
+        },
+        get count() {
+            if ($scope.listEm) {
+                return Math.ceil(1.0 * $scope.listEm.length / this.size);
+            }
 
+        },
+        first() {
+            this.page = 0;
+        },
+        prev() {
+            this.page--;
+            if (this.page < 0) {
+                this.last();
+            }
+        },
+        next() {
+            this.page++;
+            if (this.page >= this.count) {
+                this.first();
+            }
+        },
+        last() {
+            this.page = this.count - 1;
+        }
+    }
 })

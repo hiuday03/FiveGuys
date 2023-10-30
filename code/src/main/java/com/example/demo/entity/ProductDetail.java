@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,4 +57,8 @@ public class ProductDetail {
     @ManyToOne
     @JoinColumn(name = "IdColor")
     private Color color;
+
+    // Hải thêm vào
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images;
 }

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Employees;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface EmployeeService {
      void delete(Long id);
 
      Employees update(Long id, Employees employees);
+
+     Employees updateRole(Long id, Employees employees);
+
+     List<Employees> searchMa(@PathVariable String ma);
 }

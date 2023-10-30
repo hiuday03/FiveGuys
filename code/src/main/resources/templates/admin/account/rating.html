@@ -8,7 +8,7 @@
 
 </head>
 
-<body>
+<body ng-app="rating" ng-controller="rating-ctrl">
 
     <main id="main" class="main" layout:fragment="content">
 
@@ -146,7 +146,11 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Name</th>
+                                <th scope="col">[Content]</th>
+                                <th scope="col">Rate</th>
+                                <th scope="col">Name Custoemr(Id Custoemr)</th>
+                                <th scope="col">Name ProductDetail(ID ProductDetail)</th>
+                                <!-- <th scope="col">Image ProductDetail</th> -->
                                 <th scope="col">Created At</th>
                                 <th scope="col">Updated At</th>
                                 <th scope="col">Status</th>
@@ -154,11 +158,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
+                            <tr ng-repeat="rating in rating">
+                                <td>{{rating.content}}</td>
+                                <td>{{rating.rate}}</td>
+                                <td>{{rating.customer.fullName}}</td>
+                                <td>{{rating.productDetail.product.name}}, {{rating.productDetail.product.material.name}}, {{rating.productDetail.product.category.name}}, {{rating.productDetail.color.name}}, {{rating.productDetail.size.name}}</td>
+                                <!-- <td>{{rating.productDetail.image.name}}</td> -->
+                                <td>{{rating.createdAt}}</td>
+                                <td>{{rating.updatedAt}}</td>
+                                <td>{{rating.status}}</td>
                                 <td>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                         data-bs-target="#modalUpdate"><i class="ri-refresh-line"></i></button>
@@ -185,6 +193,16 @@
                             </tr>
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
+                            <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
+                            </li>
+                            <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
+                            <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
+                            <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>

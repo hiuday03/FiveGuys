@@ -39,7 +39,7 @@ public class RatingEntity {
 
     @ManyToOne
     @JoinColumn(name = "IdCustomer")
-    private CustomerEntity customerEntity;
+    private CustomerEntity customer;
 
     @ManyToOne
     @JoinColumn(name = "IdProductDetail")

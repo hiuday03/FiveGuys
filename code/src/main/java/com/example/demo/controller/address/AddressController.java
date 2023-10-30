@@ -29,28 +29,28 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<List<AddressEntity>> getAllAddress() {
         List<AddressEntity> address = addressService.getAllAddress();
         return ResponseEntity.ok(address);
     }
 
-    @GetMapping("/pageall")
-    public ResponseEntity<Page<AddressEntity>> getAllAddressPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-        return ResponseEntity.ok(addressService.getAllAddressPage(page));
-    }
+//    @GetMapping("/pageall")
+//    public ResponseEntity<Page<AddressEntity>> getAllAddressPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
+//        return ResponseEntity.ok(addressService.getAllAddressPage(page));
+//    }
+//
+//    @GetMapping("/findby/{addressId}")
+//    public ResponseEntity<AddressEntity> getAddressById(@PathVariable Long addressId) {
+//        AddressEntity address = addressService.getAddressById(addressId);
+//        if (address != null) {
+//            return ResponseEntity.ok(address);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
-    @GetMapping("/findby/{addressId}")
-    public ResponseEntity<AddressEntity> getAddressById(@PathVariable Long addressId) {
-        AddressEntity address = addressService.getAddressById(addressId);
-        if (address != null) {
-            return ResponseEntity.ok(address);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> createAddress(@RequestBody AddressEntity addressEntity) {
         try {
             AddressEntity createdAddress = addressService.createAddress(addressEntity);
@@ -60,7 +60,7 @@ public class AddressController {
         }
     }
 
-    @PutMapping("/update/{addressId}")
+    @PutMapping("/{addressId}")
     public ResponseEntity<AddressEntity> updateAddress(@RequestBody AddressEntity addressEntity, @PathVariable Long addressId) {
         AddressEntity address = addressService.updateAddress(addressEntity, addressId);
         if (address != null) {
@@ -70,7 +70,7 @@ public class AddressController {
         }
     }
 
-    @DeleteMapping("/delete/{addressId}")
+    @DeleteMapping("/{addressId}")
     public ResponseEntity<Void> deleteAddress(@PathVariable Long addressId) {
         try {
             addressService.deleteAddress(addressId);

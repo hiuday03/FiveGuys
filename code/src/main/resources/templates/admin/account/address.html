@@ -8,7 +8,7 @@
 
 </head>
 
-<body>
+<body ng-app="address" ng-controller="address-ctrl">
 
     <main id="main" class="main" layout:fragment="content">
 
@@ -220,15 +220,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
-                                <td>content</td>
+                            <tr ng-repeat="address in address">
+                                <td>{{address.name}}</td>
+                                <td>{{address.phoneNumber}}</td>
+                                <td>{{address.address}}</td>
+                                <td>{{address.addressType}}</td>
+                                <td>{{address.customer.fullName}}</td>
+                                <td>{{address.createdAt}}</td>
+                                <td>{{address.UpdatedAt}}</td>
+                                <td>{{address.status}}</td>
                                 <td>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                         data-bs-target="#modalUpdate"><i class="ri-refresh-line"></i></button>
@@ -255,6 +255,16 @@
                             </tr>
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
+                            <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
+                            </li>
+                            <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
+                            <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
+                            <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>
