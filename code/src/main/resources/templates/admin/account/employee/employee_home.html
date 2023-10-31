@@ -54,12 +54,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form name="addformEmployee" ng-submit="addformEmployee.$valid  && addEmploy()">
+                        <form name="addformEmployee" ng-submit="addformEmployee.$valid && addEmploy()">
                             <div class="row mb-3">
                                 <label for="inputFullName" class="col-sm-3 col-form-label">Full Name</label>
                                 <div class="col-sm-9">
                                     <input name="fullName" id="inputFullName" type="text" class="form-control"
-                                           ng-model="formInput.fullName" required>
+                                           ng-model="formInput.fullName">
                                     <span ng-show="addformEmployee.$submitted">
                                             <div ng-show="addformEmployee.fullName.$invalid"
                                                  class="error-message text-danger form-text">
@@ -77,47 +77,11 @@
                             <!--                                <img src="" alt="" sizes="" srcset="">-->
                             <!--                            </div>-->
                             <div class="row mb-3">
-                                <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
-                                <div class="col-sm-9">
-                                    <input name="account" id="inputAccount" type="text" class="form-control"
-                                           ng-model="formInput.account" required>
-                                    <span ng-show="addformEmployee.$submitted">
-                                            <div ng-show="addformEmployee.account.$invalid"
-                                                 class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
-                                        </span>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
-                                <div class="col-sm-9">
-                                    <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
-                                           ng-model="formInput.phoneNumber">
-                                    <span ng-show="addformEmployee.$submitted" required>
-                                            <div ng-show="addformEmployee.phoneNumber.$invalid"
-                                                 class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
-                                        </span>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
-                                <div class="col-sm-9">
-                                    <input name="email" id="inputEmail" type="email" class="form-control"
-                                           ng-model="formInput.email" required>
-                                    <span ng-show="addformEmployee.$submitted">
-                                            <div ng-show="addformEmployee.email.$invalid"
-                                                 class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
-                                        </span>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
                                 <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
                                 <div class="col-sm-9">
                                     <input name="bỉrthDate" id="inputBirthDate" type="date" ng-value="yyyy/MM/dd"
                                            class="form-control"
-                                           ng-model="formInput.birthDate" required>
+                                           ng-model="formInput.birthDate" >
                                     <span ng-show="addformEmployee.$submitted">
                                             <div ng-show="addformEmployee.birthDate.$invalid"
                                                  class="error-message text-danger form-text">
@@ -130,7 +94,7 @@
                                 <div class="col-sm-9">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="gender"
-                                               id="gender1" ng-model="formInput.gender" required>
+                                               id="gender1" ng-model="formInput.gender" >
                                         <label class="form-check-label" for="gender1">Nam
                                         </label>
                                     </div>
@@ -146,7 +110,7 @@
                                 <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-9">
                                     <input name="addresss" id="inputAddress" type="text" class="form-control"
-                                           ng-model="formInput.addresss" required>
+                                           ng-model="formInput.addresss" >
                                     <span ng-show="addformEmployee.$submitted">
                                             <div ng-show="addformEmployee.address.$invalid"
                                                  class="error-message text-danger form-text">
@@ -154,27 +118,27 @@
                                         </span>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
-                                <div class="col-sm-9">
-                                    <select name="roles" id="inputRole" class="form-select form-select-sm"
-                                            aria-label="Small select example"
-                                            ng-model="formInput.roles.id" required>
-                                        <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}</option>
-                                    </select>
-                                    <span ng-show="addformEmployee.$submitted">
-                                            <div ng-show="addformEmployee.role.$invalid"
-                                                 class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
-                                        </span>
-                                </div>
-                            </div>
+<!--                            <div class="row mb-3">-->
+<!--                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>-->
+<!--                                <div class="col-sm-9">-->
+<!--                                    <select name="roles" id="inputRole" class="form-select form-select-sm"-->
+<!--                                            aria-label="Small select example"-->
+<!--                                            ng-model="formInput.roles.id" required>-->
+<!--                                        <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}</option>-->
+<!--                                    </select>-->
+<!--                                    <span ng-show="addformEmployee.$submitted">-->
+<!--                                            <div ng-show="addformEmployee.role.$invalid"-->
+<!--                                                 class="error-message text-danger form-text">-->
+<!--                                                FullName cannot be blank</div>-->
+<!--                                        </span>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="row mb-3">
                                 <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                 <div class="col-sm-9">
                                     <select name="status" class="form-select form-select-sm"
                                             aria-label="Small select example"
-                                            ng-model="formInput.status" required>
+                                            ng-model="formInput.status" >
                                         <option selected>Open this select menu</option>
                                         <option value="0">Nghỉ làm</option>
                                         <option value="1">Đang làm</option>
@@ -226,28 +190,6 @@
                                            class="form-control">
                                 </div>
                                 <img src="" alt="" sizes="" srcset="">
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
-                                <div class="col-sm-9">
-                                    <input name="account" id="inputAccount" ng-model="formUpdate.account" type="text"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone</label>
-                                <div class="col-sm-9">
-                                    <input name="phoneNumber" id="inputPhoneNumber" ng-model="formUpdate.phoneNumber"
-                                           type="text"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
-                                <div class="col-sm-9">
-                                    <input name="email" id="inputEmail" ng-model="formUpdate.email" type="email"
-                                           class="form-control">
-                                </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
@@ -336,31 +278,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
-                                        <div class="col-sm-9">
-                                            <input name="account" id="inputAccount" ng-model="formShow.account"
-                                                   type="text"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone</label>
-                                        <div class="col-sm-9">
-                                            <input name="phoneNumber" id="inputPhoneNumber"
-                                                   ng-model="formShow.phoneNumber"
-                                                   type="text"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
-                                        <div class="col-sm-9">
-                                            <input name="email" id="inputEmail" ng-model="formShow.email" type="email"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
+                                        <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth</label>
                                         <div class="col-sm-9">
                                             <input name="birthDate" id="inputBirthDate" type="text" class="form-control"
                                                    ng-model="formShow.birthDate"
@@ -369,12 +287,8 @@
                                     <div class="row mb-3">
                                         <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
                                         <div class="col-sm-9">
-
                                                 <input type="text" name="gender"  class="form-control"
                                                        id="inputGender" ng-model="formShow.gender ==true ? 'Nam' : 'Nữ'">
-
-                                               
-
 <!--                                            <div class="form-check">-->
 <!--                                                <input class="form-check-input" type="radio" name="gender"-->
 <!--                                                       id="gender2" ng-model="formShow.gender" ng-value="false">-->
@@ -383,8 +297,6 @@
 <!--                                            </div>-->
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-6">
                                     <div class="row mb-3">
                                         <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
                                         <div class="col-sm-9">
@@ -393,6 +305,19 @@
                                                    class="form-control">
                                         </div>
                                     </div>
+                                    <div class="row mb-3">
+                                        <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-select form-select-sm" aria-label="Small select example"
+                                                    ng-model="formShow.roles.id">
+                                                <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
                                     <div class="row mb-3">
                                         <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                         <div class="col-sm-9">
@@ -421,16 +346,7 @@
                                                    class="form-control">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-select form-select-sm" aria-label="Small select example"
-                                                    ng-model="formShow.roles.id">
-                                                <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label">Status</label>
                                         <div class="col-sm-9">
@@ -456,13 +372,11 @@
         <!-- End Modal Update -->
         <div class="row">
             <div class="col-lg-12">
-                <table class="table" style="font-size: 13px;">
+                <table class="table">
                     <thead>
                     <tr>
                         <th scope="">Code</th>
-                        <th scope="">Full Name</th>
-                        <th scope="">Account</th>
-                        <th scope="">Phone</th>
+                        <th scope="">Full Name 1</th>
                         <th scope="">Gender</th>
                         <th scope="">Role</th>
                         <th scope="">Status</th>
@@ -474,8 +388,6 @@
 
                         <td class="">{{l.code}}</td>
                         <td class="">{{l.fullName}}</td>
-                        <td class="">{{l.account}}</td>
-                        <td class="">{{l.phoneNumber}}</td>
                         <td class="">{{l.gender == true ? 'Nam' : 'Nữ'}}</td>
                         <td class="">{{l.roles.fullName}}</td>
                         <td class="">{{l.status == 1 ? 'Đang làm' : 'Nghỉ làm'}}</td>

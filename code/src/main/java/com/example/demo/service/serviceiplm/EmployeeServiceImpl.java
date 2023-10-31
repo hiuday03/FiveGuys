@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employees1.setBirthDate(employees.getBirthDate());
         employees1.setGender(employees.getGender());
         employees1.setAddress(employees.getAddress());
-        employees1.setAccount(employees.getAccount());
+//        employees1.setAccount(employees.getAccount());
         employees1.setCreatedAt(new Date());
         employees1.setUpdatedAt(new Date());
         employees1.setCreatedBy(employees.getCreatedBy());
