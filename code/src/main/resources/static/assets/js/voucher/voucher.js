@@ -1,8 +1,8 @@
-var app = angular.module("employee-list-app", [])
-app.controller("employee-list-controller", function ($scope, $http, $timeout) {
+var app = angular.module("voucher-list-app", [])
+app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
 
-    const apiUrlEmployee = "http://localhost:8080/api/employee";
-    const apiUrlRole = "http://localhost:8080/api/roles";
+    const apiUrlEmployee = "http://localhost:8080/api/voucher";
+    // const apiUrlRole = "http://localhost:8080/api/roles";
     $scope.employee = [];
     $scope.formUpdate = {};
     $scope.formShow = {};

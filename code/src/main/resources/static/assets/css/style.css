@@ -1280,6 +1280,20 @@ Style Employee
   color: #fff;
 }
 
+.btn-action-form-data.btn-action-show-from-data:hover {
+  border: 1px solid red;
+  background: blue;
+  color: #fff;
+}
+
 .btn-pagination-style:hover {
   border: 1px solid blue;
 }
+/*modal show employee*/
+
+.modalshow{
+  width: 800px;
+  height: 800px;
+}
+
+/* css Employee*/

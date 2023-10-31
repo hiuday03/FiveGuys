@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 public interface EmployeeService {
+     // get all
      List<Employees> getAll();
+     // et all employee status
+     List<Employees> getAllStatusDangLam();
+
      Employees getById(Long id);
 
      Page<Employees> phanTrang(Integer pageNum, Integer pageNo);
@@ -20,5 +24,7 @@ public interface EmployeeService {
 
      Employees updateRole(Long id, Employees employees);
 
-     List<Employees> searchMa(@PathVariable String ma);
+//     List<Employees> searchMa(@PathVariable String ma);
+     Page<Employees>  searchMa(String ma, Integer page, Integer size);
 }
+
