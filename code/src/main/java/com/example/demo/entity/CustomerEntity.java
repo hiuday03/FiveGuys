@@ -31,18 +31,6 @@ public class CustomerEntity {
     @Column(name = "Avatar")
     private String avatar;
 
-    @Column(name = "Account")
-    private String account;
-
-    @Column(name = "Password")
-    private String password;
-
-    @Column(name = "PhoneNumber")
-    private String phoneNumber;
-
-    @Column(name = "Email")
-    private String email;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "BirthDate")
     private Date birthDate;
@@ -50,8 +38,9 @@ public class CustomerEntity {
     @Column(name = "Gender")
     private boolean gender;
 
-    @Column(name = "Address")
-    private String address;
+    @ManyToOne
+    @JoinColumn(name = "IdAccount")
+    private AccountEntity account;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")

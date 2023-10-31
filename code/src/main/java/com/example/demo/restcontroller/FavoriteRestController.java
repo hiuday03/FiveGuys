@@ -1,4 +1,4 @@
-package com.example.demo.controller.favorite;
+package com.example.demo.restcontroller;
 
 import com.example.demo.entity.FavoriteEntity;
 import com.example.demo.service.serviceiplm.FavoriteServiceImpl;
@@ -22,12 +22,12 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 
-public class FavoriteController {
+public class FavoriteRestController {
 
     private final FavoriteServiceImpl favoriteService;
 
     @Autowired
-    public FavoriteController(FavoriteServiceImpl favoriteService) {
+    public FavoriteRestController(FavoriteServiceImpl favoriteService) {
         this.favoriteService = favoriteService;
     }
 
