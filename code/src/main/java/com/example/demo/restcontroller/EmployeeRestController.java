@@ -188,14 +188,14 @@ public class EmployeeRestController {
                     cell = row.createCell(2, CellType.STRING);
                     cell.setCellValue(hd.getFullName());
 
-                    cell = row.createCell(3, CellType.STRING);
-                    cell.setCellValue(hd.getAccount());
-
-                    cell = row.createCell(4, CellType.STRING);
-                    cell.setCellValue(hd.getPhoneNumber());
-
-                    cell = row.createCell(5, CellType.STRING);
-                    cell.setCellValue(hd.getEmail());
+//                    cell = row.createCell(3, CellType.STRING);
+//                    cell.setCellValue(hd.getAccount());
+//
+//                    cell = row.createCell(4, CellType.STRING);
+//                    cell.setCellValue(hd.getPhoneNumber());
+//
+//                    cell = row.createCell(5, CellType.STRING);
+//                    cell.setCellValue(hd.getEmail());
 
 //                    cell = row.createCell(6, CellType.STRING);
 //                    cell.setCellValue(new Da);
