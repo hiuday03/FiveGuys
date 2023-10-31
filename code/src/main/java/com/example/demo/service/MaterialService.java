@@ -19,4 +19,6 @@ public interface MaterialService {
     Material update(Material material, Long id);
 
     void delete(Long id);
+
+    Material updateStatus(Long id);
 }

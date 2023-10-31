@@ -25,6 +25,14 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
         });
     }
 
+    $scope.getAddressDateOnly = function(dateTime) {
+        // Chuyển đổi datetime thành date (chỉ lấy ngày)
+        var date = new Date(dateTime);
+        return date;
+    };
+
+
+
     $scope.initialize();
 
 

@@ -59,4 +59,16 @@ public class SizeServiceImpl implements SizeService {
             sizeRepository.deleteById(id);
         }
     }
+
+    @Override
+    public Size updateStatus(Long id) {
+        Optional<Size> sizeOptional = sizeRepository.findById(id);
+        if(sizeOptional.isPresent()){
+            Size size = sizeOptional.get();
+            size.setStatus(3);
+
+            return sizeRepository.save(size);
+        }
+        return null;
+    }
 }

@@ -25,7 +25,7 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public Page<Color> getAll(Integer page) {
-        Pageable pageable = PageRequest.of(page, 1);
+        Pageable pageable = PageRequest.of(page, 5);
         return colorRepository.findAll(pageable);
     }
 
@@ -45,8 +45,21 @@ public class ColorServiceImpl implements ColorService {
         if(colorOptional.isPresent()){
             Color color = colorOptional.get();
             color.setName(colorReq.getName());
+            color.setColorCode(colorReq.getColorCode());
             color.setUpdatedAt(colorReq.getUpdatedAt());
             color.setStatus(colorReq.getStatus());
+
+            return colorRepository.save(color);
+        }
+        return null;
+    }
+
+    @Override
+    public Color updateStatus(Long id) {
+        Optional<Color> colorOptional = colorRepository.findById(id);
+        if(colorOptional.isPresent()){
+            Color color = colorOptional.get();
+            color.setStatus(3);
 
             return colorRepository.save(color);
         }

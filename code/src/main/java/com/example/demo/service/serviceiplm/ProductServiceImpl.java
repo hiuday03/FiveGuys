@@ -67,4 +67,16 @@ public class ProductServiceImpl implements ProductService {
             System.err.println("productRepository.deleteById();");
         }
     }
+
+    @Override
+    public Product updateStatus(Integer status, Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if(productOptional.isPresent()){
+            Product product = productOptional.get();
+            product.setStatus(status);
+
+            return productRepository.save(product);
+        }
+        return null;
+    }
 }

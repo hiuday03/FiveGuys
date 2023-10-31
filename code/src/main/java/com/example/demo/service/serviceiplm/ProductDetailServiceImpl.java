@@ -49,6 +49,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             productDetail.setImportPrice(productDetailReq.getImportPrice());
             productDetail.setPrice(productDetailReq.getPrice());
             productDetail.setQuantity(productDetailReq.getQuantity());
+            productDetail.setBarcode(productDetailReq.getBarcode());
             productDetail.setUpdatedAt(productDetailReq.getUpdatedAt());
             productDetail.setUpdatedBy(productDetailReq.getUpdatedBy());
             productDetail.setStatus(productDetailReq.getStatus());
@@ -69,4 +70,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             System.out.println("loi del prodetail");
         }
     }
+
+    @Override
+    public Page<ProductDetail> getAllByPId(Long pid, Integer page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return productDetailRepository.findAllByProductId(pid, pageable);
+    }
+
 }
