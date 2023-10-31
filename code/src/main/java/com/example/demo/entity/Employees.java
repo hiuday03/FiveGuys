@@ -27,17 +27,6 @@ public class Employees {
     @Column(name= "Avatar")
     private String avatar;
 
-    @Column(name= "Account")
-    private String account;
-
-    @Column(name= "Password")
-    private String password;
-
-    @Column(name= "PhoneNumber")
-    private String phoneNumber;
-
-    @Column(name= "Email")
-    private String email;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
@@ -65,8 +54,8 @@ public class Employees {
     @Column(name= "Status")
     private Integer status;
 
-    @ManyToOne
-    @JoinColumn(name="IdRole")
-    private Roles roles;
+    @OneToOne
+    @JoinColumn(name="IdAccount")
+    private Accounts accounts;
 
 }
