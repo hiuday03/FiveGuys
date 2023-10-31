@@ -50,7 +50,7 @@ public class CustomerEntity {
     private int status;
 
     @OneToOne
-    @JoinColumn(name="IdAccount")
+    @JoinColumn(name = "IdAccount")
     private Accounts accounts;
 
 }
