@@ -1,6 +1,8 @@
 package com.example.demo.restcontroller;
 
 import com.example.demo.entity.Product;
+import com.example.demo.entity.ProductDetail;
+import com.example.demo.service.ProductDetailService;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,9 @@ public class ProductRestController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    ProductDetailService productDetailService;
 
     @GetMapping("")
     public ResponseEntity<?> index(){
@@ -48,9 +53,23 @@ public class ProductRestController {
         return ResponseEntity.ok(product);
     }
 
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> update(@RequestBody Integer status, @PathVariable("id") Long id){
+        Product product = productService.updateStatus(status, id);
+        return ResponseEntity.ok(product);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id){
         productService.delete(id);
         return ResponseEntity.ok(null);
     }
+
+    @GetMapping("/{id}/productDetail")
+    public ResponseEntity<?> getProductDetail(@PathVariable("id") Long id,
+                                              @RequestParam(value = "page", defaultValue = "0") Integer page){
+        Page<ProductDetail> productDetails = productDetailService.getAllByPId(id, page);
+        return ResponseEntity.ok(productDetails);
+    }
+
 }

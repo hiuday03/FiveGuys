@@ -1,6 +1,6 @@
-var app = angular.module("product-list-app", []);
+var app = angular.module("category-app", []);
 
-app.controller("product-list-ctrl", function ($scope, $http) {
+app.controller("category-ctrl", function ($scope, $http, $timeout) {
 
     const apiUrlCategory = "http://localhost:8080/api/category"
 
@@ -19,21 +19,23 @@ app.controller("product-list-ctrl", function ($scope, $http) {
         $scope.showAlert = false;
     }
     $scope.initialize = function() {
-        $http.get("/rest/colors").then(resp => {
-            $scope.colors = resp.data;
+        $http.get(apiUrlCategory + "/page").then(resp => {
+            $scope.categories = resp.data.content;
+            $scope.totalPages = resp.data.totalPages
         });
     }
     $scope.initialize();
+
     $scope.edit = function(cate) {
         $scope.formUpdate = angular.copy(cate);
     }
     $scope.create = function() {
         let item = angular.copy($scope.formInput);
-        $http.post(`/rest/colors`, item).then(resp => {
-            $scope.showSuccessMessage("Create color successfully!")
-            $scope.resetFormInput();
+        $http.post(apiUrlCategory, item).then(resp => {
+            $scope.showSuccessMessage("Create category successfully!")
             $scope.initialize();
             $('#modalAdd').modal('hide');
+            $scope.resetFormInput();
         }).catch(error => {
             console.log("Error", error);
         })
@@ -41,18 +43,18 @@ app.controller("product-list-ctrl", function ($scope, $http) {
 
     $scope.update = function() {
         let item = angular.copy($scope.formUpdate);
-        $http.put(`/rest/colors/${item.id}`, item).then(resp => {
-            $scope.showSuccessMessage("Update color successfully!")
-            $scope.resetFormUpdate();
+        $http.put(`${apiUrlCategory}/${item.id}`, item).then(resp => {
+            $scope.showSuccessMessage("Update category successfully!")
             $scope.initialize();
             $('#modalUpdate').modal('hide');
+            $scope.resetFormUpdate();
         }).catch(error => {
             console.log("Error", error);
         })
     }
 
     $scope.delete = function(item) {
-        $http.delete(`/rest/colors/${item.id}`).then(resp => {
+        $http.delete(`${apiUrlCategory}/${item.id}`).then(resp => {
             $scope.showSuccessMessage("Delete color successfully!")
             $scope.initialize();
         }).catch(error => {
@@ -72,16 +74,6 @@ app.controller("product-list-ctrl", function ($scope, $http) {
         $scope.formAddColor.$setUntouched();
     }
 
-    //ham lay tat ca san pham co phan trang
-    $scope.getProduct = function () {
-        $http.get(apiUrlProduct + "/page")
-            .then(function (response) {
-                $scope.products = response.data.content;
-                $scope.totalPages = response.data.totalPages;
-            });
-    }
-    $scope.getProduct();
-
     //ham hien thi nut phan trang
     $scope.displayPageRange = function () {
         var range = [];
@@ -93,55 +85,13 @@ app.controller("product-list-ctrl", function ($scope, $http) {
 
     //ham hien thi trang
     $scope.setPage = function (page) {
+        $currentPage = page
         page = page - 1;
-        $http.get(apiUrlProduct + "/page?page=" + page)
+        $http.get(apiUrlCategory + "/page?page=" + page)
             .then(function (response) {
-                console.log(response)
-                $scope.products = response.data.content;
+                $scope.categories = response.data.content;
                 $scope.totalPage = response.data.totalPages
             });
-    }
-
-    //tao doi tuong
-    const getProduct = function () {
-        return {
-            "name": $scope.name,
-            "collar": $scope.collar,
-            "wrist": $scope.wrist,
-            "describe": $scope.describe,
-            "brand": $scope.brand,
-            "category": {
-                id: $scope.idCategory,
-            },
-            "material": {
-                id: $scope.idMaterial,
-            },
-        }
-    }
-
-    $scope.createProduct = function () {
-        console.log(getProduct())
-    }
-
-    //lay doi tuong theo id
-    $scope.getProductById = function (id) {
-        $scope.id = id;
-        $scope.productByID = "ccresponse.data"
-        $http.get(apiUrlProduct + "/" + id)
-            .then(function (response) {
-                console.log(response.data.category.id)
-                $scope.productByID = response.data
-                setProductToForm(response.data)
-            });
-    }
-
-    let setProductToForm = function (product) {
-        $scope.name = product.name
-        $scope.collar = product.collar
-        $scope.wrist = product.wrist
-        $scope.describe = product.describe
-        $scope.brand = product.brand
-        $scope.idCategory1 = product.category.id
     }
 
 });

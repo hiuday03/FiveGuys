@@ -1,10 +1,10 @@
-var app = angular.module("product-list-app", []);
+var app = angular.module("color-app", []);
 
-app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope) {
+app.controller("color-ctrl", function ($scope, $http, $timeout) {
 
-    const apiUrlProduct = "http://localhost:8080/api/product"
+    const apiUrlColor = "http://localhost:8080/api/color"
 
-    $scope.products = [];
+    $scope.colors = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
@@ -19,8 +19,8 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
         $scope.showAlert = false;
     }
     $scope.initialize = function() {
-        $http.get(apiUrlProduct + "/page").then(resp => {
-            $scope.products = resp.data.content;
+        $http.get(apiUrlColor + "/page").then(resp => {
+            $scope.colors = resp.data.content;
             $scope.totalPages = resp.data.totalPages
         });
     }
@@ -31,8 +31,8 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
     }
     $scope.create = function() {
         let item = angular.copy($scope.formInput);
-        $http.post(apiUrlProduct, item).then(resp => {
-            $scope.showSuccessMessage("Create product successfully!")
+        $http.post(apiUrlColor, item).then(resp => {
+            $scope.showSuccessMessage("Create color successfully!")
             $scope.resetFormInput();
             $scope.initialize();
             $('#modalAdd').modal('hide');
@@ -43,8 +43,8 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
 
     $scope.update = function() {
         let item = angular.copy($scope.formUpdate);
-        $http.put(`${apiUrlProduct}/${item.id}`, item).then(resp => {
-            $scope.showSuccessMessage("Update product successfully!")
+        $http.put(`${apiUrlColor}/${item.id}`, item).then(resp => {
+            $scope.showSuccessMessage("Update color successfully!")
             $scope.resetFormUpdate();
             $scope.initialize();
             $('#modalUpdate').modal('hide');
@@ -53,20 +53,9 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
         })
     }
 
-    $scope.updateStatus = function() {
-        let status = 3;
-        $http.put(`${apiUrlProduct}/status/${item.id}`, 3).then(resp => {
-            $scope.showSuccessMessage("Update status product successfully!")
-            $scope.initialize();
-            $('#modalUpdate').modal('hide');
-        }).catch(error => {
-            console.log("Error", error);
-        })
-    }
-
     $scope.delete = function(item) {
-        $http.delete(`${apiUrlProduct}/${item.id}`).then(resp => {
-            $scope.showSuccessMessage("Delete product successfully!")
+        $http.delete(`${apiUrlColor}/${item.id}`).then(resp => {
+            $scope.showSuccessMessage("Delete color successfully!")
             $scope.initialize();
         }).catch(error => {
             console.log("Error", error);
@@ -85,6 +74,16 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
         $scope.formAddColor.$setUntouched();
     }
 
+    // //ham lay tat ca san pham co phan trang
+    // $scope.getProduct = function () {
+    //     $http.get(apiUrlProduct + "/page")
+    //         .then(function (response) {
+    //             $scope.products = response.data.content;
+    //             $scope.totalPages = response.data.totalPages;
+    //         });
+    // }
+    // $scope.getProduct();
+
     //ham hien thi nut phan trang
     $scope.displayPageRange = function () {
         var range = [];
@@ -93,34 +92,34 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
         }
         return range;
     };
+
     //ham hien thi trang
     $scope.setPage = function (page) {
         page = page - 1;
-        $http.get(apiUrlProduct + "/page?page=" + page)
+        $http.get(apiUrlColor + "/page?page=" + page)
             .then(function (response) {
                 console.log(response)
-                $scope.products = response.data.content;
+                $scope.colors = response.data.content;
                 $scope.totalPage = response.data.totalPages
             });
     }
 
-    const apiUrlCategory = "http://localhost:8080/api/category"
-    const apiUrlMaterial = "http://localhost:8080/api/material"
-
-    $scope.getSelectOption = function () {
-        $http.get(apiUrlCategory)
-            .then(function (response) {
-                console.log(response)
-                $scope.categories = response.data;
-            });
-        $http.get(apiUrlMaterial)
-            .then(function (response) {
-                console.log(response)
-                $scope.materials = response.data;
-            });
-    }
-    $scope.getSelectOption();
+    //tao doi tuong
+    // const getProduct = function () {
+    //     return {
+    //         "name": $scope.name,
+    //         "collar": $scope.collar,
+    //         "wrist": $scope.wrist,
+    //         "describe": $scope.describe,
+    //         "brand": $scope.brand,
+    //         "color": {
+    //             id: $scope.idColor,
+    //         },
+    //         "material": {
+    //             id: $scope.idMaterial,
+    //         },
+    //     }
+    // }
 
 
 });
-
