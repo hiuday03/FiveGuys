@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/address")
-
 public class AddressController {
 
     private final AddressServiceImpl addressService;
@@ -41,9 +40,9 @@ public class AddressController {
 //        return ResponseEntity.ok(addressService.getAllAddressPage(page));
 //    }
 //
-//    @GetMapping("/findby/{addressId}")
-//    public ResponseEntity<AddressEntity> getAddressById(@PathVariable Long addressId) {
-//        AddressEntity address = addressService.getAddressById(addressId);
+//    @GetMapping("/findby/{id}")
+//    public ResponseEntity<AddressEntity> getAddressById(@PathVariable Long id) {
+//        AddressEntity address = addressService.getAddressById(id);
 //        if (address != null) {
 //            return ResponseEntity.ok(address);
 //        } else {
@@ -61,9 +60,9 @@ public class AddressController {
         }
     }
 
-    @PutMapping("/{addressId}")
-    public ResponseEntity<AddressEntity> updateAddress(@RequestBody AddressEntity addressEntity, @PathVariable Long addressId) {
-        AddressEntity address = addressService.updateAddress(addressEntity, addressId);
+    @PutMapping("/{id}")
+    public ResponseEntity<AddressEntity> updateAddress(@RequestBody AddressEntity addressEntity, @PathVariable Long id) {
+        AddressEntity address = addressService.updateAddress(addressEntity, id);
         if (address != null) {
             return ResponseEntity.ok(address);
         } else {
@@ -71,10 +70,10 @@ public class AddressController {
         }
     }
 
-    @DeleteMapping("/{addressId}")
-    public ResponseEntity<Void> deleteAddress(@PathVariable Long addressId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         try {
-            addressService.deleteAddress(addressId);
+            addressService.deleteAddress(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

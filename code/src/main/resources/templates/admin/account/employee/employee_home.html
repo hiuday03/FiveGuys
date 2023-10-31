@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{admin/index}">
+
+<body>
+
+<main id="main" class="main" layout:fragment="content" ng-app="employee-list-app"
+      ng-controller="employee-list-controller">
+
+    <div class="pagetitle">
+        <h1 class="heading-breadcrumb-style">Employee</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item li-breadcrumb-item-style"><a th:href="@{/admin/index}">Home</a></li>
+                <li class="breadcrumb-item li-breadcrumb-item-style">Account</li>
+                <li class="breadcrumb-item li-breadcrumb-item-style active">Employee</li>
+            </ol>
+        </nav>
+    </div>
+    <!--  Begin code  -->
+    <section class="section">
+        <div class="row">
+            <div class="col-2">
+                <button type="button" class="btn-style-add-data mb-2" data-bs-toggle="modal"
+                        data-bs-target="#modalAdd">
+                    Create Employee
+                </button>
+            </div>
+            <div class="col-10">
+                <form ng-submit="getByMa(l.code)">
+                    <input type="text" name="code"  placeholder="Nhập tên sản phẩm để tìm">
+                    <button type="submit"  class="btn-style-add-data mb-2"  >
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
+            {{alertMessage}}
+            <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
+        </div>
+        <!-- Modal Add -->
+        <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="addformEmployee" ng-submit="addformEmployee.$valid  && addEmploy()">
+                            <div class="row mb-3">
+                                <label for="inputFullName" class="col-sm-3 col-form-label">Full Name</label>
+                                <div class="col-sm-9">
+                                    <input name="fullName" id="inputFullName" type="text" class="form-control"
+                                           ng-model="formInput.fullName">
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.fullName.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+
+                            </div>
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="avatar" id="inputAvatar" type="image" class="form-control"-->
+                            <!--                                           ng-model="formInput.avatar" >-->
+                            <!--                                </div>-->
+                            <!--                                <img src="" alt="" sizes="" srcset="">-->
+                            <!--                            </div>-->
+                            <div class="row mb-3">
+                                <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                <div class="col-sm-9">
+                                    <input name="account" id="inputAccount" type="text" class="form-control"
+                                           ng-model="formInput.account">
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.account.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputPassWord" class="col-sm-3 col-form-label">PassWord</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="passWord" id="" type="password" class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputEnterPass" class="col-sm-3 col-form-label">Enter PassWord</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="enterPass" id="inputEnterPass" type="password"-->
+                            <!--                                           class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <div class="row mb-3">
+                                <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
+                                <div class="col-sm-9">
+                                    <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
+                                           ng-model="formInput.phoneNumber">
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.phoneNumber.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input name="email" id="inputEmail" type="email" class="form-control"
+                                           ng-model="formInput.email">
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.email.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
+                                <div class="col-sm-9">
+                                    <input name="bỉrthDate" id="inputBirthDate" type="date" ng-value="yyyy/MM/dd"
+                                           class="form-control"
+                                           ng-model="formInput.birthDate">
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.birthDate.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender"
+                                               id="gender1" ng-model="formInput.gender">
+                                        <label class="form-check-label" for="gender1">Nam
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender"
+                                               id="gender2" ng-model="formInput.gender" checked>
+                                        <label class="form-check-label" for="gender2">Nữ
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                    <input name="addresss" id="inputAddress" type="text" class="form-control"
+                                           ng-model="formInput.addresss">
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.address.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                                <div class="col-sm-9">
+                                    <select name="roles" id="inputRole" class="form-select form-select-sm"
+                                            aria-label="Small select example"
+                                            ng-model="formInput.roles.id">
+                                        <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}</option>
+                                    </select>
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.role.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                <div class="col-sm-9">
+                                    <select name="status" class="form-select form-select-sm"
+                                            aria-label="Small select example"
+                                            ng-model="formInput.status">
+                                        <option selected>Open this select menu</option>
+                                        <option value="0">Nghỉ làm</option>
+                                        <option value="1">Đang làm</option>
+
+                                    </select>
+                                    <span ng-show="addformEmployee.$submitted">
+                                            <div ng-show="addformEmployee.status.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                FullName cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal Add -->
+        <!-- Begin Modal Update -->
+        <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="formUpdateEmployee" ng-submit="formUpdateEmployee.$valid && updateEmploy()">
+                            <div class="row mb-3">
+                                <label for="inputFullName" class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                    <input name="fullName" id="inputFullName" ng-model="formUpdate.fullName" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
+                                <div class="col-sm-9">
+                                    <input name="avatar" id="inputAvatar" ng-model="formUpdate.avatar" type="file"
+                                           class="form-control">
+                                </div>
+                                <img src="" alt="" sizes="" srcset="">
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                <div class="col-sm-9">
+                                    <input name="account" id="inputAccount" ng-model="formUpdate.account" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputPassWord" class="col-sm-3 col-form-label">PassWord</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="passWord" id="inputPassWord" type="password" class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputEnterPass" class="col-sm-3 col-form-label">Enter PassWord</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="enterPass" id="inputEnterPass" type="password"-->
+                            <!--                                           class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <div class="row mb-3">
+                                <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone</label>
+                                <div class="col-sm-9">
+                                    <input name="phoneNumber" id="inputPhoneNumber" ng-model="formUpdate.phoneNumber"
+                                           type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input name="email" id="inputEmail" ng-model="formUpdate.email" type="email"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
+                                <div class="col-sm-9">
+                                    <input name="birthDate" id="inputBirthDate" type="date" class="form-control"
+                                           ng-model="formUpdate.birthDate"
+                                           ng-value="formUpdate.birthDate | date:'yyyy-MM-dd'"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender"
+                                               id="gender1" ng-model="formUpdate.gender" ng-value="true"
+                                               ng-checked='true'>
+                                        <label class="form-check-label" for="gender1">Nam
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender"
+                                               id="gender2" ng-model="formUpdate.gender" ng-value="false">
+                                        <label class="form-check-label" for="gender2">Nữ
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                    <input name="address" id="inputAddress" ng-model="formUpdate.address" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="createdAt" id="inputCreatedAt" type="date" class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputCreatedBy" class="col-sm-3 col-form-label">CreatedBy</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="createdBy" id="inputCreatedBy" type="text" class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="row mb-3">-->
+                            <!--                                <label for="inputUpdatedBy" class="col-sm-3 col-form-label">UpdatedBy</label>-->
+                            <!--                                <div class="col-sm-9">-->
+                            <!--                                    <input name="updatedBy" id="inputUpdatedBy" type="text" class="form-control">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <div class="row mb-3">
+                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.roles.id">
+                                        <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                <div class="col-sm-9">
+                                    <select name="status" id="inputStatus" class="form-select form-select-sm"
+                                            aria-label="Small select example"
+                                            ng-model="formUpdate.status">
+
+                                        <option ng-value="0">Nghỉ làm</option>
+                                        <option ng-value="1">Đang làm</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- <div class="row mb-3">
+                                <legend class="col-form-label col-sm-3 pt-0">Status</legend>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="status">
+                                        <label class="form-check-label" for="status">
+                                            True
+                                        </label>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal Update -->
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table" style="font-size: 13px;">
+                    <thead>
+                    <tr>
+                        <th scope="">Code</th>
+                        <th scope="">Full Name</th>
+                        <th scope="">Account</th>
+                        <th scope="">Phone</th>
+                        <th scope="">Gender</th>
+                        <th scope="">Role</th>
+                        <th scope="">Status</th>
+                        <th scope="">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="l in paper.items">
+
+                        <td class="">{{l.code}}</td>
+                        <td class="">{{l.fullName}}</td>
+                        <td class="">{{l.account}}</td>
+                        <td class="">{{l.phoneNumber}}</td>
+                        <td class="">{{l.gender == true ? 'Nam' : 'Nữ'}}</td>
+                        <td class="">{{l.roles.fullName}}</td>
+                        <td class="">{{l.status == 1 ? 'Đang làm' : 'Nghỉ làm'}}</td>
+                        <td>
+                            <button title="Edit data" ng-click="edit(l)" type="button"
+                                    class="btn-action-form-data btn-action-edit-from-data" data-bs-toggle="modal"
+                                    data-bs-target="#modalUpdate"><i class="fa-regular fa-pen-to-square"></i></button>
+                            <button title="Delete data" type="button"
+                                    class="btn-action-form-data btn-action-delete-from-data" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal-{{l.id}}"><i class="ri-delete-bin-fill"></i></button>
+                            <div class="modal fade" id="deleteModal-{{l.id}}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa
+                                                không?</h5>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" ng-click="updateStatusEmployee(l)"
+                                                    class="btn btn-primary"
+                                                    data-bs-dismiss="modal">Delete
+                                            </button>
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item ms-1" title="First page">
+                            <button ng-click="paper.first()" class="btn-pagination-style"><i
+                                    class="fa-solid fa-backward"></i></button>
+                        </li>
+                        <li class="page-item ms-1" title="Prev page">
+                            <button ng-click="paper.prev()" class="btn-pagination-style"><i
+                                    class="fa-solid fa-backward-step"></i></button>
+                        </li>
+                        <li class="page-item ms-1">
+                            <button class="btn-pagination-style">{{paper.page + 1}}/{{paper.count}}</button>
+                        </li>
+                        <li class="page-item ms-1 " title="Next page">
+                            <button ng-click="paper.next()" class="btn-pagination-style"><i
+                                    class="fa-solid fa-forward-step"></i></button>
+                        </li>
+                        <li class="page-item ms-1" title="End page">
+                            <button ng-click="paper.last()" class="btn-pagination-style"><i
+                                    class="fa-solid fa-forward"></i></button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <!--  End Code  -->
+</main>
+</body>
+
+</html>

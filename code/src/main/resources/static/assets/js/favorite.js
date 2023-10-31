@@ -5,6 +5,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.currentDate = new Date();
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -23,15 +24,34 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
             $scope.favorite = resp.data;
         });
     }
-
+    
     $scope.initialize();
 
-    $scope.edit = function (favorite) {
-        $scope.formUpdate = angular.copy(favorite);
+    $scope.loadCustomers = function () {
+        $http.get("/customer") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.customers = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading customers", error);
+            });
     }
+
+    $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+
+    $scope.edit = function (favorite) {
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(favorite);
+        } else {
+            $scope.formUpdate = angular.copy(favorite);
+            $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+        }
+    }
+    
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
         $http.post("/favorite", item).then(function (resp) {
             $scope.showSuccessMessage("Create favorite successfully");
             $scope.resetFormInput();
@@ -44,7 +64,9 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
+        console.log(item)
         $http.put(`/favorite/${item.id}`, item).then(function (resp) {
+
             $scope.showSuccessMessage("Update favorite successfully");
             $scope.resetFormUpdate();
             $scope.initialize();
@@ -56,7 +78,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
     $scope.delete = function (item) {
         $http.delete(`/favorite/${item.id}`).then(function (resp) {
-            $scope.showSuccessMessage("Delete favorite successfully");
+            $scope.showSuccessMessage("Delete Favorite successfully");
             $scope.initialize();
         }).catch(function (error) {
             console.log("Error", error);
@@ -65,17 +87,17 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
     $scope.resetFormUpdate = function () {
         $scope.formUpdate = {};
-        $scope.formUpdatefavorite.$setPristine();
-        $scope.formUpdatefavorite.$setUntouched();
+        $scope.formUpdateFavorite.$setPristine();
+        $scope.formUpdateFavorite.$setUntouched();
     }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
-        $scope.formCreatefavorite.$setPristine();
-        $scope.formCreatefavorite.$setUntouched();
+        $scope.formCreateFavorite.$setPristine();
+        $scope.formCreateFavorite.$setUntouched();
     }
 
-    $scope.pager = {
+    $scope.paper = {
         page: 0,
         size: 5,
         get items() {

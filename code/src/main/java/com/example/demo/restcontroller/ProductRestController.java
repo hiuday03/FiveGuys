@@ -53,6 +53,12 @@ public class ProductRestController {
         return ResponseEntity.ok(product);
     }
 
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> update(@RequestBody Integer status, @PathVariable("id") Long id){
+        Product product = productService.updateStatus(status, id);
+        return ResponseEntity.ok(product);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id){
         productService.delete(id);

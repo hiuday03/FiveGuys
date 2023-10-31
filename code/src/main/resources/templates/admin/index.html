@@ -315,8 +315,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>Empoyees</span>
+                    <a th:href="@{/admin/account/employee}">
+                        <i class="bi bi-circle"></i><span>Employee</span>
                     </a>
                 </li>
                 <li>
@@ -1063,11 +1063,17 @@
 
 
 
+
+
+<script th:src="@{/assets/js/employee/Employee.js}"></script>
 <script th:src="@{/assets/js/product/product-list.js}"></script>
 <script th:src="@{/assets/js/product/category-list.js}"></script>
 <script th:src="@{/assets/js/product/material.js}"></script>
 <script th:src="@{/assets/js/product/color.js}"></script>
 <!--<script th:src="@{/assets/js/product/product-form.js}"></script>-->
+
+
+
 
 <script th:src="@{/assets/js/customer.js}"></script>
 <script th:src="@{/assets/js/address.js}"></script>

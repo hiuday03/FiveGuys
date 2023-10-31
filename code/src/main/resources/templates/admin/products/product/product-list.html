@@ -226,10 +226,10 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th scope="col">Tên sản phẩm</th>
                                     <th scope="col">Giá nhập</th>
                                     <th scope="col">Giá bán</th>
-                                    <th scope="col">Số lượng tồn</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Barcode</th>
                                     <th scope="col">Màu sắc</th>
                                     <th scope="col">Size</th>
                                     <th scope="col">Action</th>
@@ -237,11 +237,12 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="pd in productDetailsd">
-                                    <td class="col-1">{{p.code}}</td>
-                                    <td class="col-3">{{p.name}}</td>
-                                    <td class="col-2">{{p.brand}}</td>
-                                    <td class="col-2">{{p.category.name}}</td>
-                                    <td class="col-2">{{p.material.name}}</td>
+                                    <td class="col-1">{{pd.importPrice}}</td>
+                                    <td class="col-3">{{pd.price}}</td>
+                                    <td class="col-2">{{pd.quantity}}</td>
+                                    <td class="col-2">{{pd.barcode}}</td>
+                                    <td class="col-2">{{pd.color.name}}</td>
+                                    <td class="col-2">{{pd.size.name}}</td>
                                     <td class="col-2">
                                         <a type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalDetail"
                                            ng-click="getProductById(p.id)"><i class="ri-eye-2-fill"></i></a>

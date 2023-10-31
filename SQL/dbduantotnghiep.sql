@@ -62,6 +62,7 @@ create table Colors
 (
 	Id			bigint identity(1,1) primary key,
 	Name		nvarchar(100),
+	ColorCode	nvarchar(20),
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	Status		int
@@ -79,6 +80,7 @@ create table Sizes
 create table Employees
 (
 	Id			bigint identity(1,1) primary key,
+	Code		nvarchar(20),
 	FullName	nvarchar(100),
 	Avatar		nvarchar(100),
 	Account		nvarchar(100),
@@ -122,6 +124,7 @@ create table Address
 	PhoneNumber	nvarchar(15),
 	Address		nvarchar(MAX),
 	AddressType	nvarchar(100),
+	DefaultAddress		bit,
 	IdCustomer	bigint references Customers(Id),
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
@@ -152,6 +155,7 @@ create table ProductDetails
 	ImportPrice	decimal(20,0),
 	Price		decimal(20,0),
 	Quantity	int,
+	Barcode		nvarchar(50),
 	IdProduct	bigint references Products(Id),
 	IdSize		bigint references Sizes(Id),
 	IdColor		bigint references Colors(Id),

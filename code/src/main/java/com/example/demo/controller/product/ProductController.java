@@ -16,6 +16,12 @@ public class ProductController {
         return "admin/products/product/product-list";
     }
 
+
+    @GetMapping("/testp")
+    public String product1(){
+        return "admin/products/product/product-form";
+    }
+
     @GetMapping("/category")
     public String index(){
         return "admin/products/category/category-list";
