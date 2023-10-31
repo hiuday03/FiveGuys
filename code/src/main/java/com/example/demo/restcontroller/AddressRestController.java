@@ -1,4 +1,4 @@
-package com.example.demo.controller.address;
+package com.example.demo.restcontroller;
 
 import com.example.demo.entity.AddressEntity;
 import com.example.demo.service.serviceiplm.AddressServiceImpl;
@@ -20,12 +20,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/address")
-public class AddressController {
+public class AddressRestController {
 
     private final AddressServiceImpl addressService;
 
     @Autowired
-    public AddressController(AddressServiceImpl addressService) {
+    public AddressRestController(AddressServiceImpl addressService) {
         this.addressService = addressService;
     }
 

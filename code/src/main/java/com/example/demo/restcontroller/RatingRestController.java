@@ -1,4 +1,4 @@
-package com.example.demo.controller.rating;
+package com.example.demo.restcontroller;
 
 import com.example.demo.entity.RatingEntity;
 import com.example.demo.service.serviceiplm.RatingServiceImpl;
@@ -20,12 +20,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/rating")
 
-public class RatingController {
+public class RatingRestController {
 
     private final RatingServiceImpl ratingService;
 
     @Autowired
-    public RatingController(RatingServiceImpl ratingService) {
+    public RatingRestController(RatingServiceImpl ratingService) {
         this.ratingService = ratingService;
     }
 

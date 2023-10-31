@@ -13,6 +13,18 @@ create table Roles
 	Status		int
 )
 
+create table Accounts
+(
+	Id			bigint identity(1,1) primary key,
+	Account	varchar(100),
+	Password	varchar(100),
+	Email	varchar(100),
+	PhoneNumber	nvarchar(15),
+	IdRole		bigint references Roles(Id),
+	Status		int
+)
+
+
 create table Vouchers
 (
 	Id			bigint identity(1,1) primary key,
@@ -83,14 +95,10 @@ create table Employees
 	Code		nvarchar(20),
 	FullName	nvarchar(100),
 	Avatar		nvarchar(100),
-	Account		nvarchar(100),
-	Password	nvarchar(100),
-	PhoneNumber	nvarchar(15),
-	Email		nvarchar(100),
 	BirthDate	datetime,
 	Gender		bit,
 	Address		nvarchar(MAX),
-	IdRole		bigint references Roles(Id),
+	IdAccount		bigint references Accounts(Id),
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),
@@ -103,13 +111,9 @@ create table Customers
 	Id			bigint identity(1,1) primary key,
 	FullName	nvarchar(100),
 	Avatar		nvarchar(MAX),
-	Account		nvarchar(100),
-	Password	nvarchar(100),
-	PhoneNumber	nvarchar(15),
-	Email		nvarchar(100),
 	BirthDate	datetime,
 	Gender		bit,
-	Address		nvarchar(MAX),
+	IdAccount		bigint references Accounts(Id),
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),

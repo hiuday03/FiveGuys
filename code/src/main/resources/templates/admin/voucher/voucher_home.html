@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
       layout:decorate="~{admin/index}">
-<link th:href="@{/assets/css/employee.css}">
+<!--<link th:href="@{/assets/css/employee.css}">-->
 
 <body>
 
@@ -9,12 +9,11 @@
       ng-controller="employee-list-controller">
 
     <div class="pagetitle">
-        <h1 class="heading-breadcrumb-style">Employee</h1>
+        <h1 class="heading-breadcrumb-style">Voucher</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item li-breadcrumb-item-style"><a th:href="@{/admin/index}">Home</a></li>
-                <li class="breadcrumb-item li-breadcrumb-item-style">Account</li>
-                <li class="breadcrumb-item li-breadcrumb-item-style active">Employee</li>
+                <li class="breadcrumb-item li-breadcrumb-item-style">Voucher</li>
             </ol>
         </nav>
     </div>
@@ -28,17 +27,7 @@
                 </button>
             </div>
             <div class="col-8">
-                <form>
-                    <input type="text" ng-model="searchEm" class="ri-delete-bin-fill" placeholder="Search">
-                    <!--                    <button type="submit"  class="btn-style-add-data mb-2">-->
-                    <!--                        Search-->
-                    <!--                    </button>-->
-                </form>
-            </div>
-            <div class="col-2">
-                <button type="button" ng-click="xuatFile()" class="btn-style-add-data mb-2">
-                    Xuất Danh Sách
-                </button>
+
             </div>
         </div>
         <!--        <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">-->
@@ -370,17 +359,17 @@
                                         <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
                                         <div class="col-sm-9">
 
-                                                <input type="text" name="gender"  class="form-control"
-                                                       id="inputGender" ng-model="formShow.gender ==true ? 'Nam' : 'Nữ'">
+                                            <input type="text" name="gender"  class="form-control"
+                                                   id="inputGender" ng-model="formShow.gender ==true ? 'Nam' : 'Nữ'">
 
-                                               
 
-<!--                                            <div class="form-check">-->
-<!--                                                <input class="form-check-input" type="radio" name="gender"-->
-<!--                                                       id="gender2" ng-model="formShow.gender" ng-value="false">-->
-<!--                                                <label class="form-check-label" for="gender2">Nữ-->
-<!--                                                </label>-->
-<!--                                            </div>-->
+
+                                            <!--                                            <div class="form-check">-->
+                                            <!--                                                <input class="form-check-input" type="radio" name="gender"-->
+                                            <!--                                                       id="gender2" ng-model="formShow.gender" ng-value="false">-->
+                                            <!--                                                <label class="form-check-label" for="gender2">Nữ-->
+                                            <!--                                                </label>-->
+                                            <!--                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
@@ -435,8 +424,8 @@
                                         <label class="col-sm-3 col-form-label">Status</label>
                                         <div class="col-sm-9">
                                             <input name="status"  class="form-select form-select-sm"
-                                                    aria-label="Small select example"
-                                                    ng-model="formShow.status == 1 ? 'Đang làm' : 'Nghỉ làm' ">
+                                                   aria-label="Small select example"
+                                                   ng-model="formShow.status == 1 ? 'Đang làm' : 'Nghỉ làm' ">
 
                                         </div>
                                     </div>
