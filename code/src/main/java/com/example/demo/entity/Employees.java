@@ -57,8 +57,4 @@ public class Employees {
     @Column(name= "Status")
     private Integer status;
 
-    @ManyToOne
-    @JoinColumn(name="IdRole")
-    private Roles roles;
-
 }

@@ -21,9 +21,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    // get all Employee
     @Override
     public List<Employees> getAll(){
         return employeeRepository.findAll();
+    }
+
+    //get all Employ status = 1 (dang làm)
+    @Override
+    public List<Employees> getAllStatusDangLam(){
+        return employeeRepository.getAllStatusDangLam();
     }
 
     @Override
@@ -124,8 +131,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // search ma
     @Override
-    public List<Employees>  searchMa(String ma){
-        List<Employees> employeesList = employeeRepository.searchMa(ma);
+    public Page<Employees>  searchMa(String ma, Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Employees> employeesList = employeeRepository.searchMa(ma, pageable);
         return employeesList;
     }
 
