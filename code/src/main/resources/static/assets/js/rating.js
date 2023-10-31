@@ -5,6 +5,7 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.currentDate = new Date();
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -24,14 +25,34 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
         });
     }
 
+
     $scope.initialize();
 
-    $scope.edit = function (rating) {
-        $scope.formUpdate = angular.copy(rating);
+    $scope.loadCustomers = function () {
+        $http.get("/customer") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.customers = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading customers", error);
+            });
     }
+
+    $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+
+    $scope.edit = function (rating) {
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(rating);
+        } else {
+            $scope.formUpdate = angular.copy(rating);
+            $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+        }
+    }
+    
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
         $http.post("/rating", item).then(function (resp) {
             $scope.showSuccessMessage("Create rating successfully");
             $scope.resetFormInput();
@@ -44,7 +65,9 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
+        console.log(item)
         $http.put(`/rating/${item.id}`, item).then(function (resp) {
+
             $scope.showSuccessMessage("Update rating successfully");
             $scope.resetFormUpdate();
             $scope.initialize();
@@ -65,17 +88,17 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
     $scope.resetFormUpdate = function () {
         $scope.formUpdate = {};
-        $scope.formUpdaterating.$setPristine();
-        $scope.formUpdaterating.$setUntouched();
+        $scope.formUpdateRating.$setPristine();
+        $scope.formUpdateRating.$setUntouched();
     }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
-        $scope.formCreaterating.$setPristine();
-        $scope.formCreaterating.$setUntouched();
+        $scope.formCreateRating.$setPristine();
+        $scope.formCreateRating.$setUntouched();
     }
 
-    $scope.pager = {
+    $scope.paper = {
         page: 0,
         size: 5,
         get items() {

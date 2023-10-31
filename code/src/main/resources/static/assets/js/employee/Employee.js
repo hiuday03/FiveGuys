@@ -5,24 +5,51 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
     const apiUrlRole = "http://localhost:8080/api/roles";
     $scope.employee = [];
     $scope.formUpdate = {};
+    $scope.formShow = {};
     $scope.formInput = {};
     $scope.showAlert = false;
 
-    // get Employee
+    // get page Employee
+    $scope.getPage = function () {
+        $http.get(apiUrlEmployee + "/get-page").then(function (response) {
+            $scope.pageEm = response.data.content;
+            $scope.totalPages = response.data.totalPages
+        })
+    }
+    $scope.getPage()
+    //hiển thi nut phan trang
+    $scope.displayPageRange = function (){
+        var rangs = [];
+        for (var i = 1; i<= $scope.totalPages; i++){
+            rangs.push(i);
+        }
+        return rangs;
+    }
+    //hien thi trang
+    $scope.setPage = function (page) {
+        page = page-1;
+        $http.get(apiUrlEmployee+ "/get-page?page="+ page).then(function (response) {
+            $scope.pageEm = response.data.content;
+            $scope.totalPages = response.data.totalPages
+        })
+    }
+
     $scope.getAll = function () {
         $http.get(apiUrlEmployee).then(function (response) {
+            $scope.listEm11 = response.data;
+            // $scope.totalPages = response.totalPages;
+        })
+    }
+
+    //get all status =1
+    $scope.getAllStatusDangLam = function () {
+        $http.get(apiUrlEmployee+"/status1").then(function (response) {
             $scope.listEm = response.data;
             // $scope.totalPages = response.totalPages;
         })
     }
-    $scope.getAll();
-    $scope.getPage= function () {
-        $http.get(apiUrlEmployee).then(function (response) {
-            $scope.pageEm = response.data;
-            // $scope.totalPages = response.totalPages;
-        })
-    }
-    $scope.getAll();
+    $scope.getAllStatusDangLam();
+    // $scope.getAll();
 
     // getById Employee
     $scope.getById = function (item) {
@@ -58,11 +85,17 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
         $scope.formUpdate.valid_form = new Date(employee.valid_form)
         $scope.formUpdate.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
     }
+    $scope.show = function (employee) {
+        $scope.formShow = angular.copy(employee);
+        $scope.formShow.valid_form = new Date(employee.valid_form)
+        $scope.formShow.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
+    }
 
     //delete Employ
     $scope.delete = function (item) {
         $http.delete(`/api/employee/${item.id}`).then(function (response) {
-            $scope.getAll();
+            // $scope.getAll();
+            $scope.getAllStatusDangLam();
             console.log(item.id);
         }).catch(function (error) {
             console.log("Error", error);
@@ -75,7 +108,8 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
         $http.post("/api/employee", item).then(function (resp) {
             $scope.showSuccessMessage("Create customer successfully");
             $scope.resetFormInput();
-            $scope.getAll();
+            // $scope.getAll();
+            $scope.getAllStatusDangLam();
             $('#modalAdd').modal('hide');
         }).catch(function (error) {
             console.log("Error", error);
@@ -89,17 +123,29 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
         $http.put(`/api/employee/${item.id}`, item).then(function (resp) {
             $scope.showSuccessMessage("Update customer successfully");
             $scope.resetFormUpdate();
-            $scope.getAll();
+            // $scope.getAll();
+            $scope.getAllStatusDangLam();
             $('#modalUpdate').modal('hide');
         }).catch(function (error) {
             console.log("Error", error);
         });
     }
+
+    //delete or update status Employee
     $scope.updateStatusEmployee = function (item) {
         console.log(item)
         $http.put(`/api/employee/delete/${item.id}`, item).then(function (resp) {
-            $scope.getAll();
+            // $scope.getAll();
+            $scope.getAllStatusDangLam();
             console.log(item.id);
+        })
+    }
+
+    // xuát file danh sách excel Employee
+    $scope.xuatFile = function () {
+        $http.get(apiUrlEmployee + "/excel").then(function (response) {
+            // $scope.pageEm = response.data.content;
+            // $scope.totalPages = response.data.totalPages
         })
     }
 

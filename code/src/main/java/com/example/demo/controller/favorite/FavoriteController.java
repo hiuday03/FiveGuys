@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/favorite")
+@RequestMapping("")
 
 public class FavoriteController {
 
@@ -30,8 +31,8 @@ public class FavoriteController {
         this.favoriteService = favoriteService;
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<FavoriteEntity>> getAllFavorite() {
+    @GetMapping("/favorite")
+    public ResponseEntity<List<FavoriteEntity>> getAllAddress() {
         List<FavoriteEntity> favorite = favoriteService.getAllFavorite();
         return ResponseEntity.ok(favorite);
     }

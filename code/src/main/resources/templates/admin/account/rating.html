@@ -5,13 +5,11 @@
 <head>
     <meta charset="utf-8">
     <title>Dashboard - FiveGuys</title>
-
 </head>
+<link rel="stylesheet" th:href="@{/assets/js/rating.js}">
 
 <body ng-app="rating" ng-controller="rating-ctrl">
-
     <main id="main" class="main" layout:fragment="content">
-
         <div class="pagetitle">
             <h1>Rating</h1>
             <nav>
@@ -27,6 +25,10 @@
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
                 Create Rating</button>
+            <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
+                {{alertMessage}}
+                <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
+            </div>
             <!-- Modal Add -->
             <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -36,39 +38,112 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form name="formCreateRating" ng-submit="formCreateRating.$valid && create()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputName" class="col-sm-3 col-form-label">Name</label>
+                                    <label for="inputContennt" class="col-sm-3 col-form-label">Content</label>
                                     <div class="col-sm-9">
-                                        <input name="name" id="inputName" type="text" class="form-control">
+                                        <input name="content" id="inputContennt" type="text" class="form-control"
+                                            ng-model="formInput.content" required>
+                                        <span ng-show="formCreateRating.$submitted">
+                                            <div ng-show="formCreateRating.content.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Content cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputRate" class="col-sm-3 col-form-label">Rate</label>
+                                    <div class="col-sm-9">
+                                        <input name="rate" id="inputRate" type="number" min="1" class="form-control"
+                                            ng-model="formInput.rate" required>
+                                        <span ng-show="formCreateRating.$submitted">
+                                            <div ng-show="formCreateRating.rate.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Rate cannot be blank</div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="date" class="form-control">
+                                        <input name="createdAt" id="inputCreatedAt" type="text" class="form-control"
+                                            ng-model="currentDate | date:'yyyy-MM-dd'"
+                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
+                                        <span ng-show="formCreateRating.$submitted">
+                                            <div ng-show="formCreateRating.createdAt.$invalid"
+                                                class="error-message text-danger form-text">
+                                                CreatedAt cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
+                                    <div class="col-sm-9">
+                                        <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
+                                            ng-model="formInput.updatedAt" required>
+                                        <span ng-show="formCreateRating.$submitted">
+                                            <div ng-show="formCreateRating.updatedAt.$invalid"
+                                                class="error-message text-danger form-text">
+                                                UpdatedAt cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <div class="row mb-3">
+                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formInput.customer.id">
+                                            <option ng-repeat="customer in customers" ng-value="customer.id">
+                                                {{customer.fullName}}</option>
+                                        </select>
+                                        <span ng-show="formCreateRating.$submitted">
+                                            <div ng-show="formCreateRating.customer.$invalid"
+                                                class="error-message text-danger form-text">
+                                                customer cannot be blank</div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
+                                    <label for="inputProductDetail"
+                                        class="col-sm-3 col-form-label">ProductDetail</label>
                                     <div class="col-sm-9">
-                                        <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control">
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formInput.productDetail.id">
+                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
+                                                {{rating.productDetail.product.name}},
+                                                {{rating.productDetail.product.material.name}},
+                                                {{rating.productDetail.product.category.name}},
+                                                {{rating.productDetail.color.name}},
+                                                {{rating.productDetail.size.name}}
+                                            </option>
+                                        </select>
+                                        <span ng-show="formCreateRating.$submitted">
+                                            <div ng-show="formCreateRating.productDetail.$invalid"
+                                                class="error-message text-danger form-text">
+                                                ProductDetail cannot be blank</div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="0">One</option>
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formInput.status" required>
                                             <option value="1">One</option>
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
                                         </select>
+                                        <span ng-show="formCreateRating.$submitted">
+                                            <div ng-show="formCreateRating.status.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Status cannot be blank</div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Save</button>
+                                    <button ng-click="resetFormInput()" type="button"
+                                        class="btn btn-warning">Reset</button>
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
                                 </div>
@@ -88,50 +163,113 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form name="formUpdateRating" ng-submit="formUpdateRating.$valid && update()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputName" class="col-sm-3 col-form-label">Name</label>
+                                    <label for="inputContennt" class="col-sm-3 col-form-label">Content</label>
                                     <div class="col-sm-9">
-                                        <input name="name" id="inputName" type="text" class="form-control">
+                                        <input name="content" id="inputContennt" type="text" class="form-control"
+                                            ng-model="formUpdate.content" required>
+                                        <span ng-show="formUpdateRating.$submitted">
+                                            <div ng-show="formUpdateRating.content.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Content cannot be blank</div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
+                                    <label for="inputRate" class="col-sm-3 col-form-label">Rate</label>
+                                    <div class="col-sm-9">
+                                        <input name="rate" id="inputRate" type="number" min="1" class="form-control"
+                                            ng-model="formUpdate.rate" required>
+                                        <span ng-show="formUpdateRating.$submitted">
+                                            <div ng-show="formUpdateRating.rate.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Rate cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="date" class="form-control">
+                                        <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
+                                            ng-model="formUpdate.createdAt"
+                                            ng-value="formUpdate.createdAt | date:'yyyy-MM-dd'">
+                                        <span ng-show="formUpdateRating.$submitted">
+                                            <div ng-show="formUpdateRating.createdAt.$invalid"
+                                                class="error-message text-danger form-text">
+                                                CreatedAt cannot be blank</div>
+                                        </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control">
+                                        <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
+                                            ng-model="formUpdate.updatedAt"
+                                            ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
+                                        <span ng-show="formUpdateRating.$submitted">
+                                            <div ng-show="formUpdateRating.updatedAt.$invalid"
+                                                class="error-message text-danger form-text">
+                                                UpdatedAt cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.customer.id">
+                                            <option ng-repeat="customer in customers" ng-value="customer.id">
+                                                {{customer.fullName}}</option>
+                                        </select>
+                                        <span ng-show="formUpdateRating.$submitted">
+                                            <div ng-show="formUpdateRating.customer.$invalid"
+                                                class="error-message text-danger form-text">
+                                                customer cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputProductDetail"
+                                        class="col-sm-3 col-form-label">ProductDetail</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.productDetail.id">
+                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
+                                                {{rating.productDetail.product.name}},
+                                                {{rating.productDetail.product.material.name}},
+                                                {{rating.productDetail.product.category.name}},
+                                                {{rating.productDetail.color.name}},
+                                                {{rating.productDetail.size.name}}
+                                            </option>
+                                        </select>
+                                        <span ng-show="formUpdateRating.$submitted">
+                                            <div ng-show="formUpdateRating.productDetail.$invalid"
+                                                class="error-message text-danger form-text">
+                                                ProductDetail cannot be blank</div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="0">One</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.status">
+                                            <option ng-value="1">One</option>
+                                            <option ng-value="2">Two</option>
+                                            <option ng-value="3">Three</option>
                                         </select>
+                                        <span ng-show="formUpdateRating.$submitted">
+                                            <div ng-show="formUpdateRating.status.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Status cannot be blank</div>
+                                        </span>
                                     </div>
                                 </div>
-                                <!-- <div class="row mb-3">
-                                    <legend class="col-form-label col-sm-3 pt-0">Status</legend>
-                                    <div class="col-sm-9">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="status">
-                                            <label class="form-check-label" for="status">
-                                                True
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Update</button>
+                                    <button ng-click="resetFormUpdate()" type="button"
+                                        class="btn btn-warning">Reset</button>
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
                                 </div>
@@ -146,7 +284,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">[Content]</th>
+                                <th scope="col">Content</th>
                                 <th scope="col">Rate</th>
                                 <th scope="col">Name Custoemr(Id Custoemr)</th>
                                 <th scope="col">Name ProductDetail(ID ProductDetail)</th>
@@ -158,18 +296,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="rating in rating">
+                            <tr ng-repeat="rating in paper.items">
                                 <td>{{rating.content}}</td>
                                 <td>{{rating.rate}}</td>
                                 <td>{{rating.customer.fullName}}</td>
-                                <td>{{rating.productDetail.product.name}}, {{rating.productDetail.product.material.name}}, {{rating.productDetail.product.category.name}}, {{rating.productDetail.color.name}}, {{rating.productDetail.size.name}}</td>
+                                <td>{{rating.productDetail.product.name}},
+                                    {{rating.productDetail.product.material.name}},
+                                    {{rating.productDetail.product.category.name}}, {{rating.productDetail.color.name}},
+                                    {{rating.productDetail.size.name}}</td>
                                 <!-- <td>{{rating.productDetail.image.name}}</td> -->
-                                <td>{{rating.createdAt}}</td>
-                                <td>{{rating.updatedAt}}</td>
+                                <td>{{rating.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{rating.updatedAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{rating.status}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                        data-bs-target="#modalUpdate"><i class="ri-refresh-line"></i></button>
+                                    <button ng-click="edit(rating)" type="button" class="btn btn-info"
+                                        data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
+                                            class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                         data-bs-target="#deleteModal"><i class="ri-delete-bin-fill"></i></button>
                                     <div class="modal fade" id="deleteModal" tabindex="-1"
@@ -181,8 +323,8 @@
                                                         không?</h5>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary"
-                                                        data-bs-dismiss="modal">Delete</button>
+                                                    <button ng-click="delete(rating)" type="button"
+                                                        class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>
                                                 </div>

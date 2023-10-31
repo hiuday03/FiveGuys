@@ -5,6 +5,7 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.currentDate = new Date();
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -26,12 +27,36 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
 
     $scope.initialize();
 
-    $scope.edit = function (address) {
-        $scope.formUpdate = angular.copy(address);
+    // $scope.customers = []; // Khởi tạo danh sách khách hàng
+
+    $scope.loadCustomers = function () {
+        $http.get("/customer") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.customers = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading customers", error);
+            });
     }
+
+    $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+
+    $scope.edit = function (address) {
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(address);
+        } else {
+            $scope.formUpdate = angular.copy(address);
+            $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+        }
+    }
+    // $scope.edit = function (address) {
+    //     $scope.formUpdate = angular.copy(address);
+    // }
+    
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
         $http.post("/address", item).then(function (resp) {
             $scope.showSuccessMessage("Create address successfully");
             $scope.resetFormInput();
@@ -44,7 +69,9 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
+        console.log(item)
         $http.put(`/address/${item.id}`, item).then(function (resp) {
+
             $scope.showSuccessMessage("Update address successfully");
             $scope.resetFormUpdate();
             $scope.initialize();
@@ -65,17 +92,17 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
 
     $scope.resetFormUpdate = function () {
         $scope.formUpdate = {};
-        $scope.formUpdateaddress.$setPristine();
-        $scope.formUpdateaddress.$setUntouched();
+        $scope.formUpdateAddress.$setPristine();
+        $scope.formUpdateAddress.$setUntouched();
     }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
-        $scope.formCreateaddress.$setPristine();
-        $scope.formCreateaddress.$setUntouched();
+        $scope.formCreateAddress.$setPristine();
+        $scope.formCreateAddress.$setUntouched();
     }
 
-    $scope.pager = {
+    $scope.paper = {
         page: 0,
         size: 5,
         get items() {

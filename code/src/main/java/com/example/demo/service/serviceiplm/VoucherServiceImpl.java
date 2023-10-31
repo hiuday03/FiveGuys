@@ -46,7 +46,7 @@ public class VoucherServiceImpl implements VoucherService {
             vouchers1.setUpdatedAt(vouchers.getUpdatedAt());
             vouchers1.setCrearedBy(vouchers.getCrearedBy());
             vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
-            vouchers1.setStatus(vouchers.getStatus());
+            vouchers1.setStatus(Integer.parseInt(vouchers.getStatus()));
 
             return voucherRepository.save(vouchers1);
         }else {
