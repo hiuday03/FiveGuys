@@ -24,7 +24,7 @@ public class ColorRestController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> page(@RequestParam("page") Integer page){
+    public ResponseEntity<?> page(@RequestParam(value = "page", defaultValue = "0") Integer page){
         Page<Color> colors = colorService.getAll(page);
         return ResponseEntity.ok(colors);
     }
@@ -41,9 +41,9 @@ public class ColorRestController {
         return ResponseEntity.ok(color);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Color colorReq, @PathVariable("id") Long id){
-        Color color = colorService.update(colorReq, id);
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id){
+        Color color = colorService.updateStatus(id);
         return ResponseEntity.ok(color);
     }
 

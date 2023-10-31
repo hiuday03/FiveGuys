@@ -25,7 +25,7 @@ public class MaterialRestController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> page(@RequestParam("page") Integer page){
+    public ResponseEntity<?> page(@RequestParam(value = "page", defaultValue = "0") Integer page){
         Page<Material> materials = materialService.getAll(page);
         return ResponseEntity.ok(materials);
     }
@@ -45,6 +45,12 @@ public class MaterialRestController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Material materialReq, @PathVariable Long id){
         Material material = materialService.update(materialReq, id);
+        return ResponseEntity.ok(material);
+    }
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id){
+        Material material = materialService.updateStatus(id);
         return ResponseEntity.ok(material);
     }
 

@@ -18,6 +18,11 @@ public interface EmployeeRepository extends JpaRepository<Employees, Long> {
 
     // Tim theo ma
     @Query("SELECT m FROM Employees m WHERE m.code LIKE %:code%")
-    List<Employees> searchMa(String code);
+    Page<Employees> searchMa(String code,Pageable pageable);
+
+    //Employee status = 1
+    @Query("SELECT m FROM Employees m WHERE m.status = 1")
+    List<Employees> getAllStatusDangLam();
+
 
 }

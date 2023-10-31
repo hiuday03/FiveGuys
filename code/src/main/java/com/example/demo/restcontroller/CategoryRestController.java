@@ -26,7 +26,7 @@ public class CategoryRestController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> page(@RequestParam("page") Integer page){
+    public ResponseEntity<?> page(@RequestParam(value = "page", defaultValue = "0") Integer page){
         System.out.println("category");
         Page<Category> categories = categoryService.getAll(page);
         return ResponseEntity.ok(categories);
@@ -49,6 +49,12 @@ public class CategoryRestController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Category categoryReq){
         Category category = categoryService.update(categoryReq, id);
+        return ResponseEntity.ok(category);
+    }
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable("id") Long id){
+        Category category = categoryService.updateStatus(id);
         return ResponseEntity.ok(category);
     }
 

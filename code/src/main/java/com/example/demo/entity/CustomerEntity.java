@@ -30,6 +30,10 @@ public class CustomerEntity {
     @Column(name = "Gender")
     private boolean gender;
 
+    @ManyToOne
+    @JoinColumn(name = "IdAccount")
+    private AccountEntity account;
+
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "CreatedAt")
@@ -51,7 +55,6 @@ public class CustomerEntity {
 
     @OneToOne
     @JoinColumn(name = "IdAccount")
-    private Accounts accounts;
-
+    private Accounts accounts
 }
 
