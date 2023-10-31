@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @ToString
-public class OlProductRespone {
+public class OlHomeProductRespone {
 
     private Long id;
 
