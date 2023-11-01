@@ -33,11 +33,11 @@ public class EmployeeRestController {
     }
 
     //search ma
-    @GetMapping("/search/{code}")
-    public ResponseEntity<List<Employees>> getByMa(@PathVariable String code) {
-        List<Employees> customers = employeeService.searchMa(code);
-        return ResponseEntity.ok(customers);
-    }
+//    @GetMapping("/search/{code}")
+//    public ResponseEntity<List<Employees>> getByMa(@PathVariable String code) {
+//        List<Employees> customers = employeeService.searchMa(code);
+//        return ResponseEntity.ok(customers);
+//    }
     @GetMapping("/{id}")
     public ResponseEntity<Employees> getById(@PathVariable Long id) {
         Employees customers = employeeService.getById(id);
