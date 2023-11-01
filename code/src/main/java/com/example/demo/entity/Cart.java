@@ -20,8 +20,8 @@ public class Cart {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "IdEmployee", nullable = false)
-    private Employees employee;
+    @JoinColumn(name = "IdCustomer")
+    private CustomerEntity customer;
 
     @Column(name = "CreatedAt", nullable = false)
     private Date createdAt;

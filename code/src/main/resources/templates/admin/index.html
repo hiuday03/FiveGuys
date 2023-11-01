@@ -312,6 +312,11 @@
             </a>
             <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
+                    <a th:href="@{/admin/account/account}">
+                        <i class="bi bi-circle"></i><span>Account</span>
+                    </a>
+                </li>
+                <li>
                     <a th:href="@{/admin/account/customer}">
                         <i class="bi bi-circle"></i><span>Customer</span>
                     </a>
@@ -337,7 +342,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/account/role}">
                         <i class="bi bi-circle"></i><span>Roles</span>
                     </a>
                 </li>
@@ -1069,10 +1074,12 @@
 <script th:src="@{/assets/js/product/material.js}"></script>
 <script th:src="@{/assets/js/product/color.js}"></script>
 <!--<script th:src="@{/assets/js/product/product-form.js}"></script>-->
+<script th:src="@{/assets/js/account.js}"></script>
 <script th:src="@{/assets/js/customer.js}"></script>
 <script th:src="@{/assets/js/address.js}"></script>
 <script th:src="@{/assets/js/favorite.js}"></script>
 <script th:src="@{/assets/js/rating.js}"></script>
+<script th:src="@{/assets/js/role.js}"></script>
 </body>
 
 </html>

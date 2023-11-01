@@ -219,8 +219,12 @@
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item" ng-repeat="pageNum in displayPageRange()">
-                            <a class="page-link" href="#" ng-click="setPage(pageNum)">{{pageNum}}</a></li>
+                        <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
+                        <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
+                        </li>
+                        <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
+                        <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
+                        <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
                     </ul>
                 </nav>
 
