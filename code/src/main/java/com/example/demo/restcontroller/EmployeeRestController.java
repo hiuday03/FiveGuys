@@ -42,6 +42,7 @@ public class EmployeeRestController {
         return ResponseEntity.ok(customers);
     }
 
+<<<<<<< HEAD
     //get employee status =1
     @GetMapping("/status1")
     public ResponseEntity<List<Employees>> getAllStatusDangLam() {
@@ -57,6 +58,14 @@ public class EmployeeRestController {
         return ResponseEntity.ok(customers);
     }
 
+=======
+    //search ma
+//    @GetMapping("/search/{code}")
+//    public ResponseEntity<List<Employees>> getByMa(@PathVariable String code) {
+//        List<Employees> customers = employeeService.searchMa(code);
+//        return ResponseEntity.ok(customers);
+//    }
+>>>>>>> develop
     @GetMapping("/{id}")
     public ResponseEntity<Employees> getById(@PathVariable Long id) {
         Employees customers = employeeService.getById(id);

@@ -98,13 +98,15 @@ create table Employees
 	BirthDate	datetime,
 	Gender		bit,
 	Address		nvarchar(MAX),
-	IdAccount		bigint references Accounts(Id),
+	IdAccount		bigint, 
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),
 	UpdatedBy	nvarchar(100),
-	Status		int
+	Status		int,
+	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id)
 )
+
 
 create table Customers
 (
@@ -113,12 +115,13 @@ create table Customers
 	Avatar		nvarchar(MAX),
 	BirthDate	datetime,
 	Gender		bit,
-	IdAccount		bigint references Accounts(Id),
+	IdAccount		bigint, 
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),
 	UpdatedBy	nvarchar(100),
 	Status		int
+	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id)
 )
 
 create table Address
