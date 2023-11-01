@@ -25,15 +25,19 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
         });
     }
 
-    $scope.getAddressDateOnly = function(dateTime) {
-        // Chuyển đổi datetime thành date (chỉ lấy ngày)
-        var date = new Date(dateTime);
-        return date;
-    };
-
-
-
     $scope.initialize();
+
+    $scope.loadAccounts = function () {
+        $http.get("/account/not-in-customer-employee") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.accounts = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading accounts", error);
+            });
+    }
+
+    $scope.loadAccounts(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
 
     $scope.edit = function (customer) {

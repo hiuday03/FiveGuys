@@ -6,17 +6,17 @@
     <meta charset="utf-8">
     <title>Dashboard - FiveGuys</title>
 </head>
-<link rel="stylesheet" th:href="@{/assets/js/favorite.js}">
+<link rel="stylesheet" th:href="@{/assets/js/role.js}">
 
-<body ng-app="favorite" ng-controller="favorite-ctrl">
+<body ng-app="role" ng-controller="role-ctrl">
     <main id="main" class="main" layout:fragment="content">
         <div class="pagetitle">
-            <h1>Favorite</h1>
+            <h1>Role</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
                     <li class="breadcrumb-item">Account</li>
-                    <li class="breadcrumb-item active">Favorite</li>
+                    <li class="breadcrumb-item active">Role</li>
                 </ol>
             </nav>
         </div>
@@ -24,7 +24,7 @@
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-                Create Favorite</button>
+                Create Role</button>
             <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
                 {{alertMessage}}
                 <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -34,57 +34,32 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Favorite</h5>
+                            <h5 class="modal-title">Create Role</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form name="formCreateFavorite" ng-submit="formCreateFavorite.$valid && create()"
+                            <form name="formCreateRole" ng-submit="formCreateRole.$valid && create()"
                                 novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                    <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.customer.id">
-                                            <option ng-repeat="customer in customers" ng-value="customer.id">
-                                                {{customer.fullName}}</option>
-                                        </select>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.customer.$invalid"
+                                        <input name="fullName" id="inputFullName" type="text" class="form-control"
+                                            ng-model="formInput.fullName" required>
+                                        <span ng-show="formCreateRole.$submitted">
+                                            <div ng-show="formCreateRole.fullName.$invalid"
                                                 class="error-message text-danger form-text">
-                                                customer cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputProductDetail"
-                                        class="col-sm-3 col-form-label">ProductDetail</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.productDetail.id">
-                                            <option ng-repeat="productDetail in productDetails"
-                                                ng-value="productDetail.id">
-                                                {{productDetail.product.name}},
-                                                {{productDetail.product.material.name}},
-                                                {{productDetail.product.category.name}},
-                                                {{productDetail.color.name}},
-                                                {{productDetail.size.name}}
-                                            </option>
-                                        </select>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.productDetail.$invalid"
-                                                class="error-message text-danger form-text">
-                                                ProductDetail cannot be blank</div>
+                                                FullName cannot be blank</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="text" class="form-control"
-                                        ng-model="currentDate | date:'yyyy-MM-dd'"
-                                        ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.createdAt.$invalid"
+                                        <input name="createdAt" id="inputCreatedAt" type="text"
+                                            class="form-control ng-pristine ng-untouched ng-valid"
+                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
+                                        <span ng-show="formCreateRole.$submitted">
+                                            <div ng-show="formCreateRole.createdAt.$invalid"
                                                 class="error-message text-danger form-text">
                                                 CreatedAt cannot be blank</div>
                                         </span>
@@ -95,8 +70,8 @@
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
                                             ng-model="formInput.updatedAt" required>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.updatedAt.$invalid"
+                                        <span ng-show="formCreateRole.$submitted">
+                                            <div ng-show="formCreateRole.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
                                                 UpdatedAt cannot be blank</div>
                                         </span>
@@ -111,8 +86,8 @@
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
                                         </select>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.status.$invalid"
+                                        <span ng-show="formUpdateRole.$submitted">
+                                            <div ng-show="formUpdateRole.status.$invalid"
                                                 class="error-message text-danger form-text">
                                                 Status cannot be blank</div>
                                         </span>
@@ -141,42 +116,17 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form name="formUpdateFavorite" ng-submit="formUpdateFavorite.$valid && update()"
+                            <form name="formUpdateRole" ng-submit="formUpdateRole.$valid && update()"
                                 novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                    <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.customer.id">
-                                            <option ng-repeat="customer in customers" ng-value="customer.id">
-                                                {{customer.fullName}}</option>
-                                        </select>
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.customer.$invalid"
+                                        <input name="fullName" id="inputFullName" type="text" class="form-control"
+                                            ng-model="formUpdate.fullName" required>
+                                        <span ng-show="formUpdateRole.$submitted">
+                                            <div ng-show="formUpdateRole.fullName.$invalid"
                                                 class="error-message text-danger form-text">
-                                                customer cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputProductDetail"
-                                        class="col-sm-3 col-form-label">ProductDetail</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.productDetail.id">
-                                            <option ng-repeat="productDetail in productDetails"
-                                                ng-value="productDetail.id">
-                                                {{productDetail.product.name}},
-                                                {{productDetail.product.material.name}},
-                                                {{productDetail.product.category.name}},
-                                                {{productDetail.color.name}},
-                                                {{productDetail.size.name}}
-                                            </option>
-                                        </select>
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.productDetail.$invalid"
-                                                class="error-message text-danger form-text">
-                                                ProductDetail cannot be blank</div>
+                                                FullName cannot be blank</div>
                                         </span>
                                     </div>
                                 </div>
@@ -186,8 +136,8 @@
                                         <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
                                             ng-model="formUpdate.createdAt"
                                             ng-value="formUpdate.createdAt | date:'yyyy-MM-dd'">
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.createdAt.$invalid"
+                                        <span ng-show="formUpdateRole.$submitted">
+                                            <div ng-show="formUpdateRole.createdAt.$invalid"
                                                 class="error-message text-danger form-text">
                                                 CreatedAt cannot be blank</div>
                                         </span>
@@ -199,8 +149,8 @@
                                         <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
                                             ng-model="formUpdate.updatedAt"
                                             ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.updatedAt.$invalid"
+                                        <span ng-show="formUpdateRole.$submitted">
+                                            <div ng-show="formUpdateRole.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
                                                 UpdatedAt cannot be blank</div>
                                         </span>
@@ -215,8 +165,8 @@
                                             <option ng-value="2">Two</option>
                                             <option ng-value="3">Three</option>
                                         </select>
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.status.$invalid"
+                                        <span ng-show="formUpdateRole.$submitted">
+                                            <div ng-show="formUpdateRole.status.$invalid"
                                                 class="error-message text-danger form-text">
                                                 Status cannot be blank</div>
                                         </span>
@@ -240,9 +190,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Name Custoemr(Id Custoemr)</th>
-                                <th scope="col">Name ProductDetail(ID ProductDetail)</th>
-                                <!-- <th scope="col">Image ProductDetail</th> -->
+                                <th scope="col">Full Name</th>
                                 <th scope="col">Created At</th>
                                 <th scope="col">Updated At</th>
                                 <th scope="col">Status</th>
@@ -250,24 +198,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="favorite in paper.items">
-                                <td>{{favorite.customer.fullName}}</td>
-                                <td>{{favorite.productDetail.product.name}},
-                                    {{favorite.productDetail.product.material.name}},
-                                    {{favorite.productDetail.product.category.name}},
-                                    {{favorite.productDetail.color.name}},
-                                    {{favorite.productDetail.size.name}}</td>
-                                <!-- <td>{{favorite.productDetail.image.name}}</td> -->
-                                <td>{{favorite.createdAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{favorite.updatedAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{favorite.status}}</td>
+                            <tr ng-repeat="role in paper.items">
+                                <td>{{role.fullName}}</td>
+                                <td>{{role.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{role.updatedAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{role.status}}</td>
                                 <td>
-                                    <button ng-click="edit(favorite)" type="button" class="btn btn-info"
+                                    <button ng-click="edit(role)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                             class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal-{{account.id}}"><i class="ri-delete-bin-fill"></i></button>
-                                    <div class="modal fade" id="deleteModal-{{account.id}}" tabindex="-1"
+                                        data-bs-target="#deleteModal-{{role.id}}"><i class="ri-delete-bin-fill"></i></button>
+                                    <div class="modal fade" id="deleteModal-{{role.id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -276,7 +218,7 @@
                                                         không?</h5>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button ng-click="delete(favorite)" type="button"
+                                                    <button ng-click="delete(role)" type="button"
                                                         class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>

@@ -6,17 +6,18 @@
     <meta charset="utf-8">
     <title>Dashboard - FiveGuys</title>
 </head>
-<link rel="stylesheet" th:href="@{/assets/js/favorite.js}">
+<link rel="stylesheet" th:href="@{/assets/js/account.js}">
+<!-- <link rel="stylesheet" th:href="@{/assets/js/customer.js}"> -->
 
-<body ng-app="favorite" ng-controller="favorite-ctrl">
+<body ng-app="account" ng-controller="account-ctrl">
     <main id="main" class="main" layout:fragment="content">
         <div class="pagetitle">
-            <h1>Favorite</h1>
+            <h1>Account</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
                     <li class="breadcrumb-item">Account</li>
-                    <li class="breadcrumb-item active">Favorite</li>
+                    <li class="breadcrumb-item active">Account</li>
                 </ol>
             </nav>
         </div>
@@ -24,7 +25,7 @@
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-                Create Favorite</button>
+                Create Account</button>
             <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
                 {{alertMessage}}
                 <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -34,74 +35,74 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Favorite</h5>
+                            <h5 class="modal-title">Create Account</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form name="formCreateFavorite" ng-submit="formCreateFavorite.$valid && create()"
-                                novalidate>
+                            <form name="formCreateAccount" ng-submit="formCreateAccount.$valid && create()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                    <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                    <div class="col-sm-9">
+                                        <input name="account" id="inputAccount" type="text" class="form-control"
+                                            ng-model="formInput.account" required>
+                                        <span ng-show="formCreateAccount.$submitted">
+                                            <div ng-show="formCreateAccount.account.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Account cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
+                                    <div class="col-sm-9">
+                                        <input name="Password" id="inputPassword" type="password" class="form-control"
+                                            ng-model="formInput.password" required>
+                                        <span ng-show="formCreateAccount.$submitted">
+                                            <div ng-show="formCreateAccount.password.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Password cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
+                                    <div class="col-sm-9">
+                                        <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
+                                            ng-model="formInput.phoneNumber" required>
+                                        <span ng-show="formCreateAccount.$submitted">
+                                            <div ng-show="formCreateAccount.phoneNumber.$invalid"
+                                                class="error-message text-danger form-text">
+                                                phoneNumber cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input name="email" id="inputEmail" type="email" class="form-control"
+                                            ng-model="formInput.email" required>
+                                        <span ng-show="formCreateAccount.$submitted">
+                                            <div ng-show="formCreateAccount.email.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Email cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.customer.id">
-                                            <option ng-repeat="customer in customers" ng-value="customer.id">
-                                                {{customer.fullName}}</option>
+                                            ng-model="formInput.role.id">
+                                            <option ng-repeat="role in roles" ng-value="role.id">
+                                                {{role.fullName}}</option>
                                         </select>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.customer.$invalid"
+                                        <span ng-show="formCreateAccount.$submitted">
+                                            <div ng-show="formCreateAccount.customer.$invalid"
                                                 class="error-message text-danger form-text">
                                                 customer cannot be blank</div>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label for="inputProductDetail"
-                                        class="col-sm-3 col-form-label">ProductDetail</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.productDetail.id">
-                                            <option ng-repeat="productDetail in productDetails"
-                                                ng-value="productDetail.id">
-                                                {{productDetail.product.name}},
-                                                {{productDetail.product.material.name}},
-                                                {{productDetail.product.category.name}},
-                                                {{productDetail.color.name}},
-                                                {{productDetail.size.name}}
-                                            </option>
-                                        </select>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.productDetail.$invalid"
-                                                class="error-message text-danger form-text">
-                                                ProductDetail cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
-                                    <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="text" class="form-control"
-                                        ng-model="currentDate | date:'yyyy-MM-dd'"
-                                        ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.createdAt.$invalid"
-                                                class="error-message text-danger form-text">
-                                                CreatedAt cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- <div class="row mb-3">
-                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
-                                    <div class="col-sm-9">
-                                        <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
-                                            ng-model="formInput.updatedAt" required>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.updatedAt.$invalid"
-                                                class="error-message text-danger form-text">
-                                                UpdatedAt cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
@@ -111,8 +112,8 @@
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
                                         </select>
-                                        <span ng-show="formCreateFavorite.$submitted">
-                                            <div ng-show="formCreateFavorite.status.$invalid"
+                                        <span ng-show="formCreateAccount.$submitted">
+                                            <div ng-show="formCreateAccount.status.$invalid"
                                                 class="error-message text-danger form-text">
                                                 Status cannot be blank</div>
                                         </span>
@@ -141,68 +142,67 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form name="formUpdateFavorite" ng-submit="formUpdateFavorite.$valid && update()"
-                                novalidate>
+                            <form name="formUpdateAccount" ng-submit="formUpdateAccount.$valid && update()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                    <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.customer.id">
-                                            <option ng-repeat="customer in customers" ng-value="customer.id">
-                                                {{customer.fullName}}</option>
-                                        </select>
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.customer.$invalid"
+                                        <input name="account" id="inputAccount" type="text" class="form-control"
+                                            ng-model="formUpdate.account" readonly>
+                                        <span ng-show="formUpdateAccount.$submitted">
+                                            <div ng-show="formUpdateAccount.account.$invalid"
                                                 class="error-message text-danger form-text">
-                                                customer cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputProductDetail"
-                                        class="col-sm-3 col-form-label">ProductDetail</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.productDetail.id">
-                                            <option ng-repeat="productDetail in productDetails"
-                                                ng-value="productDetail.id">
-                                                {{productDetail.product.name}},
-                                                {{productDetail.product.material.name}},
-                                                {{productDetail.product.category.name}},
-                                                {{productDetail.color.name}},
-                                                {{productDetail.size.name}}
-                                            </option>
-                                        </select>
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.productDetail.$invalid"
-                                                class="error-message text-danger form-text">
-                                                ProductDetail cannot be blank</div>
+                                                Account cannot be blank</div>
                                         </span>
                                     </div>
                                 </div>
                                 <!-- <div class="row mb-3">
-                                    <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
                                     <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="date" class="form-control"
-                                            ng-model="formUpdate.createdAt"
-                                            ng-value="formUpdate.createdAt | date:'yyyy-MM-dd'">
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.createdAt.$invalid"
+                                        <input name="password" id="inputPassword" type="password" class="form-control"
+                                            ng-model="formUpdate.password" required>
+                                        <span ng-show="formUpdateAccount.$submitted">
+                                            <div ng-show="formUpdateAccount.password.$invalid"
                                                 class="error-message text-danger form-text">
-                                                CreatedAt cannot be blank</div>
+                                                Password cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="row mb-3">
+                                    <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
+                                    <div class="col-sm-9">
+                                        <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
+                                            ng-model="formUpdate.phoneNumber" required>
+                                        <span ng-show="formUpdateAccount.$submitted">
+                                            <div ng-show="formUpdateAccount.phoneNumber.$invalid"
+                                                class="error-message text-danger form-text">
+                                                phoneNumber cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="row mb-3">
+                                    <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input name="email" id="inputEmail" type="email" class="form-control"
+                                            ng-model="formUpdate.email" required>
+                                        <span ng-show="formUpdateAccount.$submitted">
+                                            <div ng-show="formUpdateAccount.email.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Email cannot be blank</div>
                                         </span>
                                     </div>
                                 </div> -->
                                 <div class="row mb-3">
-                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
+                                    <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
                                     <div class="col-sm-9">
-                                        <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
-                                            ng-model="formUpdate.updatedAt"
-                                            ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.updatedAt.$invalid"
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.role.id">
+                                            <option ng-repeat="role in roles" ng-value="role.id">
+                                                {{role.fullName}}</option>
+                                        </select>
+                                        <span ng-show="formUpdateAccount.$submitted">
+                                            <div ng-show="formUpdateAccount.customer.$invalid"
                                                 class="error-message text-danger form-text">
-                                                UpdatedAt cannot be blank</div>
+                                                customer cannot be blank</div>
                                         </span>
                                     </div>
                                 </div>
@@ -215,8 +215,8 @@
                                             <option ng-value="2">Two</option>
                                             <option ng-value="3">Three</option>
                                         </select>
-                                        <span ng-show="formUpdateFavorite.$submitted">
-                                            <div ng-show="formUpdateFavorite.status.$invalid"
+                                        <span ng-show="formUpdateAccount.$submitted">
+                                            <div ng-show="formUpdateAccount.status.$invalid"
                                                 class="error-message text-danger form-text">
                                                 Status cannot be blank</div>
                                         </span>
@@ -240,29 +240,25 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Name Custoemr(Id Custoemr)</th>
-                                <th scope="col">Name ProductDetail(ID ProductDetail)</th>
-                                <!-- <th scope="col">Image ProductDetail</th> -->
-                                <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
+                                <th scope="col">Account</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="favorite in paper.items">
-                                <td>{{favorite.customer.fullName}}</td>
-                                <td>{{favorite.productDetail.product.name}},
-                                    {{favorite.productDetail.product.material.name}},
-                                    {{favorite.productDetail.product.category.name}},
-                                    {{favorite.productDetail.color.name}},
-                                    {{favorite.productDetail.size.name}}</td>
-                                <!-- <td>{{favorite.productDetail.image.name}}</td> -->
-                                <td>{{favorite.createdAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{favorite.updatedAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{favorite.status}}</td>
+                            <tr ng-repeat="account in paper.items">
+                                <td>{{account.account}}</td>
+                                <td>{{account.password}}</td>
+                                <td>{{account.phoneNumber}}</td>
+                                <td>{{account.email}}</td>
+                                <td>{{account.role.fullName}}</td>
+                                <td>{{account.status}}</td>
                                 <td>
-                                    <button ng-click="edit(favorite)" type="button" class="btn btn-info"
+                                    <button ng-click="edit(account)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                             class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -276,7 +272,7 @@
                                                         không?</h5>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button ng-click="delete(favorite)" type="button"
+                                                    <button ng-click="delete(account)" type="button"
                                                         class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>

@@ -109,12 +109,13 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.productDetail.id">
-                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
-                                                {{rating.productDetail.product.name}},
-                                                {{rating.productDetail.product.material.name}},
-                                                {{rating.productDetail.product.category.name}},
-                                                {{rating.productDetail.color.name}},
-                                                {{rating.productDetail.size.name}}
+                                            <option ng-repeat="productDetail in productDetails"
+                                                ng-value="productDetail.id">
+                                                {{productDetail.product.name}},
+                                                {{productDetail.product.material.name}},
+                                                {{productDetail.product.category.name}},
+                                                {{productDetail.color.name}},
+                                                {{productDetail.size.name}}
                                             </option>
                                         </select>
                                         <span ng-show="formCreateRating.$submitted">
@@ -235,12 +236,13 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.productDetail.id">
-                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
-                                                {{rating.productDetail.product.name}},
-                                                {{rating.productDetail.product.material.name}},
-                                                {{rating.productDetail.product.category.name}},
-                                                {{rating.productDetail.color.name}},
-                                                {{rating.productDetail.size.name}}
+                                            <option ng-repeat="productDetail in productDetails"
+                                                ng-value="productDetail.id">
+                                                {{productDetail.product.name}},
+                                                {{productDetail.product.material.name}},
+                                                {{productDetail.product.category.name}},
+                                                {{productDetail.color.name}},
+                                                {{productDetail.size.name}}
                                             </option>
                                         </select>
                                         <span ng-show="formUpdateRating.$submitted">

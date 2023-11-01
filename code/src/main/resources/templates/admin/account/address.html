@@ -88,6 +88,22 @@
                                         </span>
                                     </div>
                                 </div>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputDefaultAddress" class="col-sm-3 col-form-label"> Default
+                                        Address</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formInput.defaultAddress" required>
+                                            <option value="1">True</option>
+                                            <option value="0">False</option>
+                                        </select>
+                                        <span ng-show="formCreateAddress.$submitted">
+                                            <div ng-show="formCreateAddress.defaultAddress.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Address Default cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
                                     <div class="col-sm-9">
@@ -216,12 +232,28 @@
                                         </span>
                                     </div>
                                 </div>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputDefaultAddress" class="col-sm-3 col-form-label"> Default
+                                        Address</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.defaultAddress" required>
+                                            <option value="1">True</option>
+                                            <option value="0">False</option>
+                                        </select>
+                                        <span ng-show="formUpdateAddress.$submitted">
+                                            <div ng-show="formUpdateAddress.defaultAddress.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Address Default cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.customer.id">
-                                            <<option ng-repeat="customer in customers" ng-value="customer.id">
+                                            <option ng-repeat="customer in customers" ng-value="customer.id">
                                                 {{customer.fullName}}</option>
                                         </select>
                                         <span ng-show="formUpdateAddress.$submitted">
@@ -295,6 +327,7 @@
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Address</th>
                                 <th scope="col">Address Type</th>
+                                <th scope="col">Default Address</th>
                                 <th scope="col">Name Customer(ID Customer)</th>
                                 <th scope="col">Created At</th>
                                 <th scope="col">Updated At</th>
@@ -308,6 +341,7 @@
                                 <td>{{address.phoneNumber}}</td>
                                 <td>{{address.address}}</td>
                                 <td>{{address.addressType}}</td>
+                                <td>{{address.defaultAddress}}</td>
                                 <td>{{address.customer.fullName}}</td>
                                 <td>{{address.createdAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{address.updatedAt | date:'yyyy-MM-dd'}}</td>
@@ -317,8 +351,8 @@
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                             class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal"><i class="ri-delete-bin-fill"></i></button>
-                                    <div class="modal fade" id="deleteModal" tabindex="-1"
+                                        data-bs-target="#deleteModal-{{account.id}}"><i class="ri-delete-bin-fill"></i></button>
+                                    <div class="modal fade" id="deleteModal-{{account.id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">

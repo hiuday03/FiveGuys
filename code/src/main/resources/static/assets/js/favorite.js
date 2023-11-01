@@ -39,6 +39,18 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
     $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
+    $scope.loadProductDetails = function () {
+        $http.get("/api/productDetail") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.productDetails = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading productDetails", error);
+            });
+    }
+
+    $scope.loadProductDetails();
+
     $scope.edit = function (favorite) {
         if ($scope.formUpdate.updatedAt) {
             $scope.formUpdate = angular.copy(favorite);

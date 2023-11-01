@@ -8,6 +8,8 @@ import java.util.List;
 public interface AccountService {
     List<AccountEntity> getAllAccount();
 
+    List<AccountEntity> loadAccount();
+
     AccountEntity getAccountById(Long id);
 
     Page<AccountEntity> getAllAccountPage(Integer page);
