@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class OlDetailProductRespone {
+public class OlProductDetailRespone {
 
 
     private Long id;
