@@ -43,6 +43,9 @@ public class EmployeeRestController {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2604c71244a188cb01c2f8826de82e86568fe39c
     //get employee status =1
     @GetMapping("/status1")
     public ResponseEntity<List<Employees>> getAllStatusDangLam() {
@@ -57,6 +60,7 @@ public class EmployeeRestController {
         Page<Employees> customers = employeeRepository.searchMa(code, pageable);
         return ResponseEntity.ok(customers);
     }
+<<<<<<< HEAD
 
 =======
     //search ma
@@ -66,6 +70,8 @@ public class EmployeeRestController {
 //        return ResponseEntity.ok(customers);
 //    }
 >>>>>>> develop
+=======
+>>>>>>> 2604c71244a188cb01c2f8826de82e86568fe39c
     @GetMapping("/{id}")
     public ResponseEntity<Employees> getById(@PathVariable Long id) {
         Employees customers = employeeService.getById(id);

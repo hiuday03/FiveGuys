@@ -58,9 +58,12 @@ public class Employees {
     private Integer status;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //    @OneToOne
 //    @JoinColumn(name = "IdAccount")
 //    private AccountEntity accounts;
 =======
 >>>>>>> develop
+=======
+>>>>>>> 2604c71244a188cb01c2f8826de82e86568fe39c
 }
