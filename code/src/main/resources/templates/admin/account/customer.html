@@ -468,14 +468,10 @@
                         <thead>
                             <tr>
                                 <th scope="col">Full Name</th>
-                                <!-- <th scope="col">Avatar</th> -->
                                 <th scope="col">Account</th>
-                                <!-- <th scope="col">Password</th> -->
-                                <th scope="col">Phone Number</th>
                                 <!-- <th scope="col">Email</th> -->
                                 <!-- <th scope="col">Birth Date</th> -->
                                 <!-- <th scope="col">Gender</th> -->
-                                <th scope="col">Address</th>
                                 <th scope="col">Created At</th>
                                 <th scope="col">Updated At</th>
                                 <th scope="col">Created By</th>
@@ -488,13 +484,11 @@
                             <tr ng-repeat="customer in paper.items">
                                 <td>{{customer.fullName}}</td>
                                 <!-- <td>{{customer.avatar}}</td> -->
-                                <td>{{customer.account}}</td>
+                                <td>{{customer.account.account}}</td>
                                 <!-- <td>{{customer.password}}</td> -->
-                                <td>{{customer.phoneNumber}}</td>
                                 <!-- <td>{{customer.email}}</td> -->
                                 <!-- <td>{{customer.birthDate | date:'yyyy-MM-dd'}}</td> -->
                                 <!-- <td>{{customer.gender}}</td> -->
-                                <td>{{customer.address}}</td>
                                 <td>{{customer.createdAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{customer.updatedAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{customer.createdBy}}</td>

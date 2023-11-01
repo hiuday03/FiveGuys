@@ -56,7 +56,6 @@ public class EmployeeRestController {
         Page<Employees> customers = employeeRepository.searchMa(code, pageable);
         return ResponseEntity.ok(customers);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Employees> getById(@PathVariable Long id) {
         Employees customers = employeeService.getById(id);
