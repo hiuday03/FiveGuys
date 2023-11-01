@@ -27,6 +27,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public List<AccountEntity> loadAccount() {
+        return accountRepository.loadAccount();
+    }
+
+    @Override
     public AccountEntity getAccountById(Long id) {
         return accountRepository.findById(id).orElse(null);
     }

@@ -66,19 +66,19 @@
                                 <div class="row mb-3">
                                     <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                     <div class="col-sm-9">
-                                        <input name="account" id="inputAccount" type="text" class="form-control"
-                                            ng-model="formInput.account" required>
-                                        <div ng-show="errorMessage" class="error-message text-danger form-text">
-                                            {{ errorMessage }}
-                                        </div>
+                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formInput.account.id">
+                                            <option ng-repeat="account in accounts" ng-value="account.id">
+                                                {{account.account}}</option>
+                                        </select>
                                         <span ng-show="formCreateCustomer.$submitted">
-                                            <div ng-show="formCreateCustomer.account.$invalid"
+                                            <div ng-show="formCreateCustomer.customer.$invalid"
                                                 class="error-message text-danger form-text">
                                                 Account cannot be blank</div>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <!-- <div class="row mb-3">
                                     <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
                                     <div class="col-sm-9">
                                         <input name="password" id="inputPassword" type="password" class="form-control"
@@ -89,7 +89,7 @@
                                                 Password cannot be blank</div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- <div class="row mb-3">
                                     <label for="inputEnterPass" class="col-sm-3 col-form-label">Enter Password</label>
                                     <div class="col-sm-9">
@@ -101,7 +101,7 @@
                                         </span>
                                     </div>
                                 </div> -->
-                                <div class="row mb-3">
+                                <!-- <div class="row mb-3">
                                     <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
                                     <div class="col-sm-9">
                                         <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
@@ -112,7 +112,7 @@
                                                 phoneNumber cannot be blank</div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- <div class="row mb-3">
                                     <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
                                     <div class="col-sm-9">
@@ -499,8 +499,8 @@
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                             class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal"><i class="ri-delete-bin-fill"></i></button>
-                                    <div class="modal fade" id="deleteModal" tabindex="-1"
+                                        data-bs-target="#deleteModal-{{account.id}}"><i class="ri-delete-bin-fill"></i></button>
+                                    <div class="modal fade" id="deleteModal-{{account.id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
