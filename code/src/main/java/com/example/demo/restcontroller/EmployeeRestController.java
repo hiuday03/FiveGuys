@@ -45,7 +45,6 @@ public class EmployeeRestController {
 
 >>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
 
-    //get employee
     @GetMapping("")
     public ResponseEntity<List<Employees>> getAll() {
         List<Employees> customers = employeeService.getAll();
