@@ -1,16 +1,12 @@
 package com.example.demo.restcontroller;
 
 import com.example.demo.entity.Employees;
-<<<<<<< HEAD
-import com.example.demo.service.EmployeeService;
-=======
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
->>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,11 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-<<<<<<< HEAD
-=======
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
->>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
 import java.io.IOException;
 import java.util.List;
 
@@ -38,12 +31,9 @@ public class EmployeeRestController {
     @Autowired
     EmployeeService employeeService;
 
-<<<<<<< HEAD
-=======
     @Autowired
     EmployeeRepository employeeRepository;
 
->>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
 
     @GetMapping("")
     public ResponseEntity<List<Employees>> getAll() {
@@ -51,14 +41,6 @@ public class EmployeeRestController {
         return ResponseEntity.ok(customers);
     }
 
-<<<<<<< HEAD
-    //search ma
-    @GetMapping("/search/{code}")
-    public ResponseEntity<List<Employees>> getByMa(@PathVariable String code) {
-        List<Employees> customers = employeeService.searchMa(code);
-        return ResponseEntity.ok(customers);
-    }
-=======
     //get employee status =1
     @GetMapping("/status1")
     public ResponseEntity<List<Employees>> getAllStatusDangLam() {
@@ -66,7 +48,6 @@ public class EmployeeRestController {
         return ResponseEntity.ok(customers);
     }
 
->>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
     @GetMapping("/{id}")
     public ResponseEntity<Employees> getById(@PathVariable Long id) {
         Employees customers = employeeService.getById(id);
@@ -74,10 +55,6 @@ public class EmployeeRestController {
     }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
     @GetMapping("/get-page")
     public ResponseEntity<Page<Employees>> phantrang(@RequestParam(defaultValue = "0", name = "page") Integer t) {
         Page<Employees> customers = employeeService.phanTrang(t, 5);
@@ -98,10 +75,7 @@ public class EmployeeRestController {
         }
 
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
     // delete Employee
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -142,9 +116,6 @@ public class EmployeeRestController {
 
     }
 
-<<<<<<< HEAD
-}
-=======
     // xuất file excel Employ
     private static CellStyle cellStyleFormatNumber = null;
 
@@ -251,4 +222,3 @@ public class EmployeeRestController {
 
     }
 }
->>>>>>> de1f6b639d3f96414e003b5fafe0b8d49822b8cc
