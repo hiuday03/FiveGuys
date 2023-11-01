@@ -23,15 +23,12 @@ import java.util.List;
 
 public class CustomerRestController {
 
-//    private final CustomerServiceImpl customerService;
-//
-//    @Autowired
-//    public CustomerRestController(CustomerServiceImpl customerService) {
-//        this.customerService = customerService;
-//    }
-    @Autowired
-    private CustomerService customerService;
+   private final CustomerServiceImpl customerService;
 
+   @Autowired
+   public CustomerRestController(CustomerServiceImpl customerService) {
+       this.customerService = customerService;
+   }
 
     @GetMapping("")
     public ResponseEntity<List<CustomerEntity>> getAllCustomer() {
