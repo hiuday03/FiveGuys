@@ -19,15 +19,15 @@ public class PaymentMethod {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "Name", nullable = false, length = 50)
+    @Column(name = "Name")
     private String name;
 
-    @Column(name = "CreatedAt", nullable = false)
+    @Column(name = "CreatedAt")
     private Date createdAt;
 
-    @Column(name = "UpdatedAt", nullable = false)
+    @Column(name = "UpdatedAt")
     private Date updatedAt;
 
-    @Column(name = "Status", nullable = false)
+    @Column(name = "Status")
     private int status;
 }

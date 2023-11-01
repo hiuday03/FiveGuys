@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -27,4 +28,6 @@ public interface OLProductDetailRepository extends JpaRepository<ProductDetail, 
     List<Size> findDistinctSizesBySanPhamId(@Param("productId") Long productId);
 
     ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
+
+    Optional<ProductDetail> findById(Long productDetailId);
 }

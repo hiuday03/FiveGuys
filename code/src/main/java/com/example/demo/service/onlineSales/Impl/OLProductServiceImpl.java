@@ -3,7 +3,7 @@ package com.example.demo.service.onlineSales.Impl;
 import com.example.demo.entity.Image;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.ProductDetail;
-import com.example.demo.model.response.onlineSales.OlDetailProductRespone;
+import com.example.demo.model.response.onlineSales.OlViewProductDetailRespone;
 import com.example.demo.model.response.onlineSales.OlHomeProductRespone;
 import com.example.demo.repository.onlineSales.OLProductDetailRepository;
 import com.example.demo.repository.onlineSales.OLProductRepository;
@@ -98,30 +98,30 @@ public class OLProductServiceImpl implements OLProductService {
     }
 
     @Override
-    public OlDetailProductRespone getOlDetailProductResponeById(Long id) {
+    public OlViewProductDetailRespone getOlDetailProductResponeById(Long id) {
         Optional<Product> productOptional = olProductRepository.findById(id);
 
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             List<ProductDetail> productDetails = olProductDetailRepository.findByProduct(product);
 
-            OlDetailProductRespone olDetailProductRespone = new OlDetailProductRespone();
-            olDetailProductRespone.setId(product.getId());
-            olDetailProductRespone.setCode(product.getCode());
-            olDetailProductRespone.setName(product.getName());
-            olDetailProductRespone.setWrist(product.getWrist());
-            olDetailProductRespone.setCollar(product.getCollar());
-            olDetailProductRespone.setBrand(product.getBrand());
-            olDetailProductRespone.setDescribe(product.getDescribe());
-            olDetailProductRespone.setNameCategory(product.getCategory().getName());
-            olDetailProductRespone.setNameMaterial(product.getMaterial().getName());
-            olDetailProductRespone.setPrice(productDetails.isEmpty() ? null : productDetails.get(0).getPrice());
+            OlViewProductDetailRespone olViewProductDetailRespone = new OlViewProductDetailRespone();
+            olViewProductDetailRespone.setId(product.getId());
+            olViewProductDetailRespone.setCode(product.getCode());
+            olViewProductDetailRespone.setName(product.getName());
+            olViewProductDetailRespone.setWrist(product.getWrist());
+            olViewProductDetailRespone.setCollar(product.getCollar());
+            olViewProductDetailRespone.setBrand(product.getBrand());
+            olViewProductDetailRespone.setDescribe(product.getDescribe());
+            olViewProductDetailRespone.setNameCategory(product.getCategory().getName());
+            olViewProductDetailRespone.setNameMaterial(product.getMaterial().getName());
+            olViewProductDetailRespone.setPrice(productDetails.isEmpty() ? null : productDetails.get(0).getPrice());
             // Các thông tin khác có thể cập nhật tương tự
 
 //            List<Image> images = productDetails.isEmpty() ? new ArrayList<>() : productDetails.get(0).getImages();
 //            olDetailProductRespone.setImages(images);
 
-            return olDetailProductRespone;
+            return olViewProductDetailRespone;
         }
 
         return null;

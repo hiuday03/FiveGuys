@@ -2,21 +2,22 @@ package com.example.demo.restcontroller.onlineSales;
 
 
 import com.example.demo.entity.*;
-import com.example.demo.entity.status.RoleName;
-import com.example.demo.model.response.onlineSales.OlDetailProductRespone;
+import com.example.demo.model.response.onlineSales.OlViewProductDetailRespone;
 import com.example.demo.model.response.onlineSales.OlHomeProductRespone;
 import com.example.demo.model.response.onlineSales.OlProductDetailInfo;
+import com.example.demo.repository.CustomerRepository;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.onlineSales.OLProductDetailService;
 import com.example.demo.service.onlineSales.OLProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 @RestController
@@ -29,6 +30,15 @@ public class HomeRestController {
     @Autowired
     private OLProductDetailService olProductDetailService;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
     @GetMapping("/products")
     public ResponseEntity<?> getAllOlProductsRespone(@RequestParam("page") Integer page) {
         Page<OlHomeProductRespone> products = olProductService.getAllOlProductsRespone(page);
@@ -36,33 +46,32 @@ public class HomeRestController {
         if (products.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No products found");
         }
-
         return ResponseEntity.ok(products);
     }
 
 //    @GetMapping("/list")
 //    public ResponseEntity<?> getAllOlProductsRespone() {
-//        List<OlHomeProductRespone> products =  olProductService.getAllOlProductsRespone();
+////        List<OlHomeProductRespone> products =  olProductService.getAllOlProductsRespone();
+////
+////        if (products.isEmpty()) {
+////            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No products found");
+////        }
 //
-//        if (products.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No products found");
-//        }
-//
-//        return ResponseEntity.ok(products);
+//        return ResponseEntity.ok(roleRepository.findAll());
 //    }
 
-    @GetMapping("/products/detail/{id}")
-    public ResponseEntity<?> detail(@PathVariable("id") Long id) {
-        OlDetailProductRespone olDetailProductRespone = olProductService.getOlDetailProductResponeById(id);
+    @GetMapping("/products/detailInfo/{id}")
+    public ResponseEntity<?> detailInfo(@PathVariable("id") Long id) {
+        OlViewProductDetailRespone olViewProductDetailRespone = olProductService.getOlDetailProductResponeById(id);
 
-        if (olDetailProductRespone == null) {
+        if (olViewProductDetailRespone == null) {
             return ResponseEntity.notFound().build(); // Trả về mã HTTP 404 Not Found
         }
 
         List<Color> listOfColor = olProductDetailService.findDistinctColorsBySanPhamId(id);
         List<Size> listOfSize = olProductDetailService.findDistinctSizesBySanPhamId(id);
 
-        OlProductDetailInfo productDetailInfo = new OlProductDetailInfo(olDetailProductRespone, listOfColor, listOfSize);
+        OlProductDetailInfo productDetailInfo = new OlProductDetailInfo(olViewProductDetailRespone, listOfColor, listOfSize);
 
         return ResponseEntity.ok(productDetailInfo);
     }
@@ -80,6 +89,19 @@ public class HomeRestController {
             return ResponseEntity.badRequest().body("Missing required parameters: coloId, sizeId, productId");
         }
     }
+
+    @GetMapping("/products/detail/{id}")
+    public ResponseEntity<?> getProductDetail(@PathVariable("id") Long id) {
+        Optional<ProductDetail> productDetailOptional = olProductDetailService.findById(id);
+
+        if (productDetailOptional.isPresent()) {
+            ProductDetail productDetail = productDetailOptional.get();
+            return ResponseEntity.ok(productDetail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
 

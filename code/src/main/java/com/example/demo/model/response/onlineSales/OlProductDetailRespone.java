@@ -1,2 +1,12 @@
-package com.example.demo.model.response.onlineSales;public class OlProductDetailRespone {
+package com.example.demo.model.response.onlineSales;
+
+import lombok.*;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
+public class OlProductDetailRespone {
+
 }
