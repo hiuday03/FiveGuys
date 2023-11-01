@@ -1,7 +1,6 @@
 package com.example.demo.model.response.onlineSales;
 
 import com.example.demo.entity.Color;
-import com.example.demo.entity.Product;
 import com.example.demo.entity.Size;
 import lombok.*;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class OlProductDetailInfo {
 
 
-    private OlDetailProductRespone  olDetailProductRespone;
+    private OlViewProductDetailRespone olViewProductDetailRespone;
 
     private List<Color> listOfColor;
 

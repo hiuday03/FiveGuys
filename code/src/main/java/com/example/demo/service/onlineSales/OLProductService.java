@@ -1,7 +1,7 @@
 package com.example.demo.service.onlineSales;
 
 import com.example.demo.entity.Product;
-import com.example.demo.model.response.onlineSales.OlDetailProductRespone;
+import com.example.demo.model.response.onlineSales.OlViewProductDetailRespone;
 import com.example.demo.model.response.onlineSales.OlHomeProductRespone;
 import org.springframework.data.domain.Page;
 
@@ -18,5 +18,5 @@ public interface OLProductService {
 
     Optional<Product> findById(Long id);
 
-    OlDetailProductRespone getOlDetailProductResponeById(Long id);
+    OlViewProductDetailRespone getOlDetailProductResponeById(Long id);
 }
