@@ -4,88 +4,102 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Danh sách sản phẩm - FiveGuys</title>
-    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <title>Category - FiveGuys</title>
 </head>
+<!--<link rel="stylesheet" th:href="@{/assets/js/color.js}">-->
 
-<body ng-app="product-list-app" ng-controller="product-list-ctrl">
+<body ng-app="color-app" ng-controller="color-ctrl">
 <main id="main" class="main" layout:fragment="content">
-
     <div class="pagetitle">
-        <h1>Products</h1>
+        <h1>Category</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                <li class="breadcrumb-item">Products</li>
-                <li class="breadcrumb-item active">Products</li>
+                <li class="breadcrumb-item">Account</li>
+                <li class="breadcrumb-item active">Color</li>
             </ol>
         </nav>
     </div>
     <!--  Begin code  -->
     <section class="section">
-        <!--        <button type="button" class="btn btn-outline-success mb-2">-->
-        <!--            Add Color-->
-        <!--        </button>-->
-        <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal" data-bs-target="#modalAdd">
-            Add Color
+        <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
+                data-bs-target="#modalAdd">
+            Create Color
         </button>
+        <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
+            {{alertMessage}}
+            <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
+        </div>
         <!-- Modal Add -->
         <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create Color</h5>
+                        <h5 class="modal-title">Create Customer</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3" novalidate>
-                            <div class="col-md-4">
-                                <label class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" ng-model="name" required>
-
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Cổ áo</label>
-                                <input type="text" class="form-control" ng-model="collar" required>
-
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Cổ tay</label>
-                                <input type="text" class="form-control" ng-model="wrist" required>
-
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Loại sản phẩm</label>
-                                <select class="form-select" ng-model="idCategory" required>
-                                    <option selected disabled value="">Choose...</option>
-                                    <option ng-repeat="c in categories" value="{{c.id}}">{{ c.name }}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Chất liệu</label>
-                                <select class="form-select" ng-model="idMaterial" required>
-                                    <option selected disabled value="">Choose...</option>
-                                    <option ng-repeat="m in materials" value="{{m.id}}">{{ m.name }}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Thương hiệu</label>
-                                <input type="text" class="form-control" ng-model="brand" required>
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Mô tả</label>
-                                <div class="form-floating">
-                                <textarea class="form-control"
-                                          placeholder="Leave a comment here" id="floatingTextarea2"
-                                          style="height: 200px" ng-model="describe"></textarea>
-                                    <label for="floatingTextarea2">Mô tả sản phẩm</label>
+                        <form name="formCreateCustomer" ng-submit="formCreateCustomer.$valid && create()"
+                              novalidate>
+                            <div class="row mb-3">
+                                <label for="inputFullName" class="col-sm-3 col-form-label">Color name</label>
+                                <div class="col-sm-9">
+                                    <input name="name" id="inputFullName" type="text" class="form-control"
+                                           ng-model="formInput.name" required>
+                                    <span ng-show="formCreateCustomer.$submitted">
+                                            <div ng-show="formCreateCustomer.name.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                Color name cannot be blank</div>
+                                        </span>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <button ng-click="cc()"> c</button>
-                                <button class="btn btn-primary" ng-click="createProduct()" type="submit">Submit form
+                            <div class="row mb-3">
+                                <label for="inputColor" class="col-sm-3 col-form-label">Select color</label>
+                                <div class="col-sm-9">
+                                    <input name="colorCode" id="inputColor" class="form-control" type="color"
+                                           value="#ffffff" ng-model="formInput.colorCode" required>
+                                    <span ng-show="formCreateCustomer.$submitted">
+                                            <div ng-show="formCreateCustomer.colorCode.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                Select color</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <!-- <div class="row mb-3">
+                                <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
+                                <div class="col-sm-9">
+                                    <input name="avatar" id="inputAvatar" type="file" class="form-control" ng-model="formInput.avatar"  required>
+                                <span ng-show="formCreateCustomer.$submitted">
+                                        <div ng-show="formCreateCustomer.Avatar.$invalid" class="error-message text-danger form-text">
+                                        Avatar cannot be blank</div>
+                                    </span>
+                                </div>
+                                <img src="" alt="" sizes="" srcset="">
+                            </div> -->
+                            <div class="row mb-3">
+                                <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formInput.status" required>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                    <span ng-show="formUpdateCustomer.$submitted">
+                                            <div ng-show="formUpdateCustomer.status.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                Status cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button ng-click="resetFormInput()" type="button"
+                                        class="btn btn-warning">Reset
                                 </button>
-                                <a class="btn btn-outline-secondary" th:href="@{/admin/product1}" type="submit">Back</a>
+                                <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -93,38 +107,121 @@
             </div>
         </div>
         <!-- End Modal Add -->
-
+        <!-- Begin Modal Update -->
+        <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Color</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="formUpdateCustomer" ng-submit="formUpdateCustomer.$valid && update()"
+                              novalidate>
+                            <div class="row mb-3">
+                                <label for="inputFullName" class="col-sm-3 col-form-label">Color name</label>
+                                <div class="col-sm-9">
+                                    <input name="name" id="inputFullName" type="text" class="form-control"
+                                           ng-model="formUpdate.name" required>
+                                    <span ng-show="formUpdateCustomer.$submitted">
+                                            <div ng-show="formUpdateCustomer.name.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                Color name cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputColor" class="col-sm-3 col-form-label">Select color</label>
+                                <div class="col-sm-9">
+                                    <input name="colorCode" id="inputColor" class="form-control" type="color"
+                                           value="formUpdate.colorCode" ng-model="formUpdate.colorCode" required>
+                                    <span ng-show="formCreateCustomer.$submitted">
+                                            <div ng-show="formCreateCustomer.colorCode.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                Select color</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <!-- <div class="row mb-3">
+                                <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
+                                <div class="col-sm-9">
+                                    <input name="avatar" id="inputAvatar" type="file" class="form-control" ng-model="formUpdate.avatar"  required>
+                                <span ng-show="formUpdateCustomer.$submitted">
+                                        <div ng-show="formUpdateCustomer.Avatar.$invalid" class="error-message text-danger form-text">
+                                        Avatar cannot be blank</div>
+                                    </span>
+                                </div>
+                                <img src="" alt="" sizes="" srcset="">
+                            </div> -->
+                            <div class="row mb-3">
+                                <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.status">
+                                        <option ng-value="1">One</option>
+                                        <option ng-value="2">Two</option>
+                                        <option ng-value="3">Three</option>
+                                    </select>
+                                    <span ng-show="formUpdateCustomer.$submitted">
+                                            <div ng-show="formUpdateCustomer.status.$invalid"
+                                                 class="error-message text-danger form-text">
+                                                Status cannot be blank</div>
+                                        </span>
+                                </div>
+                            </div>
+                            <!-- <div class="row mb-3">
+                                <legend class="col-form-label col-sm-3 pt-0">Status</legend>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="status">
+                                        <label class="form-check-label" for="status">
+                                            True
+                                        </label>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button ng-click="resetFormUpdate()" type="button"
+                                        class="btn btn-warning">Reset
+                                </button>
+                                <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal Update -->
         <div class="row">
             <div class="col-lg-12">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Mã</th>
-                        <th scope="col">Tên sản phẩm</th>
-                        <th scope="col">Cổ áo</th>
-                        <th scope="col">Tay áo</th>
-                        <th scope="col">Thương hiệu</th>
-                        <th scope="col">Loại</th>
-                        <th scope="col">Chất liệu</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Color code</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="p in products">
-                        <td>{{p.code}}</td>
-                        <td>{{p.name}}</td>
-                        <td>{{p.collar}}</td>
-                        <td>{{p.wrist}}</td>
-                        <td>{{p.brand}}</td>
-                        <td>{{p.category.name}}</td>
-                        <td>{{p.material.name}}</td>
-                        <td>
-                            <a type="button" class="btn btn-info" th:href="@{/admin/product1/update/p.id}"
-                               ng-click="getProductById(p.id)"><i class="ri-edit-2-line"></i></a>
-
-                            <button type="button" class="btn btn-danger"><i class="ri-delete-bin-fill"></i></button>
-                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
+                    <tr ng-repeat="color in colors">
+                        <td class="col-1">{{color.id}}</td>
+                        <td class="col-5">{{color.name}}</td>
+                        <td class="col-5">{{color.colorCode}}</td>
+                        <td class="col-4">{{color.status}}</td>
+                        <td class="col-2">
+                            <button ng-click="edit(color)" type="button" class="btn btn-info"
+                                    data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
+                                    class="ri-refresh-line"></i></button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"><i class="ri-delete-bin-fill"></i></button>
+                            <div class="modal fade" id="deleteModal" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -132,11 +229,11 @@
                                                 không?</h5>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                                                Delete
+                                            <button ng-click="delete(color)" type="button"
+                                                    class="btn btn-primary" data-bs-dismiss="modal">Delete
                                             </button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Close
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close
                                             </button>
                                         </div>
                                     </div>
@@ -152,10 +249,12 @@
                             <a class="page-link" href="#" ng-click="setPage(pageNum)">{{pageNum}}</a></li>
                     </ul>
                 </nav>
+
             </div>
         </div>
     </section>
     <!--  End Code  -->
 </main>
 </body>
+
 </html>

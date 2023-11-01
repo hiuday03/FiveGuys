@@ -21,9 +21,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    // get all Employee
     @Override
     public List<Employees> getAll(){
         return employeeRepository.findAll();
+    }
+
+    //get all Employ status = 1 (dang làm)
+    @Override
+    public List<Employees> getAllStatusDangLam(){
+        return employeeRepository.getAllStatusDangLam();
     }
 
     @Override
@@ -44,14 +51,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employees1.setCode(zenMaHD(employeeRepository.genCode()));
         employees1.setFullName(employees.getFullName());
         employees1.setAvatar(employees.getAvatar());
-        employees1.setAccount(employees.getAccount());
-        employees1.setPassword("123456789");
-        employees1.setPhoneNumber(employees.getPhoneNumber());
-        employees1.setEmail(employees.getEmail());
         employees1.setBirthDate(employees.getBirthDate());
         employees1.setGender(employees.getGender());
         employees1.setAddress(employees.getAddress());
-        employees1.setRoles(employees.getRoles());
+//        employees1.setAccount(employees.getAccount());
         employees1.setCreatedAt(new Date());
         employees1.setUpdatedAt(new Date());
         employees1.setCreatedBy(employees.getCreatedBy());
@@ -75,14 +78,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             employees1.setCode(employees.getCode());
             employees1.setFullName(employees.getFullName());
             employees1.setAvatar(employees.getAvatar());
-            employees1.setAccount(employees.getAccount());
-            employees1.setPassword(employees.getPassword());
-            employees1.setPhoneNumber(employees.getPhoneNumber());
-            employees1.setEmail(employees.getEmail());
             employees1.setBirthDate(employees.getBirthDate());
             employees1.setGender(employees.getGender());
             employees1.setAddress(employees.getAddress());
-            employees1.setRoles(employees.getRoles());
+            employees1.setAccount(employees.getAccount());
             employees1.setCreatedAt(employees.getCreatedAt());
             employees1.setUpdatedAt(new Date());
             employees1.setCreatedBy(employees.getCreatedBy());
@@ -112,14 +111,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             employees1.setCode(employees.getCode());
             employees1.setFullName(employees.getFullName());
             employees1.setAvatar(employees.getAvatar());
-            employees1.setAccount(employees.getAccount());
-            employees1.setPassword(employees.getPassword());
-            employees1.setPhoneNumber(employees.getPhoneNumber());
-            employees1.setEmail(employees.getEmail());
             employees1.setBirthDate(employees.getBirthDate());
             employees1.setGender(employees.getGender());
             employees1.setAddress(employees.getAddress());
-            employees1.setRoles(employees.getRoles());
+            employees1.setAccount(employees.getAccount());
             employees1.setCreatedAt(employees.getCreatedAt());
             employees1.setUpdatedAt(new Date());
             employees1.setCreatedBy(employees.getCreatedBy());
@@ -136,8 +131,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // search ma
     @Override
-    public List<Employees>  searchMa(String ma){
-        List<Employees> employeesList = employeeRepository.searchMa(ma);
+    public Page<Employees>  searchMa(String ma, Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Employees> employeesList = employeeRepository.searchMa(ma, pageable);
         return employeesList;
     }
 

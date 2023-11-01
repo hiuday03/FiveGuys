@@ -109,12 +109,13 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.productDetail.id">
-                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
-                                                {{rating.productDetail.product.name}},
-                                                {{rating.productDetail.product.material.name}},
-                                                {{rating.productDetail.product.category.name}},
-                                                {{rating.productDetail.color.name}},
-                                                {{rating.productDetail.size.name}}
+                                            <option ng-repeat="productDetail in productDetails"
+                                                ng-value="productDetail.id">
+                                                {{productDetail.product.name}},
+                                                {{productDetail.product.material.name}},
+                                                {{productDetail.product.category.name}},
+                                                {{productDetail.color.name}},
+                                                {{productDetail.size.name}}
                                             </option>
                                         </select>
                                         <span ng-show="formCreateRating.$submitted">
@@ -235,12 +236,13 @@
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.productDetail.id">
-                                            <option ng-repeat="rating in rating" ng-value="rating.productDetail.id">
-                                                {{rating.productDetail.product.name}},
-                                                {{rating.productDetail.product.material.name}},
-                                                {{rating.productDetail.product.category.name}},
-                                                {{rating.productDetail.color.name}},
-                                                {{rating.productDetail.size.name}}
+                                            <option ng-repeat="productDetail in productDetails"
+                                                ng-value="productDetail.id">
+                                                {{productDetail.product.name}},
+                                                {{productDetail.product.material.name}},
+                                                {{productDetail.product.category.name}},
+                                                {{productDetail.color.name}},
+                                                {{productDetail.size.name}}
                                             </option>
                                         </select>
                                         <span ng-show="formUpdateRating.$submitted">
@@ -313,8 +315,8 @@
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                             class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal"><i class="ri-delete-bin-fill"></i></button>
-                                    <div class="modal fade" id="deleteModal" tabindex="-1"
+                                        data-bs-target="#deleteModal-{{account.id}}"><i class="ri-delete-bin-fill"></i></button>
+                                    <div class="modal fade" id="deleteModal-{{account.id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">

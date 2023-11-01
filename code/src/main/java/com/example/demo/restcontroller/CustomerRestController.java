@@ -1,9 +1,9 @@
-package com.example.demo.controller.customers;
+package com.example.demo.restcontroller;
 
 import com.example.demo.entity.CustomerEntity;
+import com.example.demo.service.CustomerService;
 import com.example.demo.service.serviceiplm.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,36 +21,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer")
 
-public class CustomerController {
+public class CustomerRestController {
 
-    private final CustomerServiceImpl customerService;
-
+//    private final CustomerServiceImpl customerService;
+//
+//    @Autowired
+//    public CustomerRestController(CustomerServiceImpl customerService) {
+//        this.customerService = customerService;
+//    }
     @Autowired
-    public CustomerController(CustomerServiceImpl customerService) {
-        this.customerService = customerService;
-    }
+    private CustomerService customerService;
+
 
     @GetMapping("")
     public ResponseEntity<List<CustomerEntity>> getAllCustomer() {
         List<CustomerEntity> customers = customerService.getAllCustomer();
         return ResponseEntity.ok(customers);
     }
-
-//    @GetMapping("/pageall")
-//    public ResponseEntity<Page<CustomerEntity>> getAllCustomerPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
-//        return ResponseEntity.ok(customerService.getAllCustomerPage(page));
-//    }
-//
-//    @GetMapping("/findby/{id}")
-//    public ResponseEntity<CustomerEntity> getCustomerById(@PathVariable Long id) {
-//        CustomerEntity customer = customerService.getCustomerById(id);
-//        if (customer != null) {
-//            return ResponseEntity.ok(customer);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
     @PostMapping("")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customerEntity) {
         try {
@@ -59,7 +46,6 @@ public class CustomerController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
     }
 
     @PutMapping("/{id}")

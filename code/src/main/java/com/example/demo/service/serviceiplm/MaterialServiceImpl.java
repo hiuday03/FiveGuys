@@ -25,7 +25,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Page<Material> getAll(Integer page) {
-        Pageable pageable = PageRequest.of(page, 1);
+        Pageable pageable = PageRequest.of(page, 5);
         return materialRepository.findAll(pageable);
     }
 
@@ -47,6 +47,17 @@ public class MaterialServiceImpl implements MaterialService {
             material.setName(materialReq.getName());
             material.setUpdatedAt(materialReq.getUpdatedAt());
             material.setStatus(materialReq.getStatus());
+            materialRepository.save(material);
+        }
+        return null;
+    }
+
+    @Override
+    public Material updateStatus(Long id) {
+        Optional<Material> materialOptional = materialRepository.findById(id);
+        if (materialOptional.isPresent()) {
+            Material material = materialOptional.get();
+            material.setStatus(3);
             materialRepository.save(material);
         }
         return null;

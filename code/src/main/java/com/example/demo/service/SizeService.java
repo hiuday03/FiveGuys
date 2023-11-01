@@ -19,4 +19,6 @@ public interface SizeService {
     Size update(Size size, Long id);
 
     void delete(Long id);
+
+    Size updateStatus(Long id);
 }

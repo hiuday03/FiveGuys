@@ -1,18 +1,20 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
 
-import java.util.Date;
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
-@ToString
+@Data
 @Entity
 @Table(name = "Accounts")
-public class Accounts {
+
+public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,12 +33,11 @@ public class Accounts {
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "IdRole")
+    private Roles role;
+
     @Column(name = "Status")
     private Integer status;
-
-    @ManyToOne
-    @JoinColumn(name="IdRole")
-    private Roles roles;
-
 
 }

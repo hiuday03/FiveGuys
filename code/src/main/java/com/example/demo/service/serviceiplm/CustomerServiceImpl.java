@@ -16,13 +16,14 @@ import java.util.Optional;
 
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
-
-    @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-
+//    private final CustomerRepository customerRepository;
+//
+//    @Autowired
+//    public CustomerServiceImpl(CustomerRepository customerRepository) {
+//        this.customerRepository = customerRepository;
+//    }
+@Autowired
+private CustomerRepository customerRepository;
     @Override
     public List<CustomerEntity> getAllCustomer() {
         return customerRepository.findAll();
@@ -51,13 +52,9 @@ public class CustomerServiceImpl implements CustomerService {
             CustomerEntity customer = existingCustomer.get();
             customer.setFullName(customerEntity.getFullName());
             customer.setAvatar(customerEntity.getAvatar());
-            customer.setAccount(customerEntity.getAccount());
-            customer.setPassword(customerEntity.getPassword());
-            customer.setPhoneNumber(customerEntity.getPhoneNumber());
-            customer.setEmail(customerEntity.getEmail());
             customer.setBirthDate(customerEntity.getBirthDate());
             customer.setGender(customer.isGender());
-            customer.setAddress(customerEntity.getAddress());
+            customer.setAccount(customerEntity.getAccount());
             customer.setCreatedAt(customerEntity.getCreatedAt());
             customer.setUpdatedAt(customerEntity.getUpdatedAt());
             customer.setCreatedBy(customerEntity.getCreatedBy());

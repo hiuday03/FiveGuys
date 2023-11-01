@@ -52,4 +52,5 @@ public class ProductDetailRestController {
     public void delete(@PathVariable("id") Long id){
         productDetailService.delete(id);
     }
+
 }

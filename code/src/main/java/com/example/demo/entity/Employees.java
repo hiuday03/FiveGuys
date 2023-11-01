@@ -27,7 +27,6 @@ public class Employees {
     @Column(name= "Avatar")
     private String avatar;
 
-
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name= "BirthDate")
@@ -38,6 +37,10 @@ public class Employees {
 
     @Column(name= "Address")
     private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "IdAccount")
+    private AccountEntity account;
 
     @Column(name= "CreatedAt")
     private Date createdAt;
@@ -53,9 +56,5 @@ public class Employees {
 
     @Column(name= "Status")
     private Integer status;
-
-    @OneToOne
-    @JoinColumn(name = "IdAccount")
-    private Accounts accounts;
 
 }
