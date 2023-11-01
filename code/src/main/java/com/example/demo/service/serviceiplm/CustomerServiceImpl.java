@@ -16,13 +16,14 @@ import java.util.Optional;
 
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
-
-    @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-
+//    private final CustomerRepository customerRepository;
+//
+//    @Autowired
+//    public CustomerServiceImpl(CustomerRepository customerRepository) {
+//        this.customerRepository = customerRepository;
+//    }
+@Autowired
+private CustomerRepository customerRepository;
     @Override
     public List<CustomerEntity> getAllCustomer() {
         return customerRepository.findAll();

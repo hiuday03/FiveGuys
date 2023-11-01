@@ -57,7 +57,7 @@ public class Employees {
     @Column(name= "Status")
     private Integer status;
 
-    @OneToOne
-    @JoinColumn(name = "IdAccount")
-    private Accounts accounts;
+//    @OneToOne
+//    @JoinColumn(name = "IdAccount")
+//    private AccountEntity accounts;
 }

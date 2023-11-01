@@ -1,6 +1,7 @@
 package com.example.demo.restcontroller;
 
 import com.example.demo.entity.CustomerEntity;
+import com.example.demo.service.CustomerService;
 import com.example.demo.service.serviceiplm.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,15 @@ import java.util.List;
 
 public class CustomerRestController {
 
-    private final CustomerServiceImpl customerService;
-
+//    private final CustomerServiceImpl customerService;
+//
+//    @Autowired
+//    public CustomerRestController(CustomerServiceImpl customerService) {
+//        this.customerService = customerService;
+//    }
     @Autowired
-    public CustomerRestController(CustomerServiceImpl customerService) {
-        this.customerService = customerService;
-    }
+    private CustomerService customerService;
+
 
     @GetMapping("")
     public ResponseEntity<List<CustomerEntity>> getAllCustomer() {

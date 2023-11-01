@@ -53,8 +53,8 @@ public class CustomerEntity {
     @Column(name = "Status")
     private int status;
 
-    @OneToOne
-    @JoinColumn(name = "IdAccount")
-    private Accounts accounts
+//    @OneToOne
+//    @JoinColumn(name = "IdAccount")
+//    private AccountEntity accounts;
 }
 
