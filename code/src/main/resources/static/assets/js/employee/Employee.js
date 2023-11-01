@@ -108,6 +108,7 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
         $http.post("/api/employee", item).then(function (resp) {
             $scope.showSuccessMessage("Create customer successfully");
             $scope.resetFormInput();
+            console.log(resp)
             // $scope.getAll();
             $scope.getAllStatusDangLam();
             $('#modalAdd').modal('hide');
