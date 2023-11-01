@@ -118,28 +118,21 @@
                                         </span>
                                 </div>
                             </div>
-<!--                            <div class="row mb-3">-->
-<!--                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>-->
-<!--                                <div class="col-sm-9">-->
-<!--                                    <select name="roles" id="inputRole" class="form-select form-select-sm"-->
-<!--                                            aria-label="Small select example"-->
-<!--                                            ng-model="formInput.roles.id" required>-->
-<!--                                        <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}</option>-->
-<!--                                    </select>-->
-<!--                                    <span ng-show="addformEmployee.$submitted">-->
-<!--                                            <div ng-show="addformEmployee.role.$invalid"-->
-<!--                                                 class="error-message text-danger form-text">-->
-<!--                                                FullName cannot be blank</div>-->
-<!--                                        </span>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <div class="row mb-3">
+                                <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formInput.account.id">
+                                        <option ng-repeat="r in listAccount" ng-value="r.id">{{r.account}}</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row mb-3">
                                 <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                 <div class="col-sm-9">
                                     <select name="status" class="form-select form-select-sm"
                                             aria-label="Small select example"
                                             ng-model="formInput.status" >
-                                        <option selected>Open this select menu</option>
                                         <option value="0">Nghỉ làm</option>
                                         <option value="1">Đang làm</option>
 
@@ -224,11 +217,11 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                                <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                 <div class="col-sm-9">
                                     <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.roles.id">
-                                        <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}</option>
+                                            ng-model="formUpdate.account.id">
+                                        <option ng-repeat="r in listAccount" ng-value="r.id">{{r.account}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -238,7 +231,6 @@
                                     <select name="status" id="inputStatus" class="form-select form-select-sm"
                                             aria-label="Small select example"
                                             ng-model="formUpdate.status">
-
                                         <option ng-value="0">Nghỉ làm</option>
                                         <option ng-value="1">Đang làm</option>
                                     </select>
@@ -277,6 +269,30 @@
                                                    class="form-control">
                                         </div>
                                     </div>
+<!--                                    <div class="row mb-3">-->
+<!--                                        <label for="inputFullName" class="col-sm-3 col-form-label">Account</label>-->
+<!--                                        <div class="col-sm-9">-->
+<!--                                            <input name="fullName" id="inputAccount" ng-model="formShow.fullName"-->
+
+<!--                                                   class="form-control">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                    <div class="row mb-3">
+                                        <label for="inputFullName" class="col-sm-3 col-form-label">Account</label>
+                                        <div class="col-sm-9">
+                                            <input name="account" id="inputAccount" ng-model="formShow.account.email"
+
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+<!--                                    <div class="row mb-3">-->
+<!--                                        <label for="inputFullName" class="col-sm-3 col-form-label">Name</label>-->
+<!--                                        <div class="col-sm-9">-->
+<!--                                            <input name="fullName" id="inputFullName" ng-model="formShow.fullName"-->
+
+<!--                                                   class="form-control">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div class="row mb-3">
                                         <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth</label>
                                         <div class="col-sm-9">
@@ -306,11 +322,11 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                                        <label for="inputAccount" class="col-sm-3 col-form-label">Role</label>
                                         <div class="col-sm-9">
                                             <select class="form-select form-select-sm" aria-label="Small select example"
-                                                    ng-model="formShow.roles.id">
-                                                <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}
+                                                    ng-model="formShow.account.id">
+                                                <option ng-repeat="r in listAccount" ng-value="r.id">{{r.account}}
                                                 </option>
                                             </select>
                                         </div>
@@ -376,7 +392,7 @@
                     <thead>
                     <tr>
                         <th scope="">Code</th>
-                        <th scope="">Full Name 1</th>
+                        <th scope="">Full Name</th>
                         <th scope="">Gender</th>
                         <th scope="">Role</th>
                         <th scope="">Status</th>
@@ -389,7 +405,7 @@
                         <td class="">{{l.code}}</td>
                         <td class="">{{l.fullName}}</td>
                         <td class="">{{l.gender == true ? 'Nam' : 'Nữ'}}</td>
-                        <td class="">{{l.account.account}}</td>
+                        <td class="">{{l.account.role.fullName}}</td>
                         <td class="">{{l.status == 1 ? 'Đang làm' : 'Nghỉ làm'}}</td>
                         <td>
                             <button title="Show data" ng-click="show(l)" type="button"
