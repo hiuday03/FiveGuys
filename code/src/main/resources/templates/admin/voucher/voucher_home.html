@@ -7,186 +7,246 @@
 
 <main id="main" class="main" layout:fragment="content" ng-app="voucher-list-app"
       ng-controller="voucher-list-controller">
-
-    <div class="pagetitle">
-        <h1 class="heading-breadcrumb-style">Voucher</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item li-breadcrumb-item-style"><a th:href="@{/admin/index}">Home</a></li>
-                <li class="breadcrumb-item li-breadcrumb-item-style">Voucher</li>
-            </ol>
-        </nav>
+    <div class="row">
+        <div class="pagetitle col-7">
+            <h1 class="heading-breadcrumb-style">Voucher</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item li-breadcrumb-item-style"><a th:href="@{/admin/index}">Home</a></li>
+                    <li class="breadcrumb-item li-breadcrumb-item-style">Voucher</li>
+                </ol>
+            </nav>
+        </div><div class="pagetitle col-5 container">
+            <h4>Add Voucher</h4>
+        </div>
     </div>
     <!--  Begin code  -->
     <section class="row">
-<!--        <div class="row">-->
-<!--            <div class="col-2">-->
-<!--                <button type="button" class="btn-style-add-data mb-2" data-bs-toggle="modal"-->
-<!--                        data-bs-target="#modalAdd">-->
-<!--                    Create Employee-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="col-8">-->
+        <div class="col-7">
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table" style="font-size: 13px;">
+                        <thead>
+                        <tr>
+                            <th scope="">Code</th>
+                            <th scope="">Name</th>
+                            <th scope="">Minimum</th>
+                            <th scope="">Quantity</th>
+                            <!--                            <th scope="">Describe</th>-->
+                            <!--                            <th scope="">StartDate</th>-->
+                            <!--                            <th scope="">EndDate</th>-->
+                            <th scope="">Status</th>
+                            <th scope="">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="l in listVoucher">
 
-<!--            </div>-->
-<!--        </div>-->
-        <div class="col-6">
+                            <td class="">{{l.code}}</td>
+                            <td class="">{{l.name}}</td>
+                            <td class="">{{l.minimumTotalAmount}}</td>
+                            <td class="">{{l.quantity}}</td>
+                            <!--                            <td class="">{{l.describe}}</td>-->
+                            <!--                            <td class="">{{l.startDate}}</td>-->
+                            <!--                            <td class="">{{l.endDate}}</td>-->
+                            <td class="">{{l.status}}</td>
+                            <td>
+                                <button title="Show data" type="button"
+                                        class="btn-action-form-data btn-action-show-from-data" data-bs-toggle="modal"
+                                        data-bs-target="#modalShow"><i class="fa-solid fa-eye"></i></button>
+                                <button title="Edit data" type="button"
+                                        class="btn-action-form-data btn-action-edit-from-data" data-bs-toggle="modal"
+                                        data-bs-target="#modalUpdate"><i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <button title="Delete data" type="button"
+                                        class="btn-action-form-data btn-action-delete-from-data" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal-{{l.id}}"><i class="ri-delete-bin-fill"></i>
+                                </button>
+                                <div class="modal fade" id="deleteModal-{{l.id}}" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa
+                                                    không?</h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" ng-click="updateStatusEmployee(l)"
+                                                        class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Delete
+                                                </button>
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--                <nav aria-label="Page navigation example">-->
+                    <!--                    <ul class="pagination justify-content-center">-->
+                    <!--                        <li class="page-item" ng-repeat="pageNum in displayPageRange()">-->
+                    <!--                            <a class="page-link" href="#" ng-click="setPage(pageNum)">{{pageNum}}</a></li>-->
+                    <!--                    </ul>-->
+                    <!--                </nav>-->
+                    <!--                <nav aria-label="Page navigation example">-->
+                    <!--                    <ul class="pagination justify-content-center">-->
+                    <!--                        <li class="page-item ms-1" title="First page">-->
+                    <!--                            <button ng-click="paper.first()" class="btn-pagination-style"><i-->
+                    <!--                                    class="fa-solid fa-backward"></i></button>-->
+                    <!--                        </li>-->
+                    <!--                        <li class="page-item ms-1" title="Prev page">-->
+                    <!--                            <button ng-click="paper.prev()" class="btn-pagination-style"><i-->
+                    <!--                                    class="fa-solid fa-backward-step"></i></button>-->
+                    <!--                        </li>-->
+                    <!--                        <li class="page-item ms-1">-->
+                    <!--                            <button class="btn-pagination-style">{{paper.page + 1}}/{{paper.count}}</button>-->
+                    <!--                        </li>-->
+                    <!--                        <li class="page-item ms-1 " title="Next page">-->
+                    <!--                            <button ng-click="paper.next()" class="btn-pagination-style"><i-->
+                    <!--                                    class="fa-solid fa-forward-step"></i></button>-->
+                    <!--                        </li>-->
+                    <!--                        <li class="page-item ms-1" title="End page">-->
+                    <!--                            <button ng-click="paper.last()" class="btn-pagination-style"><i-->
+                    <!--                                    class="fa-solid fa-forward"></i></button>-->
+                    <!--                        </li>-->
+                    <!--                    </ul>-->
+                    <!--                </nav>-->
+                </div>
+            </div>
 
-            <!--        <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">-->
-            <!--            {{alertMessage}}-->
-            <!--            <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>-->
-            <!--        </div>-->
-            <!-- Modal Add -->
-            <!--        <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-            <!--            <div class="modal-dialog">-->
-            <!--                <div class="modal-content">-->
-            <!--                    <div class="modal-header">-->
-            <!--                        <h5 class="modal-title">Create Employee</h5>-->
-            <!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-            <!--                    </div>-->
-            <!--                    <div class="modal-body">-->
-            <!--                        <form name="addformEmployee" ng-submit="addformEmployee.$valid  && addEmploy()">-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputFullName" class="col-sm-3 col-form-label">Full Name</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <input name="fullName" id="inputFullName" type="text" class="form-control"-->
-            <!--                                           ng-model="formInput.fullName" required>-->
-            <!--                                    <span ng-show="addformEmployee.$submitted">-->
-            <!--                                            <div ng-show="addformEmployee.fullName.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
+        </div>
+        <div class="col-5">
+            <form name="addformVoucher" ng-submit="addformVoucher.$valid  && addVoucher()">
+                <div class="row mb-3">
+                    <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
+                    <div class="col-sm-9">
+                        <input name="code" id="inputCode" type="text" class="form-control"
+                               ng-model="formInput.code" >
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputName" class="col-sm-3 col-form-label">Nam</label>
+                    <div class="col-sm-9">
+                        <input name="name" id="inputName" type="text" class="form-control"
+                               ng-model="formInput.name" >
+<!--                        <span ng-show="addformEmployee.$submitted">-->
+<!--                                                            <div ng-show="addformEmployee.account.$invalid"-->
+<!--                                                                 class="error-message text-danger form-text">-->
+<!--                                                                FullName cannot be blank</div>-->
+<!--                                                        </span>-->
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputValue" class="col-sm-3 col-form-label">Value</label>
+                    <div class="col-sm-9">
+                        <input name="value" id="inputValue" type="text" class="form-control"
+                               ng-model="formInput.value">
+<!--                        <span ng-show="addformEmployee.$submitted" required>-->
+<!--                                                            <div ng-show="addformEmployee.phoneNumber.$invalid"-->
+<!--                                                                 class="error-message text-danger form-text">-->
+<!--                                                                FullName cannot be blank</div>-->
+<!--                                                        </span>-->
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputMinimumTotalAmount" class="col-sm-3 col-form-label">MinimumTotalAmount</label>
+                    <div class="col-sm-9">
+                        <input name="minimumTotalAmount" id="inputMinimumTotalAmount" type="text" class="form-control"
+                               ng-model="formInput.minimumTotalAmount" >
+<!--                        <span ng-show="addformEmployee.$submitted">-->
+<!--                                                            <div ng-show="addformEmployee.email.$invalid"-->
+<!--                                                                 class="error-message text-danger form-text">-->
+<!--                                                                FullName cannot be blank</div>-->
+<!--                                                        </span>-->
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputQuantity" class="col-sm-3 col-form-label">Quantity</label>
+                    <div class="col-sm-9">
+                        <input name="quantity" id="inputQuantity" type="text"
+                               class="form-control"
+                               ng-model="formInput.quantity" >
+<!--                        <span ng-show="addformEmployee.$submitted">-->
+<!--                                                            <div ng-show="addformEmployee.birthDate.$invalid"-->
+<!--                                                                 class="error-message text-danger form-text">-->
+<!--                                                                FullName cannot be blank</div>-->
+<!--                                                        </span>-->
+                    </div>
+                </div>
+<!--                <div class="row mb-3">-->
+<!--                    <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>-->
+<!--                    <div class="col-sm-9">-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="radio" name="gender"-->
+<!--                                   id="gender1" ng-model="formInput.gender" required>-->
+<!--                            <label class="form-check-label" for="gender1">Nam-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="radio" name="gender"-->
+<!--                                   id="gender2" ng-model="formInput.gender" checked>-->
+<!--                            <label class="form-check-label" for="gender2">Nữ-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="row mb-3">
+                    <label for="inputDescribe" class="col-sm-3 col-form-label">Describe</label>
+                    <div class="col-sm-9">
+                        <input name="describe" id="inputDescribe" type="text" class="form-control"
+                               ng-model="formInput.describe" >
+<!--                        <span ng-show="addformEmployee.$submitted">-->
+<!--                                                            <div ng-show="addformEmployee.address.$invalid"-->
+<!--                                                                 class="error-message text-danger form-text">-->
+<!--                                                                FullName cannot be blank</div>-->
+<!--                                                        </span>-->
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputStartDate" class="col-sm-3 col-form-label">StartDate</label>
+                    <div class="col-sm-9">
+                        <input name="startDate" id="inputStartDate" type="date" class="form-control"
+                               ng-model="formUpdate.startDate">
+<!--                               ng-value="formUpdate.birthDate | date:'yyyy-MM-dd'"-->
+                        </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputEndDate" class="col-sm-3 col-form-label">EndDate</label>
+                    <div class="col-sm-9">
+                        <input name="endDate" id="inputEndDate" type="date" class="form-control"
+                               ng-model="formUpdate.endDate">
+<!--                               ng-value="formUpdate.birthDate | date:'yyyy-MM-dd'"-->
+                        </div>
+                </div>
 
-            <!--                            </div>-->
-            <!--                            &lt;!&ndash;                            <div class="row mb-3">&ndash;&gt;-->
-            <!--                            &lt;!&ndash;                                <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>&ndash;&gt;-->
-            <!--                            &lt;!&ndash;                                <div class="col-sm-9">&ndash;&gt;-->
-            <!--                            &lt;!&ndash;                                    <input name="avatar" id="inputAvatar" type="image" class="form-control"&ndash;&gt;-->
-            <!--                            &lt;!&ndash;                                           ng-model="formInput.avatar" >&ndash;&gt;-->
-            <!--                            &lt;!&ndash;                                </div>&ndash;&gt;-->
-            <!--                            &lt;!&ndash;                                <img src="" alt="" sizes="" srcset="">&ndash;&gt;-->
-            <!--                            &lt;!&ndash;                            </div>&ndash;&gt;-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <input name="account" id="inputAccount" type="text" class="form-control"-->
-            <!--                                           ng-model="formInput.account" required>-->
-            <!--                                    <span ng-show="addformEmployee.$submitted">-->
-            <!--                                            <div ng-show="addformEmployee.account.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"-->
-            <!--                                           ng-model="formInput.phoneNumber">-->
-            <!--                                    <span ng-show="addformEmployee.$submitted" required>-->
-            <!--                                            <div ng-show="addformEmployee.phoneNumber.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <input name="email" id="inputEmail" type="email" class="form-control"-->
-            <!--                                           ng-model="formInput.email" required>-->
-            <!--                                    <span ng-show="addformEmployee.$submitted">-->
-            <!--                                            <div ng-show="addformEmployee.email.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <input name="bỉrthDate" id="inputBirthDate" type="date" ng-value="yyyy/MM/dd"-->
-            <!--                                           class="form-control"-->
-            <!--                                           ng-model="formInput.birthDate" required>-->
-            <!--                                    <span ng-show="addformEmployee.$submitted">-->
-            <!--                                            <div ng-show="addformEmployee.birthDate.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <div class="form-check">-->
-            <!--                                        <input class="form-check-input" type="radio" name="gender"-->
-            <!--                                               id="gender1" ng-model="formInput.gender" required>-->
-            <!--                                        <label class="form-check-label" for="gender1">Nam-->
-            <!--                                        </label>-->
-            <!--                                    </div>-->
-            <!--                                    <div class="form-check">-->
-            <!--                                        <input class="form-check-input" type="radio" name="gender"-->
-            <!--                                               id="gender2" ng-model="formInput.gender" checked>-->
-            <!--                                        <label class="form-check-label" for="gender2">Nữ-->
-            <!--                                        </label>-->
-            <!--                                    </div>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <input name="addresss" id="inputAddress" type="text" class="form-control"-->
-            <!--                                           ng-model="formInput.addresss" required>-->
-            <!--                                    <span ng-show="addformEmployee.$submitted">-->
-            <!--                                            <div ng-show="addformEmployee.address.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputRole" class="col-sm-3 col-form-label">Role</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <select name="roles" id="inputRole" class="form-select form-select-sm"-->
-            <!--                                            aria-label="Small select example"-->
-            <!--                                            ng-model="formInput.roles.id" required>-->
-            <!--                                        <option ng-repeat="r in listRole" ng-value="r.id">{{r.fullName}}</option>-->
-            <!--                                    </select>-->
-            <!--                                    <span ng-show="addformEmployee.$submitted">-->
-            <!--                                            <div ng-show="addformEmployee.role.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="row mb-3">-->
-            <!--                                <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>-->
-            <!--                                <div class="col-sm-9">-->
-            <!--                                    <select name="status" class="form-select form-select-sm"-->
-            <!--                                            aria-label="Small select example"-->
-            <!--                                            ng-model="formInput.status" required>-->
-            <!--                                        <option selected>Open this select menu</option>-->
-            <!--                                        <option value="0">Nghỉ làm</option>-->
-            <!--                                        <option value="1">Đang làm</option>-->
+                <div class="row mb-3">
+                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                    <div class="col-sm-9">
+                        <select name="status" id="inputStatus" class="form-select form-select-sm"
+                                aria-label="Small select example"
+                                ng-model="formInput.status" >
+                            <option value="0">Đang hoạt động</option>
+                            <option value="1">Hết hạn</option>
+                            <option value="2">Chưa hoạt dộng</option>
+                            <option value="3">Hết khuyến mãi</option>
+                            <option value="4">Đã xóa</option>
+                        </select>
+<!--                        <span ng-show="addformEmployee.$submitted">-->
+<!--                                                            <div ng-show="addformEmployee.status.$invalid"-->
+<!--                                                                 class="error-message text-danger form-text">-->
+<!--                                                                FullName cannot be blank</div>-->
+<!--                                                        </span>-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
 
-            <!--                                    </select>-->
-            <!--                                    <span ng-show="addformEmployee.$submitted">-->
-            <!--                                            <div ng-show="addformEmployee.status.$invalid"-->
-            <!--                                                 class="error-message text-danger form-text">-->
-            <!--                                                FullName cannot be blank</div>-->
-            <!--                                        </span>-->
-            <!--                                </div>-->
-            <!--                            </div>-->
-            <!--                            <div class="modal-footer">-->
-
-            <!--                                <button type="submit" class="btn btn-primary">Save</button>-->
-            <!--                                <button type="button" class="btn btn-secondary"-->
-            <!--                                        data-bs-dismiss="modal">Close-->
-            <!--                                </button>-->
-            <!--                            </div>-->
-
-            <!--                        </form>-->
+            </form>
             <!--                    </div>-->
             <!--                </div>-->
             <!--            </div>-->
@@ -444,99 +504,7 @@
             <!--            </div>-->
             <!--        </div>-->
             <!-- End Modal Update -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <table class="table" style="font-size: 13px;">
-                        <thead>
-                        <tr>
-                            <th scope="">Code</th>
-                            <th scope="">Name</th>
-<!--                            <th scope="">MinimumTotalAmount</th>-->
-                            <th scope="">Quantity</th>
-                            <th scope="">Describe</th>
-                            <th scope="">StartDate</th>
-                            <th scope="">EndDate</th>
-                            <th scope="">Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="l in listVoucher">
-
-                            <td class="">{{l.code}}</td>
-                            <td class="">{{l.name}}</td>
-<!--                            <td class="">{{l.minimumTotalAmount}}</td>-->
-                            <td class="">{{l.quantity}}</td>
-                            <td class="">{{l.describe}}</td>
-                            <td class="">{{l.startDate}}</td>
-                            <td class="">{{l.endDate}}</td>
-                            <td class="">{{l.status}}</td>
-                            <td>
-                                <button title="Show data" type="button"
-                                        class="btn-action-form-data btn-action-show-from-data" data-bs-toggle="modal"
-                                        data-bs-target="#modalShow"><i class="fa-solid fa-eye"></i></button>
-                                <button title="Edit data" type="button"
-                                        class="btn-action-form-data btn-action-edit-from-data" data-bs-toggle="modal"
-                                        data-bs-target="#modalUpdate"><i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button title="Delete data" type="button"
-                                        class="btn-action-form-data btn-action-delete-from-data" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal-{{l.id}}"><i class="ri-delete-bin-fill"></i>
-                                </button>
-                                <div class="modal fade" id="deleteModal-{{l.id}}" tabindex="-1"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa
-                                                    không?</h5>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" ng-click="updateStatusEmployee(l)"
-                                                        class="btn btn-primary"
-                                                        data-bs-dismiss="modal">Delete
-                                                </button>
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <!--                <nav aria-label="Page navigation example">-->
-                    <!--                    <ul class="pagination justify-content-center">-->
-                    <!--                        <li class="page-item" ng-repeat="pageNum in displayPageRange()">-->
-                    <!--                            <a class="page-link" href="#" ng-click="setPage(pageNum)">{{pageNum}}</a></li>-->
-                    <!--                    </ul>-->
-                    <!--                </nav>-->
-                    <!--                <nav aria-label="Page navigation example">-->
-                    <!--                    <ul class="pagination justify-content-center">-->
-                    <!--                        <li class="page-item ms-1" title="First page">-->
-                    <!--                            <button ng-click="paper.first()" class="btn-pagination-style"><i-->
-                    <!--                                    class="fa-solid fa-backward"></i></button>-->
-                    <!--                        </li>-->
-                    <!--                        <li class="page-item ms-1" title="Prev page">-->
-                    <!--                            <button ng-click="paper.prev()" class="btn-pagination-style"><i-->
-                    <!--                                    class="fa-solid fa-backward-step"></i></button>-->
-                    <!--                        </li>-->
-                    <!--                        <li class="page-item ms-1">-->
-                    <!--                            <button class="btn-pagination-style">{{paper.page + 1}}/{{paper.count}}</button>-->
-                    <!--                        </li>-->
-                    <!--                        <li class="page-item ms-1 " title="Next page">-->
-                    <!--                            <button ng-click="paper.next()" class="btn-pagination-style"><i-->
-                    <!--                                    class="fa-solid fa-forward-step"></i></button>-->
-                    <!--                        </li>-->
-                    <!--                        <li class="page-item ms-1" title="End page">-->
-                    <!--                            <button ng-click="paper.last()" class="btn-pagination-style"><i-->
-                    <!--                                    class="fa-solid fa-forward"></i></button>-->
-                    <!--                        </li>-->
-                    <!--                    </ul>-->
-                    <!--                </nav>-->
-                </div>
-            </div>
+        </div>
         </div>
     </section>
     <!--  End Code  -->

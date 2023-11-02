@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class Vouchers {
     private String name;
 
     @Column(name= "Value")
-    private String value;
+    private BigDecimal value;
 
     @Column(name= "MinimumTotalAmount")
     private BigDecimal minimumTotalAmount;
@@ -35,9 +36,13 @@ public class Vouchers {
     @Column(name= "Describe")
     private String describe;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name= "StartDate")
     private Date startDate;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name= "EndDate")
     private Date endDate;
 
@@ -48,25 +53,25 @@ public class Vouchers {
     private Date updatedAt;
 
     @Column(name= "CreatedBy")
-    private Date CrearedBy;
+    private String CrearedBy;
 
     @Column(name= "UpdatedBy")
-    private Date updatedBy;
+    private String updatedBy;
 
     @Column(name= "Status")
     private Integer status;
 
-    public String getStatus() {
-        if(status == 0){
-            return "DANG_HOAT_DONG";
-        }else if(status == 1){
-            return "HET_HAN";
-        }else if(status == 2){
-            return "CHUA_HOAT_DONG";
-        }else if(status == 3){
-            return "HET_KHUYEN_MAI ";
-        }else{
-            return "DA_XOA ";
-        }
-    }
+//    public String getStatus() {
+//        if(status == 0){
+//            return "DANG_HOAT_DONG";
+//        }else if(status == 1){
+//            return "HET_HAN";
+//        }else if(status == 2){
+//            return "CHUA_HOAT_DONG";
+//        }else if(status == 3){
+//            return "HET_KHUYEN_MAI ";
+//        }else{
+//            return "DA_XOA ";
+//        }
+//    }
 }

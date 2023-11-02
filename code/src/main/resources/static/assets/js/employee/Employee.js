@@ -94,9 +94,7 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
     //delete Employ
     $scope.delete = function (item) {
         $http.delete(`/api/employee/${item.id}`).then(function (response) {
-            // $scope.getAll();
             $scope.getAllStatusDangLam();
-            console.log(item.id);
         }).catch(function (error) {
             console.log("Error", error);
         });
@@ -109,7 +107,6 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
             $scope.showSuccessMessage("Create customer successfully");
             $scope.resetFormInput();
             console.log(resp)
-            // $scope.getAll();
             $scope.getAllStatusDangLam();
             $('#modalAdd').modal('hide');
         }).catch(function (error) {

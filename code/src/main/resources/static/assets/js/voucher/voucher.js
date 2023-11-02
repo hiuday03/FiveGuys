@@ -2,12 +2,12 @@ var app = angular.module("voucher-list-app", [])
 app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
 
     const apiUrlVoucher = "http://localhost:8080/api/voucher";
-    // const apiUrlRole = "http://localhost:8080/api/roles";
-    // $scope.employee = [];
-    // $scope.formUpdate = {};
-    // $scope.formShow = {};
-    // $scope.formInput = {};
-    // $scope.showAlert = false;
+    const apiUrlAccount = "http://localhost:8080/account";
+    $scope.voucher = [];
+    $scope.formUpdate = {};
+    $scope.formShow = {};
+    $scope.formInput = {};
+    $scope.showAlert = false;
     //
     // // get page Employee
     // $scope.getPage = function () {
@@ -37,22 +37,12 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     $scope.getAll = function () {
         $http.get(apiUrlVoucher).then(function (response) {
             $scope.listVoucher = response.data;
-            console.log($scope.listVoucher);
+            // console.log($scope.listVoucher);
             // $scope.totalPages = response.totalPages;
         })
     }
     $scope.getAll();
 
-    // //get all status =1
-    // $scope.getAllStatusDangLam = function () {
-    //     $http.get(apiUrlEmployee+"/status1").then(function (response) {
-    //         $scope.listEm = response.data;
-    //         // $scope.totalPages = response.totalPages;
-    //     })
-    // }
-    // $scope.getAllStatusDangLam();
-    // // $scope.getAll();
-    //
     // // getById Employee
     // $scope.getById = function (item) {
     //     $http.get(`/api/employee/${item.id}`).then(function (response) {
@@ -72,15 +62,7 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     // }
     //
     //
-    // // get Role
-    // $scope.getRole = function () {
-    //     $http.get(apiUrlRole).then(function (response) {
-    //         $scope.listRole = response.data;
-    //         // console.log($scope.listRole);
-    //     })
-    // }
-    // $scope.getRole();
-    //
+
     // //detaol Employee
     // $scope.edit = function (employee) {
     //     $scope.formUpdate = angular.copy(employee);
@@ -104,19 +86,17 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     //     });
     // }
     //
-    // // create Employee
-    // $scope.addEmploy = function () {
-    //     let item = angular.copy($scope.formInput);
-    //     $http.post("/api/employee", item).then(function (resp) {
-    //         $scope.showSuccessMessage("Create customer successfully");
-    //         $scope.resetFormInput();
-    //         // $scope.getAll();
-    //         $scope.getAllStatusDangLam();
-    //         $('#modalAdd').modal('hide');
-    //     }).catch(function (error) {
-    //         console.log("Error", error);
-    //     });
-    // }
+    // create Employee
+    $scope.addVoucher = function () {
+        let item = angular.copy($scope.formInput);
+        $http.post("/api/voucher", item).then(function (resp) {
+            $scope.showSuccessMessage("Create customer successfully");
+            $scope.resetFormInput();
+            $scope.getAll();
+        }).catch(function (error) {
+            console.log("Error", error);
+        });
+    }
     // // update Employee
     // $scope.updateEmploy = function () {
     //     // let item = angular.copy($scope.formInput);
@@ -151,16 +131,16 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     //     })
     // }
     //
-    // $scope.resetFormInput = function () {
-    //     $scope.formInput = {};
-    //     $scope.addformEmployee.$setPristine();
-    //     $scope.addformEmployee.$setUntouched();
-    // }
-    // $scope.resetFormUpdate = function () {
-    //     $scope.formUpdate = {};
-    //     $scope.formUpdateEmployee.$setPristine();
-    //     $scope.formUpdateEmployee.$setUntouched();
-    // }
+    $scope.resetFormInput = function () {
+        $scope.formInput = {};
+        $scope.addformVoucher.$setPristine();
+        $scope.addformVoucher.$setUntouched();
+    }
+    $scope.resetFormUpdate = function () {
+        $scope.formUpdate = {};
+        $scope.formUpdateEmployee.$setPristine();
+        $scope.formUpdateEmployee.$setUntouched();
+    }
     //
     // $scope.showSuccessMessage = function (message) {
     //     $scope.alertMessage = message;
