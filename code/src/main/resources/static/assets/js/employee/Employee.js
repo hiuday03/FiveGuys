@@ -2,7 +2,7 @@ var app = angular.module("employee-list-app", [])
 app.controller("employee-list-controller", function ($scope, $http, $timeout) {
 
     const apiUrlEmployee = "http://localhost:8080/api/employee";
-    const apiUrlRole = "http://localhost:8080/api/roles";
+    const apiUrlRole = "http://localhost:8080/account";
     $scope.employee = [];
     $scope.formUpdate = {};
     $scope.formShow = {};
@@ -73,7 +73,7 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
     // get Role
     $scope.getRole = function () {
         $http.get(apiUrlRole).then(function (response) {
-            $scope.listRole = response.data;
+            $scope.listAccount = response.data;
             // console.log($scope.listRole);
         })
     }
@@ -94,9 +94,7 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
     //delete Employ
     $scope.delete = function (item) {
         $http.delete(`/api/employee/${item.id}`).then(function (response) {
-            // $scope.getAll();
             $scope.getAllStatusDangLam();
-            console.log(item.id);
         }).catch(function (error) {
             console.log("Error", error);
         });
@@ -109,7 +107,6 @@ app.controller("employee-list-controller", function ($scope, $http, $timeout) {
             $scope.showSuccessMessage("Create customer successfully");
             $scope.resetFormInput();
             console.log(resp)
-            // $scope.getAll();
             $scope.getAllStatusDangLam();
             $('#modalAdd').modal('hide');
         }).catch(function (error) {

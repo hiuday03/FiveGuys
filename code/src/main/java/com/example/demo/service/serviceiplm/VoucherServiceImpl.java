@@ -7,6 +7,7 @@ import com.example.demo.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,20 @@ public class VoucherServiceImpl implements VoucherService {
     }
     @Override
     public Vouchers save(Vouchers vouchers){
+        Vouchers vouchers1 = new Vouchers();
+        vouchers1.setCode(vouchers.getCode());
+        vouchers1.setName(vouchers.getName());
+        vouchers1.setValue(vouchers.getValue());
+        vouchers1.setMinimumTotalAmount(vouchers.getMinimumTotalAmount());
+        vouchers1.setQuantity(vouchers.getQuantity());
+        vouchers1.setDescribe(vouchers.getDescribe());
+        vouchers1.setStartDate(vouchers.getStartDate());
+        vouchers1.setEndDate(vouchers.getEndDate());
+        vouchers1.setCreatedAt(new Date());
+        vouchers1.setUpdatedAt(new Date());
+        vouchers1.setCrearedBy(vouchers.getCrearedBy());
+        vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
+        vouchers1.setStatus(vouchers.getStatus());
         return voucherRepository.save(vouchers);
     }
 
@@ -43,10 +58,10 @@ public class VoucherServiceImpl implements VoucherService {
             vouchers1.setStartDate(vouchers.getStartDate());
             vouchers1.setEndDate(vouchers.getEndDate());
             vouchers1.setCreatedAt(vouchers.getCreatedAt());
-            vouchers1.setUpdatedAt(vouchers.getUpdatedAt());
+            vouchers1.setUpdatedAt(new Date());
             vouchers1.setCrearedBy(vouchers.getCrearedBy());
             vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
-            vouchers1.setStatus(Integer.parseInt(vouchers.getStatus()));
+//            vouchers1.setStatus(Integer.parseInt(vouchers.getStatus()));
 
             return voucherRepository.save(vouchers1);
         }else {
