@@ -1,11 +1,14 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -65,13 +68,13 @@ public class Bill {
     private PaymentMethod paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "IdAddress")
-    private AddressEntity addressEntity;
-
-    @ManyToOne
     @JoinColumn(name = "IdVoucher")
     private Vouchers voucher;
 
     @Column(name = "Status")
     private int status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "bill",  cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BillDetail> billDetail;
 }
