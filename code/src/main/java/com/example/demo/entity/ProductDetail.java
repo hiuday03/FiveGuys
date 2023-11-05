@@ -1,11 +1,13 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +32,9 @@ public class ProductDetail {
     @Column(name = "Quantity")
     private Integer quantity;
 
+    @Column(name = "Barcode")
+    private String barcode;
+
     @Column(name = "CreatedAt")
     private Date createdAt;
 
@@ -51,9 +56,13 @@ public class ProductDetail {
 
     @ManyToOne
     @JoinColumn(name = "IdSize")
-    private Product size;
+    private Size size;
 
     @ManyToOne
     @JoinColumn(name = "IdColor")
     private Color color;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images;
 }

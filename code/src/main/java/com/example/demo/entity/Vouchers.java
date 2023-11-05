@@ -55,4 +55,18 @@ public class Vouchers {
 
     @Column(name= "Status")
     private Integer status;
+
+    public String getStatus() {
+        if(status == 0){
+            return "DANG_HOAT_DONG";
+        }else if(status == 1){
+            return "HET_HAN";
+        }else if(status == 2){
+            return "CHUA_HOAT_DONG";
+        }else if(status == 3){
+            return "HET_KHUYEN_MAI ";
+        }else{
+            return "DA_XOA ";
+        }
+    }
 }

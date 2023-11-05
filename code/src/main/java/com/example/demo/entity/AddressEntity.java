@@ -8,7 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -34,13 +37,20 @@ public class AddressEntity {
     @Column(name = "AddressType")
     private String addressType;
 
+    @Column(name = "DefaultAddress")
+    private Boolean defaultAddress;
+
     @ManyToOne
     @JoinColumn(name = "IdCustomer")
     private CustomerEntity customer;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "CreatedAt")
     private Date createdAt;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "UpdatedAt")
     private Date updatedAt;
 

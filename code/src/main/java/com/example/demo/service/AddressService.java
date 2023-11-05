@@ -11,14 +11,14 @@ public interface AddressService {
 
 //    Page<AddressEntity> getAll(Integer page);
 
-    AddressEntity getAddressById(Long addressId);
+    AddressEntity getAddressById(Long id);
 
     Page<AddressEntity> getAllAddressPage(Integer page);
 
     AddressEntity createAddress(AddressEntity addressEntity);
 
-    AddressEntity updateAddress(AddressEntity addressEntity, Long addressId);
+    AddressEntity updateAddress(AddressEntity addressEntity, Long id);
 
-    void deleteAddress(Long addressId);
+    void deleteAddress(Long id);
 
 }

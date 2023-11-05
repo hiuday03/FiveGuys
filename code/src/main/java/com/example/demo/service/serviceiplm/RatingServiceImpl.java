@@ -28,8 +28,8 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public RatingEntity getRatingById(Long ratingId) {
-        return ratingRepository.findById(ratingId).orElse(null);
+    public RatingEntity getRatingById(Long id) {
+        return ratingRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -44,13 +44,13 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public RatingEntity updateRating(RatingEntity ratingEntity, Long ratingId) {
-        Optional<RatingEntity> existingRating = ratingRepository.findById(ratingId);
+    public RatingEntity updateRating(RatingEntity ratingEntity, Long id) {
+        Optional<RatingEntity> existingRating = ratingRepository.findById(id);
         if (existingRating.isPresent()) {
             RatingEntity rating = existingRating.get();
             rating.setContent(ratingEntity.getContent());
             rating.setRate(ratingEntity.getRate());
-            rating.setCustomerEntity(ratingEntity.getCustomerEntity());
+            rating.setCustomer(ratingEntity.getCustomer());
             rating.setProductDetail(ratingEntity.getProductDetail());
             rating.setCreatedAt(ratingEntity.getCreatedAt());
             rating.setUpdatedAt(ratingEntity.getUpdatedAt());
@@ -59,19 +59,19 @@ public class RatingServiceImpl implements RatingService {
             return ratingRepository.save(rating); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {
             // Trả về null hoặc thông báo lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + ratingId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + id);
 //            return null;
         }
     }
 
     @Override
-    public void deleteRating(Long ratingId) {
+    public void deleteRating(Long id) {
         // Kiểm tra xem khách hàng có tồn tại trước khi xóa
-        if (ratingRepository.existsById(ratingId)) {
-            ratingRepository.deleteById(ratingId);
+        if (ratingRepository.existsById(id)) {
+            ratingRepository.deleteById(id);
         } else {
             // Xử lý lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + ratingId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + id);
         }
     }
 }

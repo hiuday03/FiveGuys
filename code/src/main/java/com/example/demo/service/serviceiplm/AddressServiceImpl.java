@@ -30,8 +30,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressEntity getAddressById(Long addressId) {
-        return addressRepository.findById(addressId).orElse(null);
+    public AddressEntity getAddressById(Long id) {
+        return addressRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressEntity updateAddress(AddressEntity addressEntity, Long addressId) {
-        Optional<AddressEntity> existingAddress = addressRepository.findById(addressId);
+    public AddressEntity updateAddress(AddressEntity addressEntity, Long id) {
+        Optional<AddressEntity> existingAddress = addressRepository.findById(id);
         if (existingAddress.isPresent()) {
             AddressEntity address = existingAddress.get();
             address.setName(addressEntity.getName());
@@ -62,19 +62,19 @@ public class AddressServiceImpl implements AddressService {
             return addressRepository.save(address); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {
             // Trả về null hoặc thông báo lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + addressId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + id);
 //            return null;
         }
     }
 
     @Override
-    public void deleteAddress(Long addressId) {
+    public void deleteAddress(Long id) {
         // Kiểm tra xem khách hàng có tồn tại trước khi xóa
-        if (addressRepository.existsById(addressId)) {
-            addressRepository.deleteById(addressId);
+        if (addressRepository.existsById(id)) {
+            addressRepository.deleteById(id);
         } else {
             // Xử lý lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + addressId);
+            throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + id);
         }
     }
 }

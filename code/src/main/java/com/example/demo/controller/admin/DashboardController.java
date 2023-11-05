@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("admin")
+@RequestMapping("/admin")
 public class DashboardController {
     @GetMapping("/index")
     public String viewDashBoard() {
@@ -17,7 +17,37 @@ public class DashboardController {
         return "/admin/products/colors";
     }
 
-    @GetMapping("sell-quicly")
+    @GetMapping("/account/customer")
+    public String viewCustomer() {
+        return "/admin/account/customer";
+    }
+
+    @GetMapping("/account/address")
+    public String viewAddress() {
+        return "/admin/account/address";
+    }
+
+    @GetMapping("/account/favorite")
+    public String ViewFavorite() {
+        return "/admin/account/favorite";
+    }
+
+    @GetMapping("/account/rating")
+    public String ViewRating() {
+        return "/admin/account/rating";
+    }
+
+    @GetMapping("/account/account")
+    public String ViewAccount() {
+        return "/admin/account/account";
+    }
+
+    @GetMapping("/account/role")
+    public String ViewRole() {
+        return "/admin/account/role";
+    }
+
+    @GetMapping("/sell-quicly")
     public String viewSellQuickly() {
         return "/admin/sell-quickly";
     }

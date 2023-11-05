@@ -12,14 +12,14 @@ public interface CustomerService {
 
 //    Page<CustomerEntity> getAll(Integer page);
 
-    CustomerEntity getCustomerById(Long customerId);
+    CustomerEntity getCustomerById(Long id);
 
     Page<CustomerEntity> getAllCustomerPage(Integer page);
 
     CustomerEntity createCustomer(CustomerEntity customerEntity);
 
-    CustomerEntity updateCustomer(CustomerEntity customerEntity, Long customerId);
+    CustomerEntity updateCustomer(CustomerEntity customerEntity, Long id);
 
-    void deleteCustomer(Long customerId);
+    void deleteCustomer(Long id);
 
 }

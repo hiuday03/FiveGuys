@@ -16,21 +16,22 @@ import java.util.Optional;
 
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
-
-    @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-
+//    private final CustomerRepository customerRepository;
+//
+//    @Autowired
+//    public CustomerServiceImpl(CustomerRepository customerRepository) {
+//        this.customerRepository = customerRepository;
+//    }
+@Autowired
+private CustomerRepository customerRepository;
     @Override
     public List<CustomerEntity> getAllCustomer() {
         return customerRepository.findAll();
     }
 
     @Override
-    public CustomerEntity getCustomerById(Long customerId) {
-        return customerRepository.findById(customerId).orElse(null);
+    public CustomerEntity getCustomerById(Long id) {
+        return customerRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -45,19 +46,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerEntity updateCustomer(CustomerEntity customerEntity, Long customerId) {
-        Optional<CustomerEntity> existingCustomer = customerRepository.findById(customerId);
+    public CustomerEntity updateCustomer(CustomerEntity customerEntity, Long id) {
+        Optional<CustomerEntity> existingCustomer = customerRepository.findById(id);
         if (existingCustomer.isPresent()) {
             CustomerEntity customer = existingCustomer.get();
             customer.setFullName(customerEntity.getFullName());
             customer.setAvatar(customerEntity.getAvatar());
-            customer.setAccount(customerEntity.getAccount());
-            customer.setPassword(customerEntity.getPassword());
-            customer.setPhoneNumber(customerEntity.getPhoneNumber());
-            customer.setEmail(customerEntity.getEmail());
             customer.setBirthDate(customerEntity.getBirthDate());
             customer.setGender(customer.isGender());
-            customer.setAddress(customerEntity.getAddress());
+            customer.setAccount(customerEntity.getAccount());
             customer.setCreatedAt(customerEntity.getCreatedAt());
             customer.setUpdatedAt(customerEntity.getUpdatedAt());
             customer.setCreatedBy(customerEntity.getCreatedBy());
@@ -66,19 +63,19 @@ public class CustomerServiceImpl implements CustomerService {
             return customerRepository.save(customer); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {
             // Trả về null hoặc thông báo lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + customerId);
+            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
 //            return null;
         }
     }
 
     @Override
-    public void deleteCustomer(Long customerId) {
+    public void deleteCustomer(Long id) {
         // Kiểm tra xem khách hàng có tồn tại trước khi xóa
-        if (customerRepository.existsById(customerId)) {
-            customerRepository.deleteById(customerId);
+        if (customerRepository.existsById(id)) {
+            customerRepository.deleteById(id);
         } else {
             // Xử lý lỗi nếu không tìm thấy khách hàng với ID này
-            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + customerId);
+            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
         }
     }
 }
