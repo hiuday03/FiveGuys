@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/employee")
+@RequestMapping("/employee")
 public class EmployeeRestController {
     @Autowired
     EmployeeService employeeService;
