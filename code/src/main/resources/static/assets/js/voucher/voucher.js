@@ -8,6 +8,7 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     $scope.formShow = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+
     //
     // // get page Employee
     // $scope.getPage = function () {
@@ -37,20 +38,37 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     $scope.getAll = function () {
         $http.get(apiUrlVoucher).then(function (response) {
             $scope.listVoucher = response.data;
-            // console.log($scope.listVoucher);
-            // $scope.totalPages = response.totalPages;
-        })
+        });
+        $http.get(`/api/voucher/list-current-date`).then(function (response) {
+            $scope.listCurrentDate = response.data;
+            for (const currentDate of $scope.listCurrentDate) {
+                updateVoucherStatus(currentDate);
+            }
+            console.log($scope.listCurrentDate)
+        });
     }
+    function updateVoucherStatus(currentDate) {
+        try {
+            console.log("xin cahfhoo 11", currentDate)
+            currentDate.status = 1; // Thay "MOT_TRANG_THAI_MONG_MUON" bằng giá trị trạng thái mới mong muốn
+            $http.put(`/api/voucher/update-date/${currentDate.id}`, currentDate).then((response) => {
+                console.log("kq == ", response);
+            });
+        } catch (error) {
+            console.error("Lỗi trong quá trình cập nhật: ", error);
+        }
+    }
+
     $scope.getAll();
 
-    // // getById Employee
-    // $scope.getById = function (item) {
-    //     $http.get(`/api/employee/${item.id}`).then(function (response) {
-    //         $scope.listEm = response.data;
-    //         console.log(item.id);
-    //     })
-    // }
-    //
+    // getById Voucher
+    $scope.getById = function (item) {
+        $http.get(`/api/voucher/${item.id}`).then(function (response) {
+            $scope.listVoucher = response.data;
+            console.log(item.id);
+        })
+    }
+
     // // search code employee
     // $scope.getByMa = function (item) {
     //     // console.log(item.id);
@@ -63,18 +81,18 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     //
     //
 
-    // //detaol Employee
-    // $scope.edit = function (employee) {
-    //     $scope.formUpdate = angular.copy(employee);
-    //     $scope.formUpdate.valid_form = new Date(employee.valid_form)
-    //     $scope.formUpdate.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
-    // }
-    // $scope.show = function (employee) {
-    //     $scope.formShow = angular.copy(employee);
-    //     $scope.formShow.valid_form = new Date(employee.valid_form)
-    //     $scope.formShow.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
-    // }
-    //
+    //detaol Employee
+    $scope.edit = function (employee) {
+        $scope.formInput = angular.copy(employee);
+        $scope.formInput.valid_form = new Date(employee.valid_form)
+        $scope.formInput.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
+    }
+    $scope.show = function (employee) {
+        $scope.formShow = angular.copy(employee);
+        $scope.formShow.valid_form = new Date(employee.valid_form)
+        $scope.formShow.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
+    }
+
     // //delete Employ
     // $scope.delete = function (item) {
     //     $http.delete(`/api/employee/${item.id}`).then(function (response) {
@@ -97,94 +115,85 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
             console.log("Error", error);
         });
     }
-    // // update Employee
-    // $scope.updateEmploy = function () {
-    //     // let item = angular.copy($scope.formInput);
-    //     let item = angular.copy($scope.formUpdate);
-    //     console.log(item)
-    //     $http.put(`/api/employee/${item.id}`, item).then(function (resp) {
-    //         $scope.showSuccessMessage("Update customer successfully");
-    //         $scope.resetFormUpdate();
-    //         // $scope.getAll();
-    //         $scope.getAllStatusDangLam();
-    //         $('#modalUpdate').modal('hide');
-    //     }).catch(function (error) {
-    //         console.log("Error", error);
-    //     });
-    // }
-    //
-    // //delete or update status Employee
-    // $scope.updateStatusEmployee = function (item) {
-    //     console.log(item)
-    //     $http.put(`/api/employee/delete/${item.id}`, item).then(function (resp) {
-    //         // $scope.getAll();
-    //         $scope.getAllStatusDangLam();
-    //         console.log(item.id);
-    //     })
-    // }
-    //
-    // // xuát file danh sách excel Employee
-    // $scope.xuatFile = function () {
-    //     $http.get(apiUrlEmployee + "/excel").then(function (response) {
-    //         // $scope.pageEm = response.data.content;
-    //         // $scope.totalPages = response.data.totalPages
-    //     })
-    // }
-    //
+    // update Voucher
+    $scope.updateVoucher = function () {
+        // let item = angular.copy($scope.formInput);
+        let item = angular.copy($scope.formInput);
+        console.log(item)
+        $http.put(`/api/voucher/${item.id}`, item).then(function (resp) {
+            $scope.resetFormInput();
+            $scope.getAll();
+        }).catch(function (error) {
+            console.log("Error", error);
+        });
+    }
+
+    //delete update status Employee
+    $scope.updateStatusVoucher = function (item) {
+        console.log(item)
+        $http.put(`/api/voucher/delete/${item.id}`, item).then(function (resp) {
+            $scope.getAll();
+            // $scope.getAllStatusDangLam();
+            console.log(item.id);
+        })
+    }
+    $scope.submit = function (){
+        if ($scope.formInput.id == -1){
+            $scope.updateVoucher();
+        }else {
+            $scope.addVoucher();
+        }
+    }
+
     $scope.resetFormInput = function () {
         $scope.formInput = {};
         $scope.addformVoucher.$setPristine();
         $scope.addformVoucher.$setUntouched();
     }
-    $scope.resetFormUpdate = function () {
-        $scope.formUpdate = {};
-        $scope.formUpdateEmployee.$setPristine();
-        $scope.formUpdateEmployee.$setUntouched();
+
+    $scope.showSuccessMessage = function (message) {
+        $scope.alertMessage = message;
+        $scope.showAlert = true;
+        $timeout(function () {
+            $scope.closeAlert();
+        }, 5000);
     }
-    //
-    // $scope.showSuccessMessage = function (message) {
-    //     $scope.alertMessage = message;
-    //     $scope.showAlert = true;
-    //     $timeout(function () {
-    //         $scope.closeAlert();
-    //     }, 5000);
-    // }
-    // $scope.closeAlert = function () {
-    //     $scope.showAlert = false;
-    // }
-    //
-    // $scope.paper1 = {
-    //     page: 0,
-    //     size: 5,
-    //     get items() {
-    //         let start = this.page * this.size;
-    //         if ($scope.listVoucher) {
-    //             return $scope.listVoucher.slice(start, start + this.size);
-    //         }
-    //     },
-    //     get count() {
-    //         if ($scope.listVoucher) {
-    //             return Math.ceil(1.0 * $scope.listVoucher.length / this.size);
-    //         }
-    //
-    //     },
-    //     first() {
-    //         this.page = 0;
-    //     },
-    //     prev() {
-    //         this.page--;
-    //         if (this.page < 0) {
-    //             this.last();
-    //         }
-    //     },
-    //     next() {
-    //         this.page++;
-    //         if (this.page >= this.count) {
-    //             this.first();
-    //         }
-    //     },
-    //     last() {
-    //         this.page = this.count - 1;
-    //     }
-    // }
+    $scope.closeAlert = function () {
+        $scope.showAlert = false;
+    }
+
+    $scope.paper = {
+        page: 0,
+        size: 8,
+        get items() {
+            let start = this.page * this.size;
+            if ($scope.listVoucher) {
+                return $scope.listVoucher.slice(start, start + this.size);
+            }
+        },
+        get count() {
+            if ($scope.listVoucher) {
+                return Math.ceil(1.0 * $scope.listVoucher.length / this.size);
+            }
+
+        },
+        first() {
+            this.page = 0;
+        },
+        prev() {
+            this.page--;
+            if (this.page < 0) {
+                this.last();
+            }
+        },
+        next() {
+            this.page++;
+            if (this.page >= this.count) {
+                this.first();
+            }
+        },
+        last() {
+            this.page = this.count - 1;
+        }
+    }
 })

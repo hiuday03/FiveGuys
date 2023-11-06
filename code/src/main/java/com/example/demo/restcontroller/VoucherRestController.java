@@ -1,5 +1,6 @@
 package com.example.demo.restcontroller;
 
+import com.example.demo.entity.Employees;
 import com.example.demo.entity.Vouchers;
 import com.example.demo.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.crypto.Data;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/voucher")
 public class VoucherRestController {
@@ -17,8 +22,13 @@ public class VoucherRestController {
     VoucherService voucherService;
 
     @GetMapping("")
-    public ResponseEntity<List<Vouchers>> getAll(){
+    public ResponseEntity<List<Vouchers>> getAll() {
         return ResponseEntity.ok(voucherService.getAll());
+    }
+
+    @GetMapping("/list-current-date")
+    public ResponseEntity<List<Vouchers>> getAllCurrentDate() {
+        return ResponseEntity.ok(voucherService.getDataByCurrentDate());
     }
 
     @PostMapping("")
@@ -31,15 +41,28 @@ public class VoucherRestController {
         }
 
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         voucherService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    // update voucher
     @PutMapping("/{id}")
-    public ResponseEntity<Vouchers> update(@PathVariable Long id,@RequestBody Vouchers vouchers ){
+    public ResponseEntity<Vouchers> update(@PathVariable Long id, @RequestBody Vouchers vouchers) {
         voucherService.update(id, vouchers);
+        if (vouchers != null) {
+            return ResponseEntity.ok(vouchers);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //delete
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<Vouchers> updateStatus(@PathVariable Long id, @RequestBody Vouchers vouchers) {
+        voucherService.updateStatus(id, vouchers);
         if (vouchers != null) {
             return ResponseEntity.ok(vouchers);
         } else {
@@ -47,4 +70,17 @@ public class VoucherRestController {
         }
 
     }
+
+    //delete
+    @PutMapping("/update-date/{id}")
+    public ResponseEntity<Vouchers> updateStatusDangHoatDong(@PathVariable Long id, @RequestBody Vouchers vouchers) {
+        voucherService.updateStatusDangHoatDong(id, vouchers);
+        if (vouchers != null) {
+            return ResponseEntity.ok(vouchers);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
 }

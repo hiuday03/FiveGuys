@@ -7,6 +7,8 @@ import com.example.demo.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,13 @@ public class VoucherServiceImpl implements VoucherService {
     public List<Vouchers> getAll(){
         return voucherRepository.findAll();
     }
+
+    @Override
+    public List<Vouchers> getDataByCurrentDate(){
+        Date newCurrentDate = new Date();
+        return voucherRepository.findEntitiesInDateRange(newCurrentDate);
+    }
+
     @Override
     public Vouchers save(Vouchers vouchers){
         Vouchers vouchers1 = new Vouchers();
@@ -33,9 +42,9 @@ public class VoucherServiceImpl implements VoucherService {
         vouchers1.setEndDate(vouchers.getEndDate());
         vouchers1.setCreatedAt(new Date());
         vouchers1.setUpdatedAt(new Date());
-        vouchers1.setCrearedBy(vouchers.getCrearedBy());
+        vouchers1.setCreatedBy(vouchers.getCreatedBy());
         vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
-        vouchers1.setStatus(vouchers.getStatus());
+//        vouchers1.setStatus(vouchers.getStatus());
         return voucherRepository.save(vouchers);
     }
 
@@ -59,9 +68,61 @@ public class VoucherServiceImpl implements VoucherService {
             vouchers1.setEndDate(vouchers.getEndDate());
             vouchers1.setCreatedAt(vouchers.getCreatedAt());
             vouchers1.setUpdatedAt(new Date());
-            vouchers1.setCrearedBy(vouchers.getCrearedBy());
+            vouchers1.setCreatedBy(vouchers.getCreatedBy());
             vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
 //            vouchers1.setStatus(Integer.parseInt(vouchers.getStatus()));
+
+            return voucherRepository.save(vouchers1);
+        }else {
+            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
+        }
+    }
+
+    //delete
+    @Override
+    public Vouchers updateStatus(Long id, Vouchers vouchers){
+        Optional<Vouchers> voucherOptional = voucherRepository.findById(id);
+        if(voucherOptional.isPresent()){
+            Vouchers vouchers1 = voucherOptional.get();
+            vouchers1.setCode(vouchers.getCode());
+            vouchers1.setName(vouchers.getName());
+            vouchers1.setValue(vouchers.getValue());
+            vouchers1.setMinimumTotalAmount(vouchers.getMinimumTotalAmount());
+            vouchers1.setQuantity(vouchers.getQuantity());
+            vouchers1.setDescribe(vouchers.getDescribe());
+            vouchers1.setStartDate(vouchers.getStartDate());
+            vouchers1.setEndDate(vouchers.getEndDate());
+            vouchers1.setCreatedAt(vouchers.getCreatedAt());
+            vouchers1.setUpdatedAt(new Date());
+            vouchers1.setCreatedBy(vouchers.getCreatedBy());
+            vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
+            vouchers1.setStatus(4);
+
+            return voucherRepository.save(vouchers1);
+        }else {
+            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
+        }
+    }
+
+    //delete
+    @Override
+    public Vouchers updateStatusDangHoatDong(Long id, Vouchers vouchers){
+        Optional<Vouchers> voucherOptional = voucherRepository.findById(id);
+        if(voucherOptional.isPresent()){
+            Vouchers vouchers1 = voucherOptional.get();
+            vouchers1.setCode(vouchers.getCode());
+            vouchers1.setName(vouchers.getName());
+            vouchers1.setValue(vouchers.getValue());
+            vouchers1.setMinimumTotalAmount(vouchers.getMinimumTotalAmount());
+            vouchers1.setQuantity(vouchers.getQuantity());
+            vouchers1.setDescribe(vouchers.getDescribe());
+            vouchers1.setStartDate(vouchers.getStartDate());
+            vouchers1.setEndDate(vouchers.getEndDate());
+            vouchers1.setCreatedAt(vouchers.getCreatedAt());
+            vouchers1.setUpdatedAt(new Date());
+            vouchers1.setCreatedBy(vouchers.getCreatedBy());
+            vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
+            vouchers1.setStatus(1);
 
             return voucherRepository.save(vouchers1);
         }else {
