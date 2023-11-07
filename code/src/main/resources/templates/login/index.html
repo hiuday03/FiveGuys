@@ -11,6 +11,12 @@
 </head>
 
 <body>
+<nav>
+    <a href="/auth/login/form">Login</a>
+    <a href="/auth/logoff">Logout</a>
+</nav>
+<h2 th:text="${message}"></h2>
+<p th:text="${name}"></p>
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form>
@@ -29,7 +35,7 @@
             </form>
         </div>
         <div class="form-container sign-in">
-            <form>
+            <form action="/auth/login" method="post">
                 <h1>Sign In</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
@@ -38,10 +44,14 @@
                     <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
                 </div>
                 <span>Or use your email password</span>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
+                <input type="text"  placeholder="User name" name="username" th:value="${username}" required>
+                <input type="password" placeholder="Password" name="password">
                 <a href="#">Forget Your Password?</a>
-                <button>Sign In</button>
+                <div>
+                    <label for="remember">Remember me:</label>
+                    <input type="checkbox" id="remember" name="remember" th:checked="${remember}">
+                </div>
+                <button type="submit">Sign In</button>
             </form>
         </div>
         <div class="toggle-container">
