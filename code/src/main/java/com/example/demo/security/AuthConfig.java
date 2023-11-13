@@ -58,6 +58,7 @@ public class AuthConfig {
                                 .anyRequest().permitAll()
 
                 )
+                .cors().and()
                 .formLogin(login -> login
                         .loginPage("/auth/login/form")
                         .loginProcessingUrl("/auth/login")
@@ -76,7 +77,7 @@ public class AuthConfig {
                         .logoutSuccessUrl("/auth/logoff/success")
                 )
                 .csrf().disable()
-                .cors().disable()
+//                .cors().disable()
         ;
         return httpSecurity.build();
     }

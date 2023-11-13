@@ -45,4 +45,9 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
         return olProductDetailRepository.findById(productDetailId);
     }
 
+    @Override
+    public ProductDetail save(ProductDetail productDetail) {
+        return olProductDetailRepository.save(productDetail);
+    }
+
 }
