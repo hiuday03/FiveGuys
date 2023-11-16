@@ -24,6 +24,7 @@
                     <li class="breadcrumb-item active">Employee</li>
                 </ol>
             </nav>
+            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Employees..."  class="form-control">
         </div>
         <!--  Begin code  -->
         <section class="section">
@@ -125,7 +126,7 @@
                                                 aria-label="Small select example" ng-model="formInput.account.id"
                                                 ng-required="true">
                                                 <option ng-repeat="account in accounts" ng-value="account.id">
-                                                    {{account.fullName}}</option>
+                                                    {{account.account}}</option>
                                             </select>
                                             <span ng-show="formCreateEmployee.$submitted">
                                                 <div ng-show="formCreateEmployee.account.$invalid"

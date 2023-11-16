@@ -32,6 +32,23 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
         $scope.alertErrorImg = message;
         $scope.showError = true;
     }
+    
+    $scope.search = function () {
+        // Kiểm tra xem từ khóa tìm kiếm có được nhập không
+        if ($scope.searchKeyword.trim() !== '') {
+            // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
+            $scope.customer = $scope.customer.filter(function (item) {
+                // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
+                if (item && item.fullName) {
+                    return item.fullName.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
+            $scope.initialize();
+        }
+    };  
 
 
     $scope.showSuccessMessage = function (message) {
