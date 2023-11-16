@@ -13,19 +13,6 @@
     <script th:src="@{/assets/js/kendo.all.min.js}"></script>
     <script th:src="@{/assets/js/kendo-ui-license.js}"></script>
     <style>
-        .nav-link.tab {
-            cursor: pointer;
-        }
-        .nav-link.tab.active {
-            color: white;
-        }
-
-        /* Đổi màu nền thành màu trắng và màu chữ thành màu đen */
-        .nav-link.tab.active {
-            background-color: white;
-            color: black !important;
-        }
-
         .container-fluid form {
             width: 400px;
             border: 1px solid rgb(82, 74, 235);
@@ -50,17 +37,12 @@
             padding-left: 10px;
         }
 
-        #pills-tabContent {
-            width: 100%;
-            height: 630px;
-            background-color: #dddddd;
-        }
 
         .product-list {
             display: none;
             position: absolute;
             background-color: #fff;
-            width: 400px;
+            width: 450px;
             left: 25px;
             top: 100%;
             box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
@@ -177,6 +159,16 @@
             align-items: center;
             padding: 0;
         }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
 
     </style>
 </head>
@@ -192,14 +184,15 @@
                         <input id="search-product" type="text" class="form-control" placeholder="Search product" >
                     </form>
                     <div id="item-list" class="row product-list">
-                        <div ng-repeat="item in products" class="product" ng-click="bills.setCart(selectedItem, item.id)">
+                        <div ng-repeat="item in products" class="product" ng-click="addProductCart(selectedItem, item.id)">
                             <img class="col-3" ng-src="{{item.productDetail[0].path}}" alt="">
-                            <div class="col-5 p-details">
-                                <h2>{{item.product.name}}</h2>
-                                <h3>Tồn: {{item.quantity}}</h3>
+                            <div class="col-7 p-details">
+                                <h2>{{item.product.name}} {{item.product.material.name}}</h2>
+                                <h3>Size: {{item.size.name}}</h3>
+                                <h3>Quantity: {{item.quantity}}</h3>
                             </div>
-                            <div class="col-4 p-details">
-                                <h1>{{item.price}}</h1>
+                            <div class="col-2 p-details">
+                                    <h1>{{item.price | number:'0':'symbol':'short'}}</h1>
                             </div>
                         </div>
                     </div>
@@ -207,36 +200,76 @@
                 <div class="nav nav-pills ms-3">
                     <ul class="horizontal-list" kendo-panel-bar="tree"
                         k-data-source="treeData"
-                        k-on-change="selectedItem = dataItem" ng-click="bills.showItem(selectedItem)">
+                        k-on-change="selectedItem = dataItem" >
                          <span k-template>
-                    {{dataItem.name}} <i class="ri-close-fill" ng-click='bills.remove(dataItem.code)'></i>
+                    {{dataItem.name}} <i ng-show="selectedItem === dataItem" class="ri-close-fill" ng-click='removeBill(selectedItem)'></i>
                     </span>
                     </ul>
-                    <button ng-click="bills.add()" class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button>                </div>
+                    <button ng-click="addBill()" class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button></div>
             </div>
         </nav>
         <div class="tab-content pt-3 pb-3">
             <div class="row m-0">
                 <div class="col-sm-8">
-                    <table class="table">
-                       <thead>
-                          <tr>
-                             <th scope="col">Name</th>
-                              <th>Action</th>
-                          </tr>
-                       </thead>
+                    <table ng-if="selectedItem.cart.length > 0" class="table">
                         <tbody>
-                            <tr ng-repeat="item in listItem">
-                                <td>{{item.product.name}}</td>
-                                <td>{{item.price}}</td>
-                                <td>{{item.qty}}</td>
-                                <td><button ng-click="bills.removeCart(item.id, selectedItem)" class="btn btn-light border text-danger icon-hover-danger">Xóa</button></td>
+                            <tr ng-repeat="item in selectedItem.cart">
+                                <td>{{item.product.name}} {{item.product.material.name}} Size {{item.size.name}}</td>
+                                <td>
+                                    <div class="d-flex" style="width: 40%">
+                                        <button class="btn btn-outline-primary btn-sm px-2"
+                                                ng-click="subtractQuantity(selectedItem, item)">
+                                            <i class="ri-subtract-line"></i>
+                                        </button>
+
+                                        <input id="form1" min="1" name="quantity" ng-model="item.qty" type="number" ng-change="checkQuantityChange(selectedItem, item)"
+                                               class="text-center mx-2 form-control form-control-sm" />
+
+                                        <button class="btn btn-outline-primary btn-sm px-2"
+                                                ng-click="addQuantity(selectedItem, item)">
+                                            <i class="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td style="line-height: 35px"><p class="m-0 fw-bold">{{item.price | number:'0':'symbol':'short'}}</p></td>
+                                <td><button ng-click="removeProductCart(item.id, selectedItem)" class="btn btn-light border text-danger icon-hover-danger"><i class="ri-delete-bin-6-line"></i></button></td>
                             </tr>
                          </tbody>
                  </table>
                 </div>
+
            <div class="col-sm-4">
                 <div class="card">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body modal-lg">
+                                    <form>
+                                        <div class="row mb-3">
+                                            <label for="inputfullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
+                                            <div class="col-sm-10">
+                                                <input id="inputfullName" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="inputPhone" class="col-sm-2 col-form-label">Điện thoại</label>
+                                            <div class="col-sm-10">
+                                                <input id="inputPhone" type="number" class="form-control">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <form>
                   <i class="ri-search-line icon-search"></i>
                     <input id="search-client" type="text" class="form-control" placeholder="Search client">
@@ -263,11 +296,15 @@
                    <hr>
                     </div>
                     <div class="row">
-                    <div class="col-xl-5">
-                       <p>Total</p>
+                    <div class="col-xl-3">
+                       <p>Items</p>
                     </div>
+                        <div class="col-xl-3">
+                            <p>{{selectedItem.itemQty}}</p>
+                        </div>
                    <div class="col-xl-5">
                        <p class="float-end">
+                           {{selectedItem.totalAmount | number:'0':'symbol':'short'}}
                        </p>
                    </div>
                    <hr>
@@ -334,110 +371,137 @@
     let app_sellQuickly = angular.module("sell-quickly", ["kendo.directives"]);
     app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http){
         $scope.products = [];
-        $scope.employee = {};
         $scope.initialize = function () {
             $http.get("/api/productDetail").then(resp => {
                 $scope.products = resp.data;
-            })
-            $http.get(`/employee/1`).then(resp => {
-                $scope.employee = resp.data;
             })
         }
         $scope.initialize();
         // bill tab
         $scope.treeData = new kendo.data.HierarchicalDataSource({
-            data: []
-        });
-
-        $scope.bills = {
-            bill: [],
-            add() {
-                let billvalue = {
-                    code: 'HD' + this.bill.length + 1,
-                    name: 'Bill ' + this.bill.length + 1,
-                    employee: $scope.employee,
+            data: JSON.parse(localStorage.getItem("treeData")) || [
+                {
+                    code: 'HD1',
+                    name: 'Bill 1',
+                    createdAt: new Date(),
+                    paymentDate: new Date(),
+                    items: "",
+                    totalAmount: 0,
+                    totalAmountAfterDiscount: 0,
+                    reciverName: "",
+                    deliveryDate: new Date(),
+                    shippingFee: 0,
+                    address: "",
+                    phoneNumber: "",
+                    note: "",
+                    status: 1,
                     cart: []
                 }
-                this.bill.push(billvalue);
-                this.saveToLocalStorage();
-            },
-            remove(code) {
-                let index = this.bill.findIndex(item => item.code == code);
-                if (index !== -1) {
-                    this.bill.splice(index, 1);
-                    this.saveToLocalStorage();
-                }
-            },
-            showItem(selectedItem) {
-                const itemCode = selectedItem.code;
-                const foundBill = this.bill.find(billItem => billItem.code === itemCode);
-                $scope.listItem = foundBill.cart;
-            },
-            removeCart(id, selectedItem) {
-                const itemCode = selectedItem.code;
-                const foundBill = this.bill.find(billItem => billItem.code === itemCode);
+            ]
 
-                if (foundBill) {
-                    // Tìm sản phẩm trong giỏ hàng của hóa đơn bằng ID
-                    const index = foundBill.cart.findIndex(cartItem => cartItem.id === id);
+        });
 
-                    if (index !== -1) {
-                        // Xóa sản phẩm khỏi giỏ hàng của hóa đơn
-                        foundBill.cart.splice(index, 1);
 
-                        // Lưu thay đổi vào localStorage
-                        this.saveToLocalStorage();
-                    }
-                }
-
-                // Hiển thị danh sách sản phẩm còn lại trong giỏ hàng của hóa đơn
-                this.showItem(selectedItem);
-            },
-            setCart(selectedItem, id) {
-                const itemCode = selectedItem.code;
-                const foundBill = this.bill.find(billItem => billItem.code === itemCode);
-
-                if (foundBill) {
-                    if (foundBill.cart.length === 0) {
-                        $http.get('/api/productDetail/' + id).then(resp => {
-                            resp.data.qty = 1;
-                            foundBill.cart.push(resp.data);
-                            this.saveToLocalStorage();
-                        });
-                    } else {
-                        const foundCartItem = foundBill.cart.find(cartItem => cartItem.id === id);
-                        if (foundCartItem) {
-                            foundCartItem.qty++;
-                            this.saveToLocalStorage();
-                        } else {
-                            $http.get('/api/productDetail/' + id).then(resp => {
-                                resp.data.qty = 1;
-                                foundBill.cart.push(resp.data);
-                                this.saveToLocalStorage();
-                            });
-                        }
-                    }
-                }
-                this.showItem(selectedItem);
+        function makeBill() {
+            var uniqueId = $scope.treeData.data().length + 1;
+            var bill = {
+                code: 'HD' + uniqueId,
+                name: 'Bill ' + uniqueId,
+                createdAt: new Date(),
+                paymentDate: new Date(),
+                itemQty: "",
+                totalAmount: 0,
+                totalAmountAfterDiscount: 0,
+                reciverName: "",
+                deliveryDate: new Date(),
+                shippingFee: 0,
+                address: "",
+                phoneNumber: "",
+                note: "",
+                status: 1,
+                cart: []
             }
-            ,
-            saveToLocalStorage(){
-                var json = JSON.stringify(angular.copy(this.bill));
-                localStorage.setItem("bills",json);
-                this.loadFromLocalStorage();
-            },
-            loadFromLocalStorage(){
-                var json = localStorage.getItem("bills");
-                this.bill = json ? JSON.parse(json) : [];
-                $scope.treeData.data(this.bill);
-            }
+            return bill;
+        };
 
+        $scope.addBill = function () {
+            var newbill = makeBill();
+            $scope.treeData.add(newbill);
+            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
         }
 
-        $scope.bills.loadFromLocalStorage();
+        $scope.removeBill = function (item) {
+            var array = item.parent();
+            var index = array.indexOf(item);
+
+            // Check if the item being removed is not the first one
+            if (index > 0) {
+                array.splice(index, 1);
+
+                // Set selectedItem to the previous item in the array
+                $scope.selectedItem = undefined;
+                localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+            } else {
+                return;
+            }
+        };
+
+        $scope.addProductCart = function (selectedItem, id) {
+            if (selectedItem == null) {
+                alert("Please choose bill or create bill!")
+                return;
+            }
+            var item = selectedItem.cart.find(item => item.id == id);
+            if (item) {
+                item.qty++;
+                $scope.count(selectedItem);
+            } else {
+                $http.get('/api/productDetail/' + id).then(resp => {
+                    resp.data.qty = 1;
+                    selectedItem.cart.push(resp.data);
+                    $scope.count(selectedItem);
+                })
+            }
+        }
 
 
-    })
+
+        $scope.removeProductCart = function (id, selectedItem) {
+            var index = Object.values(selectedItem.cart).findIndex(item => item.id == id);
+            if (index !== -1) {
+                selectedItem.cart.splice(index, 1);
+                $scope.count(selectedItem);
+            }
+        }
+
+        $scope.subtractQuantity = function (selectedItem, item) {
+            if (item.qty > 1) {
+                item.qty--;
+                $scope.count(selectedItem);
+            }
+        };
+
+        $scope.addQuantity = function (selectedItem, item) {
+            item.qty++;
+            $scope.count(selectedItem);
+        }
+
+        $scope.checkQuantityChange = function (selectedItem, item) {
+            if (isNaN(item.qty) || item.qty < 1 || !Number.isInteger(item.qty)) {
+                item.qty = 1;
+            }
+            $scope.count(selectedItem);
+        }
+
+        $scope.count = function (selectedItem) {
+            selectedItem.itemQty = selectedItem.cart.reduce((total, item) => total + item.qty, 0);
+
+            selectedItem.totalAmount = selectedItem.cart.reduce((total, item) => total + item.qty * item.price, 0);
+            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+        }
+
+
+    });
 
 </script>
 
