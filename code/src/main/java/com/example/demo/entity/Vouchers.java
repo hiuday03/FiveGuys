@@ -27,6 +27,9 @@ public class Vouchers {
     @Column(name= "Value")
     private BigDecimal value;
 
+    @Column(name= "ValueType")
+    private int valueType;
+
     @Column(name= "MinimumTotalAmount")
     private BigDecimal minimumTotalAmount;
 
