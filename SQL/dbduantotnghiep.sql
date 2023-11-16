@@ -94,7 +94,7 @@ create table Employees
 	Id			bigint identity(1,1) primary key,
 	Code		nvarchar(20),
 	FullName	nvarchar(100),
-	Avatar		nvarchar(100),
+	Avatar		nvarchar(MAX),
 	BirthDate	datetime,
 	Gender		bit,
 	Address		nvarchar(MAX),

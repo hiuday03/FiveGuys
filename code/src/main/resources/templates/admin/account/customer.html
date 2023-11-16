@@ -42,14 +42,15 @@
                             <h5 class="modal-title">Create Customer</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="col-lg-4">
-                                <h1>Avatar</h1>
+                        <div class="modal-body row">
+                            <div class="col-lg-3">
+                                <!-- <h1>Avatar</h1> -->
                                 <label for="image">
-                                    <img src="/assets/img/no-img.png" id="image-preview" style="width: 250px" />
+                                    <img src="/assets/img/no-img.png" id="image-preview"
+                                        style="width: 100px; height: 100px;" />
                                 </label>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-9">
                                 <form name="formCreateCustomer" ng-submit="formCreateCustomer.$valid && create()"
                                     novalidate>
                                     <div class="row mb-3">
@@ -64,29 +65,19 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <!-- <div class="row mb-3">
-                                    <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
-                                    <div class="col-sm-9">
-                                        <input name="avatar" id="inputAvatar" type="file" class="form-control" ng-model="formInput.avatar"  required>
-                                    <span ng-show="formCreateCustomer.$submitted">
-                                            <div ng-show="formCreateCustomer.Avatar.$invalid" class="error-message text-danger form-text">
-                                            Avatar cannot be blank</div>
-                                        </span>
-                                    </div>
-                                    <img src="" alt="" sizes="" srcset="">
-                                </div> -->
                                     <div class="row mb-3">
                                         <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                         <div class="col-sm-9">
-                                            <select class="form-select form-select-sm" aria-label="Small select example"
-                                                ng-model="formInput.account.id">
+                                            <select name="account" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formInput.account.id"
+                                                ng-required="true">
                                                 <option ng-repeat="account in accounts" ng-value="account.id">
-                                                    {{account.account}}</option>
+                                                    {{account.fullName}}</option>
                                             </select>
                                             <span ng-show="formCreateCustomer.$submitted">
-                                                <div ng-show="formCreateCustomer.customer.$invalid"
+                                                <div ng-show="formCreateCustomer.account.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    Account cannot be blank</div>
+                                                    account cannot be blank</div>
                                             </span>
                                         </div>
                                     </div>
@@ -159,18 +150,18 @@
                                     </div>
                                 </div> -->
                                     <!-- <div class="row mb-3">
-                                    <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
-                                    <div class="col-sm-9">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gender" id="gender1"
-                                                value="true" ng-model="formInput.gender" ng-checked='true'>Nam
+                                        <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="gender1"
+                                                    value="true" ng-model="formInput.gender" ng-checked='true'>Nam
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="gender2"
+                                                    ng-model="formInput.gender" value="false">Nữ
+                                            </div>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gender" id="gender2"
-                                                ng-model="formInput.gender" value="false">Nữ
-                                        </div>
-                                    </div>
-                                </div> -->
+                                    </div> -->
                                     <!-- <div class="row mb-3">
                                     <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
                                     <div class="col-sm-9">
@@ -235,14 +226,14 @@
                                     <div class="row mb-3">
                                         <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                         <div class="col-sm-9">
-                                            <select class="form-select form-select-sm" aria-label="Small select example"
-                                                ng-model="formInput.status" required>
+                                            <select name="status" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formInput.status" required>
                                                 <option value="1">One</option>
                                                 <option value="2">Two</option>
                                                 <option value="3">Three</option>
                                             </select>
-                                            <span ng-show="formUpdateCustomer.$submitted">
-                                                <div ng-show="formUpdateCustomer.status.$invalid"
+                                            <span ng-show="formCreateCustomer.$submitted">
+                                                <div ng-show="formCreateCustomer.status.$invalid"
                                                     class="error-message text-danger form-text">
                                                     Status cannot be blank</div>
                                             </span>
@@ -271,13 +262,13 @@
                             <h5 class="modal-title">Update Customer</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body row">
                             <div class="col-lg-4">
-                                <h1>Avatar</h1>
+                                <!-- <h1>Avatar</h1> -->
                                 <label for="image">
                                     <img id="image-preview-update"
                                         ng-src="{{formUpdate.avatar ? formUpdate.avatar : '/assets/img/no-img.png'}}"
-                                        style="width: 250px" />
+                                        style="width: 100px; height: 100px;" />
                                 </label>
                             </div>
                             <div class="col-lg-8">
@@ -429,8 +420,7 @@
                                         <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                         <div class="col-sm-9">
                                             <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
-                                                ng-model="formUpdate.updatedAt"
-                                                ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
+                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                             <span ng-show="formUpdateCustomer.$submitted">
                                                 <div ng-show="formUpdateCustomer.updatedAt.$invalid"
                                                     class="error-message text-danger form-text">
@@ -465,7 +455,7 @@
                                     <div class="row mb-3">
                                         <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                         <div class="col-sm-9">
-                                            <select class="form-select form-select-sm" aria-label="Small select example"
+                                            <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                                 ng-model="formUpdate.status">
                                                 <option ng-value="1">One</option>
                                                 <option ng-value="2">Two</option>

@@ -6,11 +6,9 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
     $scope.formInput = {};
     $scope.showAlert = false;
     $scope.currentDate = new Date();
-    $scope.showAlert = false;
     $scope.showError = false;
     $scope.load = function () { $scope.loading = true }
     $scope.unload = function () { $scope.loading = false }
-
 
     imgShow("image", "image-preview");
     imgShow("image-update", "image-preview-update");

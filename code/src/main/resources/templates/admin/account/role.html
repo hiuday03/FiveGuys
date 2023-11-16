@@ -80,14 +80,14 @@
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                        <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.status" required>
                                             <option value="1">One</option>
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
                                         </select>
-                                        <span ng-show="formUpdateRole.$submitted">
-                                            <div ng-show="formUpdateRole.status.$invalid"
+                                        <span ng-show="formCreateRole.$submitted">
+                                            <div ng-show="formCreateRole.status.$invalid"
                                                 class="error-message text-danger form-text">
                                                 Status cannot be blank</div>
                                         </span>
@@ -147,8 +147,7 @@
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
-                                            ng-model="formUpdate.updatedAt"
-                                            ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
+                                        ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formUpdateRole.$submitted">
                                             <div ng-show="formUpdateRole.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
@@ -159,7 +158,7 @@
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
+                                        <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.status">
                                             <option ng-value="1">One</option>
                                             <option ng-value="2">Two</option>

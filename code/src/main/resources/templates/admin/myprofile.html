@@ -25,14 +25,14 @@
             <div class="row">
                 <div class="col-lg-4">
                     <!-- <h1 style="color: aquamarine;">image</h1> -->
-                    <h3>Code</h3>
-                    <img src="./assets/img/no-img.png"
-                        alt="" width="300px" height="300px" style="border-radius: 50%;">
-                    <h2>My Name</h2>
-                    <h3>birthDate</h3>
-                    <h3>Gender</h3>
-                    <h3>Email</h3>
-                    <h3>phoneNumber</h3>
+                    <h3>Code: {{employee.code}}</h3>
+                    <img src="https://www.clipartmax.com/png/small/214-2143742_individuals-whatsapp-profile-picture-icon.png" alt="" width="300px" height="300px" style="border-radius: 50%;">
+                    <h2>My Name: {{employee.fullName}}</h2>
+                    <h3>birthDate: {{employee.birthDate}}</h3>
+                    <h3>Gender: {{employee.gender}}</h3>
+                    <h3>Address: {{employee.address}}</h3>
+                    <h3>Email: {{employee.account.email}}</h3>
+                    <h3>phoneNumber: {{employee.account.phoneNumber}}</h3>
                 </div>
                 <div class="col-lg-8">
                     <div>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="row">
                             <div class="editprofile">
-                                <h1 style="color: aqua;">Edit My Profile</h1>
+                                <h3>Edit My Profile</h3>
                                 <form>
                                     <div class="form-group">
                                         <label for="name">Name</label>
@@ -81,24 +81,24 @@
                                             placeholder="Enter your address">
                                     </div>
 
-                                    <button type="submit" style="margin: 10px;" class="btn btn-primary">Save
+                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Save
                                         Changes</button>
                                 </form>
                             </div>
                             <div class="editaccount">
-                                <h1 style="color: aqua;">Edit My Account</h1>
+                                <h3>Edit My Account</h1>
                                 <form>
                                     <div class="form-group">
                                         <label for="account">Account</label>
                                         <input type="text" class="form-control" id="account"
-                                            placeholder="Enter your account">
+                                            placeholder="Enter your account" readonly>
                                     </div>
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="password">Password</label>
                                         <input type="password" class="form-control" id="password"
-                                            placeholder="Enter your password">
-                                    </div>
+                                            placeholder="Enter your password"readonly
+                                    </div> -->
 
                                     <div class="form-group">
                                         <label for="email">Email</label>
@@ -112,12 +112,12 @@
                                             placeholder="Enter your phoneNumber">
                                     </div>
 
-                                    <button type="submit" style="margin: 10px;" class="btn btn-primary">Save
+                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Save
                                         Changes</button>
                                 </form>
                             </div>
                             <div class="editpass">
-                                <h1 style="color: aqua;">Change Password</h1>
+                                <h3>Change Password</h3>
                                 <form>
 
                                     <div class="form-group">
@@ -139,7 +139,7 @@
                                     </div>
 
 
-                                    <button type="submit" style="margin: 10px;" class="btn btn-primary">Save
+                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Save
                                         Changes</button>
                                 </form>
                             </div>
