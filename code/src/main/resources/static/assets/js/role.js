@@ -53,6 +53,7 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
+        item.updatedAt = $scope.currentDate;
         $http.put(`/role/${item.id}`, item).then(function (resp) {
             $scope.showSuccessMessage("Update Role successfully");
             $scope.resetFormUpdate();

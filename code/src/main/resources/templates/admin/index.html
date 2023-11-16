@@ -27,6 +27,7 @@
     <!-- Template Main CSS File -->
     <link th:href="@{/assets/css/style.css}" rel="stylesheet">
 
+    <link th:href="@{/assets/css/myprofile/myprofile.css}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -219,7 +220,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" th:href="@{/admin/myprofile}">
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>
@@ -249,7 +250,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="/auth/logoff">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
@@ -1067,7 +1068,6 @@
 <!-- Template Main JS File -->
 <script th:src="@{/assets/js/main.js}"></script>
 <script th:src="@{/assets/js/employee/Employee.js}"></script>
-<script th:src="@{/assets/js/employee/Employee.js}"></script>
 <script th:src="@{/assets/js/voucher/voucher.js}"></script>
 <script th:src="@{/assets/js/product/product-list.js}"></script>
 <script th:src="@{/assets/js/product/category-list.js}"></script>
@@ -1080,6 +1080,12 @@
 <script th:src="@{/assets/js/favorite.js}"></script>
 <script th:src="@{/assets/js/rating.js}"></script>
 <script th:src="@{/assets/js/role.js}"></script>
+<script th:src="@{/assets/js/myprofile/myprofile.js}"></script>
+
+<!-- Address -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
 </body>
 
 </html>

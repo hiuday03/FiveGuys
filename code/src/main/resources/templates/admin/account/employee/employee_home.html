@@ -6,10 +6,15 @@
     <meta charset="utf-8">
     <title>Dashboard - FiveGuys</title>
 </head>
-<link rel="stylesheet" th:href="@{/assets/js/employee.js}">
+<link rel="stylesheet" th:href="@{/assets/js/employee/Employee.js}">
 
 <body ng-app="employee" ng-controller="employee-ctrl">
     <main id="main" class="main" layout:fragment="content">
+        <div class="overlay" ng-show="loading">
+            <div class="spinner-border" role="status" style="position: absolute;left: 50%;top: 50%;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
         <div class="pagetitle">
             <h1>Employee</h1>
             <nav>
@@ -37,112 +42,112 @@
                             <h5 class="modal-title">Create Employee</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <form name="formCreateEmployee" ng-submit="formCreateEmployee.$valid && create()"
-                                novalidate>
-                                <div class="row mb-3">
-                                    <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
-                                    <div class="col-sm-9">
-                                        <input name="code" id="inputCode" type="text" class="form-control"
-                                            ng-model="formInput.code" required>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.code.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Code cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
-                                    <div class="col-sm-9">
-                                        <input name="fullName" id="inputFullName" type="text" class="form-control"
-                                            ng-model="formInput.fullName" required>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.fullName.$invalid"
-                                                class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
-                                    <div class="col-sm-9">
-                                        <input name="avatar" id="inputAvatar" type="text" class="form-control"
-                                            ng-model="formInput.avatar" required>
-                                        <!-- <input name="avatar" id="inputAvatar" type="file" class="form-control" ng-model="formInput.avatar"  required> -->
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.Avatar.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Avatar cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
-                                    <div class="col-sm-9">
-                                        <input name="birthDate" id="inputBirthDate" type="date" class="form-control"
-                                            ng-model="formInput.birthDate" required>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.birthDate.$invalid"
-                                                class="error-message text-danger form-text">
-                                                birthDate cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
-                                    <div class="col-sm-9">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gender" id="gender1"
-                                                ng-value="true" ng-model="formUpdate.gender" ng-checked='true'>Nam
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gender" id="gender2"
-                                                ng-model="formUpdate.gender" ng-value="false">Nữ
+                        <div class="modal-body row">
+                            <div class="col-lg-3">
+                                <!-- <h1>Avatar</h1> -->
+                                <label for="image">
+                                    <img src="/assets/img/no-img.png" id="image-preview"
+                                        style="width: 100px; height: 100px;" />
+                                </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <form name="formCreateEmployee" ng-submit="formCreateEmployee.$valid && create()"
+                                    novalidate>
+                                    <div class="row mb-3">
+                                        <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
+                                        <div class="col-sm-9">
+                                            <input name="code" id="inputCode" type="text" class="form-control"
+                                                ng-model="formInput.code" readonly>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
-                                    <div class="col-sm-9">
-                                        <input name="address" id="inputAddress" type="text" class="form-control"
-                                            ng-model="formInput.address" required>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.address.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Address cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
+                                        <div class="col-sm-9">
+                                            <input name="fullName" id="inputFullName" type="text" class="form-control"
+                                                ng-model="formInput.fullName" required>
+                                            <span ng-show="formCreateEmployee.$submitted">
+                                                <div ng-show="formCreateEmployee.fullName.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    FullName cannot be blank</div>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.account.id">
-                                            <option ng-repeat="account in accounts" ng-value="account.id">
-                                                {{account.account}}</option>
-                                        </select>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.employee.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Account cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="image" class="col-sm-3 col-form-label">File Upload</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" name="path" type="file" id="image" />
+                                            <span ng-if="showError" class="error-message text-danger form-text">
+                                                {{alertErrorImg}}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
-                                    <div class="col-sm-9">
-                                        <input name="createdAt" id="inputCreatedAt" type="text"
-                                            class="form-control ng-pristine ng-untouched ng-valid"
-                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.createdAt.$invalid"
-                                                class="error-message text-danger form-text">
-                                                CreatedAt cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
+                                        <div class="col-sm-9">
+                                            <input name="birthDate" id="inputBirthDate" type="date" class="form-control"
+                                                ng-model="formInput.birthDate" required>
+                                            <span ng-show="formCreateEmployee.$submitted">
+                                                <div ng-show="formCreateEmployee.birthDate.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    birthDate cannot be blank</div>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- <div class="row mb-3">
+                                    <div class="row mb-3">
+                                        <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="gender1"
+                                                    value="true" ng-model="formInput.gender" ng-checked='true'>Nam
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="gender2"
+                                                    ng-model="formInput.gender" value="false">Nữ
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                                        <div class="col-sm-9">
+                                            <input name="address" id="inputAddress" type="text" class="form-control"
+                                                ng-model="formInput.address" required>
+                                            <span ng-show="formCreateEmployee.$submitted">
+                                                <div ng-show="formCreateEmployee.address.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    Address cannot be blank</div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                        <div class="col-sm-9">
+                                            <select name="account" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formInput.account.id"
+                                                ng-required="true">
+                                                <option ng-repeat="account in accounts" ng-value="account.id">
+                                                    {{account.fullName}}</option>
+                                            </select>
+                                            <span ng-show="formCreateEmployee.$submitted">
+                                                <div ng-show="formCreateEmployee.account.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    account cannot be blank</div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
+                                        <div class="col-sm-9">
+                                            <input name="createdAt" id="inputCreatedAt" type="text"
+                                                class="form-control ng-pristine ng-untouched ng-valid"
+                                                ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
+                                            <span ng-show="formCreateEmployee.$submitted">
+                                                <div ng-show="formCreateEmployee.createdAt.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    CreatedAt cannot be blank</div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row mb-3">
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="date" class="form-control"
@@ -154,19 +159,19 @@
                                         </span>
                                     </div>
                                 </div> -->
-                                <div class="row mb-3">
-                                    <label for="inputCreatedBy" class="col-sm-3 col-form-label">CreatedBy</label>
-                                    <div class="col-sm-9">
-                                        <input name="createdBy" id="inputCreatedBy" type="text" class="form-control"
-                                            ng-model="formInput.createdBy" required>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.createdBy.$invalid"
-                                                class="error-message text-danger form-text">
-                                                CreatedBy cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="inputCreatedBy" class="col-sm-3 col-form-label">CreatedBy</label>
+                                        <div class="col-sm-9">
+                                            <input name="createdBy" id="inputCreatedBy" type="text" class="form-control"
+                                                ng-model="formInput.createdBy" required>
+                                            <span ng-show="formCreateEmployee.$submitted">
+                                                <div ng-show="formCreateEmployee.createdBy.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    CreatedBy cannot be blank</div>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                     <label for="inputUpdatedBy" class="col-sm-3 col-form-label">UpdatedBy</label>
                                     <div class="col-sm-9">
                                         <input name="updatedBy" id="inputUpdatedBy" type="text" class="form-control"
@@ -178,30 +183,31 @@
                                         </span>
                                     </div>
                                 </div> -->
-                                <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.status" required>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.status.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                        <div class="col-sm-9">
+                                            <select name="status" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formInput.status" required>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                            <span ng-show="formCreateEmployee.$submitted">
+                                                <div ng-show="formCreateEmployee.status.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    Status cannot be blank</div>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                    <button ng-click="resetFormInput()" type="button"
-                                        class="btn btn-warning">Reset</button>
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </form>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button ng-click="resetFormInput()" type="button"
+                                            class="btn btn-warning">Reset</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -216,10 +222,19 @@
                             <h5 class="modal-title">Update Employee</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <form name="formUpdateEmployee" ng-submit="formUpdateEmployee.$valid && update()"
-                                novalidate>
-                                <!-- <div class="row mb-3">
+                        <div class="modal-body row">
+                            <div class="col-lg-4">
+                                <!-- <h1>Avatar</h1> -->
+                                <label for="image">
+                                    <img id="image-preview-update"
+                                        ng-src="{{formUpdate.avatar ? formUpdate.avatar : '/assets/img/no-img.png'}}"
+                                        style="width: 100px; height: 100px;" />
+                                </label>
+                            </div>
+                            <div class="col-lg-8">
+                                <form name="formUpdateEmployee" ng-submit="formUpdateEmployee.$valid && update()"
+                                    novalidate>
+                                    <!-- <div class="row mb-3">
                                     <label for="inputCode" class="col-sm-3 col-form-label">Code</label>
                                     <div class="col-sm-9">
                                         <input name="code" id="inputCode" type="text" class="form-control"
@@ -231,70 +246,66 @@
                                         </span>
                                     </div>
                                 </div> -->
-                                <div class="row mb-3">
-                                    <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
-                                    <div class="col-sm-9">
-                                        <input name="fullName" id="inputFullName" type="text" class="form-control"
-                                            ng-model="formUpdate.fullName" required>
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.fullName.$invalid"
-                                                class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputAvatar" class="col-sm-3 col-form-label">Avatar</label>
-                                    <div class="col-sm-9">
-                                        <!-- <input name="avatar" id="inputAvatar" type="file" class="form-control" ng-model="formUpdate.avatar"  required> -->
-                                        <input name="avatar" id="inputAvatar" type="text" class="form-control"
-                                            ng-model="formUpdate.avatar" required>
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.Avatar.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Avatar cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
-                                    <div class="col-sm-9">
-                                        <input name="birthDate" id="inputBirthDate" type="date" class="form-control"
-                                            ng-model="formUpdate.birthDate"
-                                            ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'" readonly>
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.birthDate.$invalid"
-                                                class="error-message text-danger form-text">
-                                                birthDate cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
-                                    <div class="col-sm-9">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gender" id="gender1"
-                                                ng-value="true" ng-model="formUpdate.gender" ng-checked='true'>Nam
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gender" id="gender2"
-                                                ng-model="formUpdate.gender" ng-value="false">Nữ
+                                    <div class="row mb-3">
+                                        <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
+                                        <div class="col-sm-9">
+                                            <input name="fullName" id="inputFullName" type="text" class="form-control"
+                                                ng-model="formUpdate.fullName" required>
+                                            <span ng-show="formUpdateEmployee.$submitted">
+                                                <div ng-show="formUpdateEmployee.fullName.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    FullName cannot be blank</div>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
-                                    <div class="col-sm-9">
-                                        <input name="address" id="inputAddress" type="text" class="form-control"
-                                            ng-model="formUpdate.address" required>
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.address.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Address cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="image-update" class="col-sm-3 col-form-label">File Upload</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" name="path" type="file" id="image-update" />
+                                            <span ng-if="showError" class="error-message text-danger form-text">
+                                                {{alertErrorImg}}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- <div class="row mb-3">
+                                    <div class="row mb-3">
+                                        <label for="inputBirthDate" class="col-sm-3 col-form-label">Birth Date</label>
+                                        <div class="col-sm-9">
+                                            <input name="birthDate" id="inputBirthDate" type="date" class="form-control"
+                                                ng-model="formUpdate.birthDate"
+                                                ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'" readonly>
+                                            <span ng-show="formUpdateEmployee.$submitted">
+                                                <div ng-show="formUpdateEmployee.birthDate.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    birthDate cannot be blank</div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputGender" class="col-sm-3 col-form-label">Gender</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="gender1"
+                                                    ng-value="true" ng-model="formUpdate.gender" ng-checked='true'>Nam
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="gender" id="gender2"
+                                                    ng-model="formUpdate.gender" ng-value="false">Nữ
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                                        <div class="col-sm-9">
+                                            <input name="address" id="inputAddress" type="text" class="form-control"
+                                                ng-model="formUpdate.address" required>
+                                            <span ng-show="formUpdateEmployee.$submitted">
+                                                <div ng-show="formUpdateEmployee.address.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    Address cannot be blank</div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row mb-3">
                                     <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
@@ -309,7 +320,7 @@
                                         </span>
                                     </div>
                                 </div> -->
-                                <!-- <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                     <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="createdAt" id="inputCreatedAt" type="text"
@@ -322,20 +333,19 @@
                                         </span>
                                     </div>
                                 </div> -->
-                                <div class="row mb-3">
-                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
-                                    <div class="col-sm-9">
-                                        <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
-                                            ng-model="formUpdate.updatedAt"
-                                            ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.updatedAt.$invalid"
-                                                class="error-message text-danger form-text">
-                                                UpdatedAt cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
+                                        <div class="col-sm-9">
+                                            <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
+                                                ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
+                                            <span ng-show="formUpdateEmployee.$submitted">
+                                                <div ng-show="formUpdateEmployee.updatedAt.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    UpdatedAt cannot be blank</div>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                     <label for="inputCreatedBy" class="col-sm-3 col-form-label">CreatedBy</label>
                                     <div class="col-sm-9">
                                         <input name="createdBy" id="inputCreatedBy" type="text" class="form-control"
@@ -347,42 +357,43 @@
                                         </span>
                                     </div>
                                 </div> -->
-                                <div class="row mb-3">
-                                    <label for="inputUpdatedBy" class="col-sm-3 col-form-label">UpdatedBy</label>
-                                    <div class="col-sm-9">
-                                        <input name="updatedBy" id="inputUpdatedBy" type="text" class="form-control"
-                                            ng-model="formUpdate.updatedBy" required>
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.updatedBy.$invalid"
-                                                class="error-message text-danger form-text">
-                                                UpdatedBy cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="inputUpdatedBy" class="col-sm-3 col-form-label">UpdatedBy</label>
+                                        <div class="col-sm-9">
+                                            <input name="updatedBy" id="inputUpdatedBy" type="text" class="form-control"
+                                                ng-model="formUpdate.updatedBy" required>
+                                            <span ng-show="formUpdateEmployee.$submitted">
+                                                <div ng-show="formUpdateEmployee.updatedBy.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    UpdatedBy cannot be blank</div>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.status">
-                                            <option ng-value="1">One</option>
-                                            <option ng-value="2">Two</option>
-                                            <option ng-value="3">Three</option>
-                                        </select>
-                                        <span ng-show="formUpdateEmployee.$submitted">
-                                            <div ng-show="formUpdateEmployee.status.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
-                                        </span>
+                                    <div class="row mb-3">
+                                        <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                        <div class="col-sm-9">
+                                            <select name="status" class="form-select form-select-sm" aria-label="Small select example"
+                                                ng-model="formUpdate.status">
+                                                <option ng-value="1">One</option>
+                                                <option ng-value="2">Two</option>
+                                                <option ng-value="3">Three</option>
+                                            </select>
+                                            <span ng-show="formUpdateEmployee.$submitted">
+                                                <div ng-show="formUpdateEmployee.status.$invalid"
+                                                    class="error-message text-danger form-text">
+                                                    Status cannot be blank</div>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                    <button ng-click="resetFormUpdate()" type="button"
-                                        class="btn btn-warning">Reset</button>
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </form>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button ng-click="resetFormUpdate()" type="button"
+                                            class="btn btn-warning">Reset</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -412,7 +423,7 @@
                             <tr ng-repeat="employee in paper.items">
                                 <td>{{employee.code}}</td>
                                 <td>{{employee.fullName}}</td>
-                                <td>{{employee.avatar}}</td>
+                                <td><img src="{{employee.avatar}}" alt="" height="50px" width="50px"></td>
                                 <td>{{employee.birthDate | date:'yyyy-MM-dd'}}</td>
                                 <td>{{employee.gender}}</td>
                                 <td>{{employee.address}}</td>

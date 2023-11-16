@@ -64,6 +64,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
+        item.createdAt = $scope.currentDate;
         $http.post("/favorite", item).then(function (resp) {
             $scope.showSuccessMessage("Create favorite successfully");
             $scope.resetFormInput();
@@ -77,6 +78,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
+        item.updatedAt = $scope.currentDate;
         $http.put(`/favorite/${item.id}`, item).then(function (resp) {
 
             $scope.showSuccessMessage("Update favorite successfully");
