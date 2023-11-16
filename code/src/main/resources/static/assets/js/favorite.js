@@ -14,6 +14,22 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
+    $scope.search = function () {
+    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
+    if ($scope.searchKeyword.trim() !== '') {
+        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
+        $scope.favorite = $scope.favorite.filter(function (item) {
+            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
+            if (item && item.content) {
+                return item.content.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+            }
+            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
+        });
+    } else {
+        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
+        $scope.initialize();
+    }
+};  
 
     $scope.closeAlert = function () {
         $scope.showAlert = false;
@@ -64,6 +80,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
+        item.createdAt = $scope.currentDate;
         $http.post("/favorite", item).then(function (resp) {
             $scope.showSuccessMessage("Create favorite successfully");
             $scope.resetFormInput();
@@ -77,6 +94,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
+        item.updatedAt = $scope.currentDate;
         $http.put(`/favorite/${item.id}`, item).then(function (resp) {
 
             $scope.showSuccessMessage("Update favorite successfully");

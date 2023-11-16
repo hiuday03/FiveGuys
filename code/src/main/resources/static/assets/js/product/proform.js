@@ -1,6 +1,6 @@
-var app = angular.module("product-list-app", []);
+var app = angular.module("proapp", []);
 
-app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope) {
+app.controller("proctrl", function ($scope, $http, $window, $rootScope) {
 
     const apiUrlProduct = "http://localhost:8080/api/product"
 
@@ -100,7 +100,7 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
             .then(function (response) {
                 console.log(response)
                 $scope.products = response.data.content;
-                $scope.totalPage = response.data.totalPages
+                $scope.totalPage = response.data.totalPages;
             });
     }
 
@@ -120,6 +120,36 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
             });
     }
     $scope.getSelectOption();
+
+    $scope.formParams = {};
+    $scope.stage = "";
+    $scope.formValidation = false;
+    $scope.toggleJSONView = false;
+    $scope.toggleFormErrorsView = false;
+
+    $scope.formParams = {
+        ccEmail: '',
+        ccEmailList: []
+    };
+
+    // Navigation functions
+    $scope.next = function (stage) {
+        //$scope.direction = 1;
+        //$scope.stage = stage;
+
+        $scope.formValidation = true;
+
+        if ($scope.multiStepForm.$valid) {
+            $scope.direction = 1;
+            $scope.stage = stage;
+            $scope.formValidation = false;
+        }
+    };
+
+    $scope.back = function (stage) {
+        $scope.direction = 0;
+        $scope.stage = stage;
+    };
 
 });
 

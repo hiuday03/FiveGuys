@@ -15,6 +15,23 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
         }, 5000);
     }
 
+    $scope.search = function () {
+    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
+    if ($scope.searchKeyword.trim() !== '') {
+        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
+        $scope.role = $scope.role.filter(function (item) {
+            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
+            if (item && item.fullName) {
+                return item.fullName.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+            }
+            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
+        });
+    } else {
+        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
+        $scope.initialize();
+    }
+};  
+
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
@@ -53,6 +70,7 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
+        item.updatedAt = $scope.currentDate;
         $http.put(`/role/${item.id}`, item).then(function (resp) {
             $scope.showSuccessMessage("Update Role successfully");
             $scope.resetFormUpdate();

@@ -14,6 +14,22 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
+    $scope.search = function () {
+    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
+    if ($scope.searchKeyword.trim() !== '') {
+        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
+        $scope.account = $scope.account.filter(function (item) {
+            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
+            if (item && item.account) {
+                return item.account.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+            }
+            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
+        });
+    } else {
+        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
+        $scope.initialize();
+    }
+};  
 
     $scope.closeAlert = function () {
         $scope.showAlert = false;
