@@ -8,57 +8,29 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     $scope.formShow = {};
     $scope.formInput = {};
     $scope.showAlert = false;
+    $scope.hihi = {};
 
-    //
-    // // get page Employee
-    // $scope.getPage = function () {
-    //     $http.get(apiUrlEmployee + "/get-page").then(function (response) {
-    //         $scope.pageEm = response.data.content;
-    //         $scope.totalPages = response.data.totalPages
-    //     })
-    // }
-    // $scope.getPage()
-    // //hiển thi nut phan trang
-    // $scope.displayPageRange = function (){
-    //     var rangs = [];
-    //     for (var i = 1; i<= $scope.totalPages; i++){
-    //         rangs.push(i);
-    //     }
-    //     return rangs;
-    // }
-    // //hien thi trang
-    // $scope.setPage = function (page) {
-    //     page = page-1;
-    //     $http.get(apiUrlEmployee+ "/get-page?page="+ page).then(function (response) {
-    //         $scope.pageEm = response.data.content;
-    //         $scope.totalPages = response.data.totalPages
-    //     })
-    // }
+    $scope.label1 = {
+        update: "Add voucher",
+    }
+
+    $scope.showSuccessMessage = function (message) {
+        $scope.alertMessage = message;
+        $scope.showAlert = true;
+        $timeout(function () {
+            $scope.showAlert = false;
+        }, 3000);
+    }
+
+    $scope.closeAlert = function () {
+        $scope.showAlert = false;
+    }
 
     $scope.getAll = function () {
         $http.get(apiUrlVoucher).then(function (response) {
             $scope.listVoucher = response.data;
         });
-        $http.get(`/api/voucher/list-current-date`).then(function (response) {
-            $scope.listCurrentDate = response.data;
-            for (const currentDate of $scope.listCurrentDate) {
-                updateVoucherStatus(currentDate);
-            }
-            console.log($scope.listCurrentDate)
-        });
     }
-    function updateVoucherStatus(currentDate) {
-        try {
-            console.log("xin cahfhoo 11", currentDate)
-            currentDate.status = 1; // Thay "MOT_TRANG_THAI_MONG_MUON" bằng giá trị trạng thái mới mong muốn
-            $http.put(`/api/voucher/update-date/${currentDate.id}`, currentDate).then((response) => {
-                console.log("kq == ", response);
-            });
-        } catch (error) {
-            console.error("Lỗi trong quá trình cập nhật: ", error);
-        }
-    }
-
     $scope.getAll();
 
     // getById Voucher
@@ -69,58 +41,57 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
         })
     }
 
-    // // search code employee
-    // $scope.getByMa = function (item) {
-    //     // console.log(item.id);
-    //     $http.get(`/api/employee/search/${item.id}`).then(function (response) {
-    //         console.log(item.code);
-    //         $scope.listEm = response.data;
-    //         // console.log(item.code);
-    //     })
-    // }
-    //
-    //
+    //Khai báo status voucher
+    $scope.statusOptions = [
+        {value: 0, label: 'CHUA_HOAT_DONG'},
+        {value: 1, label: 'DANG_HOAT_DONG'},
+        {value: 2, label: 'HET_KHUYEN_MAI'},
+        {value: 3, label: 'HET_HAN'},
+        {value: 4, label: 'DA_XOA'},
+    ];
 
-    //detaol Employee
-    $scope.edit = function (employee) {
-        $scope.formInput = angular.copy(employee);
-        $scope.formInput.valid_form = new Date(employee.valid_form)
-        $scope.formInput.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
+    //detail Voucher
+    $scope.edit = function (voucher) {
+        $scope.formInput = angular.copy(voucher);
+        $scope.formInput.valid_form = new Date(voucher.valid_form)
+        $scope.formInput.valid_until = new Date(voucher.valid_until); // Hoặc là giá trị ngày mặc định của bạn
+        $scope.formInput.startDate = new Date(voucher.startDate);
+        $scope.formInput.endDate = new Date(voucher.endDate);
+        $scope.label1.update = "Update Voucher";
     }
+
+    //detail voucher chi tiết
     $scope.show = function (employee) {
         $scope.formShow = angular.copy(employee);
         $scope.formShow.valid_form = new Date(employee.valid_form)
         $scope.formShow.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
     }
 
-    // //delete Employ
-    // $scope.delete = function (item) {
-    //     $http.delete(`/api/employee/${item.id}`).then(function (response) {
-    //         // $scope.getAll();
-    //         $scope.getAllStatusDangLam();
-    //         console.log(item.id);
-    //     }).catch(function (error) {
-    //         console.log("Error", error);
-    //     });
-    // }
-    //
     // create Employee
-    $scope.addVoucher = function () {
+    $scope.addVoucher = function (newVoucher) {
         let item = angular.copy($scope.formInput);
-        $http.post("/api/voucher", item).then(function (resp) {
-            $scope.showSuccessMessage("Create customer successfully");
+        var isDuplicate = item.code.includes(newVoucher);
+        if (isDuplicate){
+            $scope.hihi= " ma trung";
+        }else {
+            $http.post("/api/voucher", item).then(function (resp) {
+            $scope.showSuccessMessage("Create Voucher Successfully");
             $scope.resetFormInput();
+            // alert("Create customer successfully")
             $scope.getAll();
         }).catch(function (error) {
             console.log("Error", error);
         });
+        }
+
     }
+
     // update Voucher
     $scope.updateVoucher = function () {
-        // let item = angular.copy($scope.formInput);
         let item = angular.copy($scope.formInput);
         console.log(item)
         $http.put(`/api/voucher/${item.id}`, item).then(function (resp) {
+            $scope.showSuccessMessage("Update Voucher successfully");
             $scope.resetFormInput();
             $scope.getAll();
         }).catch(function (error) {
@@ -137,18 +108,22 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
             console.log(item.id);
         })
     }
-    $scope.submit = function (){
-        if ($scope.formInput.id == -1){
+
+    //submit add and update
+    $scope.submit = function () {
+        if ($scope.formInput.id == true) {
             $scope.updateVoucher();
-        }else {
+        } else {
             $scope.addVoucher();
         }
     }
 
+    //rest form
     $scope.resetFormInput = function () {
         $scope.formInput = {};
         $scope.addformVoucher.$setPristine();
         $scope.addformVoucher.$setUntouched();
+        $scope.label1.update = "Add Voucher";
     }
 
     $scope.showSuccessMessage = function (message) {
@@ -156,15 +131,32 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
         $scope.showAlert = true;
         $timeout(function () {
             $scope.closeAlert();
-        }, 5000);
+        }, 3000);
     }
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
 
+    //validate endDate >= startDate
+    $scope.validateDate = function () {
+        let item = angular.copy($scope.formInput);
+        if (item.startDate && item.endDate) {
+            var startDateObj = new Date(item.startDate);
+            var endDateObj = new Date(item.endDate);
+
+            if (startDateObj >= endDateObj) {
+                $scope.endDateError = true;
+            } else {
+                $scope.endDateError = false;
+            }
+        }
+    };
+
+
+    // Phan trang
     $scope.paper = {
         page: 0,
-        size: 8,
+        size: 7,
         get items() {
             let start = this.page * this.size;
             if ($scope.listVoucher) {

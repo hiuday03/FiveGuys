@@ -33,13 +33,12 @@ public class VoucherRestController {
 
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody Vouchers vouchers) {
-        try {
-            Vouchers createdVoucher = voucherService.save(vouchers);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdVoucher);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        voucherService.save(vouchers);
+        if (vouchers != null) {
+            return ResponseEntity.ok(vouchers);
+        } else {
+            return ResponseEntity.notFound().build();
         }
-
     }
 
     @DeleteMapping("/{id}")
@@ -68,19 +67,9 @@ public class VoucherRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
 
-    //delete
-    @PutMapping("/update-date/{id}")
-    public ResponseEntity<Vouchers> updateStatusDangHoatDong(@PathVariable Long id, @RequestBody Vouchers vouchers) {
-        voucherService.updateStatusDangHoatDong(id, vouchers);
-        if (vouchers != null) {
-            return ResponseEntity.ok(vouchers);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
 
-    }
+
 
 }

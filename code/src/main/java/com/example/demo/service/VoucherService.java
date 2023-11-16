@@ -14,12 +14,13 @@ public interface VoucherService {
 
     void delete(Long id);
 
+    //update voucher
     Vouchers update(Long id, Vouchers vouchers);
 
+    //update voucher thành Đã Xóa
     Vouchers updateStatus(Long id, Vouchers vouchers);
 
     List<Vouchers> getDataByCurrentDate();
 
-    Vouchers updateStatusDangHoatDong(Long id, Vouchers vouchers);
 }
 
