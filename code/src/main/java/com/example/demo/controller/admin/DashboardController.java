@@ -12,6 +12,11 @@ public class DashboardController {
         return "/admin/index";
     }
 
+    @GetMapping("/myprofile")
+    public String viewMyProfile() {
+        return "/admin/myprofile";
+    }
+
     @GetMapping("/products/colors")
     public String viewColors() {
         return "/admin/products/colors";

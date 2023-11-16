@@ -78,6 +78,7 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
+        item.updatedAt = $scope.currentDate;
         $http.put(`/rating/${item.id}`, item).then(function (resp) {
 
             $scope.showSuccessMessage("Update rating successfully");
