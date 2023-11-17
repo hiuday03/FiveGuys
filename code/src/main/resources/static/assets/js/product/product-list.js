@@ -121,6 +121,5 @@ app.controller("product-list-ctrl", function ($scope, $http, $window, $rootScope
     }
     $scope.getSelectOption();
 
-
 });
 

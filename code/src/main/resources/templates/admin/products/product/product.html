@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{admin/index}">
+
+<head>
+    <meta charset="utf-8">
+    <title>Danh sách sản phẩm - FiveGuys</title>
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/assets/js/product/texteditor/rte_theme_default.css}"/>
+    <script type="text/javascript" th:src="@{/assets/js/product/texteditor/rte.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/assets/js/product/texteditor/all_plugins.js}"></script>
+</head>
+
+<body ng-app="abcd" ng-controller="abcd" style="font-size: 15px">
+<main id="main" class="main" layout:fragment="content">
+
+    <div class="pagetitle">
+        <h1>Products</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
+                <li class="breadcrumb-item">Products</li>
+                <li class="breadcrumb-item active">Products</li>
+            </ol>
+        </nav>
+    </div>
+
+
+    <!--  Begin code  -->
+    <section class="section">
+        <!--        <button type="button" class="btn btn-outline-success mb-2">-->
+        <!--            Add Color-->
+        <!--        </button>-->
+        <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+            Add Color
+        </button>
+
+<!--        <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>-->
+        <!-- Modal Add -->
+        <!--        <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+        <!--            <div class="modal-dialog modal-lg">-->
+        <!--                <div class="modal-content">-->
+        <!--                    <div class="modal-header">-->
+        <!--                        <h5 class="modal-title">Create Color</h5>-->
+        <!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+        <!--                    </div>-->
+        <!--                    <div class="modal-body">-->
+
+        <!--                        <div class="animate-switch-container" ng-switch on="stage"-->
+        <!--                             ng-class="{forward: direction, backward:!direction}">-->
+        <!--                            &lt;!&ndash;                                <div class="animate-switch" ng-switch-default>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                    <div class="row">&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                        <div class="col-md-12">&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                            <p>Welcome to the form.</p>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                            <button type="button" class="btn btn-primary"&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                                    ng-click="next('stage1')">Start</button>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                        </div>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                    </div>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                </div>&ndash;&gt;-->
+        <!--                            <div class="animate-switch" ng-switch-default>-->
+        <!--                                <form name="multiStepForm" class="form-validation" role="form" novalidate>-->
+        <!--                                    &lt;!&ndash;                                <div class="animate-switch" ng-switch-when="stage1">&ndash;&gt;-->
+        <!--                                    <div class="col-md-4">-->
+        <!--                                        <label class="form-label">Tên sản phẩm</label>-->
+        <!--                                        <input type="text" class="form-control" ng-model="formInput.name" required>-->
+
+        <!--                                    </div>-->
+        <!--                                    <div class="col-md-4">-->
+        <!--                                        <label class="form-label">Cổ áo</label>-->
+        <!--                                        <input type="text" class="form-control" ng-model="formInput.collar" required>-->
+
+        <!--                                    </div>-->
+        <!--                                    <div class="col-md-4">-->
+        <!--                                        <label class="form-label">Cổ tay</label>-->
+        <!--                                        <input type="text" class="form-control" ng-model="formInput.wrist" required>-->
+
+        <!--                                    </div>-->
+        <!--                                    &lt;!&ndash;                                    <div class="col-md-4">&ndash;&gt;-->
+        <!--                                    &lt;!&ndash;                                        <label class="form-label">Loại sản phẩm</label>&ndash;&gt;-->
+        <!--                                    &lt;!&ndash;                                        <select class="form-select" ng-model="formInput.idCategory" required>&ndash;&gt;-->
+        <!--                                    &lt;!&ndash;                                            <option selected disabled value="">Choose...</option>&ndash;&gt;-->
+        <!--                                    &lt;!&ndash;                                            <option ng-repeat="c in categories" value="{{c.id}}">{{ c.name }}</option>&ndash;&gt;-->
+        <!--                                    &lt;!&ndash;                                        </select>&ndash;&gt;-->
+        <!--                                    &lt;!&ndash;                                    </div>&ndash;&gt;-->
+        <!--                                    <div class="col-md-4">-->
+        <!--                                        <label class="form-label">Chất liệu</label>-->
+        <!--                                        <select class="form-select" ng-model="formInput.idMaterial" required>-->
+        <!--                                            <option selected disabled value="">Choose...</option>-->
+        <!--                                            <option ng-repeat="m in materials" value="{{m.id}}">{{ m.name }}</option>-->
+        <!--                                        </select>-->
+        <!--                                    </div>-->
+        <!--                                    <div class="col-md-4">-->
+        <!--                                        <label class="form-label">Loai</label>-->
+        <!--                                        <select class="form-select" ng-model="formInput.idCategory" required>-->
+        <!--                                            <option selected disabled value="">Choose...</option>-->
+        <!--                                            <option ng-repeat="m in categories" value="{{m.id}}">{{ m.name }}</option>-->
+        <!--                                        </select>-->
+        <!--                                    </div>-->
+        <!--                                    <div class="col-md-4">-->
+        <!--                                        <label class="form-label">Thương hiệu</label>-->
+        <!--                                        <input type="text" class="form-control" ng-model="formInput.brand" required>-->
+        <!--                                    </div>-->
+        <!--                                    <div class="d-flex justify-content-end">-->
+        <!--                                        <div class="mt-2">-->
+        <!--                                            <button type="button" class="btn btn-info" ng-click="back('')">Back</button>-->
+        <!--                                            <button type="button" class="btn btn-primary" ng-click="next('stage2')">-->
+        <!--                                                Next-->
+        <!--                                            </button>-->
+        <!--                                            &lt;!&ndash;                                            <button type="button" class="btn btn-danger" ng-click="reset()">Try again</button>&ndash;&gt;-->
+        <!--                                        </div>-->
+        <!--                                    </div>-->
+        <!--                                </form>-->
+        <!--                            </div>-->
+        <!--                            &lt;!&ndash;                            <div class="animate-switch" ng-switch-when="stage2">&ndash;&gt;-->
+
+        <!--                            &lt;!&ndash;                                <div class="form-group">&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                    <label for="ta-body">Message Body:</label>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                    <textarea class="form-control" rows="5" id="ta-body"&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                              ng-model="formInput.describe"></textarea>&ndash;&gt;-->
+
+        <!--                            &lt;!&ndash;                                </div>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                <button type="button" class="btn btn-info" ng-click="back('stage1')">Back</button>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                                <button type="button" class="btn btn-primary" ng-click="next('stage3')">Next</button>&ndash;&gt;-->
+        <!--                            &lt;!&ndash;                            </div>&ndash;&gt;-->
+
+        <!--                            <div class="animate-switch" ng-switch-when="stage2">-->
+
+
+        <!--                                <button type="button" class="btn btn-info" ng-click="back('stage1')">Back</button>-->
+        <!--                                <button type="button" class="btn btn-primary" ng-click="next('stage3')">Next</button>-->
+        <!--                            </div>-->
+
+        <!--                            <div class="animate-switch" ng-switch-when="stage3">-->
+        <!--                                <h3>Summary</h3>-->
+        <!--                                <p>Name: {{formInput}}</p>-->
+        <!--                                <p>Name: {{formInput.name}}</p>-->
+        <!--                                <p>Collar: {{formInput.collar}}</p>-->
+        <!--                                <p>Wrist: {{formInput.wrist}}</p>-->
+        <!--                                <p>Category: {{formInput.idCategory}}</p>-->
+        <!--                                <p>Material: {{formInput.idMaterial}}</p>-->
+        <!--                                <p>Brand: {{formInput.brand}}</p>-->
+        <!--                                <p>Describe: {{formInput.describe}}</p>-->
+
+
+        <!--                                <button type="button" class="btn btn-info" ng-click="back('stage2')">Back</button>-->
+        <!--                                <button type="button" class="btn btn-warning" ng-click="submitForm()">Submit-->
+        <!--                                </button>-->
+
+        <!--                            </div>-->
+
+        <!--                            <div class="animate-switch" ng-switch-when="success">-->
+        <!--                                <div class="success-wrap">-->
+        <!--                                    <h2 class="confirmation-text">Thank you</h2>-->
+        <!--                                    <p>Your message has been sent.<br>You should receive a confirmation email.</p>-->
+        <!--                                    <div>-->
+        <!--                                        <button type="button" class="btn btn-success" ng-click="reset()">Send-->
+        <!--                                            Another-->
+        <!--                                        </button>-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            <div class="animate-switch" ng-switch-when="error">-->
+        <!--                                <div class="error-wrap">-->
+        <!--                                    <h2 class="confirmation-text">Error</h2>-->
+        <!--                                    <p>There was an error when attempting to submit your request.<br>Please try-->
+        <!--                                        again-->
+        <!--                                        later.-->
+        <!--                                    </p>-->
+        <!--                                    <p><strong>*This will always error until a web service URL is set.*</strong></p>-->
+        <!--                                    <div>-->
+        <!--                                        <button type="button" class="btn btn-danger" ng-click="reset()">Try again-->
+        <!--                                        </button>-->
+
+
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Mã</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Thương hiệu</th>
+                        <th scope="col">Loại</th>
+                        <th scope="col">Chất liệu</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="p in products">
+                        <td class="col-1">{{p.code}}</td>
+                        <td class="col-3">{{p.name}}</td>
+                        <td class="col-2">{{p.brand}}</td>
+                        <td class="col-2">{{p.category.name}}</td>
+                        <td class="col-2">{{p.material.name}}</td>
+                        <td class="col-2">
+                            <a type="button" class="btn btn-info" data-bs-toggle="modal"
+                               data-bs-target="#modalDetail"
+                               ng-click="getProductById(p.id)"><i class="ri-eye-2-fill"></i></a>
+                            <a type="button" class="btn btn-info" data-bs-toggle="modal"
+                               data-bs-target="#modalUpdate"
+                               ng-click="getProductById(p.id)"><i class="ri-edit-2-line"></i></a>
+
+                            <button type="button" class="btn btn-danger"><i class="ri-delete-bin-fill"></i></button>
+                            <div class="modal fade" id="deleteModal" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa
+                                                không?</h5>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                                                Delete
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" ng-repeat="pageNum in displayPageRange()">
+                            <a class="page-link" href="#" ng-click="setPage(pageNum)">{{pageNum}}</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg" style="max-height: 700px;">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detail</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs nav-pills" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#home">Product</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#menu1">Detail</a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div id="home" class="container tab-pane active"><br>
+
+                            </div>
+                            <div id="menu1" class="container tab-pane fade"><br>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        multiple modal-->
+        <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel">Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="multiStepForm" class="form-validation" role="form" novalidate>
+                            <!--                                <div class="animate-switch" ng-switch-when="stage1">-->
+                            <div class="col-md-10">
+                                <label class="form-label">Tên sản phẩm</label>
+                                <input type="text" class="form-control" ng-model="formInput.name" required>
+
+                            </div>
+                            <div class="col-md-10">
+                                <label class="form-label">Cổ áo</label>
+                                <input type="text" class="form-control" ng-model="formInput.collar" required>
+
+                            </div>
+                            <div class="col-md-10">
+                                <label class="form-label">Cổ tay</label>
+                                <input type="text" class="form-control" ng-model="formInput.wrist" required>
+                            </div>
+                            <div class="col-md-10">
+                                <label class="form-label">Chất liệu</label>
+                                <select class="form-select" ng-model="formInput.idMaterial" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option ng-repeat="m in materials" value="{{m.id}}">{{ m.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-10">
+                                <label class="form-label">Loai</label>
+                                <select class="form-select" ng-model="formInput.idCategory" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option ng-repeat="c in categories" value="{{c.id}}">{{ c.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-10">
+                                <label class="form-label">Thương hiệu</label>
+                                <input type="text" class="form-control" ng-model="formInput.brand" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel2">Describe</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div id="div_editor" style="max-width: 20px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-info" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Back
+                        </button>
+                        <button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
+                                data-bs-dismiss="modal" ng-click="cc1()">Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalToggleLabel3">Modal 2</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Name: {{formInput.name}}</p>
+                        <p>Collar: {{formInput.collar}}</p>
+                        <p>Wrist: {{formInput.wrist}}</p>
+                        <p>Category: {{formInput.idCategory}}</p>
+                        <p>Material: {{formInput.idMaterial}}</p>
+                        <p>Brand: {{formInput.brand}}</p>
+                        <p>Describe: {{formInput.describe}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-info" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Back
+                        </button>
+                        <button class="btn btn-success" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+                                data-bs-dismiss="modal">Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--  End Code  -->
+</main>
+
+</body>
+
+</html>

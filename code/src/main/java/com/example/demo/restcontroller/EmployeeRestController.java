@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/employee")
+@RequestMapping("/employee")
 public class EmployeeRestController {
     @Autowired
     EmployeeService employeeService;
@@ -39,6 +39,7 @@ public class EmployeeRestController {
     public ResponseEntity<List<Employees>> getAll() {
         List<Employees> customers = employeeService.getAll();
         return ResponseEntity.ok(customers);
+
     }
 
     //get employee status =1

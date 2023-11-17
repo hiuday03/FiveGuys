@@ -21,4 +21,6 @@ public interface OLProductDetailService {
     ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
 
     Optional<ProductDetail> findById(Long productDetailId);
+
+    ProductDetail save(ProductDetail productDetail);
 }
