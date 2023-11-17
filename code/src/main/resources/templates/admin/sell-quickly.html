@@ -208,6 +208,10 @@
                     <button ng-click="addBill()" class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button></div>
             </div>
         </nav>
+        <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
+            {{alertMessage}}
+            <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
+        </div>
         <div class="tab-content pt-3 pb-3">
             <div class="row m-0">
                 <div class="col-sm-8">
@@ -237,43 +241,101 @@
                          </tbody>
                  </table>
                 </div>
-
-           <div class="col-sm-4">
-                <div class="card">
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body modal-lg">
-                                    <form>
-                                        <div class="row mb-3">
-                                            <label for="inputfullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
-                                            <div class="col-sm-10">
-                                                <input id="inputfullName" type="text" class="form-control">
+                <div class="modal fade" id="modalCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form name="form" ng-submit="form.$valid && create()" novalidate>
+                                    <div class="row mb-3">
+                                        <label for="inputfullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formCustomer.fullName" name="fullName" id="inputfullName" type="text" class="form-control" required>
+                                            <span ng-show="form.$submitted">
+                                            <div ng-show="form.fullName.$invalid" class="error-message text-danger form-text">
+                                           Tên không được để trống</div>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputPhone" class="col-sm-2 col-form-label">Điện thoại</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formAddress.phoneNumber" name="phoneNumber" id="inputPhone" type="number" class="form-control" required>
+                                            <span ng-if="form.$submitted && form.phoneNumber.$invalid" class="error-message text-danger form-text">
+                                                    <span ng-if="form.phoneNumber.$error.required">Số điện thoại không được để trống</span>
+                                                    <span ng-if="form.phoneNumber.$error.number">Số điện thoại phải là số</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputAdress" class="col-sm-2 col-form-label">Địa chỉ</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formAddress.address" id="inputAdress" name="address" type="text" class="form-control" required>
+                                            <span ng-show="form.$submitted">
+                                                <div ng-show="form.address.$invalid" class="error-message text-danger form-text">
+                                                Địa chỉ không được để trống</div>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputDate" class="col-sm-2 col-form-label">Ngày sinh</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formCustomer.birthDate" name="birthDate" id="inputDate" type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0">Giới tính</legend>
+                                        <div class="col-sm-10" ng-init="formCustomer.gender='true'">
+                                            <div class="form-check">
+                                                <input ng-model="formCustomer.gender" class="form-check-input" type="radio" name="gioiTinh" id="addRadioMan" value="true">
+                                                <label class="form-check-label" for="addRadioMan">
+                                                    Nam
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input ng-model="formCustomer.gender" class="form-check-input" type="radio" name="gioiTinh" id="addRadioFemale" value="false">
+                                                <label class="form-check-label" for="addRadioFemale">
+                                                    Nữ
+                                                </label>
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <label for="inputPhone" class="col-sm-2 col-form-label">Điện thoại</label>
-                                            <div class="col-sm-10">
-                                                <input id="inputPhone" type="number" class="form-control">
+                                    </fieldset>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0">Loại khách</legend>
+                                        <div class="col-sm-10">
+                                            <div class="form-check" ng-init="formAddress.addressType='Cá nhân'">
+                                                <input ng-model="formAddress.addressType" class="form-check-input" type="radio" name="loaiKhach" id="addRadioPersonal" value="Cá nhân">
+                                                <label class="form-check-label" for="addRadioMan">
+                                                    Cá nhân
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input ng-model="formAddress.addressType" class="form-check-input" type="radio" name="loaiKhach" id="addRadioWork" value="Công ty">
+                                                <label class="form-check-label" for="addRadioFemale">
+                                                    Công ty
+                                                </label>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
+                                    </fieldset>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-sm-4">
+                <div class="card">
                 <form>
                   <i class="ri-search-line icon-search"></i>
                     <input id="search-client" type="text" class="form-control" placeholder="Search client">
-                    <i class="ri-add-fill icon-plus"></i>
+                    <i data-bs-toggle="modal" data-bs-target="#modalCustomer" class="ri-add-fill icon-plus"></i>
                 </form>
                  <div class="content-pay justify-content-center mt-3">
                      <div class="row">
@@ -369,12 +431,41 @@
     });
 
     let app_sellQuickly = angular.module("sell-quickly", ["kendo.directives"]);
-    app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http){
+    app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeout){
         $scope.products = [];
+        $scope.formCustomer = {};
+        $scope.formAddress = {};
+        $scope.showAlert = false;
+        $scope.showSuccessMessage = function(message) {
+            $scope.alertMessage = message;
+            $scope.showAlert = true;
+            $timeout(function() {
+                $scope.closeAlert();
+            }, 5000);
+        }
+        $scope.closeAlert = function() {
+            $scope.showAlert = false;
+        }
+
         $scope.initialize = function () {
             $http.get("/api/productDetail").then(resp => {
                 $scope.products = resp.data;
             })
+        }
+
+        $scope.create = function () {
+            $scope.formCustomer.status = 1;
+            var customer = angular.copy($scope.formCustomer);
+            $http.post(`/customer`, customer).then(resp => {
+                $scope.formAddress.customer = resp.data;
+                var address = angular.copy($scope.formAddress);
+                $http.post(`/address`, address).then(resp => {
+
+                })
+            }).catch(error => {
+                console.log("Error", error);
+            })
+
         }
         $scope.initialize();
         // bill tab
@@ -395,7 +486,9 @@
                     phoneNumber: "",
                     note: "",
                     status: 1,
-                    cart: []
+                    cart: [],
+                    customer: {},
+                    employee: {}
                 }
             ]
 
