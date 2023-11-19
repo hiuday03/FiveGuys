@@ -240,7 +240,8 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
 
     // xuát file danh sách excel Employee
     $scope.xuatFile = function () {
-        $http.get(apiUrlEmployee + "/excel").then(function (response) {
+        $http.get("/employee/excel").then(function (response) {
+            alert("Xuất File Thành Công")
             // $scope.pageEm = response.data.content;
             // $scope.totalPages = response.data.totalPages
         })
