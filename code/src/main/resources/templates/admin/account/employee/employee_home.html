@@ -44,6 +44,16 @@
         <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
             {{alertMessage}}
             <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
+        <div class="pagetitle">
+            <h1>Employee</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
+                    <li class="breadcrumb-item">Account</li>
+                    <li class="breadcrumb-item active">Employee</li>
+                </ol>
+            </nav>
+            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Employees..."  class="form-control">
         </div>
         <!-- Modal Add -->
         <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -140,6 +150,10 @@
                                             </option>
                                         </select>
                                         <span ng-show="formCreateEmployee.$submitted">
+                                                <option ng-repeat="account in accounts" ng-value="account.id">
+                                                    {{account.account}}</option>
+                                            </select>
+                                            <span ng-show="formCreateEmployee.$submitted">
                                                 <div ng-show="formCreateEmployee.account.$invalid"
                                                      class="error-message text-danger form-text">
                                                     account cannot be blank</div>
