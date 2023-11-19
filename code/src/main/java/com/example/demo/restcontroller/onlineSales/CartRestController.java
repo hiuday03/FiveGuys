@@ -122,6 +122,7 @@ public class CartRestController {
                             newChiTietGioHang.setCart(cart);
                             newChiTietGioHang.setProductDetail(productDetail.get());
                             newChiTietGioHang.setQuantity(1);
+                            newChiTietGioHang.setPrice(productDetail.get().getPrice());
                             cartDetail = newChiTietGioHang;
                             olCartDetailService.save(cartDetail);
 

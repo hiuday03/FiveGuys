@@ -52,8 +52,8 @@ public class OLProductServiceImpl implements OLProductService {
             olHomeProductRespone.setPrice(productDetails.isEmpty() ? null : productDetails.get(0).getPrice());
 
             List<Image> images = productDetails.isEmpty() ? new ArrayList<>() : productDetails.get(0).getImages();
-            String firstName = !images.isEmpty() ? images.get(0).getName() : null;
-            olHomeProductRespone.setImage(firstName);
+            String firstName = !images.isEmpty() ? images.get(0).getPath() : null;
+            olHomeProductRespone.setPath(firstName);
 
             olHomeProductResponeList.add(olHomeProductRespone);
         }
@@ -77,8 +77,8 @@ public class OLProductServiceImpl implements OLProductService {
             olHomeProductRespone.setPrice(productDetails.isEmpty() ? null : productDetails.get(0).getPrice());
 
             List<Image> images = productDetails.isEmpty() ? new ArrayList<>() : productDetails.get(0).getImages();
-            String firstName = !images.isEmpty() ? images.get(0).getName() : null;
-            olHomeProductRespone.setImage(firstName);
+            String firstName = !images.isEmpty() ? images.get(0).getPath() : null;
+            olHomeProductRespone.setPath(firstName);
 
             olHomeProductResponeList.add(olHomeProductRespone);
         }
