@@ -71,17 +71,17 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     $scope.addVoucher = function (newVoucher) {
         let item = angular.copy($scope.formInput);
         var isDuplicate = item.code.includes(newVoucher);
-        if (isDuplicate){
-            $scope.hihi= " ma trung";
-        }else {
+        if (isDuplicate) {
+            $scope.hihi = " ma trung";
+        } else {
             $http.post("/api/voucher", item).then(function (resp) {
-            $scope.showSuccessMessage("Create Voucher Successfully");
-            $scope.resetFormInput();
-            // alert("Create customer successfully")
-            $scope.getAll();
-        }).catch(function (error) {
-            console.log("Error", error);
-        });
+                $scope.showSuccessMessage("Create Voucher Successfully");
+                $scope.resetFormInput();
+                // alert("Create customer successfully")
+                $scope.getAll();
+            }).catch(function (error) {
+                console.log("Error", error);
+            });
         }
 
     }
@@ -151,6 +151,45 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
             }
         }
     };
+
+    //Add voucher Bằng file excel
+    $scope.insertExcelVoucher = function (files) {
+        var reader = new FileReader();
+        reader.onloadend = async () => {
+            var workbook = new ExcelJS.Workbook();
+            await workbook.xlsx.load(reader.result);
+            const worksheet = workbook.getWorksheet('Sheet1');
+            worksheet.eachRow((row, index) => {
+                if (index > 1) {
+                    //import bigdecimel
+                    var bigDecimalValue = new Big(row.getCell(3).value);
+                    var bigDecimalMinimumTotalAmount = new Big(row.getCell(5).value);
+                    //import date
+                    var startdate1 = new Date(row.getCell(7).value)
+                    var enddate1 = new Date(row.getCell(8).value)
+                    let voucher = {
+                        code: row.getCell(1).value,
+                        name: row.getCell(2).value,
+                        value: bigDecimalValue,
+                        valueType: row.getCell(4).value,
+                        minimumTotalAmount: bigDecimalMinimumTotalAmount,
+                        // +row import thành int
+                        quantity: +row.getCell(6).value,
+                        startDate: startdate1,
+                        endDate: enddate1,
+                        describe: row.getCell(9).value,
+                    }
+                    $http.post("/api/voucher", voucher).then(resp => {
+                        alert("Add Voucher successfully")
+                        $scope.getAll();
+                        console.log("success", resp.data);
+                    })
+                }
+            });
+        }
+        reader.readAsArrayBuffer(files[0]);
+
+    }
 
 
     // Phan trang

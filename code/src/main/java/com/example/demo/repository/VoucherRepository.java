@@ -16,6 +16,9 @@ public interface VoucherRepository extends JpaRepository<Vouchers, Long> {
     @Query("SELECT v FROM Vouchers v WHERE :currentDate BETWEEN  v.startDate AND v.endDate")
     List<Vouchers> findEntitiesInDateRange(Date currentDate);
 
+    @Query("SELECT v FROM Vouchers v WHERE v.status = 0 or v.status = 1 or v.status = 2 or v.status = 3")
+    List<Vouchers> getAllStatuskhacDaXoa();
+
     @Modifying
     @Query(value = "UPDATE Vouchers set status = ?1 where id = ?2", nativeQuery = true)
     void updateStatusDiscount(Integer status, Long id);

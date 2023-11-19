@@ -4,9 +4,16 @@ import com.example.demo.entity.Roles;
 import com.example.demo.entity.Vouchers;
 import com.example.demo.repository.VoucherRepository;
 import com.example.demo.service.VoucherService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -21,7 +28,7 @@ public class VoucherServiceImpl implements VoucherService {
     @Transactional
     @Override
     public List<Vouchers> getAll(){
-        List<Vouchers> vouchers = voucherRepository.findAll();
+        List<Vouchers> vouchers = voucherRepository.getAllStatuskhacDaXoa();
         long newDate = new Date().getTime();
         for(Vouchers vouchers1: vouchers){
             long startdate = vouchers1.getStartDate().getTime();
@@ -38,6 +45,7 @@ public class VoucherServiceImpl implements VoucherService {
                 //select status chưa hoat dong
                 if(startdate > newDate && vouchers1.getStatus() != 0){
                     voucherRepository.updateStatusDiscount(0, idVoucher);
+                    voucherRepository.getAllStatuskhacDaXoa();
                 }
                 //select status dang hoat dong
                 if(startdate < newDate && enddate > newDate){
@@ -49,7 +57,7 @@ public class VoucherServiceImpl implements VoucherService {
                 }
             }
         }
-        List<Vouchers> listReturn = voucherRepository.findAll();
+        List<Vouchers> listReturn = voucherRepository.getAllStatuskhacDaXoa();
 
         return listReturn;
     }
@@ -78,8 +86,8 @@ public class VoucherServiceImpl implements VoucherService {
         vouchers.setEndDate(vouchers.getEndDate());
         vouchers.setCreatedAt(new Date());
         vouchers.setUpdatedAt(new Date());
-        vouchers.setCreatedBy(vouchers.getCreatedBy());
-        vouchers.setUpdatedBy(vouchers.getUpdatedBy());
+        vouchers.setCreatedBy("Admin");
+        vouchers.setUpdatedBy("Admin");
         if(enddate < newDate ){
             vouchers.setStatus(3);
         }
@@ -117,8 +125,8 @@ public class VoucherServiceImpl implements VoucherService {
             vouchers1.setEndDate(vouchers.getEndDate());
             vouchers1.setCreatedAt(vouchers.getCreatedAt());
             vouchers1.setUpdatedAt(new Date());
-            vouchers1.setCreatedBy(vouchers.getCreatedBy());
-            vouchers1.setUpdatedBy(vouchers.getUpdatedBy());
+            vouchers1.setCreatedBy("Admin");
+            vouchers1.setUpdatedBy("Admin");
             if (vouchers1.getStatus()==4){
                 vouchers1.setStatus(4);
             }else{
@@ -165,4 +173,6 @@ public class VoucherServiceImpl implements VoucherService {
             throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
         }
     }
+
+
 }
