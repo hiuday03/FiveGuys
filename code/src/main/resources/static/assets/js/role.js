@@ -1,6 +1,7 @@
 let app_role = angular.module("role", []);
 
 app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
+    $scope.originalRole = []; 
     $scope.role = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -14,31 +15,32 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
-
-    $scope.search = function () {
-    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
-    if ($scope.searchKeyword.trim() !== '') {
-        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
-        $scope.role = $scope.role.filter(function (item) {
-            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
-            if (item && item.fullName) {
-                return item.fullName.toLowerCase().includes($scope.searchKeyword.toLowerCase());
-            }
-            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
-        });
-    } else {
-        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
-        $scope.initialize();
-    }
-};  
-
+    
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
 
+    $scope.search = function () {
+        // Kiểm tra từ khóa tìm kiếm
+        if ($scope.searchKeyword.trim() !== '') {
+            $scope.role = $scope.originalRole.filter(function (item) {
+                if (item && item.fullName) {
+                    return item.fullName.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false;
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalRole
+            $scope.role = angular.copy($scope.originalRole);
+        }
+        // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+        $scope.changePageSize();
+    };
+
     $scope.initialize = function () {
         $http.get("/role").then(function (resp) {
-            $scope.role = resp.data;
+            $scope.originalRole = resp.data; // Lưu dữ liệu gốc
+            $scope.role = angular.copy($scope.originalRole); // Sao chép dữ liệu gốc sang mảng hiển thị
         });
     }
 
@@ -101,10 +103,14 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateRole.$setPristine();
         $scope.formCreateRole.$setUntouched();
     }
-
+    
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+    
     $scope.paper = {
         page: 0,
-        size: 5,
+        size: 5, // Kích thước mặc định ban đầu
         get items() {
             let start = this.page * this.size;
             return $scope.role.slice(start, start + this.size);
@@ -116,19 +122,18 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
             this.page = 0;
         },
         prev() {
-            this.page--;
-            if (this.page < 0) {
-                this.last();
+            if (this.page > 0) {
+                this.page--;
             }
         },
         next() {
-            this.page++;
-            if (this.page >= this.count) {
-                this.first();
+            if (this.page < this.count - 1) {
+                this.page++;
             }
         },
         last() {
             this.page = this.count - 1;
         }
-    }
+    };
+    
 });

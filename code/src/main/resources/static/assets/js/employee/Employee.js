@@ -1,6 +1,7 @@
 let app_employee = angular.module("employee", []);
 
 app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
+    $scope.originalEmployee = []; 
     $scope.employee = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -41,30 +42,31 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
-    $scope.search = function () {
-    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
-    if ($scope.searchKeyword.trim() !== '') {
-        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
-        $scope.employee = $scope.employee.filter(function (item) {
-            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
-            if (item && item.code) {
-                return item.code.toLowerCase().includes($scope.searchKeyword.toLowerCase());
-            }
-            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
-        });
-    } else {
-        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
-        $scope.initialize();
-    }
-};  
 
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
 
+    $scope.search = function () {
+        // Kiểm tra từ khóa tìm kiếm
+        if ($scope.searchKeyword.trim() !== '') {
+            $scope.employee = $scope.originalEmployee.filter(function (item) {
+                if (item && item.code) {
+                    return item.code.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false;
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalEmployee
+            $scope.employee = angular.copy($scope.originalEmployee);
+        }
+        // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+        $scope.changePageSize();
+    };
     $scope.initialize = function () {
         $http.get("/employee").then(function (resp) {
-            $scope.employee = resp.data;
+            $scope.originalEmployee = resp.data;
+            $scope.employee = angular.copy($scope.originalEmployee);
         });
     }
 
@@ -244,9 +246,13 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
         })
     }
 
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+    
     $scope.paper = {
         page: 0,
-        size: 5,
+        size: 5, // Kích thước mặc định ban đầu
         get items() {
             let start = this.page * this.size;
             return $scope.employee.slice(start, start + this.size);
@@ -258,19 +264,18 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
             this.page = 0;
         },
         prev() {
-            this.page--;
-            if (this.page < 0) {
-                this.last();
+            if (this.page > 0) {
+                this.page--;
             }
         },
         next() {
-            this.page++;
-            if (this.page >= this.count) {
-                this.first();
+            if (this.page < this.count - 1) {
+                this.page++;
             }
         },
         last() {
             this.page = this.count - 1;
         }
-    }
+    };
+    
 });
