@@ -10,6 +10,7 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.onlineSales.OLProductDetailService;
 import com.example.demo.service.onlineSales.OLProductService;
+import com.example.demo.service.onlineSales.OlImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -31,13 +32,7 @@ public class HomeRestController {
     private OLProductDetailService olProductDetailService;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
+    private OlImageService olImageService;
 
     @GetMapping("/products")
     public ResponseEntity<?> getAllOlProductsRespone(@RequestParam("page") Integer page) {
@@ -60,7 +55,7 @@ public class HomeRestController {
 //        return ResponseEntity.ok(roleRepository.findAll());
 //    }
 
-    @GetMapping("/products/detailInfo/{id}")
+    @GetMapping("/products/colorAndSize/{id}")
     public ResponseEntity<?> detailInfo(@PathVariable("id") Long id) {
         OlViewProductDetailRespone olViewProductDetailRespone = olProductService.getOlDetailProductResponeById(id);
 
@@ -100,6 +95,20 @@ public class HomeRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+
+    @GetMapping("/products/images")
+    public ResponseEntity<?> getImagesByColorAndProduct(@RequestParam(value = "coloId", required = false) Long coloId,
+                                       @RequestParam(value = "productId", required = false) Long productId) {
+        if (coloId != null  && productId != null) {
+            List<ProductDetail> productDetail = olProductDetailService.findByColorIdAndProductId(coloId, productId);
+            if (productDetail.get(0) != null){
+                return ResponseEntity.ok(olImageService.findByProductDetailId(productDetail.get(0).getId()));
+
+            }
+        }
+            return ResponseEntity.badRequest().body("Missing required parameters: coloId, sizeId, productId");
     }
 
 
