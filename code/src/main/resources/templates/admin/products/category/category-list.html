@@ -187,7 +187,7 @@
                             <button ng-click="edit(category)" type="button" class="btn btn-info"
                                     data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                     class="ri-refresh-line"></i></button>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" ng-click="cc()"
                                     data-bs-target="#deleteModal-{{category.id}}"><i class="ri-delete-bin-fill"></i></button>
                             <div class="modal fade" id="deleteModal-{{category.id}}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">

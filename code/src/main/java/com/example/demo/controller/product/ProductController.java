@@ -50,4 +50,9 @@ public class ProductController {
     public String color(){
         return "admin/products/color/color-list";
     }
+
+    @GetMapping("/size")
+    public String size(){
+        return "admin/products/size/size-list";
+    }
 }
