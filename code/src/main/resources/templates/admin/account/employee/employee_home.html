@@ -126,11 +126,10 @@
                                     <div class="row mb-3">
                                         <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
                                         <div class="col-sm-9">
-                                            <select name="account" class="form-select form-select-sm"
+                                            <select name="account" id="inputAccount" class="form-select form-select-sm"
                                                 aria-label="Small select example" ng-model="formInput.account.id"
                                                 ng-required="true">
-                                                <option ng-repeat="account in accounts" ng-value="account.id">
-                                                    {{account.account}}</option>
+                                                <option ng-repeat="acc in accounts" ng-value="acc.id">{{acc.account}}</option>
                                             </select>
                                             <span ng-show="formCreateEmployee.$submitted">
                                                 <div ng-show="formCreateEmployee.account.$invalid"
@@ -176,26 +175,13 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <!-- <div class="row mb-3">
-                                    <label for="inputUpdatedBy" class="col-sm-3 col-form-label">UpdatedBy</label>
-                                    <div class="col-sm-9">
-                                        <input name="updatedBy" id="inputUpdatedBy" type="text" class="form-control"
-                                            ng-model="formInput.updatedBy" required>
-                                        <span ng-show="formCreateEmployee.$submitted">
-                                            <div ng-show="formCreateEmployee.updatedBy.$invalid"
-                                                class="error-message text-danger form-text">
-                                                UpdatedBy cannot be blank</div>
-                                        </span>
-                                    </div>
-                                </div> -->
                                     <div class="row mb-3">
                                         <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                         <div class="col-sm-9">
                                             <select name="status" class="form-select form-select-sm"
                                                 aria-label="Small select example" ng-model="formInput.status" required>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                                <option value="1">Đang Làm</option>
+                                                <option value="2">Nghỉ Làm</option>
                                             </select>
                                             <span ng-show="formCreateEmployee.$submitted">
                                                 <div ng-show="formCreateEmployee.status.$invalid"
@@ -478,7 +464,7 @@
                             </select>
                         </div>
                         <div class="col-md-11">
-                            <nav aria-label="Page navigation example">
+                            <nav aria-label="Page navigation example" >
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item"><button ng-click="paper.first()"
                                             class="page-link">First</button></li>

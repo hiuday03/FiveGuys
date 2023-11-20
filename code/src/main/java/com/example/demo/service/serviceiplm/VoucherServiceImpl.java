@@ -9,7 +9,6 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,6 +52,7 @@ public class VoucherServiceImpl implements VoucherService {
                     //select status hết khuyen mai
                     if(sl==0){
                         voucherRepository.updateStatusQuantity(2, idVoucher);
+                        voucherRepository.getAllStatuskhacDaXoa();
                     }
                 }
             }

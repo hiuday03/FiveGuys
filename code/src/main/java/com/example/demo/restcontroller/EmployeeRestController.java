@@ -93,17 +93,7 @@ public class EmployeeRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
-
-
-//    @PostMapping("upload/save")
-//    public String send(@RequestParam("attch")MultipartFile attch) throws IllegalStateException, IOException {
-//        if(!attch.isEmpty()){
-//            String fileName = attch.getOriginalFilename();
-//            File file = new File(employeeService.get)
-//        }
-//    }
 
     //delete theo status
     @PutMapping("/delete/{id}")
@@ -114,7 +104,6 @@ public class EmployeeRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     // xuất file excel Employ
@@ -128,7 +117,7 @@ public class EmployeeRestController {
             XSSFRow row = null;
             Cell cell = null;
 
-            row = sheet.createRow(7);
+            row = sheet.createRow(0);
             cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue("STT");
 
@@ -150,13 +139,13 @@ public class EmployeeRestController {
             cell = row.createCell(6, CellType.STRING);
             cell.setCellValue("Address");
 
-            List<Employees> list = employeeService.getAll();
+            List<Employees> list = employeeService.getAllStatusDangLam();
 
             if (list != null) {
                 int s = list.size();
                 for (int i = 0; i < s; i++) {
                     Employees hd = list.get(i);
-                    row = sheet.createRow(6 + i);
+                    row = sheet.createRow(1 + i);
 
                     cell = row.createCell(0, CellType.NUMERIC);
                     cell.setCellValue(i + 1);
@@ -196,10 +185,8 @@ public class EmployeeRestController {
                 File e = new File("E:\\FileEmployee.xlsx");
                 try {
                     FileOutputStream fis = new FileOutputStream(e);
-
                     worbook.write(fis);
                     fis.close();
-
                 } catch (FileNotFoundException x) {
                     x.printStackTrace();
                 }
