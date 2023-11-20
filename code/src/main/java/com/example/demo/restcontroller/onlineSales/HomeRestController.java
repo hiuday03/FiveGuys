@@ -2,15 +2,14 @@ package com.example.demo.restcontroller.onlineSales;
 
 
 import com.example.demo.entity.*;
+import com.example.demo.model.response.onlineSales.OlHomeDataFillRespone;
 import com.example.demo.model.response.onlineSales.OlViewProductDetailRespone;
 import com.example.demo.model.response.onlineSales.OlHomeProductRespone;
 import com.example.demo.model.response.onlineSales.OlProductDetailInfo;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.RoleRepository;
-import com.example.demo.service.onlineSales.OLProductDetailService;
-import com.example.demo.service.onlineSales.OLProductService;
-import com.example.demo.service.onlineSales.OlImageService;
+import com.example.demo.service.onlineSales.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,19 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/ol")
 public class HomeRestController {
+
+    @Autowired
+    private OlCategoryService olCategoryService;
+
+    @Autowired
+    private OlColorService olColorService;
+
+    @Autowired
+    private OlSizeService olSizeService;
+
+    @Autowired
+    private OlMaterialService olMaterialService;
+
 
     @Autowired
     private OLProductService olProductService;
@@ -54,6 +66,18 @@ public class HomeRestController {
 //
 //        return ResponseEntity.ok(roleRepository.findAll());
 //    }
+
+
+    @GetMapping("/products/dataFill")
+    public ResponseEntity<?> dataFill() {
+        OlHomeDataFillRespone olHomeDataFillRespone = new OlHomeDataFillRespone();
+        olHomeDataFillRespone.setCategoryList(olCategoryService.findAll());
+        olHomeDataFillRespone.setColorList(olColorService.findAll());
+        olHomeDataFillRespone.setSizeList(olSizeService.findAll());
+        olHomeDataFillRespone.setMaterialList(olMaterialService.findAll());
+        return ResponseEntity.ok(olHomeDataFillRespone);
+    }
+
 
     @GetMapping("/products/colorAndSize/{id}")
     public ResponseEntity<?> detailInfo(@PathVariable("id") Long id) {

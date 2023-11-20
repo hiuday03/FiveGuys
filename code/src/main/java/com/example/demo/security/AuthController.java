@@ -68,15 +68,15 @@ public class AuthController {
 
     }
 
-    @GetMapping("/auth/login/success")
-    public String success(Model model){
-         authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        model.addAttribute("message","Dang nhap thanh cong");
-        System.out.println(authentication);
-        model.addAttribute("name",authentication);
-        return "forward:/auth/login/form";
-    }
+//    @GetMapping("/auth/login/success")
+//    public String success(Model model){
+//         authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        model.addAttribute("message","Dang nhap thanh cong");
+//        System.out.println(authentication);
+//        model.addAttribute("name",authentication);
+//        return "redirect:http://127.0.0.1:5501/index.html#!/home";
+//    }
 
 
     @GetMapping("/auth/login/error")
@@ -85,12 +85,12 @@ public class AuthController {
         return "forward:/auth/login/form";
     }
 
-    @GetMapping("/auth/logoff/success")
-    public String logoff(Model model){
-        authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("message","Dang xuat thanh cong bấm login mới có thể đăng nhập tiếp");
-        return "forward:/auth/login/form";
-    }
+//    @GetMapping("/auth/logoff/success")
+//    public String logoff(Model model){
+//        authentication = SecurityContextHolder.getContext().getAuthentication();
+//        model.addAttribute("message","Dang xuat thanh cong bấm login mới có thể đăng nhập tiếp");
+//        return "forward:/auth/login/form";
+//    }
 
     @GetMapping("/auth/access/denied")
     public String denied(Model model){
