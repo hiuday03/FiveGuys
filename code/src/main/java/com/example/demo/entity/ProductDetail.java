@@ -62,7 +62,9 @@ public class ProductDetail {
     @JoinColumn(name = "IdColor")
     private Color color;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "productDetail",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     private List<Image> images;
 }
