@@ -1,10 +1,10 @@
-var app = angular.module("category-app", []);
+var app = angular.module("size-app", []);
 
-app.controller("category-ctrl", function ($scope, $http, $timeout) {
+app.controller("size-ctrl", function ($scope, $http, $timeout) {
 
-    const apiUrlCategory = "http://localhost:8080/api/category"
+    const apiUrlSize = "http://localhost:8080/api/size"
 
-    $scope.categories = [];
+    $scope.sizes = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
@@ -19,8 +19,8 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
         $scope.showAlert = false;
     }
     $scope.initialize = function() {
-        $http.get(apiUrlCategory + "/page").then(resp => {
-            $scope.categories = resp.data.content;
+        $http.get(apiUrlSize + "/page").then(resp => {
+            $scope.sizes = resp.data.content;
             $scope.totalPages = resp.data.totalPages
         });
     }
@@ -31,8 +31,8 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
     }
     $scope.create = function() {
         let item = angular.copy($scope.formInput);
-        $http.post(apiUrlCategory, item).then(resp => {
-            $scope.showSuccessMessage("Create category successfully!")
+        $http.post(apiUrlSize, item).then(resp => {
+            $scope.showSuccessMessage("Create size successfully!")
             $scope.initialize();
             $('#modalAdd').modal('hide');
             $scope.resetFormInput();
@@ -43,8 +43,8 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function() {
         let item = angular.copy($scope.formUpdate);
-        $http.put(`${apiUrlCategory}/${item.id}`, item).then(resp => {
-            $scope.showSuccessMessage("Update category successfully!")
+        $http.put(`${apiUrlSize}/${item.id}`, item).then(resp => {
+            $scope.showSuccessMessage("Update size successfully!")
             $scope.initialize();
             $('#modalUpdate').modal('hide');
             $scope.resetFormUpdate();
@@ -54,7 +54,7 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
     }
 
     $scope.delete = function(item) {
-        $http.delete(`${apiUrlCategory}/${item.id}`).then(resp => {
+        $http.delete(`${apiUrlSize}/${item.id}`).then(resp => {
             $scope.showSuccessMessage("Delete color successfully!")
             $scope.initialize();
         }).catch(error => {
@@ -87,10 +87,11 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
     $scope.setPage = function (page) {
         $currentPage = page
         page = page - 1;
-        $http.get(apiUrlCategory + "/page?page=" + page)
+        $http.get(apiUrlSize + "/page?page=" + page)
             .then(function (response) {
-                $scope.categories = response.data.content;
+                $scope.sizes = response.data.content;
                 $scope.totalPage = response.data.totalPages
             });
     }
+
 });
