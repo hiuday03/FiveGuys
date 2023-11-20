@@ -98,27 +98,39 @@ public class CustomerRestController {
             XSSFRow row = null;
             Cell cell = null;
 
-            row = sheet.createRow(7);
+            row = sheet.createRow(0);
             cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue("STT");
 
             cell = row.createCell(1, CellType.STRING);
-            cell.setCellValue("Code");
-
-            cell = row.createCell(2, CellType.STRING);
             cell.setCellValue("Full Name");
 
-            cell = row.createCell(3, CellType.STRING);
+            cell = row.createCell(2, CellType.STRING);
             cell.setCellValue("Account");
 
-            cell = row.createCell(4, CellType.STRING);
+            cell = row.createCell(3, CellType.STRING);
             cell.setCellValue("Phone Number");
 
-            cell = row.createCell(5, CellType.STRING);
+            cell = row.createCell(4, CellType.STRING);
             cell.setCellValue("Email");
 
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Avatar");
+
             cell = row.createCell(6, CellType.STRING);
-            cell.setCellValue("Address");
+            cell.setCellValue("Created At");
+
+            cell = row.createCell(7, CellType.STRING);
+            cell.setCellValue("Updated At");
+
+            cell = row.createCell(8, CellType.STRING);
+            cell.setCellValue("Created By");
+
+            cell = row.createCell(9, CellType.STRING);
+            cell.setCellValue("Updated By");
+
+            cell = row.createCell(10, CellType.STRING);
+            cell.setCellValue("Status");
 
             List<CustomerEntity> list = customerService.getAllCustomer();
 
@@ -135,16 +147,16 @@ public class CustomerRestController {
                     cell.setCellValue(hd.getFullName());
 
                     cell = row.createCell(2, CellType.STRING);
-                    cell.setCellValue(hd.getAvatar());
+                    cell.setCellValue(hd.getAccount().getAccount());
 
                     cell = row.createCell(3, CellType.STRING);
-                    cell.setCellValue(hd.getBirthDate());
+                    cell.setCellValue(hd.getAccount().getPhoneNumber());
 
                     cell = row.createCell(4, CellType.STRING);
-                    cell.setCellValue(hd.isGender());
+                    cell.setCellValue(hd.getAccount().getEmail());
 
                     cell = row.createCell(5, CellType.STRING);
-                    cell.setCellValue(hd.getAccount().getAccount());
+                    cell.setCellValue(hd.getAvatar());
 
 //                    cell = row.createCell(6, CellType.STRING);
 //                    cell.setCellValue(new Da);
@@ -162,6 +174,17 @@ public class CustomerRestController {
 //                    cell.setCellValue(hd.getStatus().intValue());
 //                    cell.setCellStyle(cellStyleFormatNumber);
 
+                    cell = row.createCell(7, CellType.STRING);
+                    cell.setCellValue(hd.getUpdatedAt());
+
+                    cell = row.createCell(8, CellType.STRING);
+                    cell.setCellValue(hd.getCreatedBy());
+
+                    cell = row.createCell(9, CellType.STRING);
+                    cell.setCellValue(hd.getUpdatedBy());
+
+                    cell = row.createCell(10, CellType.STRING);
+                    cell.setCellValue(hd.getStatus());
                 }
                 File e = new File("E:\\FileCustomer.xlsx");
                 try {
