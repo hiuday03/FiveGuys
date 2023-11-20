@@ -19,7 +19,8 @@
                     <li class="breadcrumb-item active">Role</li>
                 </ol>
             </nav>
-                <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search roles..."  class="form-control">
+            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search roles..."
+                class="form-control">
         </div>
         <!--  Begin code  -->
         <section class="section">
@@ -39,8 +40,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form name="formCreateRole" ng-submit="formCreateRole.$valid && create()"
-                                novalidate>
+                            <form name="formCreateRole" ng-submit="formCreateRole.$valid && create()" novalidate>
                                 <div class="row mb-3">
                                     <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
                                     <div class="col-sm-9">
@@ -81,8 +81,8 @@
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select name="status" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.status" required>
+                                        <select name="status" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formInput.status" required>
                                             <option value="1">One</option>
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
@@ -117,8 +117,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form name="formUpdateRole" ng-submit="formUpdateRole.$valid && update()"
-                                novalidate>
+                            <form name="formUpdateRole" ng-submit="formUpdateRole.$valid && update()" novalidate>
                                 <div class="row mb-3">
                                     <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
                                     <div class="col-sm-9">
@@ -148,7 +147,7 @@
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
-                                        ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
+                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formUpdateRole.$submitted">
                                             <div ng-show="formUpdateRole.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
@@ -159,8 +158,8 @@
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select name="status" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.status">
+                                        <select name="status" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formUpdate.status">
                                             <option ng-value="1">One</option>
                                             <option ng-value="2">Two</option>
                                             <option ng-value="3">Three</option>
@@ -208,7 +207,8 @@
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                             class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal-{{role.id}}"><i class="ri-delete-bin-fill"></i></button>
+                                        data-bs-target="#deleteModal-{{role.id}}"><i
+                                            class="ri-delete-bin-fill"></i></button>
                                     <div class="modal fade" id="deleteModal-{{role.id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -230,16 +230,34 @@
                             </tr>
                         </tbody>
                     </table>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
-                            <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
-                            </li>
-                            <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
-                            <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
-                            <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
-                        </ul>
-                    </nav>
+                    <div class="row align-items-center">
+                        <div class="col-md-1"> <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+                            <select class="form-control" ng-model="paper.size" ng-change="changePageSize()" >
+                                <option value="selected">Xem mục</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-11">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item"><button ng-click="paper.first()"
+                                            class="page-link">First</button></li>
+                                    <li class="page-item"><button ng-click="paper.prev()"
+                                            class="page-link">Previous</button></li>
+                                    <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
+                                    </li>
+                                    <li class="page-item"><button ng-click="paper.next()"
+                                            class="page-link">Next</button></li>
+                                    <li class="page-item"><button ng-click="paper.last()"
+                                            class="page-link">Last</button></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
 
                 </div>
             </div>

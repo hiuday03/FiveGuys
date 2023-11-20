@@ -1,6 +1,7 @@
 let app_rating = angular.module("rating", []);
 
 app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
+    $scope.originalRating = [];
     $scope.rating = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -14,30 +15,32 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
-    $scope.search = function () {
-    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
-    if ($scope.searchKeyword.trim() !== '') {
-        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
-        $scope.rating = $scope.rating.filter(function (item) {
-            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
-            if (item && item.content) {
-                return item.content.toLowerCase().includes($scope.searchKeyword.toLowerCase());
-            }
-            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
-        });
-    } else {
-        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
-        $scope.initialize();
-    }
-};  
 
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
 
+    $scope.search = function () {
+        // Kiểm tra từ khóa tìm kiếm
+        if ($scope.searchKeyword.trim() !== '') {
+            $scope.rating = $scope.originalRating.filter(function (item) {
+                if (item && item.content) {
+                    return item.content.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false;
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalRating
+            $scope.rating = angular.copy($scope.originalRating);
+        }
+        // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+        $scope.changePageSize();
+    };
+
     $scope.initialize = function () {
         $http.get("/rating").then(function (resp) {
-            $scope.rating = resp.data;
+            $scope.originalRating = resp.data;
+            $scope.rating = angular.copy($scope.originalRating);
         });
     }
 
@@ -76,7 +79,7 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
             $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
         }
     }
-    
+
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
@@ -127,9 +130,13 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateRating.$setUntouched();
     }
 
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+
     $scope.paper = {
         page: 0,
-        size: 5,
+        size: 5, // Kích thước mặc định ban đầu
         get items() {
             let start = this.page * this.size;
             return $scope.rating.slice(start, start + this.size);
@@ -141,19 +148,18 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
             this.page = 0;
         },
         prev() {
-            this.page--;
-            if (this.page < 0) {
-                this.last();
+            if (this.page > 0) {
+                this.page--;
             }
         },
         next() {
-            this.page++;
-            if (this.page >= this.count) {
-                this.first();
+            if (this.page < this.count - 1) {
+                this.page++;
             }
         },
         last() {
             this.page = this.count - 1;
         }
-    }
+    };
+
 });

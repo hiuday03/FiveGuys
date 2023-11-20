@@ -1,6 +1,7 @@
 let app_favorite = angular.module("favorite", []);
 
 app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
+    $scope.originalFavorite = [];
     $scope.favorite = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -14,32 +15,34 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
-    $scope.search = function () {
-    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
-    if ($scope.searchKeyword.trim() !== '') {
-        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
-        $scope.favorite = $scope.favorite.filter(function (item) {
-            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
-            if (item && item.content) {
-                return item.content.toLowerCase().includes($scope.searchKeyword.toLowerCase());
-            }
-            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
-        });
-    } else {
-        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
-        $scope.initialize();
-    }
-};  
 
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
 
+    $scope.search = function () {
+        // Kiểm tra từ khóa tìm kiếm
+        if ($scope.searchKeyword.trim() !== '') {
+            $scope.favorite = $scope.originalFavorite.filter(function (item) {
+                if (item && item.content) {
+                    return item.content.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false;
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalFavorite
+            $scope.favorite = angular.copy($scope.originalFavorite);
+        }
+        // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+        $scope.changePageSize();
+    };
+    
     $scope.initialize = function () {
         $http.get("/favorite").then(function (resp) {
-            $scope.favorite = resp.data;
+            $scope.originalFavorite = resp.data;
+            $scope.favorite = angular.copy($scope.originalFavorite);
         });
-    }
+    };
     
     $scope.initialize();
 
@@ -75,7 +78,7 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
             $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
         }
     }
-    
+
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
@@ -127,9 +130,13 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateFavorite.$setUntouched();
     }
 
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+
     $scope.paper = {
         page: 0,
-        size: 5,
+        size: 5, // Kích thước mặc định ban đầu
         get items() {
             let start = this.page * this.size;
             return $scope.favorite.slice(start, start + this.size);
@@ -141,19 +148,18 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
             this.page = 0;
         },
         prev() {
-            this.page--;
-            if (this.page < 0) {
-                this.last();
+            if (this.page > 0) {
+                this.page--;
             }
         },
         next() {
-            this.page++;
-            if (this.page >= this.count) {
-                this.first();
+            if (this.page < this.count - 1) {
+                this.page++;
             }
         },
         last() {
             this.page = this.count - 1;
         }
-    }
+    };
+
 });

@@ -41,8 +41,14 @@ public class ColorRestController {
         return ResponseEntity.ok(color);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Color colorReq){
+        Color color = colorService.update(colorReq, id);
+        return ResponseEntity.ok(color);
+    }
+
     @PutMapping("/status/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id){
+    public ResponseEntity<?> updateStatus(@PathVariable("id") Long id){
         Color color = colorService.updateStatus(id);
         return ResponseEntity.ok(color);
     }
