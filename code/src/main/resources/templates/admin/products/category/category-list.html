@@ -181,9 +181,13 @@
                     <tbody>
                     <tr ng-repeat="category in categories">
                         <td class="col-1">{{category.id}}</td>
-                        <td class="col-5">{{category.name}}</td>
-                        <td class="col-4">{{category.status}}</td>
-                        <td class="col-2">
+                        <td class="col-4">{{category.name}}</td>
+                        <td class="col-4" ng-switch="category.status">
+                            <span ng-switch-when="0">Đang dùng</span>
+                            <span ng-switch-when="1">Ngừng sử dụng</span>
+                            <span ng-switch-when="2">Chờ</span>
+                            <span ng-switch-when="3">Ẩn</span></td>
+                        <td class="col-3">
                             <button ng-click="edit(category)" type="button" class="btn btn-info"
                                     data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                     class="ri-refresh-line"></i></button>
