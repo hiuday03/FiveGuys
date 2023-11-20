@@ -28,7 +28,7 @@ public class Vouchers {
     private BigDecimal value;
 
     @Column(name= "ValueType")
-    private int valueType;
+    private Integer valueType;
 
     @Column(name= "MinimumTotalAmount")
     private BigDecimal minimumTotalAmount;
@@ -39,13 +39,9 @@ public class Vouchers {
     @Column(name= "Describe")
     private String describe;
 
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name= "StartDate")
     private Date startDate;
 
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name= "EndDate")
     private Date endDate;
 
@@ -56,7 +52,7 @@ public class Vouchers {
     private Date updatedAt;
 
     @Column(name= "CreatedBy")
-    private String CrearedBy;
+    private String createdBy;
 
     @Column(name= "UpdatedBy")
     private String updatedBy;
@@ -66,15 +62,15 @@ public class Vouchers {
 
 //    public String getStatus() {
 //        if(status == 0){
-//            return "DANG_HOAT_DONG";
-//        }else if(status == 1){
-//            return "HET_HAN";
-//        }else if(status == 2){
 //            return "CHUA_HOAT_DONG";
+//        }else if(status == 1){
+//            return "DANG_HOAT_DONG";
+//        }else if(status == 2){
+//            return "HET_KHUYEN_MAI";
 //        }else if(status == 3){
-//            return "HET_KHUYEN_MAI ";
+//            return "HET_HAN";
 //        }else{
-//            return "DA_XOA ";
+//            return "DA_XOA";
 //        }
 //    }
 }

@@ -119,7 +119,6 @@ public class EmployeeRestController {
 
     // xuất file excel Employ
     private static CellStyle cellStyleFormatNumber = null;
-
     @GetMapping("/excel")
     public void fileExcel() {
         try {
@@ -129,7 +128,7 @@ public class EmployeeRestController {
             XSSFRow row = null;
             Cell cell = null;
 
-            row = sheet.createRow(6);
+            row = sheet.createRow(7);
             cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue("STT");
 
@@ -148,20 +147,8 @@ public class EmployeeRestController {
             cell = row.createCell(5, CellType.STRING);
             cell.setCellValue("Email");
 
-//            cell = row.createCell(6, CellType.STRING);
-//            cell.setCellValue("BirthDate");
-
-//            cell = row.createCell(6, CellType.BOOLEAN);
-//            cell.setCellValue("Gender");
-
             cell = row.createCell(6, CellType.STRING);
             cell.setCellValue("Address");
-
-//            cell = row.createCell(8, CellType.STRING);
-//            cell.setCellValue("Role");
-//
-//            cell = row.createCell(9, CellType.NUMERIC);
-//            cell.setCellValue("Status");
 
             List<Employees> list = employeeService.getAll();
 
@@ -180,14 +167,14 @@ public class EmployeeRestController {
                     cell = row.createCell(2, CellType.STRING);
                     cell.setCellValue(hd.getFullName());
 
-//                    cell = row.createCell(3, CellType.STRING);
-//                    cell.setCellValue(hd.getAccount());
-//
-//                    cell = row.createCell(4, CellType.STRING);
-//                    cell.setCellValue(hd.getPhoneNumber());
-//
-//                    cell = row.createCell(5, CellType.STRING);
-//                    cell.setCellValue(hd.getEmail());
+                    cell = row.createCell(3, CellType.STRING);
+                    cell.setCellValue(hd.getAccount().getAccount());
+
+                    cell = row.createCell(4, CellType.STRING);
+                    cell.setCellValue(hd.getAccount().getPhoneNumber());
+
+                    cell = row.createCell(5, CellType.STRING);
+                    cell.setCellValue(hd.getAccount().getEmail());
 
 //                    cell = row.createCell(6, CellType.STRING);
 //                    cell.setCellValue(new Da);
@@ -206,15 +193,15 @@ public class EmployeeRestController {
 //                    cell.setCellStyle(cellStyleFormatNumber);
 
                 }
-                File f = new File("F:\\FileEmployee.xlsx");
+                File e = new File("E:\\FileEmployee.xlsx");
                 try {
-                    FileOutputStream fis = new FileOutputStream(f);
+                    FileOutputStream fis = new FileOutputStream(e);
 
                     worbook.write(fis);
                     fis.close();
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                } catch (FileNotFoundException x) {
+                    x.printStackTrace();
                 }
             }
         } catch (Exception ex) {
