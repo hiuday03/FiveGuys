@@ -42,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
         productReq.setCreatedAt(new Date());
         productReq.setUpdatedBy("admin");
         productReq.setUpdatedAt(new Date());
+        productReq.setStatus(2);
         return productRepository.save(productReq);
     }
 

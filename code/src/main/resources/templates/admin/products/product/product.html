@@ -55,7 +55,7 @@
                             <option selected value="">Tất cả</option>
                             <option value="0">Đang bán</option>
                             <option value="1">Ngừng bán</option>
-                            <option value="2">Hết hàng</option>
+                            <option value="2">Chờ</option>
                             <option value="3">Ẩn</option>
                         </select>
                     </div>
@@ -234,7 +234,7 @@
                         <td class="col-1" ng-switch="p.status">
                             <span ng-switch-when="0">Đang bán</span>
                             <span ng-switch-when="1">Ngừng bán</span>
-                            <span ng-switch-when="2">Hết hàng</span>
+                            <span ng-switch-when="2">Chờ</span>
                             <span ng-switch-when="3">Ẩn</span>
                         <td class="col-2">
                             <a type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -259,7 +259,7 @@
                                                             ng-model="statusUpdate">
                                                         <option ng-value="0">Đang bán</option>
                                                         <option ng-value="1">Ngừng bán</option>
-                                                        <option ng-value="2">Hết hàng</option>
+                                                        <option ng-value="2">Chờ</option>
                                                         <option ng-value="3">Ẩn</option>
                                                     </select>
                                                 </div>
@@ -340,22 +340,22 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Detail: {{formUpdate.name}}</h5>
+                        <h5 class="modal-title">Detail: {{formUpdate.code}} - {{formUpdate.name}}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-8">
                                 <!-- Nav tabs -->
-                                <ul class="nav nav-tabs nav-pills" role="tablist">
+                                <ul class="nav nav-pills" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab"
                                            ng-click="showAddProductDetail(product)" href="#home">Product</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab"
-                                           ng-click="showAddProductDetail(describe)" href="#menu1">Describe</a>
-                                    </li>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a class="nav-link" data-bs-toggle="tab"-->
+<!--                                           ng-click="showAddProductDetail(describe)" href="#menu1">Describe</a>-->
+<!--                                    </li>-->
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" ng-click="showAddProductDetail('pd')"
                                            href="#menu2">Product detail</a>
@@ -376,14 +376,14 @@
                         </div>
 
                         <!-- Tab detail product  -->
-                        <div class="tab-content">
-                            <div id="home" class="container tab-pane active"><br>
+                        <div class="tab-content mt-3">
+                            <div id="home" class="container tab-pane active">
                                 <div class="row mb-3">
                                     <label for="updateCode" class="col-sm-3 col-form-label">Code</label>
                                     <div class="col-sm-9">
                                         <input name="code" id="updateCode" type="text" class="form-control"
                                                placeholder="Enter code"
-                                               ng-model="formUpdate.code" ng-required="true">
+                                               ng-model="formUpdate.code" readonly ng-required="true">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -446,25 +446,25 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" id="enableEdit" ng-click="enableEditForm(false)">
+                                    <button class="btn btn-primary" id="enableEdit" ng-click="enableEditForm(false, false)">
                                         Edit
                                     </button>
                                     <button class="btn btn-secondary" id="cancelEdit" ng-click="cancelEdit()">Cancel
                                     </button>
-                                    <button class="btn btn-primary" id="submitEdit">Submit
+                                    <button class="btn btn-primary" id="submitEdit" ng-click="update()">Save change
                                     </button>
                                 </div>
                             </div>
-                            <div id="menu1" class="container tab-pane fade"><br>
-                                <div>
-                                    <div id="div_editor1" style="max-width: 20px">
-                                        <p ng-bind="formUpdate.describe"></p>
-                                    </div>
-                                    <p style="width: 50px" ng-bind-html="formUpdate.describe"></p>
-                                    <button onclick="cc2()"></button>
-                                </div>
-                            </div>
-                            <div id="menu2" class="container tab-pane fade"><br>
+<!--                            <div id="menu1" class="container tab-pane fade"><br>-->
+<!--                                <div>-->
+<!--                                    <div id="div_editor1" style="max-width: 20px">-->
+<!--                                        <p ng-bind="formUpdate.describe"></p>-->
+<!--                                    </div>-->
+<!--                                    <p style="width: 50px" ng-bind-html="formUpdate.describe"></p>-->
+<!--                                    <button onclick="cc2()"></button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div id="menu2" class="container tab-pane fade">
                                 <table class="table">
                                     <thead>
                                     <tr>
@@ -475,23 +475,29 @@
                                         <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Barcode</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="pd in productDetails">
                                         <td class="col-1">{{$index + 1}}</td>
-                                        <td class="col-3">{{pd.color.name}}</td>
-                                        <td class="col-3">{{pd.size.name}}</td>
+                                        <td class="col-1">{{pd.color.name}}</td>
+                                        <td class="col-1">{{pd.size.name}}</td>
                                         <td class="col-2">{{pd.importPrice}}</td>
-                                        <td class="col-2">{{pd.price}}</td>
-                                        <td class="col-2">{{pd.quantity}}</td>
+                                        <td class="col-1">{{pd.price}}</td>
+                                        <td class="col-1">{{pd.quantity}}</td>
                                         <td class="col-2">{{pd.barcode}}</td>
+                                        <td class="col-1" ng-switch="pd.status">
+                                            <span ng-switch-when="0">Đang bán</span>
+                                            <span ng-switch-when="1">Ngừng bán</span>
+                                            <span ng-switch-when="2">Chờ</span>
+                                            <span ng-switch-when="3">Ẩn</span></td>
                                         <td class="col-2">
-                                            <a type="button" class="btn btn-info" data-bs-toggle="modal"
+                                            <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                data-bs-target="#modalDetail"
                                                ng-click="edit(p)"><i class="ri-eye-2-fill"></i></a>
-                                            <a type="button" class="btn btn-info" data-bs-toggle="modal"
+                                            <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                data-bs-target="#modalUpdate"
                                                ng-click="getProductById(p.id)"><i class="ri-edit-2-line"></i></a>
                                         </td>
@@ -501,6 +507,12 @@
                                     </td>
                                     </tbody>
                                 </table>
+<!--                                <nav aria-label="Page navigation example">-->
+<!--                                    <ul class="pagination justify-content-center">-->
+<!--                                        <li class="page-item" ng-repeat="pageNum in displayPageRange()">-->
+<!--                                            <a class="page-link" href="#" ng-click="setPage(pageNum)">{{pageNum}}</a></li>-->
+<!--                                    </ul>-->
+<!--                                </nav>-->
                             </div>
                         </div>
                     </div>
@@ -514,61 +526,90 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel1">Add new product detail</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form name="multiStepForm" class="form-validation" role="form" novalidate>
                             <!--                                <div class="animate-switch" ng-switch-when="stage1">-->
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Import price</label>
-                                <div class="col-sm-9">
-                                    <input name="code" type="number" class="form-control"
-                                           placeholder="Enter import price"
-                                           ng-model="formInputPd.importPrice" ng-required="true">
+                            <div class="row">
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Import price</label>
+                                    <div class="col-sm-9">
+                                        <input name="code" type="number" class="form-control"
+                                               placeholder="Enter import price"
+                                               ng-model="formInputPd.importPrice" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Price</label>
+                                    <div class="col-sm-9">
+                                        <input name="code" type="number" class="form-control"
+                                               placeholder="Enter price"
+                                               ng-model="formInputPd.price" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Color</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" ng-model="formInputPd.color.id" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option ng-repeat="c in colors" value="{{c.id}}">{{ c.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Size</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" ng-model="formInputPd.size.id" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option ng-repeat="s in sizes" value="{{s.id}}">{{ s.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Quantity</label>
+                                    <div class="col-sm-9">
+                                        <input name="code" type="number" class="form-control"
+                                               placeholder="Enter quantity"
+                                               ng-model="formInputPd.quantity" ng-required="true">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Price</label>
-                                <div class="col-sm-9">
-                                    <input name="code" type="number" class="form-control"
-                                           placeholder="Enter price"
-                                           ng-model="formInputPd.price" ng-required="true">
+                            <div class="row">
+                                <div class="col-4 d-flex justify-content-end">
+                                    <label for="image1">
+                                        <img src="/assets/img/no-img.png" id="image-preview1"
+                                             style="width: 100px; height: 100px;" />
+                                    </label>
+                                    <input class="form-control" name="path" style="display: none"
+                                           type="file" id="image1" accept="image/*"/>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Color</label>
-                                <div class="col-sm-9">
-                                    <select class="form-select" ng-model="formInputPd.color.id" required>
-                                        <option selected disabled value="">Choose...</option>
-                                        <option ng-repeat="c in colors" value="{{c.id}}">{{ c.name }}</option>
-                                    </select>
+                                <div class="col-4 d-flex justify-content-end">
+                                    <label for="image2">
+                                        <img src="/assets/img/no-img.png" id="image-preview2"
+                                             style="width: 100px; height: 100px;" />
+                                    </label>
+                                    <input class="form-control" name="path" style="display: none"
+                                           type="file" id="image2" accept="image/*"/>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Size</label>
-                                <div class="col-sm-9">
-                                    <select class="form-select" ng-model="formInputPd.size.id" required>
-                                        <option selected disabled value="">Choose...</option>
-                                        <option ng-repeat="s in sizes" value="{{s.id}}">{{ s.name }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Quantity</label>
-                                <div class="col-sm-9">
-                                    <input name="code" type="number" class="form-control"
-                                           placeholder="Enter quantity"
-                                           ng-model="formInputPd.quantity" ng-required="true">
+                                <div class="col-4 d-flex justify-content-end">
+                                    <label for="image3">
+                                        <img src="/assets/img/no-img.png" id="image-preview3"
+                                             style="width: 100px; height: 100px;" />
+                                    </label>
+                                    <input class="form-control" name="path" style="display: none"
+                                           type="file" id="image3" accept="image/*" />
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary"
+                        <button class="btn btn-secondary" ng-click="cancelEditPd()"
                                 data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Cancel
                         </button>
-                        <button class="btn btn-primary" ng-click="submitProductDetail()">Save changes</button>
+                        <button class="btn btn-primary" ng-click="submitProductDetail()"
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Submit</button>
                     </div>
                 </div>
             </div>
@@ -691,7 +732,7 @@
                         <button class="btn btn-info" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
                                 data-bs-dismiss="modal">Back
                         </button>
-                        <button class="btn btn-success" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+                        <button class="btn btn-success"  data-bs-toggle="modal"
                                 data-bs-dismiss="modal" ng-click="create()">Submit
                         </button>
                     </div>
