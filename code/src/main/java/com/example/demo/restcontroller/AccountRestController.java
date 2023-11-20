@@ -34,6 +34,10 @@ public class AccountRestController {
         List<AccountEntity> account = accountService.getAllAccount();
         return ResponseEntity.ok(account);
     }
+    @GetMapping("/not-in-customer-employee")
+    public List<AccountEntity> loadAccount() {
+        return accountService.loadAccount();
+    }
 
     @PostMapping("")
     public ResponseEntity<?> createAccount(@RequestBody AccountEntity accountEntity) {

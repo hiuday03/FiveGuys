@@ -1,11 +1,14 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -19,59 +22,59 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "Code", nullable = false, length = 50)
+    @Column(name = "Code")
     private String code;
 
-    @Column(name = "CreatedAt", nullable = false)
+    @Column(name = "CreatedAt")
     private Date createdAt;
 
     @Column(name = "PaymentDate")
     private Date paymentDate;
 
-    @Column(name = "TotalAmount", nullable = false)
+    @Column(name = "TotalAmount")
     private BigDecimal totalAmount;
 
-    @Column(name = "TotalAmountAfterDiscount", nullable = false)
+    @Column(name = "TotalAmountAfterDiscount")
     private BigDecimal totalAmountAfterDiscount;
 
-    @Column(name = "ReciverName", nullable = false, length = 50)
+    @Column(name = "ReciverName")
     private String reciverName;
 
     @Column(name = "DeliveryDate")
     private Date deliveryDate;
 
-    @Column(name = "ShippingFee", nullable = false)
+    @Column(name = "ShippingFee")
     private BigDecimal shippingFee;
 
-    @Column(name = "Address", columnDefinition = "nvarchar(max)")
+    @Column(name = "Address")
     private String address;
 
-    @Column(name = "PhoneNumber", nullable = false, length = 15)
+    @Column(name = "PhoneNumber")
     private String phoneNumber;
 
-    @Column(name = "Note", columnDefinition = "nvarchar(max)")
+    @Column(name = "Note")
     private String note;
 
     @ManyToOne
-    @JoinColumn(name = "IdCustomer", nullable = false)
+    @JoinColumn(name = "IdCustomer")
     private CustomerEntity customerEntity;
 
     @ManyToOne
-    @JoinColumn(name = "IdEmployee", nullable = false)
+    @JoinColumn(name = "IdEmployee")
     private Employees employee;
 
     @ManyToOne
-    @JoinColumn(name = "IdPaymentMethod", nullable = false)
+    @JoinColumn(name = "IdPaymentMethod")
     private PaymentMethod paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "IdAddress", nullable = false)
-    private AddressEntity addressEntity;
-
-    @ManyToOne
-    @JoinColumn(name = "IdVoucher", nullable = false)
+    @JoinColumn(name = "IdVoucher")
     private Vouchers voucher;
 
-    @Column(name = "Status", nullable = false)
+    @Column(name = "Status")
     private int status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "bill",  cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BillDetail> billDetail;
 }

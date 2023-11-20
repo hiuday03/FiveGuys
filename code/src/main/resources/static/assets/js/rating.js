@@ -1,6 +1,7 @@
 let app_rating = angular.module("rating", []);
 
 app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
+    $scope.originalRating = [];
     $scope.rating = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -19,9 +20,27 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
         $scope.showAlert = false;
     }
 
+    $scope.search = function () {
+        // Kiểm tra từ khóa tìm kiếm
+        if ($scope.searchKeyword.trim() !== '') {
+            $scope.rating = $scope.originalRating.filter(function (item) {
+                if (item && item.content) {
+                    return item.content.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false;
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalRating
+            $scope.rating = angular.copy($scope.originalRating);
+        }
+        // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+        $scope.changePageSize();
+    };
+
     $scope.initialize = function () {
         $http.get("/rating").then(function (resp) {
-            $scope.rating = resp.data;
+            $scope.originalRating = resp.data;
+            $scope.rating = angular.copy($scope.originalRating);
         });
     }
 
@@ -40,6 +59,18 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
     $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
+    $scope.loadProductDetails = function () {
+        $http.get("/api/productDetail") // Thay đổi đường dẫn API tương ứng
+            .then(function (resp) {
+                $scope.productDetails = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading productDetails", error);
+            });
+    }
+
+    $scope.loadProductDetails();
+
     $scope.edit = function (rating) {
         if ($scope.formUpdate.updatedAt) {
             $scope.formUpdate = angular.copy(rating);
@@ -48,7 +79,7 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
             $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
         }
     }
-    
+
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
@@ -66,6 +97,7 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
+        item.updatedAt = $scope.currentDate;
         $http.put(`/rating/${item.id}`, item).then(function (resp) {
 
             $scope.showSuccessMessage("Update rating successfully");
@@ -98,9 +130,13 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateRating.$setUntouched();
     }
 
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+
     $scope.paper = {
         page: 0,
-        size: 5,
+        size: 5, // Kích thước mặc định ban đầu
         get items() {
             let start = this.page * this.size;
             return $scope.rating.slice(start, start + this.size);
@@ -112,19 +148,18 @@ app_rating.controller("rating-ctrl", function ($scope, $http, $timeout) {
             this.page = 0;
         },
         prev() {
-            this.page--;
-            if (this.page < 0) {
-                this.last();
+            if (this.page > 0) {
+                this.page--;
             }
         },
         next() {
-            this.page++;
-            if (this.page >= this.count) {
-                this.first();
+            if (this.page < this.count - 1) {
+                this.page++;
             }
         },
         last() {
             this.page = this.count - 1;
         }
-    }
+    };
+
 });

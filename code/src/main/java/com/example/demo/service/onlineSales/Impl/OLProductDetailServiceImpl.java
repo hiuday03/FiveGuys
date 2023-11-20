@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,6 +38,21 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
     @Override
     public ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId) {
         return olProductDetailRepository.findByColorIdAndSizeIdAndProductId(colorId,sizeId,productId);
+    }
+
+    @Override
+    public Optional<ProductDetail> findById(Long productDetailId) {
+        return olProductDetailRepository.findById(productDetailId);
+    }
+
+    @Override
+    public ProductDetail save(ProductDetail productDetail) {
+        return olProductDetailRepository.save(productDetail);
+    }
+
+    @Override
+    public List<ProductDetail> findByColorIdAndProductId(Long colorId, Long productId) {
+        return olProductDetailRepository.findByColorIdAndProductId(colorId,productId);
     }
 
 }

@@ -31,6 +31,7 @@ create table Vouchers
 	Code		nvarchar(20),
 	Name		nvarchar(100),
 	Value		decimal(20,0),
+	ValueType   int,
 	MinimumTotalAmount		decimal(20,0),
 	Quantity	int,
 	Describe	nvarchar(MAX),
@@ -94,17 +95,19 @@ create table Employees
 	Id			bigint identity(1,1) primary key,
 	Code		nvarchar(20),
 	FullName	nvarchar(100),
-	Avatar		nvarchar(100),
+	Avatar		nvarchar(Max),
 	BirthDate	datetime,
 	Gender		bit,
 	Address		nvarchar(MAX),
-	IdAccount		bigint references Accounts(Id),
+	IdAccount		bigint, 
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),
 	UpdatedBy	nvarchar(100),
-	Status		int
+	Status		int,
+	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id)
 )
+
 
 create table Customers
 (
@@ -113,12 +116,13 @@ create table Customers
 	Avatar		nvarchar(MAX),
 	BirthDate	datetime,
 	Gender		bit,
-	IdAccount		bigint references Accounts(Id),
+	IdAccount		bigint, 
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),
 	UpdatedBy	nvarchar(100),
 	Status		int
+	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id)
 )
 
 create table Address

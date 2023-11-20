@@ -20,6 +20,7 @@
                     <li class="breadcrumb-item active">Address</li>
                 </ol>
             </nav>
+            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Address..."  class="form-control">
         </div>
         <!--  Begin code  -->
         <section class="section">
@@ -56,19 +57,40 @@
                                     <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
                                     <div class="col-sm-9">
                                         <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
-                                            ng-model="formInput.phoneNumber" required>
+                                            ng-model="formInput.phoneNumber" ng-pattern="/^[0-9]{10}$/" required>
                                         <span ng-show="formCreateAddress.$submitted">
-                                            <div ng-show="formCreateAddress.phoneNumber.$invalid"
+                                            <div ng-show="formCreateAddress.phoneNumber.$error.required"
                                                 class="error-message text-danger form-text">
-                                                phoneNumber cannot be blank</div>
+                                                Phone Number is required
+                                            </div>
+                                            <div ng-show="formCreateAddress.phoneNumber.$error.pattern"
+                                                class="error-message text-danger form-text">
+                                                Please enter a valid 10-digit phone number
+                                            </div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                                    <label for="inputAddress1" class="col-sm-3 col-form-label">Address</label>
                                     <div class="col-sm-9">
-                                        <input name="address" id="inputAddress" type="text" class="form-control"
-                                            ng-model="formInput.address" required>
+                                        <div>
+                                            <select id="city1" class="form-control">
+                                                <option value="" selected>Chọn tỉnh thành</option>
+                                            </select>
+
+                                            <select id="district1" class="form-control">
+                                                <option value="" selected>Chọn quận huyện</option>
+                                            </select>
+
+                                            <select id="ward1" class="form-control">
+                                                <option value="" selected>Chọn phường xã</option>
+                                            </select>
+
+                                            <input type="text" id="houseNumber1" placeholder="Số nhà"
+                                                class="form-control">
+                                        </div>
+                                        <input name="address" id="inputAddress1" type="text" class="form-control"
+                                            ng-model="formInput.address" readonly>
                                         <span ng-show="formCreateAddress.$submitted">
                                             <div ng-show="formCreateAddress.address.$invalid"
                                                 class="error-message text-danger form-text">
@@ -88,11 +110,28 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputDefaultAddress" class="col-sm-3 col-form-label"> Default
+                                        Address</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.customer.id">
+                                            ng-model="formInput.defaultAddress" required>
+                                            <option value="1">True</option>
+                                            <option value="0">False</option>
+                                        </select>
+                                        <span ng-show="formCreateAddress.$submitted">
+                                            <div ng-show="formCreateAddress.defaultAddress.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Address Default cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <div class="row mb-3">
+                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Customer</label>
+                                    <div class="col-sm-9">
+                                        <select name="customer" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formInput.customer.id"
+                                            ng-required="true">
                                             <option ng-repeat="customer in customers" ng-value="customer.id">
                                                 {{customer.fullName}}</option>
                                         </select>
@@ -131,8 +170,8 @@
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.status" required>
+                                        <select name="status" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formInput.status" required>
                                             <option value="1">One</option>
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
@@ -163,7 +202,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Update Corlor</h5>
+                            <h5 class="modal-title">Update Address</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -184,19 +223,41 @@
                                     <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Nunber</label>
                                     <div class="col-sm-9">
                                         <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
-                                            ng-model="formUpdate.phoneNumber" required>
+                                            ng-model="formUpdate.phoneNumber" ng-pattern="/^[0-9]{10}$/" required>
                                         <span ng-show="formUpdateAddress.$submitted">
-                                            <div ng-show="formUpdateAddress.phoneNumber.$invalid"
+                                            <div ng-show="formUpdateAddress.phoneNumber.$error.required"
                                                 class="error-message text-danger form-text">
-                                                phoneNumber cannot be blank</div>
+                                                Phone Number is required
+                                            </div>
+                                            <div ng-show="formUpdateAddress.phoneNumber.$error.pattern"
+                                                class="error-message text-danger form-text">
+                                                Please enter a valid 10-digit phone number
+                                            </div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                                    <label for="inputAddress2" class="col-sm-3 col-form-label">Address</label>
                                     <div class="col-sm-9">
-                                        <input name="address" id="inputAddress" type="text" class="form-control"
-                                            ng-model="formUpdate.address" required>
+                                        <div>
+                                            <select id="city2" class="form-control">
+                                                <option value="" selected>Chọn tỉnh thành</option>
+                                            </select>
+
+                                            <select id="district2" class="form-control">
+                                                <option value="" selected>Chọn quận huyện</option>
+                                            </select>
+
+                                            <select id="ward2" class="form-control">
+                                                <option value="" selected>Chọn phường xã</option>
+                                            </select>
+
+                                            <input type="text" id="houseNumber2" placeholder="Số nhà"
+                                                class="form-control">
+                                        </div>
+
+                                        <input name="address" id="inputAddress2" type="text" class="form-control"
+                                            ng-model="formUpdate.address" readonly>
                                         <span ng-show="formUpdateAddress.$submitted">
                                             <div ng-show="formUpdateAddress.address.$invalid"
                                                 class="error-message text-danger form-text">
@@ -216,12 +277,29 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Custoemr</label>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputDefaultAddress" class="col-sm-3 col-form-label"> Default
+                                        Address</label>
                                     <div class="col-sm-9">
                                         <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.customer.id">
-                                            <<option ng-repeat="customer in customers" ng-value="customer.id">
+                                            ng-model="formUpdate.defaultAddress" required>
+                                            <option value="1">True</option>
+                                            <option value="0">False</option>
+                                        </select>
+                                        <span ng-show="formUpdateAddress.$submitted">
+                                            <div ng-show="formUpdateAddress.defaultAddress.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Address Default cannot be blank</div>
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <div class="row mb-3">
+                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Customer</label>
+                                    <div class="col-sm-9">
+                                        <select name="customer" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formUpdate.customer.id"
+                                            ng-required="true">
+                                            <option ng-repeat="customer in customers" ng-value="customer.id">
                                                 {{customer.fullName}}</option>
                                         </select>
                                         <span ng-show="formUpdateAddress.$submitted">
@@ -248,8 +326,7 @@
                                     <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
-                                            ng-model="formUpdate.updatedAt"
-                                            ng-value="formUpdate.updatedAt | date:'yyyy-MM-dd'">
+                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formUpdateAddress.$submitted">
                                             <div ng-show="formUpdateAddress.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
@@ -260,8 +337,8 @@
                                 <div class="row mb-3">
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                        <select class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.status">
+                                        <select name="status" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formUpdate.status">
                                             <option ng-value="1">One</option>
                                             <option ng-value="2">Two</option>
                                             <option ng-value="3">Three</option>
@@ -295,6 +372,7 @@
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Address</th>
                                 <th scope="col">Address Type</th>
+                                <!-- <th scope="col">Default Address</th> -->
                                 <th scope="col">Name Customer(ID Customer)</th>
                                 <th scope="col">Created At</th>
                                 <th scope="col">Updated At</th>
@@ -308,6 +386,7 @@
                                 <td>{{address.phoneNumber}}</td>
                                 <td>{{address.address}}</td>
                                 <td>{{address.addressType}}</td>
+                                <!-- <td>{{address.defaultAddress}}</td> -->
                                 <td>{{address.customer.fullName}}</td>
                                 <td>{{address.createdAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{address.updatedAt | date:'yyyy-MM-dd'}}</td>
@@ -317,8 +396,9 @@
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                             class="ri-refresh-line"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal"><i class="ri-delete-bin-fill"></i></button>
-                                    <div class="modal fade" id="deleteModal" tabindex="-1"
+                                        data-bs-target="#deleteModal-{{address.id}}"><i
+                                            class="ri-delete-bin-fill"></i></button>
+                                    <div class="modal fade" id="deleteModal-{{address.id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -339,16 +419,34 @@
                             </tr>
                         </tbody>
                     </table>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
-                            <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
-                            </li>
-                            <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
-                            <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
-                            <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
-                        </ul>
-                    </nav>
+                    <div class="row align-items-center">
+                        <div class="col-md-1"> <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+                            <select class="form-control" ng-model="paper.size" ng-change="changePageSize()" >
+                                <option value="selected">Xem mục</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-11">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item"><button ng-click="paper.first()"
+                                            class="page-link">First</button></li>
+                                    <li class="page-item"><button ng-click="paper.prev()"
+                                            class="page-link">Previous</button></li>
+                                    <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
+                                    </li>
+                                    <li class="page-item"><button ng-click="paper.next()"
+                                            class="page-link">Next</button></li>
+                                    <li class="page-item"><button ng-click="paper.last()"
+                                            class="page-link">Last</button></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
 
                 </div>
             </div>

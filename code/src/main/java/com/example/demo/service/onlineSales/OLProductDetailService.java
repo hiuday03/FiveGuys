@@ -7,6 +7,7 @@ import com.example.demo.entity.Size;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface OLProductDetailService {
@@ -18,5 +19,11 @@ public interface OLProductDetailService {
     List<Size> findDistinctSizesBySanPhamId( Long productId);
 
     ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
+
+    Optional<ProductDetail> findById(Long productDetailId);
+
+    ProductDetail save(ProductDetail productDetail);
+
+    List<ProductDetail> findByColorIdAndProductId(Long colorId, Long productId);
 
 }

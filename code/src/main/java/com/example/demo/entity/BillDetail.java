@@ -33,9 +33,9 @@ public class BillDetail {
     @JoinColumn(name = "IdProductDetail", nullable = false)
     private ProductDetail productDetail;
 
-    @ManyToOne
-    @JoinColumn(name = "IdColor", nullable = false)
-    private Color color;
+//    @ManyToOne
+//    @JoinColumn(name = "IdColor", nullable = false)
+//    private Color color;
 
     @Column(name = "Status", nullable = false)
     private int status;

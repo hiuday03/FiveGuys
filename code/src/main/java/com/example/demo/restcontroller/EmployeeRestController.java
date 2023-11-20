@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/employee")
+@RequestMapping("/employee")
 public class EmployeeRestController {
     @Autowired
     EmployeeService employeeService;
@@ -35,25 +35,17 @@ public class EmployeeRestController {
     EmployeeRepository employeeRepository;
 
 
-    //get employee
     @GetMapping("")
     public ResponseEntity<List<Employees>> getAll() {
         List<Employees> customers = employeeService.getAll();
         return ResponseEntity.ok(customers);
+
     }
 
     //get employee status =1
     @GetMapping("/status1")
     public ResponseEntity<List<Employees>> getAllStatusDangLam() {
         List<Employees> customers = employeeService.getAllStatusDangLam();
-        return ResponseEntity.ok(customers);
-    }
-
-    //search ma
-    @GetMapping("/search/{code}")
-    public ResponseEntity<Page<Employees>> getByMa(@PathVariable String code, @RequestParam(defaultValue = "0", name = "page") Integer size) {
-        Pageable pageable = PageRequest.of(size, 5);
-        Page<Employees> customers = employeeRepository.searchMa(code, pageable);
         return ResponseEntity.ok(customers);
     }
 
@@ -101,17 +93,7 @@ public class EmployeeRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
-
-
-//    @PostMapping("upload/save")
-//    public String send(@RequestParam("attch")MultipartFile attch) throws IllegalStateException, IOException {
-//        if(!attch.isEmpty()){
-//            String fileName = attch.getOriginalFilename();
-//            File file = new File(employeeService.get)
-//        }
-//    }
 
     //delete theo status
     @PutMapping("/delete/{id}")
@@ -122,12 +104,10 @@ public class EmployeeRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     // xuất file excel Employ
     private static CellStyle cellStyleFormatNumber = null;
-
     @GetMapping("/excel")
     public void fileExcel() {
         try {
@@ -137,7 +117,7 @@ public class EmployeeRestController {
             XSSFRow row = null;
             Cell cell = null;
 
-            row = sheet.createRow(6);
+            row = sheet.createRow(0);
             cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue("STT");
 
@@ -156,28 +136,16 @@ public class EmployeeRestController {
             cell = row.createCell(5, CellType.STRING);
             cell.setCellValue("Email");
 
-//            cell = row.createCell(6, CellType.STRING);
-//            cell.setCellValue("BirthDate");
-
-//            cell = row.createCell(6, CellType.BOOLEAN);
-//            cell.setCellValue("Gender");
-
             cell = row.createCell(6, CellType.STRING);
             cell.setCellValue("Address");
 
-//            cell = row.createCell(8, CellType.STRING);
-//            cell.setCellValue("Role");
-//
-//            cell = row.createCell(9, CellType.NUMERIC);
-//            cell.setCellValue("Status");
-
-            List<Employees> list = employeeService.getAll();
+            List<Employees> list = employeeService.getAllStatusDangLam();
 
             if (list != null) {
                 int s = list.size();
                 for (int i = 0; i < s; i++) {
                     Employees hd = list.get(i);
-                    row = sheet.createRow(6 + i);
+                    row = sheet.createRow(1 + i);
 
                     cell = row.createCell(0, CellType.NUMERIC);
                     cell.setCellValue(i + 1);
@@ -188,14 +156,14 @@ public class EmployeeRestController {
                     cell = row.createCell(2, CellType.STRING);
                     cell.setCellValue(hd.getFullName());
 
-//                    cell = row.createCell(3, CellType.STRING);
-//                    cell.setCellValue(hd.getAccount());
-//
-//                    cell = row.createCell(4, CellType.STRING);
-//                    cell.setCellValue(hd.getPhoneNumber());
-//
-//                    cell = row.createCell(5, CellType.STRING);
-//                    cell.setCellValue(hd.getEmail());
+                    cell = row.createCell(3, CellType.STRING);
+                    cell.setCellValue(hd.getAccount().getAccount());
+
+                    cell = row.createCell(4, CellType.STRING);
+                    cell.setCellValue(hd.getAccount().getPhoneNumber());
+
+                    cell = row.createCell(5, CellType.STRING);
+                    cell.setCellValue(hd.getAccount().getEmail());
 
 //                    cell = row.createCell(6, CellType.STRING);
 //                    cell.setCellValue(new Da);
@@ -214,15 +182,13 @@ public class EmployeeRestController {
 //                    cell.setCellStyle(cellStyleFormatNumber);
 
                 }
-                File f = new File("F:\\FileEmployee.xlsx");
+                File e = new File("E:\\FileEmployee.xlsx");
                 try {
-                    FileOutputStream fis = new FileOutputStream(f);
-
+                    FileOutputStream fis = new FileOutputStream(e);
                     worbook.write(fis);
                     fis.close();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                } catch (FileNotFoundException x) {
+                    x.printStackTrace();
                 }
             }
         } catch (Exception ex) {
