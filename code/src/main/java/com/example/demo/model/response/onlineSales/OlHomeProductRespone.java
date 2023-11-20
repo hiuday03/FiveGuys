@@ -24,6 +24,6 @@ public class OlHomeProductRespone {
 
     private BigDecimal price;
 
-    private String image;
+    private String path;
 
 }

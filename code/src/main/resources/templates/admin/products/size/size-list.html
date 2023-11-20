@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <title>Category - FiveGuys</title>
 </head>
-<!--<link rel="stylesheet" th:href="@{/assets/js/category.js}">-->
+<!--<link rel="stylesheet" th:href="@{/assets/js/size.js}">-->
 
-<body ng-app="category-app" ng-controller="category-ctrl">
+<body ng-app="size-app" ng-controller="size-ctrl">
 <main id="main" class="main" layout:fragment="content">
     <div class="pagetitle">
         <h1>Category</h1>
@@ -44,7 +44,7 @@
                                 <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
                                 <div class="col-sm-9">
                                     <input name="fullName" id="inputFullName" type="text" class="form-control"
-                                           ng-model="formInput.fullName" required>
+                                           ng-model="formInput.name" required>
                                     <span ng-show="formCreateCustomer.$submitted">
                                             <div ng-show="formCreateCustomer.fullName.$invalid"
                                                  class="error-message text-danger form-text">
@@ -179,12 +179,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="category in categories">
-                        <td class="col-1">{{category.id}}</td>
-                        <td class="col-5">{{category.name}}</td>
-                        <td class="col-4">{{category.status}}</td>
+                    <tr ng-repeat="size in sizes">
+                        <td class="col-1">{{size.id}}</td>
+                        <td class="col-5">{{size.name}}</td>
+                        <td class="col-4">{{size.status}}</td>
                         <td class="col-2">
-                            <button ng-click="edit(category)" type="button" class="btn btn-info"
+                            <button ng-click="edit(size)" type="button" class="btn btn-info"
                                     data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
                                     class="ri-refresh-line"></i></button>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -198,7 +198,7 @@
                                                 không?</h5>
                                         </div>
                                         <div class="modal-footer">
-                                            <button ng-click="delete(category)" type="button"
+                                            <button ng-click="delete(size)" type="button"
                                                     class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
                                             <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>

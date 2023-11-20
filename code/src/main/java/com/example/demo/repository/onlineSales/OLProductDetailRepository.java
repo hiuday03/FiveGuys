@@ -30,4 +30,6 @@ public interface OLProductDetailRepository extends JpaRepository<ProductDetail, 
     ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
 
     Optional<ProductDetail> findById(Long productDetailId);
+
+    List<ProductDetail> findByColorIdAndProductId(Long colorId, Long productId);
 }

@@ -73,7 +73,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public Page<ProductDetail> getAllByPId(Long pid, Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 100);
         return productDetailRepository.findAllByProductId(pid, pageable);
     }
 
