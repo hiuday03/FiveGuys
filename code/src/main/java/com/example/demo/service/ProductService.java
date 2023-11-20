@@ -21,4 +21,6 @@ public interface ProductService {
     void delete(Long id);
 
     Product updateStatus(Integer status, Long id);
+
+    Page<Product> searchByStatus(Integer status, Integer page);
 }

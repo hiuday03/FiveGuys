@@ -1,6 +1,7 @@
 let app_address = angular.module("address", []);
 
 app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
+    $scope.originalAddress = [];
     $scope.address = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -14,30 +15,30 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
-    $scope.search = function () {
-    // Kiểm tra xem từ khóa tìm kiếm có được nhập không
-    if ($scope.searchKeyword.trim() !== '') {
-        // Sử dụng phương thức filter của JavaScript để lọc dữ liệu
-        $scope.address = $scope.address.filter(function (item) {
-            // Kiểm tra xem item có thuộc tính name không trước khi sử dụng toLowerCase()
-            if (item && item.address) {
-                return item.address.toLowerCase().includes($scope.searchKeyword.toLowerCase());
-            }
-            return false; // Trả về false nếu không có thuộc tính name hoặc item là null/undefined
-        });
-    } else {
-        // Nếu từ khóa tìm kiếm trống, reset lại dữ liệu ban đầu
-        $scope.initialize();
-    }
-};  
-
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
 
+    $scope.search = function () {
+        // Kiểm tra từ khóa tìm kiếm
+        if ($scope.searchKeyword.trim() !== '') {
+            $scope.address = $scope.originalAddress.filter(function (item) {
+                if (item && item.address) {
+                    return item.address.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false;
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAddress
+            $scope.address = angular.copy($scope.originalAddress);
+        }
+        // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+        $scope.changePageSize();
+    };
     $scope.initialize = function () {
         $http.get("/address").then(function (resp) {
-            $scope.address = resp.data;
+            $scope.originalAddress = resp.data;
+            $scope.address = angular.copy($scope.originalAddress);
         });
     }
 
@@ -83,14 +84,14 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
         }).catch(function (error) {
             console.log("Error", error);
         });
-    
+
     }
     function getResult1() {
         let houseNumber1 = $("#houseNumber1").val();
         let city1 = $("#city1 option:selected").text();
         let district1 = $("#district1 option:selected").text();
         let ward1 = $("#ward1 option:selected").text();
-    
+
         return houseNumber1 && district1 && city1 && ward1
             ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
             : '';
@@ -116,7 +117,7 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
         let city2 = $("#city2 option:selected").text();
         let district2 = $("#district2 option:selected").text();
         let ward2 = $("#ward2 option:selected").text();
-    
+
         return houseNumber2 && district2 && city2 && ward2
             ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
             : '';
@@ -143,9 +144,13 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateAddress.$setUntouched();
     }
 
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+
     $scope.paper = {
         page: 0,
-        size: 5,
+        size: 5, // Kích thước mặc định ban đầu
         get items() {
             let start = this.page * this.size;
             return $scope.address.slice(start, start + this.size);
@@ -157,21 +162,20 @@ app_address.controller("address-ctrl", function ($scope, $http, $timeout) {
             this.page = 0;
         },
         prev() {
-            this.page--;
-            if (this.page < 0) {
-                this.last();
+            if (this.page > 0) {
+                this.page--;
             }
         },
         next() {
-            this.page++;
-            if (this.page >= this.count) {
-                this.first();
+            if (this.page < this.count - 1) {
+                this.page++;
             }
         },
         last() {
             this.page = this.count - 1;
         }
-    }
+    };
+
     const host = "https://provinces.open-api.vn/api/";
 
     var callAPI = (api, callback) => {
