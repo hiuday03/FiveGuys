@@ -129,7 +129,6 @@ app.controller("abcd", function ($scope, $http, $timeout) {
     };
 
 
-
     //ham hien thi trang
     $scope.setPage = function (page) {
         page = page - 1;
@@ -164,13 +163,13 @@ app.controller("abcd", function ($scope, $http, $timeout) {
         $scope.setPage2($scope.currentPage, selectedItem);
     }
     $scope.prePage = function (selectedItem) {
-        if($scope.currentPage > 1){
+        if ($scope.currentPage > 1) {
             $scope.currentPage--;
         }
         $scope.setPage2($scope.currentPage, selectedItem);
     }
     $scope.nextPage = function (selectedItem) {
-        if($scope.currentPage < $scope.totalPages){
+        if ($scope.currentPage < $scope.totalPages) {
             $scope.currentPage++;
         }
         $scope.setPage2($scope.currentPage, selectedItem);
@@ -195,8 +194,6 @@ app.controller("abcd", function ($scope, $http, $timeout) {
     }
 
 
-
-
     $scope.getForm = function () {
         // alert(angular.copy($scope.formInput.name))
     }
@@ -207,22 +204,22 @@ app.controller("abcd", function ($scope, $http, $timeout) {
         let item = angular.copy($scope.formInput);
         $http.post(apiUrlProduct, item).then(resp => {
             alert("Create product successfully!")
-            $scope.resetFormInput();
             $scope.initialize();
+            $scope.resetFormInput();
         }).catch(error => {
             console.log("Error", error);
-            alert("Error" + error)
         })
     }
 
     $scope.resetFormInput = function () {
         $scope.formInput = {};
+        $scope.formInput.$setPristine();
         $scope.formInput.$setUntouched();
     }
 
     $scope.edit = function (product) {
         $scope.formUpdate = angular.copy(product);
-        editor2.setHTMLCode($scope.formUpdate.describe);
+        // editor2.setHTMLCode($scope.formUpdate.describe);
 
         $http.get(apiUrlProduct + "/" + product.id + "/productDetail")
             .then(function (response) {
@@ -231,44 +228,64 @@ app.controller("abcd", function ($scope, $http, $timeout) {
             });
     }
 
-    $scope.update = function () {
+    $scope.showButton = function (bool1) {
+        var x = document.getElementById("enableEdit");
+        var y = document.getElementById("cancelEdit");
+        var z = document.getElementById("submitEdit");
 
+        if (bool1 == true) {
+            x.style.display = "block";
+            y.style.display = "none";
+            z.style.display = "none";
+        }else{
+            x.style.display = "none";
+            y.style.display = "block";
+            z.style.display = "block";
+        }
+    }
+
+    $scope.enableEditForm = function (bool, bool1) {
+
+        document.getElementById("updateName").readOnly = bool;
+        document.getElementById("updateCollar").readOnly = bool;
+        document.getElementById("updateWrist").readOnly = bool;
+        document.getElementById("updateBrand").readOnly = bool;
+        document.getElementById("updateCategory").disabled = bool;
+        document.getElementById("updateMaterial").disabled = bool;
+
+        $scope.showButton(bool1);
+    }
+    $scope.enableEditForm(true, true);
+
+
+    $scope.update = function () {
+        let item = angular.copy($scope.formUpdate);
+        $http.put(`${apiUrlProduct}/${item.id}`, item).then(resp => {
+            $scope.enableEditForm(true, true);
+            alert("Update product successfully!")
+            $scope.initialize();
+            $scope.resetFormUpdate();
+        }).catch(error => {
+            console.log("Error", error);
+        })
     }
 
     // $scope.updateStatus = 0;
     $scope.updateStatusProduct = function (productId, statusUpdate) {
         $http.put(apiUrlProduct + "/status/" + productId, statusUpdate).then(resp => {
-            alert("Update status product successfully!")
-            $scope.resetFormInput();
+            // alert("Update status product successfully!")
             $scope.initialize();
+            if (!alert("Update status product successfully!")) {
+                var idModal = "updateStatusProduct-" + productId
+                var myModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(idModal));
+                myModal.hide();
+            }
+            $scope.resetFormInput();
         }).catch(error => {
             console.log("Error", error);
-            alert("Error" + error)
         })
     }
 
-    // var x = document.getElementById("enableEdit");
-    // x.style.display = "block";
-    // var y = document.getElementById("cancelEdit");
-    // var z = document.getElementById("submitEdit");
-    // y.style.display = "none";
-    // z.style.display = "none";
-    //
-    // $scope.showButton = function () {
-    //     var x = document.getElementById("enableEdit");
-    //     var y = document.getElementById("cancelEdit");
-    //     var z = document.getElementById("submitEdit");
-    //
-    //     if (x.style.display === "none") {
-    //         x.style.display = "block";
-    //         y.style.display = "none";
-    //         z.style.display = "none";
-    //     }else{
-    //         x.style.display = "none";
-    //         y.style.display = "block";
-    //         z.style.display = "block";
-    //     }
-    // }
 
     var editor1 = new RichTextEditor("#div_editor");
     $scope.cc1 = function () {
@@ -277,31 +294,26 @@ app.controller("abcd", function ($scope, $http, $timeout) {
         $scope.formInput.describe = editor1.getHTMLCode()
     };
 
-    var editor2 = new RichTextEditor("#div_editor1");
-    $scope.cc2 = function () {
-        editor2.setHTMLCode("Use inline HTML or setHTMLCode to init the default");
-        console.log(editor2.getHTMLCode())
-    };
+    // var editor2 = new RichTextEditor("#div_editor1");
+    // $scope.cc2 = function () {
+    //     editor2.setHTMLCode("Use inline HTML or setHTMLCode to init the default");
+    //     console.log(editor2.getHTMLCode())
+    // };
 
 
 
-    $scope.enableEditForm = function (bool) {
+    // var x = document.getElementById("enableEdit");
+    // x.style.display = "block";
+    // var y = document.getElementById("cancelEdit");
+    // var z = document.getElementById("submitEdit");
+    // y.style.display = "none";
+    // z.style.display = "none";
+    //
 
-        document.getElementById("updateCode").readOnly = bool;
-        document.getElementById("updateName").readOnly = bool;
-        document.getElementById("updateCollar").readOnly = bool;
-        document.getElementById("updateWrist").readOnly = bool;
-        document.getElementById("updateBrand").readOnly = bool;
-        document.getElementById("updateCategory").disabled = bool;
-        document.getElementById("updateMaterial").disabled = bool;
-        // if(bool == false){
-        // }
-        // $scope.showButton();
-    }
-    $scope.enableEditForm(true);
 
 
     $scope.cancelEdit = function () {
+        $scope.enableEditForm(true, true);
         $http.get(apiUrlProduct + "/" + $scope.formUpdate.id)
             .then(function (response) {
                 console.log(response)
@@ -313,9 +325,9 @@ app.controller("abcd", function ($scope, $http, $timeout) {
     var btnPd = document.getElementById("addProductDetail");
     btnPd.style.display = "none";
     $scope.showAddProductDetail = function (value) {
-        if(value == "pd"){
+        if (value == "pd") {
             btnPd.style.display = "block";
-        }else{
+        } else {
             btnPd.style.display = "none";
         }
     }
@@ -337,10 +349,166 @@ app.controller("abcd", function ($scope, $http, $timeout) {
     }
     $scope.getSelectOptionPD();
 
-    $scope.formInputPd = {}
+    $scope.formInputPd = {
+        product: {
+            id: null
+        }
+    }
+
+
+    const apiUrlProductDetail = "http://localhost:8080/api/productDetail"
+    const apiImage = "http://localhost:8080/api/image"
+
+    $scope.formInputImage = {
+        path:null,
+        name:null,
+        productDetail:{
+            id:null
+        }
+    }
 
     $scope.submitProductDetail = function () {
+        // let fileInput1 = document.getElementById("image1");
+        // let fileInput2 = document.getElementById("image2");
+        // let fileInput3 = document.getElementById("image3");
+        // let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        // if (fileInput1.files.length > 0) {
+        //     let data = new FormData();
+        //     data.append('file', fileInput1.files[0]);
+        //     $http.post('/rest/upload', data, {
+        //         transformRequest: angular.identity,
+        //         headers: { 'Content-Type': undefined }
+        //     }).then(resp => {
+        //         $scope.formInputImage.path = resp.data.name;
+        //         let item = angular.copy($scope.formInput);
+        //         item.createdAt = $scope.currentDate;
+        //         $http.post(`/api/image`, item).then(resp => {
+        //             console.log("them image thanh cong")
+        //         }).catch(error => {
+        //             console.log("Error", error);
+        //             return;
+        //         })
+        //     }).catch(error => {
+        //         console.log("Error", error);
+        //     })
+        // }
+        // if (fileInput2.files.length > 0) {
+        //     let data = new FormData();
+        //     data.append('file', fileInput2.files[0]);
+        //     $http.post('/rest/upload', data, {
+        //         transformRequest: angular.identity,
+        //         headers: { 'Content-Type': undefined }
+        //     }).then(resp => {
+        //         $scope.formInputImage.path = resp.data.name;
+        //         let item = angular.copy($scope.formInput);
+        //         item.createdAt = $scope.currentDate;
+        //         $http.post(`/api/image`, item).then(resp => {
+        //             console.log("them image thanh cong")
+        //         }).catch(error => {
+        //             console.log("Error", error);
+        //             return;
+        //         })
+        //     }).catch(error => {
+        //         console.log("Error", error);
+        //     })
+        // }
+        // if (fileInput3.files.length > 0) {
+        //     let data = new FormData();
+        //     data.append('file', fileInput3.files[0]);
+        //     $http.post('/rest/upload', data, {
+        //         transformRequest: angular.identity,
+        //         headers: { 'Content-Type': undefined }
+        //     }).then(resp => {
+        //         $scope.formInputImage.path = resp.data.name;
+        //         let item = angular.copy($scope.formInput);
+        //         item.createdAt = $scope.currentDate;
+        //         $http.post(`/api/image`, item).then(resp => {
+        //             console.log("them image thanh cong")
+        //         }).catch(error => {
+        //             console.log("Error", error);
+        //             return;
+        //         })
+        //     }).catch(error => {
+        //         console.log("Error", error);
+        //     })
+        // }
         console.log($scope.formInputPd)
+        $scope.formInputPd.product.id = $scope.formUpdate.id
+        let item = angular.copy($scope.formInputPd);
+        // item.product.id = $scope.formUpdate.id
+        $http.post(apiUrlProductDetail, item).then(resp => {
+            // alert("Create product detail successfully!")
+
+            console.log("pd")
+            $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
+                .then(function (response) {
+                    console.log("pd" + response)
+                    $scope.productDetails = response.data.content
+                });
+            if (!alert("Create product detail successfully!")) {
+                //     var idModal1 = "modalProductDetail"
+                //     var myModal1 = bootstrap.Modal.getOrCreateInstance(document.getElementById(idModal1));
+                //     myModal1.hide();
+                // }
+
+                $scope.formInputPd = {}
+                $scope.resetFormInput();
+            }
+        }).catch(error => {
+            console.log("Error", error);
+        })
+    }
+
+    $scope.cancelEditPd = function () {
+        $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
+            .then(function (response) {
+                console.log(response)
+                $scope.productDetails = response.data.content
+            });
+    }
+
+    imgShow("image1", "image-preview1");
+    imgShow("image2", "image-preview2");
+    imgShow("image3", "image-preview3");
+    // imgShow("image-update", "image-preview-update");
+
+    function imgShow(textInput, textPreview) {
+        const imageInput = document.getElementById(textInput);
+        const imagePreview = document.getElementById(textPreview);
+        imageInput.addEventListener("change", function () {
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            }
+        });
+    }
+
+    let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    $scope.showErrorImg = function (message) {
+        $scope.alertErrorImg = message;
+        $scope.showError = true;
+    }
+
+    $scope.displayPageRange1 = function () {
+        var range = [];
+        for (var i = 1; i <= $scope.totalPages; i++) {
+            range.push(i);
+        }
+        return range;
+    };
+
+    //ham hien thi trang
+    $scope.setPage1 = function (page) {
+        $currentPage = page
+        page = page - 1;
+        $http.get(apiUrlCategory + "/page?page=" + page)
+            .then(function (response) {
+                $scope.categories = response.data.content;
+                $scope.totalPage = response.data.totalPages
+            });
     }
 
 });

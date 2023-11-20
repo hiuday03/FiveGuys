@@ -211,9 +211,14 @@
                     <tbody>
                     <tr ng-repeat="color in colors">
                         <td class="col-1">{{color.id}}</td>
-                        <td class="col-5">{{color.name}}</td>
-                        <td class="col-5">{{color.colorCode}}</td>
-                        <td class="col-4">{{color.status}}</td>
+                        <td class="col-3">{{color.name}}</td>
+                        <td class="col-2">{{color.colorCode}}</td>
+<!--                        <td class="col-4">{{color.status}}</td>-->
+                        <td class="col-4" ng-switch="color.status">
+                            <span ng-switch-when="0">Đang dùng</span>
+                            <span ng-switch-when="1">Ngừng sử dụng</span>
+                            <span ng-switch-when="2">Chờ</span>
+                            <span ng-switch-when="3">Ẩn</span></td>
                         <td class="col-2">
                             <button ng-click="edit(color)" type="button" class="btn btn-info"
                                     data-bs-toggle="modal" data-bs-target="#modalUpdate"><i

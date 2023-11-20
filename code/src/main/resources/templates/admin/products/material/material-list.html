@@ -187,7 +187,11 @@
                     <tr ng-repeat="material in materials">
                         <td class="col-1">{{material.id}}</td>
                         <td class="col-5">{{material.name}}</td>
-                        <td class="col-4">{{material.status}}</td>
+                        <td class="col-4" ng-switch="material.status">
+                            <span ng-switch-when="0">Đang dùng</span>
+                            <span ng-switch-when="1">Ngừng sử dụng</span>
+                            <span ng-switch-when="2">Chờ</span>
+                            <span ng-switch-when="3">Ẩn</span></td>
                         <td class="col-2">
                             <button ng-click="edit(material)" type="button" class="btn btn-info"
                                     data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
