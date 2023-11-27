@@ -1,22 +1,24 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @ToString
+@Builder
 @Entity
-@Table(name = "PaymentMethods")
+@Table(name = "brands")
+public class Brands {
 
-public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
     @Column(name = "Name")
@@ -28,9 +30,6 @@ public class PaymentMethod {
     @Column(name = "UpdatedAt")
     private Date updatedAt;
 
-    @Column(name = "paymenType")
-    private int paymentType;
-
     @Column(name = "Status")
-    private int status;
+    private Integer status;
 }

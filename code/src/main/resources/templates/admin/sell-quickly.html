@@ -7,104 +7,473 @@
     <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
     <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
-    <style>
-        .nav-link.tab {
-            cursor: default;
-        }
-        .nav-link.tab.active {
-            color: white;
-        }
-
-        /* Đổi màu nền thành màu trắng và màu chữ thành màu đen */
-        .nav-link.tab.active {
-            background-color: white;
-            color: black !important;
-        }
-
-
-    </style>
+    <link th:href="@{/assets/css/default-main.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/sellquickly.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script th:src="@{/assets/js/kendo.all.min.js}"></script>
+    <script th:src="@{/assets/js/kendo-ui-license.js}"></script>
 </head>
 <body>
-<nav class="navbar bg-primary">
-    <div class="container-fluid">
-        <div class="form-group has-search">
-            <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control" placeholder="Search">
+<div ng-app="sell-quickly" ng-controller="sell-quickly-ctrl" class="tab-content" id="tab-page">
+    <div class="tab-pane fade show active" id="sell-quickly" role="tabpanel" aria-labelledby="sell-quickly">
+        <nav class="navbar p-0 bg-primary">
+            <div class="container-fluid justify-content-start">
+                <div class="form-group has-search">
+                    <span class="fa fa-search form-control-feedback"></span>
+                    <form>
+                        <i class="ri-search-line"></i>
+                        <input id="search-product" type="text" class="form-control" placeholder="Search product" >
+                    </form>
+                    <div id="item-list" class="row product-list">
+                        <div ng-repeat="item in products" class="product" ng-click="addProductCart(selectedItem, item.id)">
+                            <img class="col-3" ng-src="{{item.images[0].path}}" alt="">
+                            <div class="col-7 p-details">
+                                <h2>{{item.product.name}} {{item.product.material.name}}</h2>
+                                <h3>Size: {{item.size.name}}</h3>
+                                <h3>Quantity: {{item.quantity}}</h3>
+                            </div>
+                            <div class="col-2 p-details">
+                                <h1>{{item.price | number:'0':'symbol':'short'}}₫</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav nav-pills ms-3">
+                    <ul class="horizontal-list" kendo-panel-bar="tree"
+                        k-data-source="treeData"
+                        k-on-change="selectedItem = dataItem" >
+                         <span k-template>
+                    {{dataItem.name}} <i ng-show="selectedItem === dataItem" class="ri-close-fill" ng-click='removeBill(selectedItem)'></i>
+                    </span>
+                    </ul>
+                    <button ng-click="addBill()" class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button></div>
+            </div>
+        </nav>
+        <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
+            {{alertMessage}}
+            <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
         </div>
-        <ul class="nav nav-pills" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <div class="nav-link tab text-white active" id="bill-tabs-1" data-bs-toggle="pill" data-bs-target="#bill-1" role="tab" aria-controls="bill-1" aria-selected="true">Bill 1<i class="ri-close-line ms-3"></i></div>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button>
-            </li>
-        </ul>
-    </div>
-</nav>
+        <div class="tab-content pt-3 pb-3">
+            <div class="row m-0">
+                <div class="col-sm-8">
+                    <table ng-if="selectedItem.cart.length > 0" class="table">
+                        <tbody>
+                        <tr ng-repeat="item in selectedItem.cart">
+                            <td>{{item.product.name}} {{item.product.material.name}} Size {{item.size.name}}</td>
+                            <td>
+                                <div class="d-flex" style="width: 40%">
+                                    <button class="btn btn-outline-primary btn-sm px-2"
+                                            ng-click="subtractQuantity(selectedItem, item)">
+                                        <i class="ri-subtract-line"></i>
+                                    </button>
 
-<div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active" id="bill-1" role="tabpanel" aria-labelledby="bill-1">
-        Hóa đơn 1
+                                    <input id="form1" min="1" name="quantity" ng-model="item.qty" type="number" ng-change="checkQuantityChange(selectedItem, item)"
+                                           class="text-center mx-2 form-control form-control-sm" />
+
+                                    <button class="btn btn-outline-primary btn-sm px-2"
+                                            ng-click="addQuantity(selectedItem, item)">
+                                        <i class="ri-add-line"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td style="line-height: 35px"><p class="m-0 fw-bold">{{item.price | number:'0':'symbol':'short'}}₫</p></td>
+                            <td><button ng-click="removeProductCart(item.id, selectedItem)" class="btn btn-light border text-danger icon-hover-danger"><i class="ri-delete-bin-6-line"></i></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-if="selectedItem && selectedItem.address.customer == null" class="modal fade" id="modalCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
+                                <button type="button" ng-click="resetForm()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formAddCustomer" name="formAddCustomer" ng-submit="form.$valid && create(selectedItem)" novalidate>
+                                    <div class="row mb-3">
+                                        <label for="inputfullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formCustomer.fullName" name="fullName" id="inputfullName" type="text" class="form-control" required>
+                                            <span ng-show="formAddCustomer.$submitted">
+                                            <div ng-show="formAddCustomer.fullName.$invalid" class="error-message text-danger form-text">
+                                           Tên không được để trống</div>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputPhone" class="col-sm-2 col-form-label">Điện thoại</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formAddress.phoneNumber" name="phoneNumber" id="inputPhone" type="number" class="form-control" required>
+                                            <span ng-if="formAddCustomer.$submitted && formAddCustomer.phoneNumber.$invalid" class="error-message text-danger form-text">
+                                                    <span ng-if="formAddCustomer.phoneNumber.$error.required">Số điện thoại không được để trống</span>
+                                                    <span ng-if="formAddCustomer.phoneNumber.$error.number">Số điện thoại phải là số</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputAdress" class="col-sm-2 col-form-label">Địa chỉ</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formAddress.address" id="inputAdress" name="address" type="text" class="form-control" required>
+                                            <span ng-show="formAddCustomer.$submitted">
+                                                <div ng-show="formAddCustomer.address.$invalid" class="error-message text-danger form-text">
+                                                Địa chỉ không được để trống</div>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputDate" class="col-sm-2 col-form-label">Ngày sinh</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formCustomer.birthDate" name="birthDate" id="inputDate" type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0">Giới tính</legend>
+                                        <div class="col-sm-10" ng-init="formCustomer.gender='true'">
+                                            <div class="form-check">
+                                                <input ng-model="formCustomer.gender" class="form-check-input" type="radio" name="gioiTinh" id="addRadioMan" value="true">
+                                                <label class="form-check-label" for="addRadioMan">
+                                                    Nam
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input ng-model="formCustomer.gender" class="form-check-input" type="radio" name="gioiTinh" id="addRadioFemale" value="false">
+                                                <label class="form-check-label" for="addRadioFemale">
+                                                    Nữ
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0">Loại khách</legend>
+                                        <div class="col-sm-10">
+                                            <div class="form-check" ng-init="formAddress.addressType='Cá nhân'">
+                                                <input ng-model="formAddress.addressType" class="form-check-input" type="radio" name="loaiKhach" id="addRadioPersonal" value="Cá nhân">
+                                                <label class="form-check-label" for="addRadioMan">
+                                                    Cá nhân
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input ng-model="formAddress.addressType" class="form-check-input" type="radio" name="loaiKhach" id="addRadioWork" value="Công ty">
+                                                <label class="form-check-label" for="addRadioFemale">
+                                                    Công ty
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                        <button type="button" ng-click="resetForm()" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="selectedItem && selectedItem.address.customer != null" class="modal fade" id="modalCustomerUpdate" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{selectedItem.address.customer.fullName}} - Id: {{selectedItem.address.customer.id}}</h5>
+                                <button type="button" ng-click="resetFormUpdate()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form name="formUpdate" ng-submit="formUpdate.$valid && update(selectedItem)" novalidate>
+                                    <div class="row mb-3">
+                                        <label for="updatefullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formCustomer2.fullName" name="fullName" id="updatefullName" type="text" class="form-control" required>
+                                            <span ng-show="formUpdate.$submitted">
+                                            <div ng-show="formUpdate.fullName.$invalid" class="error-message text-danger form-text">
+                                           Tên không được để trống</div>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="updatePhone" class="col-sm-2 col-form-label">Điện thoại</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formAddress2.phoneNumber" name="phoneNumber" id="updatePhone" type="text" class="form-control" required>
+                                            <span ng-if="formUpdate.$submitted && form.phoneNumber.$invalid" class="error-message text-danger form-text">
+                                                    <span ng-if="formUpdate.phoneNumber.$error.required">Số điện thoại không được để trống</span>
+                                                    <span ng-if="formUpdate.phoneNumber.$error.number">Số điện thoại phải là số</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="updateAdress" class="col-sm-2 col-form-label">Địa chỉ</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formAddress2.address" id="updateAdress" name="address" type="text" class="form-control" required>
+                                            <span ng-show="formUpdate.$submitted">
+                                                <div ng-show="formUpdate.address.$invalid" class="error-message text-danger form-text">
+                                                Địa chỉ không được để trống</div>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="updateDate" class="col-sm-2 col-form-label">Ngày sinh</label>
+                                        <div class="col-sm-10">
+                                            <input ng-model="formCustomer2.birthDate" name="birthDate" id="updateDate" type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0">Giới tính</legend>
+                                        <div class="col-sm-10">
+                                            <div class="form-check">
+                                                <input ng-model="formCustomer2.gender" class="form-check-input" ng-checked="selectedItem.address.customer.gender === 'True'" type="radio" name="gioiTinh" id="updateRadioMan" value="true">
+                                                <label class="form-check-label" for="addRadioMan">
+                                                    Nam
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input ng-model="formCustomer2.gender" class="form-check-input" ng-checked="selectedItem.address.customer.gender === 'False'" type="radio" name="gioiTinh" id="updateRadioFemale" value="false">
+                                                <label class="form-check-label" for="addRadioFemale">
+                                                    Nữ
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="row mb-3">
+                                        <legend class="col-form-label col-sm-2 pt-0">Loại khách</legend>
+                                        <div class="col-sm-10">
+                                            <div class="form-check">
+                                                <input ng-model="formAddress2.addressType" ng-checked="selectedItem.address.addressType === 'Cá nhân'" class="form-check-input" type="radio" name="loaiKhach" id="updateRadioPersonal" value="Cá nhân">
+                                                <label class="form-check-label" for="addRadioMan">
+                                                    Cá nhân
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input ng-model="formAddress2.addressType" ng-checked="selectedItem.address.addressType === 'Công ty'" class="form-check-input" type="radio" name="loaiKhach" id="updateRadioWork" value="Công ty">
+                                                <label class="form-check-label" for="addRadioFemale">
+                                                    Công ty
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                        <button type="button" ng-click="resetFormUpdate()" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="selectedItem" class="modal fade" id="modalVoucher" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Voucher</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div ng-repeat="voucher in vouchers" class="col-sm-4 mb-2" ng-click="addVoucher(selectedItem, voucher)">
+                                        <div class="card voucher">
+                                            <div class="cross-bg"></div>
+                                            <div class="content">
+                                                <div class="text-center text-uppercase text-white off">
+                                                    <h1 class="mt-0">{{voucher.name}}</h1>
+                                                </div>
+                                                <div class="text-center text-uppercase text-white off">
+                                                    <h3 class="m-0">Code: {{voucher.code}}</h3>
+                                                    <h3 class="m-0">{{voucher.value}}{{voucher.valueType == 2 ? '%' : '₫'}}</h3>
+                                                </div>
+                                                <span class="voucher-qty">{{voucher.quantity}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="selectedItem" class="modal fade" id="modalCard" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Thêm ngân hàng</h5>
+                                <button ng-click="resetFormCard()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form name="formAddCard" ng-submit="formAddCard.$valid && createCard()" novalidate>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-3 col-form-label">Ngân hàng</label>
+                                        <div class="col-sm-9">
+                                            <select ng-model="formCard.bank" name="bank" class="form-select" aria-label="Default select example" required>
+                                                <option data-thumbnail="{{b.logo}}" ng-repeat="b in banks" ng-value="b">{{b.code}} - {{b.name}}</option>
+                                            </select>
+                                            <span ng-if="formAddCard.$submitted && formAddCard.bank.$invalid" class="error-message text-danger form-text">
+                                                Trường ngân hàng bắt buộc diền
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputAccountNo" class="col-sm-3 col-form-label">Số tài khoản</label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="formCard.accountNo" name="accountNo" id="inputAccountNo" type="text" class="form-control" required>
+                                            <span ng-show="formAddCard.$submitted">
+                                            <div ng-show="formAddCard.accountNo.$invalid" class="error-message text-danger form-text">
+                                                Trường số tài khoản bắt buộc điền
+                                            </div>
+                                             </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputAccountName" class="col-sm-3 col-form-label">Chủ tài khoản</label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="formCard.accountName" name="accountName" id="inputAccountName" type="text" class="form-control" required>
+                                            <span ng-show="formAddCard.$submitted">
+                                            <div ng-show="formAddCard.accountName.$invalid" class="error-message text-danger form-text">
+                                                Trường tên chủ tài khoản bắt buộc điền
+                                            </div>
+                                             </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-3 col-form-label">Ghi chú</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" ng-model="formCard.description" class="w-100 input-customerPay">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button ng-click="resetFormCard()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div ng-if="selectedItem.address.customer != null" class="customer-current">
+                            <span class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCustomerUpdate" ng-click="showCustomerUpdate(selectedItem)">
+                                <i class="ri-user-3-fill"></i>
+                                {{selectedItem.address.customer.fullName}}
+                            </span>
+                            <i ng-if="selectedItem" ng-click="removeAddress(selectedItem)" class="i-close ri-close-fill"></i>
+                        </div>
+                        <form ng-if="selectedItem.address.customer == null">
+                            <i class="ri-search-line icon-search"></i>
+                            <input id="search-client" type="text" class="form-control" placeholder="Search client" ng-click="showCustomerList()">
+                            <div ng-if="selectedItem" id="customerList">
+                                <div class="list-group">
+                                    <button ng-repeat="cus in customers" ng-click="showSelectCustomer(selectedItem,cus)" type="button" class="border-0 list-group-item list-group-item-action">
+                                        {{cus.fullName}} <br>
+                                        Mã: {{cus.id}}
+                                    </button>
+                                </div>
+                            </div>
+                            <i ng-if="selectedItem" data-bs-toggle="modal" data-bs-target="#modalCustomer" class="i-plus ri-add-fill icon-plus"></i>
+                        </form>
+
+                        <div class="content-pay justify-content-center mt-3">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <p>Tổng tiền hàng</p>
+                                </div>
+                                <div class="col-xl-3">
+                                    <p>{{selectedItem.itemQty}}</p>
+                                </div>
+                                <div class="col-xl-5">
+                                    <p class="float-end">
+                                        {{selectedItem.totalAmount | number:'0':'symbol':'short'}}₫
+                                    </p>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div ng-if="selectedItem" class="row">
+                                <div class="col-xl-3">
+                                    <p style="margin-top: 5px">Voucher</p>
+                                </div>
+                                <div class="mb-2 col-xl-9">
+                                    <div ng-if="selectedItem.voucher.id != null" class="row align-items-center">
+                                        <button type="button" class="w-75 btn btn-outline-primary"><i class="ri-ticket-line"></i> {{selectedItem.voucher.code}} - {{selectedItem.voucher.value}}{{selectedItem.voucher.valueType == 2 ? '%' : '₫'}}</button>
+                                        <button ng-click="removeVoucher(selectedItem)" type="button" class="ms-2 small btn-close" aria-label="Close"></button>
+                                    </div>
+                                    <button ng-if="selectedItem.voucher.id == null" data-bs-toggle="modal" data-bs-target="#modalVoucher" ng-click="getListVoucher(selectedItem)" type="button" class="btn btn-outline-success"><i class="ri-add-line"></i> Chọn voucher</button>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-5">
+                                    <p>Khách cần trả</p>
+                                </div>
+                                <div class="col-xl-7">
+                                    <p class="float-end">
+                                        {{selectedItem.totalCustomerPay | number:'0':'symbol':'short'}}₫
+                                    </p>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div ng-if="selectedItem" class="row">
+                                <div class="col-xl-5">
+                                    <p>Khách thanh toán</p>
+                                </div>
+                                <div class="col-xl-7">
+                                    <p class="float-end">
+                                        <input type="number" ng-model="selectedItem.customerPay" ng-change="changeCustomerPay(selectedItem)" class="input-customerPay text-end"  >
+                                    </p>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div ng-if="selectedItem" class="row mb-3">
+                                <div class="d-flex">
+                                    <div class="form-check me-3" ng-repeat="p in payMethods">
+                                        <label class="form-check-label" ng-click="changePaymentMethod(selectedItem, p)">
+                                            <input class="form-check-input" ng-checked="selectedItem.payMethod.id === p.id" type="radio" name="paymentmethod">
+                                            {{p.name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="selectedItem && selectedItem.payMethod.name.toLowerCase() === 'chuyển khoản'" class="row mb-3">
+                                <button ng-if="cards.length == 0" data-bs-toggle="modal" data-bs-target="#modalCard" type="button" class="btn btn-outline-success"><i class="ri-add-line"></i> Thêm tài khoản ngân hàng</button>
+                                <div class="d-flex" ng-if="cards.length > 0">
+                                    <div class="col-sm-5">
+                                        <img ng-if="selectedItem.card.qrCode != null" ng-src="{{selectedItem.card.qrCode}}" alt="QRCode" width="150" height="170">
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <select ng-model="selectedItem.card" class="form-select mb-2" ng-options="c as (c.bankCode + ' - ' + c.accountNo + ' - ' + c.accountName) for c in cards" ng-change="showQRCode(selectedItem)">
+                                        </select>
+                                        <button data-bs-toggle="modal" data-bs-target="#modalCard" type="button" class="btn btn-outline-success"><i class="ri-add-line"></i> Thêm tài khoản ngân hàng</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="selectedItem && selectedItem.moneyReturn != 0" class="row mt-2">
+                                <div class="col-xl-5">
+                                    <p>Tiền thừa trả khách</p>
+                                </div>
+                                <div class="col-xl-7">
+                                    <p class="float-end">
+                                        {{selectedItem.moneyReturn | number:'0':'symbol':'short'}}₫
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-primary" type="button">THANH TOÁN</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="tab-pane fade" id="shipment" role="tabpanel" aria-labelledby="shipment">asd</div>
 </div>
 
-<script>
-    let nextBillId = 2; // Bắt đầu với bill 2, do bill 1 đã có sẵn trong mã HTML
-
-    // Lắng nghe sự kiện click trên nút "+"
-    document.getElementById("add-tab-button").addEventListener("click", function() {
-        // Tạo một tab mới
-        let newTab = document.createElement("li");
-        newTab.classList.add("nav-item");
-        newTab.setAttribute("role", "presentation");
-
-        // Tạo nút tab mới
-        let newTabButton = document.createElement("div");
-        newTabButton.className = "nav-link text-white tab";
-        newTabButton.setAttribute("id", "bill-tabs-" + nextBillId);
-        newTabButton.setAttribute("data-bs-toggle", "pill");
-        newTabButton.setAttribute("data-bs-target", "#bill-" + nextBillId);
-        newTabButton.setAttribute("role", "tab");
-        newTabButton.setAttribute("aria-controls", "bill-" + nextBillId);
-        newTabButton.setAttribute("aria-selected", "false");
-        newTabButton.textContent = "Bill " + nextBillId;
-        function closeTab(tabId) {
-            // Tìm tab cần đóng
-            let tabToClose = document.getElementById("bill-tabs-" + tabId);
-
-            // Xóa tab và nội dung tab
-            tabToClose.parentElement.remove();
-            document.getElementById("bill-" + tabId).remove();
-        }
-        let closeButton = document.createElement("i");
-        closeButton.className = "ri-close-line ms-3";
-        closeButton.style.cursor = "pointer";
-        closeButton.addEventListener("click", function() {
-            closeTab(nextBillId);
-        });
-
-        newTabButton.appendChild(closeButton);
-        newTab.appendChild(newTabButton);
-
-        // Thêm tab mới vào danh sách tab
-        document.getElementById("pills-tab").insertBefore(newTab, document.getElementById("add-tab-button").parentElement);
-
-        // Tạo nội dung cho tab mới
-        let newTabContent = document.createElement("div");
-        newTabContent.classList.add("tab-pane", "fade");
-        newTabContent.setAttribute("id", "bill-" + nextBillId);
-        newTabContent.setAttribute("role", "tabpanel");
-        newTabContent.setAttribute("aria-labelledby", "bill-" + nextBillId);
-        newTabContent.textContent = "Hóa đơn " + nextBillId;
-
-        // Thêm nội dung tab mới vào danh sách nội dung tab
-        document.getElementById("pills-tabContent").appendChild(newTabContent);
-
-        // Tăng giá trị của nextBillId để sử dụng cho tab tiếp theo
-        nextBillId++;
-    });
-</script>
-
+<footer>
+    <ul class="nav nav-pills navbar-light" id="pills-tab-footer" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-sell-quicly" data-bs-toggle="pill" data-bs-target="#sell-quickly" type="button" role="tab" aria-controls="pills-home" aria-selected="true" style="border-radius: unset;"><i class="ri-dvd-line"></i> Sell quickly</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-shipment" data-bs-toggle="pill" data-bs-target="#shipment" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="ri-e-bike-2-line"></i> Shipment</button>
+        </li>
+    </ul>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/assets/js/sellquickly.js}"></script>
 </body>
 </html>
