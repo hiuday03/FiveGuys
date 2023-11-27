@@ -107,7 +107,7 @@ public class HomeRestController {
                                        @RequestParam(value = "productId", required = false) Long productId) {
         if (coloId != null && sizeId != null && productId != null) {
             ProductDetail productDetail = olProductDetailService.findByColorIdAndSizeIdAndProductId(coloId, sizeId, productId);
-            Employees employees = new Employees();
+//            Employees employees = new Employees();
             return ResponseEntity.ok(productDetail);
         } else {
             return ResponseEntity.badRequest().body("Missing required parameters: coloId, sizeId, productId");
@@ -129,7 +129,7 @@ public class HomeRestController {
 
     @GetMapping("/products/images")
     public ResponseEntity<?> getImagesByColorAndProduct(@RequestParam(value = "coloId", required = false) Long coloId,
-                                       @RequestParam(value = "productId", required = false) Long productId) {
+                                                        @RequestParam(value = "productId", required = false) Long productId) {
         if (coloId != null  && productId != null) {
             List<ProductDetail> productDetail = olProductDetailService.findByColorIdAndProductId(coloId, productId);
             if (productDetail.get(0) != null){
@@ -137,7 +137,7 @@ public class HomeRestController {
 
             }
         }
-            return ResponseEntity.badRequest().body("Missing required parameters: coloId, sizeId, productId");
+        return ResponseEntity.badRequest().body("Missing required parameters: coloId, sizeId, productId");
     }
 
 

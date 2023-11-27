@@ -117,7 +117,7 @@ public class OLProductServiceImpl implements OLProductService {
             olViewProductDetailRespone.setName(product.getName());
             olViewProductDetailRespone.setWrist(product.getWrist());
             olViewProductDetailRespone.setCollar(product.getCollar());
-            olViewProductDetailRespone.setBrand(product.getBrand());
+            olViewProductDetailRespone.setBrand(product.getBrand().getName());
             olViewProductDetailRespone.setDescribe(product.getDescribe());
             olViewProductDetailRespone.setNameCategory(product.getCategory().getName());
             olViewProductDetailRespone.setNameMaterial(product.getMaterial().getName());
