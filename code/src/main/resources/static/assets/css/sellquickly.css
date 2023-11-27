@@ -1,0 +1,263 @@
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #D5D5D5;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0d6efd !important;
+    border-radius: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: #fff;
+}
+
+.container-fluid form {
+    width: 400px;
+    border: 1px solid rgb(82, 74, 235);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.container-fluid form input, .card form input {
+    width: 100%;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding-left: 35px;
+}
+
+.container-fluid form i, .icon-search {
+    position: absolute;
+    padding-left: 10px;
+}
+
+#customerList {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    width: 350px;
+    left: 0;
+    top: 100%;
+    box-shadow: 0 4px 6px 0 rgba(0,0,0,.2);
+    padding: 8px 4px;
+    height: 215px;
+    overflow-y: scroll;
+    z-index: 5;
+}
+
+.product-list {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    width: 450px;
+    left: 25px;
+    top: 100%;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    padding: 8px 4px;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    overflow-y: scroll;
+    padding: 6px 14px;
+    margin-bottom: 4px;
+}
+
+.product:hover, #customerList button:hover {
+    background-color: rgba(0,112,244, 0.1);
+}
+
+
+.product img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.product .p-details {
+    padding-left: 15px;
+}
+
+.product .p-details h2 {
+    font-size: 18px;
+}
+
+.product .p-details h1 {
+    font-size: 20px;
+    color: #0070F4;
+    text-align: right;
+}
+
+.product .p-details h3 {
+    font-size: 16px;
+    color: #1d1d1d;
+}
+
+.card {
+    align-items: center;
+    padding: 15px;
+    height: 600px;
+}
+
+.card form {
+    position: relative;
+    width: 95%;
+    border: 1px solid rgb(82, 74, 235);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.card form .icon-plus {
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 50%;
+}
+
+.card form .icon-plus:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+#pills-tab-footer {
+    background-color: #e3f2fd;
+    line-height: 35px;
+}
+
+.content-pay {
+    width: 90%;
+    height: 450px;
+}
+
+.horizontal-list {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+}
+
+.customer-current {
+    width: 95%;
+}
+
+.customer-current a {
+    width: 90%;
+}
+
+.customer-current span {
+    text-align: left;
+    width: 100%;
+}
+
+.customer-current .i-close {
+    position: absolute;
+    border-radius: 50%;
+    top: 22px;
+    right: 37px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.customer-current .i-close:hover {
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Voucher */
+.voucher{
+    position: relative;
+    background-color: #0d6efd;
+    padding: 10px;
+    width: 240px;
+    height: 100px;
+    border:none;
+    justify-content: center;
+}
+
+.voucher:hover {
+    background-color: #7B1FA2   ;
+    cursor: pointer;
+}
+
+.content{
+    z-index: 10;
+}
+
+.content .voucher-qty {
+    position: absolute;
+    right: 1px;
+    bottom: 2px;
+    font-size: 10px;
+    background: #ff6358;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.off{
+    line-height: 0px;
+}
+
+.off h1{
+    font-size: 18px;
+}
+
+.off h3 {
+    font-size: 16px;
+}
+
+.off span{
+    margin-right: 111px;
+}
+
+
+.cross-bg{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: #9C27B0;
+    left: 0px;
+    top: 0px;
+    opacity: 0.4;
+    clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
+    z-index:1;
+}
+
+.input-customerPay {
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #0d6efd;
+}
