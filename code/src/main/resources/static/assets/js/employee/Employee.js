@@ -85,14 +85,6 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
 
     $scope.loadAccounts();
 
-    $scope.edit = function (employee) {
-        if ($scope.formUpdate.updatedAt) {
-            $scope.formUpdate = angular.copy(employee);
-        } else {
-            $scope.formUpdate = angular.copy(employee);
-            $scope.formUpdate.updatedAt = new Date();
-        }
-    }
 
     $scope.create = function () {
         let fileInput = document.getElementById("image");
@@ -132,6 +124,7 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
             })
         }
     }
+   
     $scope.apiUpdate = function () {
         let item = angular.copy($scope.formUpdate);
         $http.put(`/employee/${item.id}`, item).then(resp => {
@@ -168,6 +161,15 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
         }
     }
 
+    $scope.edit = function (employee) {
+        if ($scope.formUpdate.updatedAt) {
+            $scope.formUpdate = angular.copy(employee);
+        } else {
+            $scope.formUpdate = angular.copy(employee);
+            $scope.formUpdate.updatedAt = new Date();
+        }
+    }
+
     $scope.delete = function (item) {
         $http.delete(`/employee/${item.id}`).then(function (resp) {
             $scope.showSuccessMessage("Delete employee successfully");
@@ -184,8 +186,8 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
         imagePreviewUpdate.src = "/assets/img/no-img.png";
         fileInput.value = "";
         fileInput.type = "file";
-        $scope.formUpdateCustomer.$setPristine();
-        $scope.formUpdateCustomer.$setUntouched();
+        $scope.formUpdateEmployee.$setPristine();
+        $scope.formUpdateEmployee.$setUntouched();
     }
 
     $scope.resetFormInput = function () {
@@ -195,8 +197,8 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
         imagePreview.src = "/assets/img/no-img.png";
         fileInput.value = "";
         fileInput.type = "file";
-        $scope.formCreateCustomer.$setPristine();
-        $scope.formCreateCustomer.$setUntouched();
+        $scope.formCreateEmployee.$setPristine();
+        $scope.formCreateEmployee.$setUntouched();
     }
 
     $scope.getById = function (item) {

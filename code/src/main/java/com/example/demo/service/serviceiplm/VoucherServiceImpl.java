@@ -7,8 +7,17 @@ import com.example.demo.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+<<<<<<< HEAD
 
 import java.math.BigDecimal;
+=======
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+>>>>>>> 15d3fedfdf0def0b9ca06818445735c62b464818
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +55,7 @@ public class VoucherServiceImpl implements VoucherService {
                     //select status hết khuyen mai
                     if(sl==0){
                         voucherRepository.updateStatusQuantity(2, idVoucher);
+                        voucherRepository.getAllStatuskhacDaXoa();
                     }
                 }
             }
