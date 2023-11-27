@@ -36,7 +36,9 @@ public class OlViewProductDetailRespone {
 
     private List<Image> images;
 
+    private Float rate;
 
+    private Integer totalQuantity;
 
 
 }

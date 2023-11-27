@@ -25,10 +25,74 @@
 
 <body ng-app="myApp" ng-controller="myApp-ctrl">
 
-  <!-- <a href="#!home">home</a>
-  <a href="#!cart">cart</a>
-  <a href="#!checkout">checkout</a>
-  <a href="#!product-detail">product-detail</a>  -->
+  <div class="overlay" ng-class="{ 'active': overlayActive }">
+    <div class="header-search">
+      <button type="button" class="btn btn-light shadow-0 closeBtn" ng-click="toggleOverlay()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <form class="from-search" action="">
+
+
+        <div class="input-group">
+          <div class="form-outline w-100">
+            <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control" />
+            <label class="form-label" for="form1">Search</label>
+          </div>
+          <button  type="button" class="btn btn-primary shadow-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="product-display">
+      <div class="container">
+        <div class="row">
+          <!-- Loop through your products here -->
+          <div class="col-md-3 mb-4">
+            <h1>Hello</h1>
+          </div>
+          <div class="col-md-3 mb-4">
+            <h1>Hello</h1>
+          </div>
+          <div class="col-md-3 mb-4">
+            <h1>Hello</h1>
+          </div>
+          <div class="col-md-3 mb-4">
+            <h1>Hello</h1>
+          </div>
+          <!-- Repeat the above structure to display more products -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <script>
+const expandBtn = document.getElementById('expandBtn');
+const overlay = document.querySelector('.overlay');
+const closeBtn = document.querySelector('.closeBtn');
+const inputField = document.getElementById('form'); // Lấy element của ô input
+
+expandBtn.addEventListener('click', function(event) {
+  event.stopPropagation(); // Ngăn sự kiện click lan toả lên phần tử cha
+  overlay.classList.add('active');
+});
+
+inputField.addEventListener('click', function(event) {
+  overlay.classList.add('active');
+});
+
+closeBtn.addEventListener('click', function() {
+  overlay.classList.remove('active');
+});
+
+// Đảm bảo rằng khi click bên ngoài overlay cũng đóng nó đi
+document.addEventListener('click', function(event) {
+  if (!event.target.closest('.overlay')) {
+    overlay.classList.remove('active');
+  }
+});
+  </script> -->
+  
   <header>
     <!-- Jumbotron -->
     <div class="p-3 text-center bg-white border-bottom">
@@ -38,6 +102,7 @@
           <div class="col-lg-2 col-sm-4 col-4">
             <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
               <a href="#!home">home</a>
+              <a href="#!product">Product</a>
               <a href="http://localhost:8080/admin/index">admin</a>
             </a>
           </div>
@@ -49,7 +114,7 @@
               <a href="http://localhost:8080/login">Đăng nhập</a>
                 <a href="http://localhost:8080/auth/logoff">Đăng xuất</a>
               <a class="me-1   py-1 px-3 nav-link d-flex align-items-center" target="_blank">
-                <i class="fas fa-user-alt m-1 me-md-2"></i>
+                <i class="fa-solid fa-user m-1 me-md-2"></i>
               </a>
               <a class="me-1   py-1 px-3 nav-link d-flex align-items-center" target="_blank">
                 <i class="fas fa-heart m-1 me-md-2"></i>
@@ -69,8 +134,8 @@
           <div class="col-lg-5 col-md-12 col-12">
             <div class="input-group float-center">
               <div class="form-outline">
-                <input style="    border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control" />
-                <label class="form-label" for="form1">Search</label>
+                <input style="border-bottom: 1px solid #cdcdcd;" type="search" ng-click="openOverlay()" class="form-control" />
+                <label class="form-label">Search</label>
               </div>
               <button type="button" class="btn btn-primary shadow-0">
                 <i class="fas fa-search"></i>

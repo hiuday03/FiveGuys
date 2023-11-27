@@ -67,4 +67,8 @@ public class ProductDetail {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Image> images;
+
+    @OneToMany( mappedBy = "productDetail",cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<BillDetail> billDetails;
+
 }

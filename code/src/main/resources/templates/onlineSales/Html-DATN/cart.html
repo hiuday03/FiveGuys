@@ -19,7 +19,6 @@
                       <div class="title-name">
                         <p href="#" class="nav-link">
                           <!-- Hiển thị thông tin khi đã đăng nhập -->
-
                           {{ item.productDetail.product.name }} {{
                           item.productDetail.product.category.name }} {{
                           item.productDetail.product.material.name }} {{
@@ -66,8 +65,9 @@
                         margin-right: auto;
                         display: block;
                       ">
-                      Xóa
+                      <i class="fa-solid fa-trash"></i>
                     </button>
+
                   </div>
                 </div>
               </div>
@@ -82,7 +82,10 @@
 
             <!-- Checkout -->
             <div class="p-4">
-              <h5 class="card-title mb-3">Thông tin giao hàng</h5>
+              <div class="d-flex align-items-center mb-3">
+                <i style="margin-right: 6px;" class="fa-solid fa-map-location-dot"></i>
+                <h5 class="m-0 ">Thông tin giao hàng</h5>
+              </div>
               <hr />
 
               <div class="row">
@@ -155,26 +158,104 @@
           <div class="card-header">
             <div class="discount">
               <h5>Mã giảm giá / Quà tặng</h5>
-              <hr />
-              <div class="input-group mt-3 mb-4">
-                <input type="text" class="form-control border" name="" placeholder="Mã" />
-                <button class="btn btn-light text-primary border">
-                  Áp dụng
-                </button>
+              <!-- Modal -->
+              <div class="modal fade" id="voucherModal" tabindex="-1" role="dialog" aria-labelledby="voucherModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="voucherModalLabel">Chọn Khuyến mãi</h5>
+                      <button type="button" class="btn btn-light shadow-0" ng-click="back()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Nội dung của form -->
+                      <div class="input-group mt-3 mb-4">
+                        <input type="text" class="form-control border" ng-model="searchCode" placeholder="Mã" />
+                        <button type="button" class="btn btn-primary shadow-0" ng-click="searchByCode()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                      <!-- Danh sách voucher -->
+                      <div class="voucher-list mt-3 mb-4">
+                        <div class="voucher-item row" ng-repeat="voucher in listVouchers"
+                          ng-click="selectVoucher(voucher)" ng-class="{ 'selected-voucher': voucher.selected }">
+                          <div class="col-4 ">
+                            <div class="voucher-name">
+                              <h5>{{ voucher.code }}</h5>
+                              <p>({{ voucher.quantity }})</p>
+                            </div>
+                            <div class="voucher-details">
+                              <p>HSD: {{ voucher.endDate | date:'dd/MM/yyyy' }}</p>
+                            </div>
+                          </div>
+                          <div class="col-8">
+                            <div class="voucher-info">
+                              <div class="voucher-value">
+                                <p>Giảm {{ voucher.value | number}} đ cho đơn hàng {{ voucher.minimumTotalAmount |
+                                  number }} đ</p>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+            
+
+                  </div>
+                </div>
               </div>
+
+              <hr />
+              <i class="fa-solid fa-tags"></i>
+
+              <a href="#!cart" ng-click="openVoucherModal()">Chọn hoặc nhập mã</a>
+              <p style="margin-top: 8px;" ng-style="voucherMessage === 'Mã giảm giá đã được áp dụng' ? {'color': 'green'} : {'color': 'red'}">{{ voucherMessage }}</p>
+
             </div>
           </div>
+
+
 
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tạm tính:</p>
-              <p class="mb-2">{{cart.amount | number }} đ</p>
+              <p class="mb-2">{{ totalAmount | number }} đ</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Giảm giá:</p>
+              <p class="mb-2">{{valueVoucher | number }} đ</p>
             </div>
             <hr />
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng tiền:</p>
-              <p class="mb-2 fw-bold">{{cart.amount | number }} đ</p>
+              <p class="mb-2 fw-bold">{{totalAmountAfterDiscount | number }} đ</p>
             </div>
+
+          </div>
+
+          <div class="card-footer">
+            <div class="d-flex align-items-center">
+              <i class="fa-solid fa-wallet me-2"></i>
+              <h5 class="m-0">Phương thức thanh toán</h5>
+            </div>
+            <hr>
+            <ul class="list-unstyled mt-3" ng-repeat="paymentMethod in listPaymentMethods">
+              <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="paymentMethod" value="payOnDelivery"
+                         id="{{ 'paymentMethod_' + $index }}" ng-checked="selectedPaymentMethod === paymentMethod"
+                         ng-click="selectPaymentMethod(paymentMethod)">
+                  <label class="form-check-label" for="{{ 'paymentMethod_' + $index }}">
+                    {{paymentMethod.name}}
+                  </label>
+                </div>
+              </li>
+            </ul>
+            
 
             <div class="mt-3">
               <button ng-click="bill.purchase()" class="btn btn-success w-100 shadow-0 mb-2">
@@ -185,6 +266,9 @@
               </a>
             </div>
           </div>
+
+
+
         </div>
       </div>
       <!-- summary -->

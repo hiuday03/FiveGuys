@@ -60,7 +60,7 @@ body {
 
 
 .btn-selected {
-  background-color: black !important;
+  background-color: #2f5acf !important;
   color: white;
   border: 2px red;
 }
@@ -193,3 +193,218 @@ select {
       cursor: not-allowed;
     }
     
+   
+/* Kiểu dáng cho voucher */
+.voucher-item {
+  margin-bottom: 10px;
+}
+
+/* Phần tử chứa thông tin của voucher */
+.voucher-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+/* Phần tử chứa thông tin mã và quantity */
+.voucher-code {
+  flex: 1;
+}
+
+/* Phần tử chứa thông tin giá trị và đơn hàng */
+.voucher-details {
+  flex: 1;
+  display: flex;
+  /* flex-direction: row; */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voucher-details-content{
+  flex: 1;
+  display: flex;
+  /* flex-direction: row; */
+  align-items: center;
+  justify-content: revert;
+}
+/* Kiểu dáng cho endDate */
+.voucher-end-date {
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+/* Màu và viền cho phần tử voucher-item */
+.voucher-item {
+  background-color: #f7f7f7; /* Màu nền */
+  border: 1px solid #ddd; /* Viền */
+  border-radius: 5px; /* Bo góc */
+  padding: 10px; /* Khoảng cách bên trong */
+  margin-bottom: 10px; /* Khoảng cách giữa các phần tử */
+}
+
+/* Kiểu dáng cho voucher-details-content */
+.voucher-details-content {
+
+  align-items: center;
+}
+
+/* Màu và font cho voucher code */
+.voucher-details-content h5 {
+  color: #333; /* Màu chữ */
+  font-weight: bold; /* Độ đậm */
+  font-size: 16px; /* Kích thước chữ */
+}
+
+/* Màu cho quantity và HSD */
+.voucher-details-content p {
+  color: #666; /* Màu chữ */
+  font-size: 14px; /* Kích thước chữ */
+}
+
+/* Màu cho Giảm và Đơn hàng */
+.voucher-value p {
+  font-size: 14px; /* Kích thước chữ */
+  font-weight: bold; /* Độ đậm */
+}
+
+.card-header{
+  margin-top: 16px;
+}
+
+/* CSS cho checkbox */
+.custom-checkbox {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Khi checkbox được chọn */
+.custom-checkbox:checked::before {
+  content: '\2714'; /* Ký tự checkmark */
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #fff;
+  background-color: #ff0000; /* Màu nền khi chọn */
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  border-radius: 3px;
+}
+/* CSS cho phần tử bao quanh voucher */
+.voucher-item {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+/* CSS khi voucher được chọn */
+.selected-voucher {
+  border: 4px solid #ff0000;
+}
+
+.voucher-details {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.voucher-value {
+  padding: 10px;
+}
+.voucher-item {
+  margin-bottom: 10px;
+}
+
+
+.voucher-details {
+  text-align: right;
+}
+.voucher-item {
+  margin-bottom: 10px;
+}
+
+.voucher-name {
+  text-align: center;
+  display: flex;
+}
+/* Định dạng cho modal */
+.modal-dialog {
+  max-width: 600px; /* Điều chỉnh chiều rộng tối đa của modal */
+  height: 600px; /* Điều chỉnh chiều cao của modal */
+}
+
+/* Thiết lập thanh cuộn cho danh sách voucher */
+.voucher-list {
+  max-height: 500px; /* Điều chỉnh chiều cao tối đa của danh sách voucher */
+  overflow-y: auto; /* Tạo thanh cuộn nếu danh sách voucher dài hơn */
+  overflow-x: hidden;
+
+}
+
+/* Giao diện đè lên */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* Màu nền với độ trong suốt */
+  z-index: 1000; /* Chỉ số z để đè lên header */
+}
+
+/* Hiển thị overlay khi được kích hoạt */
+.overlay.active {
+  display: block;
+}
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 99999;
+}
+
+.header-search {
+  padding: 20px;
+  background: #fff;
+  width: 100%;
+  height: 107px;
+  display: flex;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.product-display {
+  padding: 20px;
+  margin-top: 20px;
+  background: #fff;
+  display: block;
+  width: 1000px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 10px auto 0;
+}
+
+.from-search{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 532px;
+  margin: 0 auto;
+  transition: all .3s;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+}
