@@ -1,14 +1,13 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.AccountEntity;
-import com.example.demo.entity.Employees;
 import com.example.demo.repository.AccountRepository;
-import com.example.demo.repository.offlineSales.OfEmployeeRepository;
-import com.example.demo.service.onlineSales.OlAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,32 +25,7 @@ public class AuthController {
     }
 
     @Autowired
-    private OlAccountService olAccountService;
-
-    @Autowired
-    private OfEmployeeRepository ofEmployeeRepository;
-
-    @Autowired
     private AccountRepository accountRepository;
-
-    @ResponseBody
-    @GetMapping("/api/user")
-    public ResponseEntity<?> getEmployess() {
-
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String currentUsername = authentication.getName();
-            Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
-
-            if (account.isPresent()) {
-                Optional<Employees> employees = Optional.ofNullable(ofEmployeeRepository.findByAccount_Id(account.get().getId()));
-                    return ResponseEntity.ok(employees);
-            }
-        }
-
-        return ResponseEntity.status(400).body(null);
-
-
-    }
 
 
     @ResponseBody

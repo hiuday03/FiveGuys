@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,12 +36,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product productReq) {
+<<<<<<< HEAD
         productReq.setCode(genmahd());
         productReq.setCreatedBy("admin");
         productReq.setCreatedAt(new Date());
         productReq.setUpdatedBy("admin");
         productReq.setUpdatedAt(new Date());
         productReq.setStatus(2);
+=======
+>>>>>>> 2ef81bd451491c1d591d015ea0a631e7cd429042
         return productRepository.save(productReq);
     }
 
@@ -57,8 +59,8 @@ public class ProductServiceImpl implements ProductService {
             product.setWrist(productReq.getWrist());
             product.setDescribe(productReq.getDescribe());
             product.setBrand(productReq.getBrand());
-            product.setUpdatedAt(new Date());
-            product.setUpdatedBy("admin");
+            product.setUpdatedAt(productReq.getUpdatedAt());
+            product.setUpdatedBy(productReq.getUpdatedBy());
             product.setStatus(productReq.getStatus());
 
             return productRepository.save(product);
