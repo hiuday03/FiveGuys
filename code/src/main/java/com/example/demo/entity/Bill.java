@@ -71,8 +71,15 @@ public class Bill {
     @JoinColumn(name = "IdVoucher")
     private Vouchers voucher;
 
+    @ManyToOne
+    @JoinColumn(name = "IdCard")
+    private Cards card;
+
     @Column(name = "Status")
     private int status;
+
+    @Column(name = "typeBill")
+    private int typeBill;
 
     @JsonIgnore
     @OneToMany(mappedBy = "bill",  cascade = CascadeType.ALL, orphanRemoval = true)
