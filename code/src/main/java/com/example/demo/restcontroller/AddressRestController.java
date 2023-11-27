@@ -35,11 +35,6 @@ public class AddressRestController {
         return ResponseEntity.ok(address);
     }
 
-    @RequestMapping("/get-by-customer/{id}")
-    public ResponseEntity<List<AddressEntity>> getAllByCustomerId(@PathVariable Long id) {
-        return ResponseEntity.ok(addressService.findByCustomerId(id));
-    }
-
 //    @GetMapping("/pageall")
 //    public ResponseEntity<Page<AddressEntity>> getAllAddressPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {
 //        return ResponseEntity.ok(addressService.getAllAddressPage(page));

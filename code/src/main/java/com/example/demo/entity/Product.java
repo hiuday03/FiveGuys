@@ -37,6 +37,9 @@ public class Product {
     @Column(name = "Describe")
     private String describe;
 
+    @Column(name = "Brand")
+    private String brand;
+
     @Column(name = "CreatedAt")
     private Date createdAt;
 
@@ -57,14 +60,8 @@ public class Product {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "IdBrand")
-    private Brands brand;
-
-    @ManyToOne
     @JoinColumn(name = "IdMaterial")
     private Material material;
-
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface AddressRepository extends JpaRepository<AddressEntity, Long> {
     @Query("SELECT a FROM AddressEntity a WHERE a.customer.id = :customerId")
-    List<AddressEntity> findByCustomerId(@Param("customerId") Long customerId);
+List<AddressEntity> findByCustomerId(@Param("customerId") Long customerId);
 }

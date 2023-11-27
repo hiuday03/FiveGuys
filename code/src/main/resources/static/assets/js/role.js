@@ -1,7 +1,7 @@
 let app_role = angular.module("role", []);
 
 app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
-    $scope.originalRole = [];
+    $scope.originalRole = []; 
     $scope.role = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -15,7 +15,7 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
             $scope.closeAlert();
         }, 5000);
     }
-
+    
     $scope.closeAlert = function () {
         $scope.showAlert = false;
     }
@@ -103,11 +103,11 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateRole.$setPristine();
         $scope.formCreateRole.$setUntouched();
     }
-
+    
     $scope.changePageSize = function () {
         $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
     };
-
+    
     $scope.paper = {
         page: 0,
         size: 5, // Kích thước mặc định ban đầu
@@ -135,5 +135,5 @@ app_role.controller("role-ctrl", function ($scope, $http, $timeout) {
             this.page = this.count - 1;
         }
     };
-
+    
 });
