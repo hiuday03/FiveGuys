@@ -219,25 +219,25 @@ public class CartRestController {
                 Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
 
                 if (customer.isPresent()) {
-            Cart gioHang = olCartService.findByCustomerId(customer.get().getId());
+                    Cart gioHang = olCartService.findByCustomerId(customer.get().getId());
 
-            if (gioHang != null) {
-                List<CartDetail> chiTietGioHangs = olCartDetailService.findAllByCart_Id(gioHang.getId());
+                    if (gioHang != null) {
+                        List<CartDetail> chiTietGioHangs = olCartDetailService.findAllByCart_Id(gioHang.getId());
 
-                for (CartDetail chiTietGioHang : chiTietGioHangs) {
-                    ProductDetail chiTietSanPham = chiTietGioHang.getProductDetail();
-                    int soLuongHienTai = chiTietSanPham.getQuantity();
-                    int soLuongThem = chiTietGioHang.getQuantity();
+                        for (CartDetail chiTietGioHang : chiTietGioHangs) {
+                            ProductDetail chiTietSanPham = chiTietGioHang.getProductDetail();
+                            int soLuongHienTai = chiTietSanPham.getQuantity();
+                            int soLuongThem = chiTietGioHang.getQuantity();
 //                    chiTietSanPham.setSoLuong(soLuongHienTai + soLuongThem);
 //                    chiTietSanPhamService.save(chiTietSanPham);
+                        }
+
+                        // Xóa tất cả ChiTietGioHang sau khi cập nhật thành công ChiTietSanPham
+                        olCartDetailService.deleteAllByCart_Id(gioHang.getId());
+
+                    }
                 }
-
-                // Xóa tất cả ChiTietGioHang sau khi cập nhật thành công ChiTietSanPham
-                olCartDetailService.deleteAllByCart_Id(gioHang.getId());
-
             }
-        }
-        }
         }
 
     }
