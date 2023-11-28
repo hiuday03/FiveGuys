@@ -52,6 +52,11 @@ public class DashboardController {
         return "/admin/account/role";
     }
 
+    @GetMapping("/bill")
+    public String ViewBill() {
+        return "/admin/bill/bill";
+    }
+
     @GetMapping("/sell-quicly")
     public String viewSellQuickly() {
         return "/admin/sell-quickly";

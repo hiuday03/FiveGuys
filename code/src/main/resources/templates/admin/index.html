@@ -290,7 +290,7 @@
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/bill}">
                         <i class="bi bi-circle"></i><span>Bills</span>
                     </a>
                 </li>
@@ -361,27 +361,27 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/product}">
                         <i class="bi bi-circle"></i><span>Product Details</span>
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/admin/products/colors}">
+                    <a th:href="@{/admin/color}">
                         <i class="bi bi-circle"></i><span>Colors</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/size}">
                         <i class="bi bi-circle"></i><span>Sizes</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/category}">
                         <i class="bi bi-circle"></i><span>Categories</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a hth:href="@{/admin/material}">
                         <i class="bi bi-circle"></i><span>Materials</span>
                     </a>
                 </li>
@@ -1094,6 +1094,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.2.0/exceljs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/big.js@5.2.2"></script>
+
+<!-- Bills -->
+<script th:src="@{/assets/js/bill/bill.js}"></script>
+
+
 </body>
 
 </html>
