@@ -62,7 +62,7 @@ public class AuthConfig {
                 .formLogin(login -> login
                         .loginPage("/auth/login/form")
                         .loginProcessingUrl("/auth/login")
-                        .defaultSuccessUrl("http://127.0.0.1:5501/index.html#!/home",false)
+                        .defaultSuccessUrl("/auth/login/success")
                         .failureUrl("/auth/login/error")
                         .usernameParameter("username")
                         .passwordParameter("password")
@@ -74,7 +74,7 @@ public class AuthConfig {
 //                )
                 .logout(lg -> lg
                         .logoutUrl("/auth/logoff")
-                        .logoutSuccessUrl("http://127.0.0.1:5501/index.html#!/home")
+                        .logoutSuccessUrl("/auth/logoff/success")
                 )
                 .csrf().disable()
 //                .cors().disable()
