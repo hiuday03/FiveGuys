@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @ToString
-public class OlHomeProductRespone {
+public class OlHomeProductResponse {
 
     private Long id;
 
@@ -23,6 +23,10 @@ public class OlHomeProductRespone {
     private String nameMaterial;
 
     private BigDecimal price;
+
+    private Integer totalQuantity;
+
+    private Float rate;
 
     private String path;
 
