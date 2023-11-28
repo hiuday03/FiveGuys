@@ -50,4 +50,9 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
         return olProductDetailRepository.save(productDetail);
     }
 
+    @Override
+    public List<ProductDetail> findByColorIdAndProductId(Long colorId, Long productId) {
+        return olProductDetailRepository.findByColorIdAndProductId(colorId,productId);
+    }
+
 }

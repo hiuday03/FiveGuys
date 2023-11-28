@@ -188,7 +188,6 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
             });
         }
         reader.readAsArrayBuffer(files[0]);
-
     }
 
 

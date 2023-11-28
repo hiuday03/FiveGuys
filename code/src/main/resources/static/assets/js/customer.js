@@ -257,4 +257,12 @@ app_customer.controller("customer-ctrl", function ($scope, $http, $timeout) {
         }
     };
 
+    $scope.xuatFile = function () {
+        $http.get("/customer/excel").then(function (response) {
+            alert("Xuất File Thành Công")
+            // $scope.pageEm = response.data.content;
+            // $scope.totalPages = response.data.totalPages
+        })
+    }
+
 });

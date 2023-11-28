@@ -6,6 +6,7 @@ import com.example.demo.service.onlineSales.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -95,28 +96,38 @@ public class CartRestController {
                         cart.setUpdatedAt(new Date());
                         cart = olCartService.save(cart);
                     }
-                    String productId = orderData.get("productId").asText();
-                    System.out.println(productId);
+                    Long productId =Long.valueOf(orderData.get("productId").asText());
 
-                    Optional<ProductDetail> chiTietSanPham = olProductDetailService.findById(Long.valueOf(productId));
+                    Optional<ProductDetail> productDetail = olProductDetailService.findById((productId));
+                    System.out.println("Id productDetail " + productDetail.get().getId());
+                    if (productDetail.isPresent()) {
+                        CartDetail cartDetail = null;
+                        List<CartDetail> cartDetails = olCartDetailService.findAllByCart_Id(cart.getId());
+                        for (CartDetail ctgh : cartDetails) {
+                            System.out.println("Id productDetail sau" + ctgh.getProductDetail().getId());
+                            if (ctgh.getProductDetail().getId().equals(productDetail.get().getId())) {
+                                cartDetail = ctgh;
+                                break;
+                            }
+                        }
 
-                    if (chiTietSanPham.isPresent()) {
-                        CartDetail cartDetail = olCartDetailService.findAllByCart_Id(cart.getId()).stream()
-                                .filter(ctgh -> ctgh.getProductDetail().getId().equals(chiTietSanPham.get().getId()))
-                                .findFirst()
-                                .orElse(null);
 
                         if (cartDetail != null) {
                             cartDetail.setQuantity(cartDetail.getQuantity() + 1);
+                            olCartDetailService.save(cartDetail);
+
                         } else {
+//                            System.out.println("new");
                             CartDetail newChiTietGioHang = new CartDetail();
                             newChiTietGioHang.setCart(cart);
-                            newChiTietGioHang.setProductDetail(chiTietSanPham.get());
+                            newChiTietGioHang.setProductDetail(productDetail.get());
                             newChiTietGioHang.setQuantity(1);
+                            newChiTietGioHang.setPrice(productDetail.get().getPrice());
                             cartDetail = newChiTietGioHang;
+                            olCartDetailService.save(cartDetail);
+
                         }
 
-                        olCartDetailService.save(cartDetail);
 
                         // Cập nhật lại số lượng của ChiTietSanPham
                         // chiTietSanPham.get().setSoLuong(chiTietSanPham.get().getSoLuong() - 1);
@@ -208,26 +219,32 @@ public class CartRestController {
                 Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
 
                 if (customer.isPresent()) {
-            Cart gioHang = olCartService.findByCustomerId(customer.get().getId());
+                    Cart gioHang = olCartService.findByCustomerId(customer.get().getId());
 
-            if (gioHang != null) {
-                List<CartDetail> chiTietGioHangs = olCartDetailService.findAllByCart_Id(gioHang.getId());
+                    if (gioHang != null) {
+                        List<CartDetail> chiTietGioHangs = olCartDetailService.findAllByCart_Id(gioHang.getId());
 
-                for (CartDetail chiTietGioHang : chiTietGioHangs) {
-                    ProductDetail chiTietSanPham = chiTietGioHang.getProductDetail();
-                    int soLuongHienTai = chiTietSanPham.getQuantity();
-                    int soLuongThem = chiTietGioHang.getQuantity();
+                        for (CartDetail chiTietGioHang : chiTietGioHangs) {
+                            ProductDetail chiTietSanPham = chiTietGioHang.getProductDetail();
+                            int soLuongHienTai = chiTietSanPham.getQuantity();
+                            int soLuongThem = chiTietGioHang.getQuantity();
 //                    chiTietSanPham.setSoLuong(soLuongHienTai + soLuongThem);
 //                    chiTietSanPhamService.save(chiTietSanPham);
+                        }
+
+                        // Xóa tất cả ChiTietGioHang sau khi cập nhật thành công ChiTietSanPham
+                        olCartDetailService.deleteAllByCart_Id(gioHang.getId());
+
+                    }
                 }
-
-                // Xóa tất cả ChiTietGioHang sau khi cập nhật thành công ChiTietSanPham
-                olCartDetailService.deleteAllByCart_Id(gioHang.getId());
-
             }
         }
-        }
-        }
 
+    }
+
+
+    @PostMapping("/cart/saveAll")
+    public ResponseEntity<?> saveAllProductDetail(@RequestBody JsonNode orderData){
+        return ResponseEntity.ok(olCartService.saveAllProductDetail(orderData));
     }
 }

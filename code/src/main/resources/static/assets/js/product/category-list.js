@@ -93,5 +93,4 @@ app.controller("category-ctrl", function ($scope, $http, $timeout) {
                 $scope.totalPage = response.data.totalPages
             });
     }
-
 });

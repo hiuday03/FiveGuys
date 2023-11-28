@@ -24,13 +24,14 @@
                     <li class="breadcrumb-item active">Customer</li>
                 </ol>
             </nav>
-            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Custoemr..."  class="form-control">
         </div>
         <!--  Begin code  -->
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
                 Create Customer</button>
+                <button type="button" class="btn btn-outline-success mb-2" ng-click="xuatFile()">
+                    Xuất File</button>
             <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
                 {{alertMessage}}
                 <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -73,7 +74,7 @@
                                                 aria-label="Small select example" ng-model="formInput.account.id"
                                                 ng-required="true">
                                                 <option ng-repeat="account in accounts" ng-value="account.id">
-                                                    {{account.account}}</option>
+                                                    {{account.fullName}}</option>
                                             </select>
                                             <span ng-show="formCreateCustomer.$submitted">
                                                 <div ng-show="formCreateCustomer.account.$invalid"
