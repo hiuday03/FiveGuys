@@ -28,7 +28,7 @@ public class PaymentMethod {
     @Column(name = "UpdatedAt")
     private Date updatedAt;
 
-    @Column(name = "paymenType")
+    @Column(name = "paymentType")
     private int paymentType;
 
     @Column(name = "Status")
