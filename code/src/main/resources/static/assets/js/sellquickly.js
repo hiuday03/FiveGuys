@@ -9,6 +9,24 @@ document.addEventListener('click', function(event) {
     }
 });
 
+toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
 let app_sellQuickly = angular.module("sell-quickly", ["kendo.directives"]);
 app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeout){
     $scope.products = [];
@@ -21,7 +39,6 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
     $scope.formCustomer2 = {};
     $scope.formAddress2 = {};
     $scope.formCard = {};
-    $scope.showAlert = false;
     $scope.employee = {};
     $scope.customers = [];
     let headers = {
@@ -43,7 +60,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         });
     };
     $scope.removeAddress = function (selectedItem) {
-        selectedItem.address = {};
+        selectedItem.address = null;
         localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
     }
 
@@ -63,16 +80,6 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
         })
     }
-    $scope.showSuccessMessage = function(message) {
-        $scope.alertMessage = message;
-        $scope.showAlert = true;
-        $timeout(function() {
-            $scope.closeAlert();
-        }, 5000);
-    }
-    $scope.closeAlert = function() {
-        $scope.showAlert = false;
-    }
 
     $scope.getListCustomer = function () {
         $http.get("/customer").then(resp => {
@@ -89,6 +96,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
     $scope.initialize = function () {
         $http.get("/api/productDetail").then(resp => {
             $scope.products = resp.data;
+            console.log($scope.products)
         });
         $http.get("/api/user").then(resp => {
             $scope.employee = resp.data;
@@ -124,7 +132,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
             createdAt: new Date()
         }
         $http.post(`/api/card`, card).then(resp => {
-            $scope.showSuccessMessage("Create card successfully!")
+            toastr["success"]("Tạo thẻ ngân hàng thành công")
             $scope.resetFormCard();
             $scope.getListCards();
             $('#modalCard').modal('hide');
@@ -134,10 +142,6 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
     }
 
     $scope.create = function (selectedItem) {
-        if (selectedItem == null) {
-            alert("Please choose bill or create bill!")
-            return;
-        }
         $scope.formCustomer.status = 1;
         $scope.formCustomer.createdAt = new Date();
         $scope.formCustomer.createdBy = $scope.employee.fullName;
@@ -148,7 +152,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
             $scope.formAddress.customer = resp.data;
             var address = angular.copy($scope.formAddress);
             $http.post(`/address`, address).then(resp => {
-                $scope.showSuccessMessage("Create customer successfully!")
+                toastr["success"]("Thêm khách hàng thành công")
                 $scope.resetForm();
                 selectedItem.address = resp.data;
                 $scope.getListCustomer();
@@ -167,7 +171,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         $scope.formAddress2.customer.id = selectedItem.address.customer.id;
         let item = angular.copy($scope.formAddress2);
         $http.put(`/address/${selectedItem.address.id}`, item).then(resp => {
-            $scope.showSuccessMessage("Update customer successfully!")
+            toastr["success"]("Cập nhật khách hàng thành công")
             $('#modalCustomerUpdate').modal('hide');
             selectedItem.address = resp.data;
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
@@ -207,8 +211,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
     function makeBill() {
         var uniqueId = $scope.treeData.data().length + 1;
         var bill = {
-            code: 'HD' + uniqueId,
-            name: 'Bill ' + uniqueId,
+            name: 'Hóa đơn ' + uniqueId,
             createdAt: new Date(),
             paymentDate: new Date(),
             itemQty: 0,
@@ -216,16 +219,16 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
             customerPay: 0,
             totalCustomerPay: 0,
             totalAmount: 0,
-            reciverName: "",
+            reciverName: null,
             deliveryDate: new Date(),
             shippingFee: 0,
-            address: {},
-            phoneNumber: "",
-            note: "",
+            address: null,
+            phoneNumber: null,
+            note: null,
             status: 1,
-            voucher: {},
+            voucher: null,
             payMethod:  $scope.payMethods[0],
-            card: {},
+            card: null,
             cart: []
         }
         return bill;
@@ -247,7 +250,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
 
     $scope.addProductCart = function (selectedItem, id) {
         if (selectedItem == null) {
-            alert("Please choose bill or create bill!")
+            toastr["error"]("Vui lòng chọn hóa đơn hoặc tạo hóa đơn")
             return;
         }
         var item = selectedItem.cart.find(item => item.id == id);
@@ -301,7 +304,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
     }
 
     $scope.setCustomerPay = function (selectedItem) {
-        if (selectedItem.voucher.id != null) {
+        if (selectedItem.voucher != null) {
             if (selectedItem.voucher.valueType == 2) {
                 selectedItem.totalCustomerPay = selectedItem.totalAmount * ((100 - selectedItem.voucher.value)/100);
             } else {
@@ -321,7 +324,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         } else {
             selectedItem.moneyReturn = 0;
         }
-        if (selectedItem.payMethod.name.toLowerCase() === 'chuyển khoản') {
+        if (selectedItem.payMethod.name.toLowerCase() === 'chuyển khoản' && selectedItem.card != null) {
             $scope.showQRCode(selectedItem);
         } else {
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
@@ -342,7 +345,12 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
 
     $scope.changePaymentMethod = function (selectedItem, item) {
         selectedItem.payMethod = item;
-        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+        if (selectedItem.payMethod.name.toLowerCase() === 'chuyển khoản' && selectedItem.card != null) {
+            $scope.showQRCode(selectedItem);
+        } else {
+            selectedItem.card = null;
+            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+        }
     }
 
     $scope.showQRCode = function (selectedItem) {
@@ -369,27 +377,37 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
 
     }
 
-    // $scope.pay = function (selectedItem) {
-    //     $scope.bill = {
-    //         code: selectedItem.code,
-    //         createdAt: new Date(),
-    //         paymentDate: new Date(),
-    //         totalAmount: selectedItem.totalAmount,
-    //         totalAmountAfterDiscount: selectedItem.totalCustomerPay,
-    //         customerEntity: selectedItem.customer,
-    //         employee: $scope.employee,
-    //         voucher: selectedItem.voucher,
-    //         status: 1,
-    //     }
-    //     let item = angluar.copy($scope.bill);
-    //     $http
-    //         .post(`/bill`, item)
-    //         .then((resp) => {
-    //
-    //         })
-    //         .catch((error) => {
-    //             console.log("Error", error);
-    //         });
-    // }
+    $scope.pay = function (selectedItem) {
+        if (selectedItem.cart.length == 0) {
+            toastr["error"]("Phiếu hàng đang trống");
+            return;
+        }
+        let bill = {
+            createdAt: new Date(),
+            paymentDate: new Date(),
+            totalAmount: selectedItem.totalAmount,
+            totalAmountAfterDiscount: selectedItem.totalCustomerPay,
+            customerEntity: selectedItem.address ? selectedItem.address.customer : null,
+            employee: $scope.employee,
+            paymentMethod: selectedItem.payMethod,
+            voucher: selectedItem.voucher,
+            card: selectedItem.card,
+            typeBill: 1,
+            status: 3,
+            get billDetail() {
+                return selectedItem.cart.map(item => {
+                    return {
+                        productDetail:{id: item.id},
+                        price: item.price,
+                        quantity: item.qty
+                    }
+                })
+            }
+        };
+        $http.post(`/api/bill`, bill).then(resp => {
+            toastr["success"]("Hóa đơn được cập nhật thành công")
+            $scope.removeBill(selectedItem);
+        })
+    }
 
 });
