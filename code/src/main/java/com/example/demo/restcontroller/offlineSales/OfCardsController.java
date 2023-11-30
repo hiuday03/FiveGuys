@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/card")
-public class CardsController {
+public class OfCardsController {
     @Autowired
     private OfCardServiceImpl cardService;
 

@@ -156,6 +156,9 @@
     flex-direction: row;
     align-items: center;
     padding: 0;
+    border: none;
+    height: 54px;
+    line-height: 30px;
 }
 
 .customer-current {
@@ -260,4 +263,27 @@ input[type=number] {
     border: none;
     outline: none;
     border-bottom: 2px solid #0d6efd;
+}
+
+.k-panelbar > .k-item > .k-link.k-selected, .k-panelbar > .k-panelbar-header > .k-link.k-selected {
+    color: #000;
+    background-color: #fff;
+}
+
+.k-panelbar > .k-item > .k-link:hover, .k-panelbar > .k-item > .k-link.k-hover, .k-panelbar > .k-panelbar-header > .k-link:hover, .k-panelbar > .k-panelbar-header > .k-link.k-hover {
+    cursor: pointer;
+    background-color: #005ac3;
+}
+
+.k-panelbar > .k-item > .k-link, .k-panelbar > .k-panelbar-header > .k-link {
+    color: #fff;
+    background-color: #0d6efd;
+}
+
+.k-panelbar > .k-item > .k-link.k-selected:hover, .k-panelbar > .k-item > .k-link.k-selected.k-hover, .k-panelbar > .k-panelbar-header > .k-link.k-selected:hover, .k-panelbar > .k-panelbar-header > .k-link.k-selected.k-hover {
+    background-color: #fff;
+}
+
+.k-panelbar .k-panelbar-item {
+    outline-style: none;
 }
