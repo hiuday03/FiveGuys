@@ -27,6 +27,7 @@
     <!-- Template Main CSS File -->
     <link th:href="@{/assets/css/style.css}" rel="stylesheet">
 
+    <link th:href="@{/assets/css/myprofile/myprofile.css}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -219,7 +220,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" th:href="@{/admin/myprofile}">
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>
@@ -249,7 +250,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="/auth/logoff">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
@@ -289,7 +290,7 @@
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/bill}">
                         <i class="bi bi-circle"></i><span>Bills</span>
                     </a>
                 </li>
@@ -311,6 +312,11 @@
                 <i class="bx bxs-user" style="font-size: 20px"></i><span>Account</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a th:href="@{/admin/account/account}">
+                        <i class="bi bi-circle"></i><span>Account</span>
+                    </a>
+                </li>
                 <li>
                     <a th:href="@{/admin/account/customer}">
                         <i class="bi bi-circle"></i><span>Customer</span>
@@ -337,7 +343,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/account/role}">
                         <i class="bi bi-circle"></i><span>Roles</span>
                     </a>
                 </li>
@@ -350,32 +356,32 @@
             </a>
             <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/tp4}">
                         <i class="bi bi-circle"></i><span>Products</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/product}">
                         <i class="bi bi-circle"></i><span>Product Details</span>
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/admin/products/colors}">
+                    <a th:href="@{/admin/color}">
                         <i class="bi bi-circle"></i><span>Colors</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/size}">
                         <i class="bi bi-circle"></i><span>Sizes</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a th:href="@{/admin/category}">
                         <i class="bi bi-circle"></i><span>Categories</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a hth:href="@{/admin/material}">
                         <i class="bi bi-circle"></i><span>Materials</span>
                     </a>
                 </li>
@@ -1061,16 +1067,8 @@
 
 <!-- Template Main JS File -->
 <script th:src="@{/assets/js/main.js}"></script>
-<<<<<<< HEAD
 <script th:src="@{/assets/js/employee/Employee.js}"></script>
-=======
-
-
-
-
-
-
-<script th:src="@{/assets/js/employee/Employee.js}"></script>
+<script th:src="@{/assets/js/voucher/voucher.js}"></script>
 <script th:src="@{/assets/js/product/product-list.js}"></script>
 <script th:src="@{/assets/js/product/category-list.js}"></script>
 <script th:src="@{/assets/js/product/material.js}"></script>
@@ -1083,10 +1081,24 @@
 
 <!--<script th:src="@{/assets/js/product/product-form.js}"></script>-->
 
+<script th:src="@{/assets/js/account.js}"></script>
 <script th:src="@{/assets/js/customer.js}"></script>
 <script th:src="@{/assets/js/address.js}"></script>
 <script th:src="@{/assets/js/favorite.js}"></script>
 <script th:src="@{/assets/js/rating.js}"></script>
+<script th:src="@{/assets/js/role.js}"></script>
+<script th:src="@{/assets/js/myprofile/myprofile.js}"></script>
+
+<!-- Address -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.2.0/exceljs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/big.js@5.2.2"></script>
+
+<!-- Bills -->
+<script th:src="@{/assets/js/bill/bill.js}"></script>
+
+
 </body>
 
 </html>

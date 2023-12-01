@@ -16,24 +16,10 @@ public class ProductController {
         return "admin/products/product/product-list";
     }
 
-    @GetMapping("/tp1")
+
+    @GetMapping("/testp")
     public String product1(){
         return "admin/products/product/product-form";
-    }
-
-    @GetMapping("/tp2")
-    public String product2(){
-        return "admin/products/product/product-test";
-    }
-
-    @GetMapping("/tp3")
-    public String product3(){
-        return "admin/products/product/proform";
-    }
-
-    @GetMapping("/tp4")
-    public String product4(){
-        return "admin/products/product/product";
     }
 
     @GetMapping("/category")

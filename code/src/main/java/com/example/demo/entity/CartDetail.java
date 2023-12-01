@@ -19,20 +19,20 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "Quantity", nullable = false)
+    @Column(name = "Quantity")
     private int quantity;
 
-    @Column(name = "Price", nullable = false)
+    @Column(name = "Price")
     private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name = "IdCart", nullable = false)
+    @JoinColumn(name = "IdCart")
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "IdProductDetail", nullable = false)
+    @JoinColumn(name = "IdProductDetail")
     private ProductDetail productDetail;
 
-    @Column(name = "Status", nullable = false)
+    @Column(name = "Status")
     private int status;
 }

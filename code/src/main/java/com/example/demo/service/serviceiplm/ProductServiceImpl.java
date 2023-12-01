@@ -57,8 +57,8 @@ public class ProductServiceImpl implements ProductService {
             product.setWrist(productReq.getWrist());
             product.setDescribe(productReq.getDescribe());
             product.setBrand(productReq.getBrand());
-            product.setUpdatedAt(new Date());
-            product.setUpdatedBy("admin");
+            product.setUpdatedAt(productReq.getUpdatedAt());
+            product.setUpdatedBy(productReq.getUpdatedBy());
             product.setStatus(productReq.getStatus());
 
             return productRepository.save(product);

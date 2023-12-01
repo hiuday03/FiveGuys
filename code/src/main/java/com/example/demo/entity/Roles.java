@@ -20,7 +20,7 @@ public class Roles {
     private Long id;
 
     @Column(name="FullName")
-    private RoleName fullName;
+    private String fullName;
 
     @Column(name= "CreatedAt")
     private Date createdAt;

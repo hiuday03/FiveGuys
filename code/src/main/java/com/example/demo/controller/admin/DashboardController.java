@@ -12,6 +12,11 @@ public class DashboardController {
         return "/admin/index";
     }
 
+    @GetMapping("/myprofile")
+    public String viewMyProfile() {
+        return "/admin/myprofile";
+    }
+
     @GetMapping("/products/colors")
     public String viewColors() {
         return "/admin/products/colors";
@@ -35,6 +40,21 @@ public class DashboardController {
     @GetMapping("/account/rating")
     public String ViewRating() {
         return "/admin/account/rating";
+    }
+
+    @GetMapping("/account/account")
+    public String ViewAccount() {
+        return "/admin/account/account";
+    }
+
+    @GetMapping("/account/role")
+    public String ViewRole() {
+        return "/admin/account/role";
+    }
+
+    @GetMapping("/bill")
+    public String ViewBill() {
+        return "/admin/bill/bill";
     }
 
     @GetMapping("/sell-quicly")
