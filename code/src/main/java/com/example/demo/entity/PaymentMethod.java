@@ -29,7 +29,7 @@ public class PaymentMethod {
     private Date updatedAt;
 
     @Column(name = "paymentType")
-    private int paymentType;
+    private Integer paymentType;
 
     @Column(name = "Status")
     private int status;
