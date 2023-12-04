@@ -129,9 +129,8 @@
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.status"  ng-required="true">
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formCreateRating.$submitted">
                                             <div ng-show="formCreateRating.status.$invalid"
@@ -255,9 +254,8 @@
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.status"  ng-required="true">
-                                            <option ng-value="1">One</option>
-                                            <option ng-value="2">Two</option>
-                                            <option ng-value="3">Three</option>
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formUpdateRating.$submitted">
                                             <div ng-show="formUpdateRating.status.$invalid"
@@ -307,7 +305,7 @@
                                 <!-- <td>{{rating.productDetail.image.name}}</td> -->
                                 <td>{{rating.createdAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{rating.updatedAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{rating.status}}</td>
+                                <td>{{rating.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
                                 <td>
                                     <button ng-click="edit(rating)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i

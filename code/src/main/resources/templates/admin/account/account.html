@@ -120,9 +120,8 @@
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.status" required>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            <option value="1">Đang hoạt động</option>
+                                            <option value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formCreateAccount.$submitted">
                                             <div ng-show="formCreateAccount.status.$invalid"
@@ -235,9 +234,8 @@
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.status">
-                                            <option ng-value="1">One</option>
-                                            <option ng-value="2">Two</option>
-                                            <option ng-value="3">Three</option>
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formUpdateAccount.$submitted">
                                             <div ng-show="formUpdateAccount.status.$invalid"
@@ -280,7 +278,7 @@
                                 <td>{{account.phoneNumber}}</td>
                                 <td>{{account.email}}</td>
                                 <td>{{account.role.fullName}}</td>
-                                <td>{{account.status}}</td>
+                                <td>{{account.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
                                 <td>
                                     <button ng-click="edit(account)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
