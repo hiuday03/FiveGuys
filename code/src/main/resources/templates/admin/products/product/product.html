@@ -51,7 +51,8 @@
                     </div>
                     <div class="col-6">
                         <!--                        <label class="form-label">Chất liệu</label>-->
-                        <select class="form-select  form-select-sm" ng-model="selectedItem" ng-change="changeStatus(selectedItem)">
+                        <select class="form-select  form-select-sm" ng-model="selectedItem"
+                                ng-change="changeStatus(selectedItem)">
                             <option selected value="">Tất cả</option>
                             <option value="0">Đang bán</option>
                             <option value="1">Ngừng bán</option>
@@ -228,8 +229,8 @@
                     <tr ng-repeat="p in products">
                         <td class="col-1">{{p.code}}</td>
                         <td class="col-3">{{p.name}}</td>
-                        <td class="col-1">{{p.brand}}</td>
-                        <td class="col-2">{{p.category.name}}</td>
+                        <td class="col-2">{{p.brand.name}}</td>
+                        <td class="col-1">{{p.category.name}}</td>
                         <td class="col-2">{{p.material.name}}</td>
                         <td class="col-1" ng-switch="p.status">
                             <span ng-switch-when="0">Đang bán</span>
@@ -244,12 +245,14 @@
                             <a type="button" class="btn btn-info" data-bs-toggle="modal"
                                data-bs-target="#updateStatusProduct-{{p.id}}"
                                ng-click="getProductById(p.id)"><i class="ri-edit-2-line"></i></a>
-                            <div class="modal fade" id="updateStatusProduct-{{p.id}}" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                            <div class="modal fade" id="updateStatusProduct-{{p.id}}" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel2" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel2">Update status</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="row mb-3" ng-init="statusUpdate=p.status">
@@ -266,9 +269,12 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
                                             <button type="button" class="btn btn-primary"
-                                                    ng-click="updateStatusProduct(p.id, statusUpdate)">Save changes</button>
+                                                    ng-click="updateStatusProduct(p.id, statusUpdate)">Save changes
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -438,20 +444,24 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="updateBrand" class="col-sm-3 col-form-label">Brand</label>
+                                    <label class="col-sm-3 col-form-label">Brands</label>
                                     <div class="col-sm-9">
-                                        <input name="code" id="updateBrand" type="text" class="form-control"
-                                               placeholder="Enter brand"
-                                               ng-model="formUpdate.brand" ng-required="true">
+                                        <select class="form-select" id="updateBrand"
+                                                ng-model="formUpdate.brand.id" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option ng-repeat="b in brands" ng-value="{{b.id}}">{{ b.name }}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" id="enableEdit" ng-click="enableEditForm(false, false)">
+                                    <button class="btn btn-primary" id="enableEdit"
+                                            ng-click="enableEditForm(false, false)">
                                         Edit
                                     </button>
                                     <button class="btn btn-secondary" id="cancelEdit" ng-click="cancelEdit()">Cancel
                                     </button>
-                                    <button class="btn btn-primary" id="submitEdit" ng-click="update()">Save change
+                                    <button class="btn btn-primary" id="submitEdit" ng-click="update(formUpdate.id)">
+                                        Save change
                                     </button>
                                 </div>
                             </div>
@@ -495,8 +505,8 @@
                                             <span ng-switch-when="3">Ẩn</span></td>
                                         <td class="col-2">
                                             <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                               data-bs-target="#modalUpdateProductDetail" data-bs-dismiss="modal"
-                                               ng-click="editProductDetail(pd)"><i class="ri-eye-2-fill"></i></a>
+                                               data-bs-target="#modalDetail"
+                                               ng-click="edit(p)"><i class="ri-eye-2-fill"></i></a>
                                             <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                data-bs-target="#modalUpdate"
                                                ng-click="getProductById(p.id)"><i class="ri-edit-2-line"></i></a>
@@ -580,7 +590,7 @@
                                 <div class="col-4 d-flex justify-content-end">
                                     <label for="image1">
                                         <img src="/assets/img/no-img.png" id="image-preview1"
-                                             style="width: 100px; height: 100px;" />
+                                             style="width: 100px; height: 100px;"/>
                                     </label>
                                     <input class="form-control" name="path" style="display: none"
                                            type="file" id="image1" accept="image/*"/>
@@ -588,7 +598,7 @@
                                 <div class="col-4 d-flex justify-content-end">
                                     <label for="image2">
                                         <img src="/assets/img/no-img.png" id="image-preview2"
-                                             style="width: 100px; height: 100px;" />
+                                             style="width: 100px; height: 100px;"/>
                                     </label>
                                     <input class="form-control" name="path" style="display: none"
                                            type="file" id="image2" accept="image/*"/>
@@ -596,10 +606,10 @@
                                 <div class="col-4 d-flex justify-content-end">
                                     <label for="image3">
                                         <img src="/assets/img/no-img.png" id="image-preview3"
-                                             style="width: 100px; height: 100px;" />
+                                             style="width: 100px; height: 100px;"/>
                                     </label>
                                     <input class="form-control" name="path" style="display: none"
-                                           type="file" id="image3" accept="image/*" />
+                                           type="file" id="image3" accept="image/*"/>
                                 </div>
                             </div>
                         </form>
@@ -609,76 +619,8 @@
                                 data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Cancel
                         </button>
                         <button class="btn btn-primary" ng-click="submitProductDetail()"
-                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal add productDetail-->
-        <div class="modal fade" id="modalUpdateProductDetail" tabindex="-1" aria-labelledby="exampleModalLabel3"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel3">Update product detail</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form name="multiStepForm" class="form-validation" role="form" novalidate>
-                            <!--                                <div class="animate-switch" ng-switch-when="stage1">-->
-                            <div class="row">
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Import price</label>
-                                    <div class="col-sm-9">
-                                        <input name="code" type="number" class="form-control"
-                                               placeholder="Enter import price"
-                                               ng-model="formUpdatePd.importPrice" ng-required="true">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Price</label>
-                                    <div class="col-sm-9">
-                                        <input name="code" type="number" class="form-control"
-                                               placeholder="Enter price"
-                                               ng-model="formUpdatePd.price" ng-required="true">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Color</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select" ng-model="formUpdatePd.color.id" required>
-                                            <option selected disabled value="">Choose...</option>
-                                            <option ng-repeat="c in colors" ng-value="{{c.id}}">{{ c.name }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Size</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select" ng-model="formUpdatePd.size.id" required>
-                                            <option selected disabled value="">Choose...</option>
-                                            <option ng-repeat="s in sizes" ng-value="{{s.id}}">{{ s.name }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Quantity</label>
-                                    <div class="col-sm-9">
-                                        <input name="code" type="number" class="form-control"
-                                               placeholder="Enter quantity"
-                                               ng-model="formUpdatePd.quantity" ng-required="true">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" ng-click="cancelEditPd()"
-                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Cancel
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Submit
                         </button>
-                        <button class="btn btn-primary" ng-click="updateProductDetail()"
-                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Submit</button>
                     </div>
                 </div>
             </div>
@@ -739,11 +681,12 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Brand</label>
+                                <label class="col-sm-3 col-form-label">Brands</label>
                                 <div class="col-sm-9">
-                                    <input name="code" type="text" class="form-control"
-                                           placeholder="Enter brand"
-                                           ng-model="formInput.brand" ng-required="true">
+                                    <select class="form-select" ng-model="formInput.brand.id" required>
+                                        <option selected disabled value="">Choose...</option>
+                                        <option ng-repeat="b in brands" value="{{b.id}}">{{ b.name }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </form>
@@ -801,7 +744,7 @@
                         <button class="btn btn-info" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
                                 data-bs-dismiss="modal">Back
                         </button>
-                        <button class="btn btn-success"  data-bs-toggle="modal"
+                        <button class="btn btn-success" data-bs-toggle="modal"
                                 data-bs-dismiss="modal" ng-click="create()">Submit
                         </button>
                     </div>

@@ -104,6 +104,7 @@ app.controller("abcd", function ($scope, $http, $timeout) {
 
     const apiUrlCategory = "http://localhost:8080/api/category"
     const apiUrlMaterial = "http://localhost:8080/api/material"
+    const apiUrlBrand = "http://localhost:8080/api/category/brands"
 
     $scope.getSelectOption = function () {
         $http.get(apiUrlCategory)
@@ -115,6 +116,11 @@ app.controller("abcd", function ($scope, $http, $timeout) {
             .then(function (response) {
                 console.log(response)
                 $scope.materials = response.data;
+            });
+        $http.get(apiUrlBrand)
+            .then(function (response) {
+                console.log(response)
+                $scope.brands = response.data;
             });
     }
     $scope.getSelectOption();
@@ -219,11 +225,12 @@ app.controller("abcd", function ($scope, $http, $timeout) {
 
     $scope.edit = function (product) {
         $scope.formUpdate = angular.copy(product);
+        console.log($scope.formUpdate)
         // editor2.setHTMLCode($scope.formUpdate.describe);
 
         $http.get(apiUrlProduct + "/" + product.id + "/productDetail")
             .then(function (response) {
-                console.log(response)
+                console.log("proDetail" + response)
                 $scope.productDetails = response.data.content
             });
     }
@@ -249,18 +256,19 @@ app.controller("abcd", function ($scope, $http, $timeout) {
         document.getElementById("updateName").readOnly = bool;
         document.getElementById("updateCollar").readOnly = bool;
         document.getElementById("updateWrist").readOnly = bool;
-        document.getElementById("updateBrand").readOnly = bool;
         document.getElementById("updateCategory").disabled = bool;
         document.getElementById("updateMaterial").disabled = bool;
+        document.getElementById("updateBrand").disabled = bool;
 
         $scope.showButton(bool1);
     }
     $scope.enableEditForm(true, true);
 
 
-    $scope.update = function () {
+    $scope.update = function (productId) {
         let item = angular.copy($scope.formUpdate);
-        $http.put(`${apiUrlProduct}/${item.id}`, item).then(resp => {
+        console.log("cc" + item.category)
+        $http.put(`${apiUrlProduct}/` + productId, item).then(resp => {
             $scope.enableEditForm(true, true);
             alert("Update product successfully!")
             $scope.initialize();
@@ -355,18 +363,6 @@ app.controller("abcd", function ($scope, $http, $timeout) {
         }
     }
 
-    $scope.formInputPd = {
-        product: {
-            id: null
-        }
-    }
-
-    $scope.formUpdatePd = {
-        product: {
-            id: null
-        }
-    }
-
 
     const apiUrlProductDetail = "http://localhost:8080/api/productDetail"
     const apiImage = "http://localhost:8080/api/image"
@@ -451,43 +447,6 @@ app.controller("abcd", function ($scope, $http, $timeout) {
         $http.post(apiUrlProductDetail, item).then(resp => {
             // alert("Create product detail successfully!")
 
-            console.log("pd")
-            $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
-                .then(function (response) {
-                    console.log("pd" + response)
-                    $scope.productDetails = response.data.content
-                });
-            if (!alert("Create product detail successfully!")) {
-                //     var idModal1 = "modalProductDetail"
-                //     var myModal1 = bootstrap.Modal.getOrCreateInstance(document.getElementById(idModal1));
-                //     myModal1.hide();
-                // }
-
-                $scope.formInputPd = {}
-                $scope.resetFormInput();
-            }
-        }).catch(error => {
-            console.log("Error", error);
-        })
-    }
-
-    $scope.editProductDetail = function (productDetail) {
-        $scope.formUpdatePd = angular.copy(productDetail);
-        // editor2.setHTMLCode($scope.formUpdate.describe);
-
-        // $http.get(apiUrlProduct + "/" + product.id + "/productDetail")
-        //     .then(function (response) {
-        //         console.log(response)
-        //         $scope.productDetails = response.data.content
-        //     });
-    }
-
-    $scope.updateProductDetail = function (){
-        $scope.formUpdatePd.product.id = $scope.formUpdate.id
-        let item = angular.copy($scope.formInputPd);
-        // item.product.id = $scope.formUpdate.id
-        $http.put(apiUrlProductDetail + "/" + $scope.formUpdatePd.id, item).then(resp => {
-            // alert("Create product detail successfully!")
             console.log("pd")
             $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
                 .then(function (response) {

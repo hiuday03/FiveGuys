@@ -43,12 +43,14 @@ public class ProductRestController {
 
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody Product productReq){
+        System.out.println(productReq);
         Product product = productService.save(productReq);
         return ResponseEntity.ok(product);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Product productReq, @PathVariable("id") Long id){
+        System.out.println(productReq);
         Product product = productService.update(productReq, id);
         return ResponseEntity.ok(product);
     }
