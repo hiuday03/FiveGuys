@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -23,7 +25,7 @@ public interface StatisticalRepository extends JpaRepository<Bill, Long> {
     @Query("SELECT b from CustomerEntity b where YEAR(b.createdAt)  = :year")
     List<CustomerEntity> ListCustumerYear(Integer year);
 
-    //Tổng customes trong 1 nam
-//    @Query("select b from Bill b where YEAR(b.customerEntity.id)  = Year(CURRENT_DATE())")
-//    List<Bill> listCodeDay();
+    //Tổng số khách hàng trong 1 nam
+    @Query("SELECT COUNT(b.id) as hihi from CustomerEntity b where Day(b.createdAt)  = :day")
+    Long ListCustumerDay(Integer day);
 }

@@ -172,9 +172,8 @@
                                 <div class="col-sm-9">
                                     <select name="status" class="form-select form-select-sm"
                                             aria-label="Small select example" ng-model="formInput.status" required>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        <option ng-value="1">Đang hoạt động</option>
+                                        <option ng-value="2">Ngừng hoạt động</option>
                                     </select>
                                     <span ng-show="formCreateAddress.$submitted">
                                             <div ng-show="formCreateAddress.status.$invalid"
@@ -339,9 +338,8 @@
                                 <div class="col-sm-9">
                                     <select name="status" class="form-select form-select-sm"
                                             aria-label="Small select example" ng-model="formUpdate.status">
-                                        <option ng-value="1">One</option>
-                                        <option ng-value="2">Two</option>
-                                        <option ng-value="3">Three</option>
+                                        <option ng-value="1">Đang hoạt động</option>
+                                        <option ng-value="2">Ngừng hoạt động</option>
                                     </select>
                                     <span ng-show="formUpdateAddress.$submitted">
                                             <div ng-show="formUpdateAddress.status.$invalid"
@@ -390,7 +388,7 @@
                         <td>{{address.customer.fullName}}</td>
                         <td>{{address.createdAt | date:'yyyy-MM-dd'}}</td>
                         <td>{{address.updatedAt | date:'yyyy-MM-dd'}}</td>
-                        <td>{{address.status}}</td>
+                        <td>{{address.status ==1 ?'Đang hoạt động' : 'Ngừng hoạt động'}}</td>
                         <td>
                             <button ng-click="edit(address)" type="button" class="btn btn-info"
                                     data-bs-toggle="modal" data-bs-target="#modalUpdate"><i

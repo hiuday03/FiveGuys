@@ -4,9 +4,9 @@ import com.example.demo.entity.Bill;
 import com.example.demo.repository.BillRepository;
 import com.example.demo.repository.StatisticalRepository;
 import com.example.demo.service.StatisticalService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -54,10 +54,20 @@ public class StatisticalServiceIpm implements StatisticalService {
         return listBill1;
     }
     @Override
-    public Integer listCustomerList(){
+    public Integer listCustomerYear(){
         LocalDate localDate = LocalDate.now();
         int namHienTai = localDate.getYear();
         int listBill1 = statisticalRepository.ListCustumerYear(namHienTai).size();
+        return listBill1;
+    }
+
+    @Override
+    public Long listCustomerDay(Integer ngayHienTai){
+        LocalDate localDate = LocalDate.now();
+//        Integer ngayHienTai = null;
+        int thangHienTai = localDate.getMonthValue();
+        int namHienTai = localDate.getYear();
+        Long listBill1 = statisticalRepository.ListCustumerDay(ngayHienTai);
         return listBill1;
     }
     @Override

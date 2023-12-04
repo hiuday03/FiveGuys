@@ -17,5 +17,7 @@ public interface StatisticalService {
 
     List<Bill> getAllList();
 
-    Integer listCustomerList();
+    Integer listCustomerYear();
+
+    Long listCustomerDay(Integer ngayHienTai);
 }

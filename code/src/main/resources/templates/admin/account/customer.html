@@ -230,9 +230,8 @@
                                         <div class="col-sm-9">
                                             <select name="status" class="form-select form-select-sm"
                                                 aria-label="Small select example" ng-model="formInput.status" required>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                                <option value="1">Đang hoạt động</option>
+                                                <option value="2">Ngừng hoat động</option>
                                             </select>
                                             <span ng-show="formCreateCustomer.$submitted">
                                                 <div ng-show="formCreateCustomer.status.$invalid"
@@ -459,9 +458,8 @@
                                         <div class="col-sm-9">
                                             <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                                 ng-model="formUpdate.status">
-                                                <option ng-value="1">One</option>
-                                                <option ng-value="2">Two</option>
-                                                <option ng-value="3">Three</option>
+                                                <option ng-value="1">Đang hoạt động</option>
+                                                <option ng-value="2">Ngừng hoạt động</option>
                                             </select>
                                             <span ng-show="formUpdateCustomer.$submitted">
                                                 <div ng-show="formUpdateCustomer.status.$invalid"
@@ -527,7 +525,7 @@
                                 <td>{{customer.updatedAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{customer.createdBy}}</td>
                                 <td>{{customer.updatedBy}}</td>
-                                <td>{{customer.status}}</td>
+                                <td>{{customer.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
                                 <td>
                                     <button ng-click="edit(customer)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i

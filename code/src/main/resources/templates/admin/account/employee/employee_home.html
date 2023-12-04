@@ -103,7 +103,7 @@
                                     <div class="col-sm-9">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="gender" id="gender1"
-                                                   value="true" ng-model="formInput.gender" ng-checked='true'>Nam
+                                                   value="true" ng-model="formInput.gender">Nam
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="gender" id="gender2"
@@ -180,8 +180,8 @@
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm"
                                                 aria-label="Small select example" ng-model="formInput.status" required>
-                                            <option value="1">Đang Làm</option>
-                                            <option value="2">Nghỉ Làm</option>
+                                            <option value="1">Đang hoạt động</option>
+                                            <option value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formCreateEmployee.$submitted">
                                                 <div ng-show="formCreateEmployee.status.$invalid"
@@ -365,9 +365,9 @@
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm"
                                                 aria-label="Small select example" ng-model="formUpdate.status">
-                                            <option ng-value="1">One</option>
-                                            <option ng-value="2">Two</option>
-                                            <option ng-value="3">Three</option>
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
+
                                         </select>
                                         <span ng-show="formUpdateEmployee.$submitted">
                                                 <div ng-show="formUpdateEmployee.status.$invalid"
@@ -395,9 +395,9 @@
                 <table class="table">
                     <thead>
                     <tr>
+                        <th scope="col">Avatar</th>
                         <th scope="col">Code</th>
                         <th scope="col">Full Name</th>
-                        <th scope="col">Avatar</th>
                         <th scope="col">Birth Date</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Address</th>
@@ -412,18 +412,18 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="employee in paper.items">
+                        <td><img src="{{employee.avatar}}" alt="" height="50px" width="50px"></td>
                         <td>{{employee.code}}</td>
                         <td>{{employee.fullName}}</td>
-                        <td><img src="{{employee.avatar}}" alt="" height="50px" width="50px"></td>
                         <td>{{employee.birthDate | date:'yyyy-MM-dd'}}</td>
-                        <td>{{employee.gender}}</td>
+                        <td>{{employee.gender = true ? 'Nam' : 'Nữ'}}</td>
                         <td>{{employee.address}}</td>
                         <td>{{employee.account.account}}</td>
                         <td>{{employee.createdAt | date:'yyyy-MM-dd'}}</td>
                         <td>{{employee.updatedAt | date:'yyyy-MM-dd'}}</td>
                         <td>{{employee.createdBy}}</td>
                         <td>{{employee.updatedBy}}</td>
-                        <td>{{employee.status}}</td>
+                        <td>{{employee.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
                         <td>
                             <button ng-click="edit(employee)" type="button" class="btn btn-info"
                                     data-bs-toggle="modal" data-bs-target="#modalUpdate"><i

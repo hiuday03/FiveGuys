@@ -7,6 +7,7 @@ import com.example.demo.service.StatisticalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,7 +52,11 @@ public class StatisticalRestController {
 
     @GetMapping("/list-customer-year")
     public Integer ListCustumerYear() {
-        return statisticalService.listCustomerList();
+        return statisticalService.listCustomerYear();
+    }
+    @GetMapping("/list-customer-day/{sl}")
+    public Long ListCustumerDay(@PathVariable Integer sl) {
+        return statisticalService.listCustomerDay(sl);
     }
 
 }
