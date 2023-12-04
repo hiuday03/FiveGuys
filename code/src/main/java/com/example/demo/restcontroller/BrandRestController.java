@@ -42,12 +42,12 @@ public class BrandRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Brands> updateBrand(@RequestBody Brands brands, @PathVariable Long id) {
-        Brands brand = brandService.update(brands, id);
-        if (brand != null) {
-            return ResponseEntity.ok(brand);
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> updateBrand(@RequestBody Brands brands, @PathVariable Long id) {
+        try {
+            Brands updatedBrand = brandService.update(brands, id);
+            return ResponseEntity.ok(updatedBrand);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

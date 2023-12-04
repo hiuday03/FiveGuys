@@ -56,6 +56,18 @@ app_brand.controller("brand-ctrl", function ($scope, $http, $timeout) {
     }
 
 
+    // $scope.create = function () {
+    //     let item = angular.copy($scope.formInput);
+    //     item.createdAt = $scope.currentDate;
+    //     $http.post("/brand", item).then(function (resp) {
+    //         $scope.showSuccessMessage("Create brand successfully");
+    //         $scope.resetFormInput();
+    //         $scope.initialize();
+    //         $('#modalAdd').modal('hide');
+    //     }).catch(function (error) {
+    //         console.log("Error", error);
+    //     });
+    // }
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
@@ -65,9 +77,14 @@ app_brand.controller("brand-ctrl", function ($scope, $http, $timeout) {
             $scope.initialize();
             $('#modalAdd').modal('hide');
         }).catch(function (error) {
-            console.log("Error", error);
+            if (error.status === 400 && error.data === 'Name already exists') {
+                $scope.nameExists = true;
+            } else {
+                console.log("Error", error);
+            }
         });
-    }
+    };
+    
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
@@ -79,7 +96,11 @@ app_brand.controller("brand-ctrl", function ($scope, $http, $timeout) {
             $scope.initialize();
             $('#modalUpdate').modal('hide');
         }).catch(function (error) {
-            console.log("Error", error);
+            if (error.status === 400 && error.data === 'Name already exists') {
+                $scope.nameExists = true;
+            } else {
+                console.log("Error", error);
+            }
         });
     }
 
