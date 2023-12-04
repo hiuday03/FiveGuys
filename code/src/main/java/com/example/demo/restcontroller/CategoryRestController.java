@@ -1,5 +1,6 @@
 package com.example.demo.restcontroller;
 
+import com.example.demo.entity.Brands;
 import com.example.demo.entity.Category;
 import com.example.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,12 @@ public class CategoryRestController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id){
         categoryService.delete(id);
+    }
+
+    @GetMapping("/brands")
+    public ResponseEntity<?> getAllBrand(){
+        System.out.println("brands");
+        List<Brands> brands = categoryService.getAllBrand();
+        return ResponseEntity.ok(brands);
     }
 }
