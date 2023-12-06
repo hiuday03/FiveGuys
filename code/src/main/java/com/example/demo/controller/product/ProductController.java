@@ -19,7 +19,7 @@ public class ProductController {
 
     @GetMapping("/testp")
     public String product1(){
-        return "admin/products/product/product-form";
+        return "admin/products/product/product";
     }
 
     @GetMapping("/category")

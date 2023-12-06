@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pay-method")
-public class PaymethodController {
+public class OfPaymethodController {
     @Autowired
     private OfPayMethodServiceImpl payMethodService;
     @GetMapping()

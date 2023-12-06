@@ -64,10 +64,9 @@ public class Product {
     @JoinColumn(name = "IdMaterial")
     private Material material;
 
-
-
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> productDetails;
+
 
 }
