@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://127.0.0.1:5501")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/ol")
 public class HomeRestController {

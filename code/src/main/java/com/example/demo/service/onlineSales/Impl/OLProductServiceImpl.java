@@ -314,5 +314,30 @@ public class OLProductServiceImpl implements OLProductService {
         return homeProductResponses;
     }
 
+//
+//    @Override
+//    public List<OlHomeProductResponse> findAllProductsOrderedByTotalQuantitySold() {
+//        List<OlHomeProductResponse> responses = new ArrayList<>();
+//        List<Product> products = olProductRepository.findAllProductsOrderedByTotalQuantitySold();
+//        for (Product product : products) {
+//
+//            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product),getTotalQuantitySold(product),getAverageRateSold(product));
+//            responses.add(response);
+//        }
+//        return responses;
+//    }
+//
+//    @Override
+//    public List<OlHomeProductResponse> findProductsOrderedByCreatedAt() {
+//        List<OlHomeProductResponse> responses = new ArrayList<>();
+//        List<Product> products = olProductRepository.findProductsOrderedByCreatedAt();
+//        for (Product product : products) {
+//            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product),getTotalQuantitySold(product),getAverageRateSold(product));
+//            responses.add(response);
+//        }
+//        return responses;
+//    }
+
+
 
 }

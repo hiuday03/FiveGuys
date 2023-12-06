@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.payment.vnpay.config.Config;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5501")
+@CrossOrigin("*")
 @RequestMapping("/api/payment")
 public class VNPayRestController {
 
