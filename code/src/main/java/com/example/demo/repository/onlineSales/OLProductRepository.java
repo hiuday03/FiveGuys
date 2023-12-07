@@ -120,4 +120,7 @@ public interface OLProductRepository extends JpaRepository<Product, Long> {
             "OR c.name LIKE %:keyword% OR m.name LIKE %:keyword%")
     List<Product> findByKeyword(String keyword);
 
+//    List<Product> findAllProductsOrderedByTotalQuantitySold();
+//
+//    List<Product> findProductsOrderedByCreatedAt();
 }

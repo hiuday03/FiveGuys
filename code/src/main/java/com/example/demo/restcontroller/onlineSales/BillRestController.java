@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.*;
 
-@CrossOrigin(origins = "http://127.0.0.1:5501")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/ol")
 public class BillRestController {
