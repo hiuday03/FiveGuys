@@ -21,10 +21,9 @@
                 data-bs-target="#modalAdd">
             Create Voucher
         </button>
-        <div>
+
             <label>Add bằng Excel</label>
             <input type="file" onchange="angular.element(this).scope().insertExcelVoucher(this.files)" placeholder="Chọn file">
-        </div>
 
         <div class=" alert border-success fade show" role="alert" ng-show="showAlert">
             {{alertMessage}}
@@ -41,6 +40,7 @@
             <table class="table" style="font-size: 13px;">
                 <thead>
                 <tr>
+                    <th>STT</th>
                     <th scope="">Code</th>
                     <th scope="">Name</th>
                     <th scope="">ValueType</th>
@@ -52,6 +52,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="l in paper.items | filter: searchVoucher">
+                    <td>{{$index + ((paper.page) * paper.size) +1}}</td>
                     <td class="col-1">{{l.code}}</td>
                     <td class="col-2">{{l.name}}</td>
                     <td class="col-2">{{l.valueType == 0 ? "Giam theo gia tien" : "Giam theo %"}}</td>
@@ -375,110 +376,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <!--                                    <form>-->
-                        <!--                                        <div class="row">-->
-                        <!--                                            <div class="col-6">-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">Code</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="code" ng-model="formShow.code" class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">Name</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="name" ng-model="formShow.name" type="text" class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">Value</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="value" ng-model="formShow.value" type="text" class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">Minimum</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="minimumTotalAmount" ng-model="formShow.minimumTotalAmount" type="number"-->
-                        <!--                                                               class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">StartDate</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="startDate" type="text" class="form-control"-->
-                        <!--                                                               ng-model="formShow.startDate"-->
-                        <!--                                                               ng-value="formShow.startDate | date:'yyyy-MM-dd'" disabled></div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">EndDate</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="endDate" type="text" class="form-control"-->
-                        <!--                                                               ng-model="formShow.endDate"-->
-                        <!--                                                               ng-value="formShow.endDate | date:'yyyy-MM-dd'" disabled></div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">Quantity</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input type="text" name="quantity"  class="form-control"-->
-                        <!--                                                                ng-model="formShow.quantity" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                            </div>-->
-                        <!--                                            <div class="col-6">-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">Describe</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="describe" ng-model="formShow.describe"-->
-                        <!--                                                               type="text"-->
-                        <!--                                                               class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">CreatedAt</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="createdAt" ng-model="formShow.createdAt" type="text"-->
-                        <!--                                                               class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">UpdatedAt</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="updatedAt" ng-model="formShow.updatedAt" type="text"-->
-                        <!--                                                               class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">CreatedBy</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="createdBy" ng-model="formShow.createdBy" type="text"-->
-                        <!--                                                               class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">UpdatedBy</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="updatedBy" ng-model="formShow.updatedBy" type="text"-->
-                        <!--                                                               class="form-control" disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                                <div class="row mb-3">-->
-                        <!--                                                    <label class="col-sm-3 col-form-label">Status</label>-->
-                        <!--                                                    <div class="col-sm-9">-->
-                        <!--                                                        <input name="status"  class="form-select form-select-sm"-->
-                        <!--                                                               aria-label="Small select example"-->
-                        <!--                                                               ng-model="formShow.status == 1 ? 'Đang làm' : 'Nghỉ làm' " disabled>-->
-                        <!--                                                    </div>-->
-                        <!--                                                </div>-->
-                        <!--                                            </div>-->
 
-                        <!--                                            <div class="modal-footer">-->
-                        <!--                                                <button type="button" class="btn btn-secondary"-->
-                        <!--                                                        data-bs-dismiss="modal">Close-->
-                        <!--                                                </button>-->
-                        <!--                                            </div>-->
-                        <!--                                        </div>-->
-                        <!--                                    </form>-->
                     </div>
                 </div>
             </div>
