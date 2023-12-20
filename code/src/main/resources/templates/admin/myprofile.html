@@ -12,11 +12,11 @@
 <body>
     <main id="main" class="main" layout:fragment="content">
         <div class="pagetitle">
-            <h1>My Profile</h1>
+            <h1>Thông Tin Cá Nhân</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                    <li class="breadcrumb-item active">My Profile</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                    <li class="breadcrumb-item active">Thông Tin Cá Nhân</li>
                 </ol>
             </nav>
         </div>
@@ -25,14 +25,14 @@
             <div class="row">
                 <div class="col-lg-4">
                     <!-- <h1 style="color: aquamarine;">image</h1> -->
-                    <h3>Code: {{employee.code}}</h3>
+                    <h3>Mã: {{employee.code}}</h3>
                     <img src="https://www.clipartmax.com/png/small/214-2143742_individuals-whatsapp-profile-picture-icon.png" alt="" width="300px" height="300px" style="border-radius: 50%;">
-                    <h2>My Name: {{employee.fullName}}</h2>
-                    <h3>birthDate: {{employee.birthDate}}</h3>
-                    <h3>Gender: {{employee.gender}}</h3>
-                    <h3>Address: {{employee.address}}</h3>
+                    <h2>Họ Tên: {{employee.fullName}}</h2>
+                    <h3>Ngày Sinh: {{employee.birthDate}}</h3>
+                    <h3>Giới Tính: {{employee.gender}}</h3>
+                    <h3>Địa Chỉ: {{employee.address}}</h3>
                     <h3>Email: {{employee.account.email}}</h3>
-                    <h3>phoneNumber: {{employee.account.phoneNumber}}</h3>
+                    <h3>Số Điện Thoại: {{employee.account.phoneNumber}}</h3>
                 </div>
                 <div class="col-lg-8">
                     <div>
@@ -41,55 +41,54 @@
                             <ul class="nav">
                                 <li class="nav-item editmyprofile">
                                     <a class="nav-link collapsed" style="color: darkgrey;" href="javascript:void(0);"
-                                        onclick="showForm('editprofile');">Edit My Profile</a>
+                                        onclick="showForm('editprofile');">Sửa Thông Tin</a>
                                 </li>
                                 <li class="nav-item editmyaccount">
                                     <a class="nav-link collapsed" style="color: darkgrey;" href="javascript:void(0);"
-                                        onclick="showForm('editaccount');">Edit My Account</a>
+                                        onclick="showForm('editaccount');">Sửa Tài Khoản</a>
                                 </li>
                                 <li class="nav-item editmyaccount">
                                     <a class="nav-link collapsed" style="color: darkgrey;" href="javascript:void(0);"
-                                        onclick="showForm('editpass');">Edit My Password</a>
+                                        onclick="showForm('editpass');">Sửa Mật Khẩu</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="row">
                             <div class="editprofile">
-                                <h3>Edit My Profile</h3>
+                                <h3>Sửa Thong Tin</h3>
                                 <form>
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Tên</label>
                                         <input type="text" class="form-control" id="name" placeholder="Enter your name">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="birthdate">Birth Date</label>
+                                        <label for="birthdate">Ngày Sinh</label>
                                         <input type="date" class="form-control" id="birthdate">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="gender">Gender</label>
+                                        <label for="gender">Giới Tính</label>
                                         <select class="form-control" id="gender">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
+                                            <option value="true">Nam</option>
+                                            <option value="false">Nữ</option>
                                         </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="address">Address</label>
+                                        <label for="address">Địa Chỉ</label>
                                         <input type="text" class="form-control" id="address"
                                             placeholder="Enter your address">
                                     </div>
 
-                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Save
-                                        Changes</button>
+                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Cập nhập</button>
                                 </form>
                             </div>
                             <div class="editaccount">
-                                <h3>Edit My Account</h1>
+                                <h3>Sửa Tài Khoản</h1>
                                 <form>
                                     <div class="form-group">
-                                        <label for="account">Account</label>
+                                        <label for="account">Tài Khoản</label>
                                         <input type="text" class="form-control" id="account"
                                             placeholder="Enter your account" readonly>
                                     </div>
@@ -107,40 +106,38 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="phoneNumber">Phone Number</label>
+                                        <label for="phoneNumber">Số Điện Thoại</label>
                                         <input type="phoneNumber" class="form-control" id="phoneNumber"
                                             placeholder="Enter your phoneNumber">
                                     </div>
 
-                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Save
-                                        Changes</button>
+                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Cập Nhập</button>
                                 </form>
                             </div>
                             <div class="editpass">
-                                <h3>Change Password</h3>
+                                <h3>Sửa Mật Khẩu</h3>
                                 <form>
 
                                     <div class="form-group">
-                                        <label>Old Password </label>
+                                        <label>Mật Khẩu Cũ</label>
                                         <input type="password" class="form-control" 
                                             placeholder="Enter your password">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="password">New Password</label>
+                                        <label for="password">Mật Khẩu Mới</label>
                                         <input type="password" class="form-control" id="password"
                                             placeholder="Enter your password">
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Confirm Password</label>
+                                        <label>Xác Nhận Mật Khẩu</label>
                                         <input type="password" class="form-control" 
                                             placeholder="Enter your password">
                                     </div>
 
 
-                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Save
-                                        Changes</button>
+                                    <button type="submit" style="margin: 10px;" class="btn btn-outline-secondary">Cập Nhập</button>
                                 </form>
                             </div>
                         </div>

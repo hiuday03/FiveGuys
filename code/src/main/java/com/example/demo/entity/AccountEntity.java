@@ -33,6 +33,12 @@ public class AccountEntity {
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
+    @Column(name = "IsActive")
+    private boolean isActive;
+
+    @Column(name = "ConfirmationCode")
+    private String confirmationCode;
+
     @ManyToOne
     @JoinColumn(name = "IdRole")
     private Roles role;
