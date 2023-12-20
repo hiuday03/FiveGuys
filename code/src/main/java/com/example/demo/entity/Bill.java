@@ -71,11 +71,17 @@ public class Bill {
     @JoinColumn(name = "IdVoucher")
     private Vouchers voucher;
 
+<<<<<<< HEAD
     @Column(name = "typeBill")
     private int typeBill;
 
     @Column(name = "PaymentStatus")
     private int paymentStatus;
+=======
+//    @ManyToOne
+//    @JoinColumn(name = "IdCard")
+//    private Cards card;
+>>>>>>> origin/HieuGV
 
     @Column(name = "Status")
     private int status;

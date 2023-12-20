@@ -16,12 +16,12 @@
             </div>
         </div>
         <div class="pagetitle">
-            <h1>Customer</h1>
+            <h1>Khách Hàng</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                    <li class="breadcrumb-item">Account</li>
-                    <li class="breadcrumb-item active">Customer</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                    <li class="breadcrumb-item">Tài Khoản</li>
+                    <li class="breadcrumb-item active">Khách Hàng</li>
                 </ol>
             </nav>
             <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Customers..."
@@ -31,7 +31,7 @@
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-                Create Customer</button>
+                Thêm Khách Hàng</button>
                 <button type="button" class="btn btn-outline-success mb-2" ng-click="xuatFile()">
                     Xuất File</button>
             <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
@@ -43,7 +43,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Customer</h5>
+                            <h5 class="modal-title">Thêm Khách Hàng</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body row">
@@ -58,19 +58,19 @@
                                 <form name="formCreateCustomer" ng-submit="formCreateCustomer.$valid && create()"
                                     novalidate>
                                     <div class="row mb-3">
-                                        <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
+                                        <label for="inputFullName" class="col-sm-3 col-form-label">Họ Tên</label>
                                         <div class="col-sm-9">
                                             <input name="fullName" id="inputFullName" type="text" class="form-control"
                                                 ng-model="formInput.fullName" required>
                                             <span ng-show="formCreateCustomer.$submitted">
                                                 <div ng-show="formCreateCustomer.fullName.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    FullName cannot be blank</div>
+                                                    Không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                        <label for="inputAccount" class="col-sm-3 col-form-label">Tài Khoản</label>
                                         <div class="col-sm-9">
                                             <select name="account" class="form-select form-select-sm"
                                                 aria-label="Small select example" ng-model="formInput.account.id"
@@ -81,12 +81,12 @@
                                             <span ng-show="formCreateCustomer.$submitted">
                                                 <div ng-show="formCreateCustomer.account.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    account cannot be blank</div>
+                                                    Không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="image" class="col-sm-3 col-form-label">File Upload</label>
+                                        <label for="image" class="col-sm-3 col-form-label">Hình Ảnh</label>
                                         <div class="col-sm-9">
                                             <input class="form-control" name="path" type="file" id="image" />
                                             <span ng-if="showError" class="error-message text-danger form-text">
@@ -179,7 +179,7 @@
                                     </div>
                                 </div> -->
                                     <div class="row mb-3">
-                                        <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
+                                        <label for="inputCreatedAt" class="col-sm-3 col-form-label">Ngày Tạo</label>
                                         <div class="col-sm-9">
                                             <input name="createdAt" id="inputCreatedAt" type="text"
                                                 class="form-control ng-pristine ng-untouched ng-valid"
@@ -204,14 +204,14 @@
                                     </div>
                                 </div> -->
                                     <div class="row mb-3">
-                                        <label for="inputCreatedBy" class="col-sm-3 col-form-label">CreatedBy</label>
+                                        <label for="inputCreatedBy" class="col-sm-3 col-form-label">Người Tạo</label>
                                         <div class="col-sm-9">
                                             <input name="createdBy" id="inputCreatedBy" type="text" class="form-control"
                                                 ng-model="formInput.createdBy" required>
                                             <span ng-show="formCreateCustomer.$submitted">
                                                 <div ng-show="formCreateCustomer.createdBy.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    CreatedBy cannot be blank</div>
+                                                    Không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
@@ -228,7 +228,7 @@
                                     </div>
                                 </div> -->
                                     <div class="row mb-3">
-                                        <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                        <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                         <div class="col-sm-9">
                                             <select name="status" class="form-select form-select-sm"
                                                 aria-label="Small select example" ng-model="formInput.status" required>
@@ -238,16 +238,16 @@
                                             <span ng-show="formCreateCustomer.$submitted">
                                                 <div ng-show="formCreateCustomer.status.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    Status cannot be blank</div>
+                                                    Không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary">Thêm</button>
                                         <button ng-click="resetFormInput()" type="button"
-                                            class="btn btn-warning">Reset</button>
+                                            class="btn btn-warning">Xoá form</button>
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
+                                            data-bs-dismiss="modal">Đóng</button>
                                     </div>
                                 </form>
                             </div>
@@ -262,7 +262,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Update Customer</h5>
+                            <h5 class="modal-title">Sửa Khách Hàng</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body row">
@@ -285,12 +285,12 @@
                                         <span ng-show="formUpdateCustomer.$submitted">
                                             <div ng-show="formUpdateCustomer.fullName.$invalid"
                                                 class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div> -->
                                     <div class="row mb-3">
-                                        <label for="image-update" class="col-sm-3 col-form-label">File Upload</label>
+                                        <label for="image-update" class="col-sm-3 col-form-label">Hình Ảnh</label>
                                         <div class="col-sm-9">
                                             <input class="form-control" name="path" type="file" id="image-update" />
                                             <span ng-if="showError" class="error-message text-danger form-text">
@@ -420,14 +420,14 @@
                                     </div>
                                 </div> -->
                                     <div class="row mb-3">
-                                        <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
+                                        <label for="inputUpdatedAt" class="col-sm-3 col-form-label">Ngày Sửa</label>
                                         <div class="col-sm-9">
                                             <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
                                             ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                             <span ng-show="formUpdateCustomer.$submitted">
                                                 <div ng-show="formUpdateCustomer.updatedAt.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    UpdatedAt cannot be blank</div>
+                                                    Không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
@@ -444,19 +444,19 @@
                                     </div>
                                 </div> -->
                                     <div class="row mb-3">
-                                        <label for="inputUpdatedBy" class="col-sm-3 col-form-label">UpdatedBy</label>
+                                        <label for="inputUpdatedBy" class="col-sm-3 col-form-label">Người Sửa</label>
                                         <div class="col-sm-9">
                                             <input name="updatedBy" id="inputUpdatedBy" type="text" class="form-control"
                                                 ng-model="formUpdate.updatedBy" required>
                                             <span ng-show="formUpdateCustomer.$submitted">
                                                 <div ng-show="formUpdateCustomer.updatedBy.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    UpdatedBy cannot be blank</div>
+                                                    Không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                        <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                         <div class="col-sm-9">
                                             <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                                 ng-model="formUpdate.status">
@@ -466,7 +466,7 @@
                                             <span ng-show="formUpdateCustomer.$submitted">
                                                 <div ng-show="formUpdateCustomer.status.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    Status cannot be blank</div>
+                                                    Không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
@@ -482,11 +482,11 @@
                                     </div>
                                 </div> -->
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button type="submit" class="btn btn-primary">Sửa</button>
                                         <button ng-click="resetFormUpdate()" type="button"
-                                            class="btn btn-warning">Reset</button>
+                                            class="btn btn-warning">Xoá form</button>
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
+                                            data-bs-dismiss="modal">Đóng</button>
                                     </div>
                                 </form>
                             </div>
@@ -500,17 +500,17 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Account</th>
-                                <th scope="col">Avatar</th>
+                                <th scope="col">Họ Tên</th>
+                                <th scope="col">Tài Khoản</th>
+                                <!-- <th scope="col">Avatar</th> -->
                                 <!-- <th scope="col">Email</th> -->
                                 <!-- <th scope="col">Birth Date</th> -->
                                 <!-- <th scope="col">Gender</th> -->
-                                <th scope="col">Created At</th>
+                                <!-- <th scope="col">Created At</th>
                                 <th scope="col">Updated At</th>
                                 <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Updated By</th> -->
+                                <th scope="col">Trạng Thái</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -518,15 +518,15 @@
                             <tr ng-repeat="customer in paper.items">
                                 <td>{{customer.fullName}}</td>
                                 <td>{{customer.account.account}}</td>
-                                <td><img src="{{customer.avatar}}" alt="" height="50px" width="50px"></td>
+                                <!-- <td><img src="{{customer.avatar}}" alt="" height="50px" width="50px"></td> -->
                                 <!-- <td>{{customer.password}}</td> -->
                                 <!-- <td>{{customer.email}}</td> -->
                                 <!-- <td>{{customer.birthDate | date:'yyyy-MM-dd'}}</td> -->
                                 <!-- <td>{{customer.gender}}</td> -->
-                                <td>{{customer.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <!-- <td>{{customer.createdAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{customer.updatedAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{customer.createdBy}}</td>
-                                <td>{{customer.updatedBy}}</td>
+                                <td>{{customer.updatedBy}}</td> -->
                                 <td>{{customer.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
                                 <td>
                                     <button ng-click="edit(customer)" type="button" class="btn btn-info"
@@ -545,9 +545,9 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button ng-click="delete(customer)" type="button"
-                                                        class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+                                                        class="btn btn-primary" data-bs-dismiss="modal">Xoá</button>
                                                     <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                        data-bs-dismiss="modal">Đóng</button>
                                                 </div>
                                             </div>
                                         </div>

@@ -20,6 +20,8 @@ create table Accounts
 	Password	varchar(100),
 	Email	varchar(100),
 	PhoneNumber	nvarchar(15),
+	IsActive bit,
+	ConfirmationCode nvarchar(30),
 	IdRole		bigint references Roles(Id),
 	Status		int
 )
@@ -100,6 +102,13 @@ create table Sizes
 	Status		int
 )
 
+create table Branchs(
+	Id			bigint identity(1,1) primary key,
+	PhoneNumber	nvarchar(15),
+	Email		nvarchar(255),
+	Address     nvarchar(MAX),
+)
+
 create table Employees
 (
 	Id			bigint identity(1,1) primary key,
@@ -109,13 +118,15 @@ create table Employees
 	BirthDate	datetime,
 	Gender		bit,
 	Address		nvarchar(MAX),
-	IdAccount		bigint, 
+	IdAccount	bigint, 
+	IdBranch    bigint,
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),
 	UpdatedBy	nvarchar(100),
 	Status		int,
-	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id)
+	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id),
+	FOREIGN KEY (IdBranch) REFERENCES Branchs(Id)
 )
 
 
@@ -195,19 +206,6 @@ create table Images
 	Status		int
 )
 
-create table Cards(
-	Id bigint identity(1,1) primary key,
-	bankName nvarchar(100) not null,
-	bankCode nvarchar(20) not null,
-	accountNo nvarchar(20) not null,
-	accountName nvarchar(100) not null,
-	acqId int not null,
-	[description] nvarchar(max),
-	CreatedBy nvarchar(100),
-	CreatedAt datetime,
-
-)
-
 create table Bills
 (
 	Id			bigint identity(1,1) primary key,
@@ -226,7 +224,6 @@ create table Bills
 	IdEmployee		bigint references Employees(Id),
 	IdPaymentMethod		bigint references PaymentMethods(Id),
 	IdVoucher	bigint references Vouchers(Id),
-	IdCard bigint references Cards(Id),
 	typeBill int,
 	Status	int
 )
