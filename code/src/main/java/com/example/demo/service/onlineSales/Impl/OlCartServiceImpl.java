@@ -3,6 +3,7 @@ package com.example.demo.service.onlineSales.Impl;
 import com.example.demo.entity.*;
 import com.example.demo.repository.onlineSales.OLCartRepository;
 import com.example.demo.security.AuthController;
+import com.example.demo.security.UserAuthentication;
 import com.example.demo.service.onlineSales.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class OlCartServiceImpl implements OlCartService {
     private OlAccountService olAccountService;
 
     @Autowired
-    private AuthController authController;
+    private UserAuthentication userAuthentication;
 
     @Autowired
     private OLCartRepository olCartRepository;
@@ -51,7 +52,7 @@ public class OlCartServiceImpl implements OlCartService {
 
     @Override
     public Cart saveAllProductDetail(JsonNode orderData) {
-        Authentication authentication = authController.getAuthentication();
+        Authentication authentication = userAuthentication.getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
             String currentUsername = authentication.getName();

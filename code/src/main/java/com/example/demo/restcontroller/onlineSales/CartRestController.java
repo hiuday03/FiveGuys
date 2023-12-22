@@ -2,6 +2,7 @@ package com.example.demo.restcontroller.onlineSales;
 
 import com.example.demo.entity.*;
 import com.example.demo.security.AuthController;
+import com.example.demo.security.UserAuthentication;
 import com.example.demo.service.onlineSales.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.transaction.Transactional;
@@ -20,7 +21,7 @@ import java.util.*;
 public class CartRestController {
 
     @Autowired
-    private AuthController authController;
+    private UserAuthentication userAuthentication;
 
     @Autowired
     private OlCartService olCartService;
@@ -45,7 +46,7 @@ public class CartRestController {
 
     @GetMapping("/cartDetail")
     public ResponseEntity<List<CartDetail>> getCart() {
-        Authentication authentication = authController.getAuthentication();
+        Authentication authentication = userAuthentication.getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
             String currentUsername = authentication.getName();
             Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
@@ -71,7 +72,7 @@ public class CartRestController {
     public ResponseEntity<?> creat(@RequestBody JsonNode orderData) {
 
 
-        Authentication authentication = authController.getAuthentication();
+        Authentication authentication = userAuthentication.getAuthentication();
         System.out.println(authentication);
         if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
             String currentUsername = authentication.getName();
@@ -207,7 +208,7 @@ public class CartRestController {
     @Transactional
     @PostMapping("/cart/clear")
     public void clearCart() {
-        Authentication authentication = authController.getAuthentication();
+        Authentication authentication = userAuthentication.getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
             String currentUsername = authentication.getName();

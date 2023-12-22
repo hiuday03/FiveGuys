@@ -16,9 +16,11 @@ public class CustomUserDetails implements UserDetails {
         this.account = account;
     }
 
+    // Các phương thức getters
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority( account.getRole().getFullName().toUpperCase()));
+        return Collections.singletonList(new SimpleGrantedAuthority(account.getRole().getFullName().toUpperCase()));
     }
 
     @Override

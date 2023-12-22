@@ -3,7 +3,6 @@ package com.example.demo.security;
 import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.Employees;
-import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.offlineSales.OfEmployeeRepository;
 import com.example.demo.repository.onlineSales.OlCustomerRepository;
 import com.example.demo.repository.onlineSales.OlEmployeeRepository;
@@ -29,14 +28,12 @@ import java.util.Optional;
 @Controller
 public class AuthController {
 
-    Authentication authentication = null;
-
-    public Authentication getAuthentication() {
-        return authentication;
-    }
-
     @Autowired
-    private AccountRepository accountRepository;
+    private UserAuthentication userAuthentication;
+
+//    @Autowired
+//    private AccountRepository accountRepository;
+
     @Autowired
     private OlAccountService olAccountService;
 
@@ -54,8 +51,8 @@ public class AuthController {
     @GetMapping("/api/user")
     public ResponseEntity<?> getEmployess() {
 
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String currentUsername = authentication.getName();
+        if (userAuthentication.getAuthentication() != null && userAuthentication.getAuthentication().isAuthenticated() && !"anonymousUser".equals(userAuthentication.getAuthentication().getPrincipal())) {
+            String currentUsername = userAuthentication.getAuthentication().getName();
             Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
 
             if (account.isPresent()) {
@@ -65,15 +62,21 @@ public class AuthController {
         }
 
         return ResponseEntity.status(400).body(null);
-
-
     }
 
     @ResponseBody
     @GetMapping("/api/ol/user")
     public ResponseEntity<?> getUserOl() {
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String currentUsername = authentication.getName();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            System.out.println("Principal: " + authentication.getPrincipal());
+            System.out.println("Is Authenticated: " + authentication.isAuthenticated());
+            System.out.println("Roles: " + authentication.getAuthorities());
+        }
+        if (userAuthentication.getAuthentication() != null && userAuthentication.getAuthentication().isAuthenticated() && !"anonymousUser".equals(userAuthentication.getAuthentication().getPrincipal())) {
+            String currentUsername = userAuthentication.getAuthentication().getName();
             Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
 
             if (account.isPresent()) {
@@ -107,18 +110,18 @@ public class AuthController {
 
     @GetMapping("/auth/login/form")
     public String form(Model model){
+
         return "login/index";
 
     }
 
     @GetMapping("/auth/login/success")
-    public String success(Model model){
-
-         authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        model.addAttribute("message","Dang nhap thanh cong");
-        System.out.println(authentication);
-        model.addAttribute("name",authentication);
+    public String success(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userAuthentication.setAuthentication(authentication);
+        System.out.println(authentication.getName());
+        model.addAttribute("message", "Đăng nhập thành công");
+        model.addAttribute("name", authentication.getName());
         return "forward:/auth/login/form";
     }
 
@@ -131,7 +134,8 @@ public class AuthController {
 
     @GetMapping("/auth/logoff/success")
     public String logoff(Model model){
-        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
+        userAuthentication.setAuthentication(authentication);
         model.addAttribute("message","Dang xuat thanh cong bấm login mới có thể đăng nhập tiếp");
         return "forward:/auth/login/form";
     }
