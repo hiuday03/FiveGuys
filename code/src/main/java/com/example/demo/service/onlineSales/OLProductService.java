@@ -24,33 +24,36 @@ public interface OLProductService {
 
 //    Page<OlHomeProductResponse> findProductsByFilters(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials,Integer page);
 
-    Page<OlHomeProductResponse> findProductsByFiltersSortedByNewest(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials, Integer page);
+    List<OlHomeProductResponse> findProductsByFiltersSortedByNewest(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials);
 
-    Page<OlHomeProductResponse> findProductsByFiltersSortedByPriceAscending(
+    List<OlHomeProductResponse> findProductsByFiltersSortedByPriceAscending(
             List<Size> sizes,
             List<Color> colors,
             List<Category> categories,
-            List<Material> materials,
-            Integer page
+            List<Material> materials
     );
 
-    Page<OlHomeProductResponse> findProductsOrderedByAveragePriceDescending(
+    List<OlHomeProductResponse> findProductsOrderedByAveragePriceDescending(
             List<Size> sizes,
             List<Color> colors,
             List<Category> categories,
-            List<Material> materials,
-            Integer page
+            List<Material> materials
     );
 
-Page<OlHomeProductResponse> findProductsByFiltersOrderedByTotalQuantitySold(
+    List<OlHomeProductResponse> findProductsByFiltersOrderedByTotalQuantitySold(
          List<Size> sizes,
         List<Color> colors,
         List<Category> categories,
-        List<Material> materials,
-        Integer page
+        List<Material> materials
 );
 
 //    Page<OlHomeProductResponse> findBestSellingProducts(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials, Integer page);
 List<OlHomeProductResponse> findByKeyword(String keyword);
+
+    List<OlHomeProductResponse> findAllProductsOrderedByTotalQuantitySold();
+
+    List<OlHomeProductResponse> findProductsOrderedByCreatedAt();
+
+    List<OlHomeProductResponse> findProductsByCategoryId( Long categoryId);
 
 }

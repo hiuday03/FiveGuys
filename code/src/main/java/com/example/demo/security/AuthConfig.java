@@ -1,6 +1,8 @@
 package com.example.demo.security;
 
-import com.example.demo.repository.AccountRepository;
+import com.example.demo.repository.onlineSales.OlAccountRepository;
+import com.example.demo.service.onlineSales.Impl.OlAccountServiceImpl;
+import com.example.demo.service.onlineSales.OlAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,8 @@ public class AuthConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+
 //Này sử dụng mã hóa Pass
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
@@ -33,16 +37,18 @@ public class AuthConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
+
     @Bean
-    public UserDetailsService userDetailsService(AccountRepository accountRepository) {
-//        System.out.println("Ok1");
+    public UserDetailsService userDetailsService() {
+        OlAccountService accountRepository = new OlAccountServiceImpl();
         return new CustomUserDetailsService(accountRepository);
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }

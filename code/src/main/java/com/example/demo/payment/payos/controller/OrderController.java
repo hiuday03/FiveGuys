@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/payment-payos")
 public class OrderController {
     private final PayOS payOS;
 

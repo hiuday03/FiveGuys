@@ -11,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 public class Config implements WebMvcConfigurer {
 
-//    public static String fe_liveServer = "http://127.0.0.1:5501/index.html#!";
+    public static String fe_liveServer_Success = "http://127.0.0.1:5502/index.html#!/paymentSuccess";
+    public static String fe_liveServer_Failed = "http://127.0.0.1:5502/index.html#!/paymentFailed";
 
 
     @Value("${PAYOS_CLIENT_ID}")

@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface OLCartDetailRepository extends JpaRepository<CartDetail, Long> {
 
-    List<CartDetail> findAllByCart_Id(Long idGioHang);
+    List<CartDetail> findAllByCart_IdAndStatus(Long idGioHang,int status);
 
     void deleteById(Long id);
 

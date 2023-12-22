@@ -1,43 +1,35 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.AccountEntity;
-import com.example.demo.entity.Roles;
-import com.example.demo.repository.AccountRepository;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import com.example.demo.repository.onlineSales.OlAccountRepository;
+import com.example.demo.service.onlineSales.OlAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final AccountRepository accountRepository;
+    private final OlAccountService accountRepository;
 
-    public CustomUserDetailsService(AccountRepository accountRepository) {
+    @Autowired
+    public CustomUserDetailsService(OlAccountService accountRepository) {
         this.accountRepository = accountRepository;
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(Roles role) {
-        return Collections.singletonList(new SimpleGrantedAuthority(role.getFullName().toUpperCase()));
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<AccountEntity> accountOptional = accountRepository.findByAccount(username);
-//        System.out.println("Ok2");
-        if (!accountOptional.isPresent()) {
+
+        if (accountOptional.isPresent()) {
+            AccountEntity account = accountOptional.get();
+            return new CustomUserDetails(account);
+        } else {
             throw new UsernameNotFoundException("Không tìm thấy người dùng với tên đăng nhập: " + username);
         }
-
-        AccountEntity account = accountOptional.get();
-//        System.out.println(account);
-        return new User(account.getAccount(), account.getPassword(), getAuthorities(account.getRole()));
     }
 }
