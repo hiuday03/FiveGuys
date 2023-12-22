@@ -1,10 +1,15 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.AccountEntity;
+import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.Employees;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.offlineSales.OfEmployeeRepository;
+import com.example.demo.repository.onlineSales.OlCustomerRepository;
+import com.example.demo.repository.onlineSales.OlEmployeeRepository;
 import com.example.demo.service.onlineSales.OlAccountService;
+import com.example.demo.service.onlineSales.OlCustomerService;
+import com.example.demo.service.onlineSales.OlEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 @CrossOrigin("*")
 @Controller
@@ -35,6 +42,12 @@ public class AuthController {
 
     @Autowired
     private OfEmployeeRepository ofEmployeeRepository;
+
+    @Autowired
+    private OlEmployeeService olEmployeeService;
+
+    @Autowired
+    private OlCustomerService olCustomerService;
 
 
     @ResponseBody
@@ -56,14 +69,41 @@ public class AuthController {
 
     }
 
-
     @ResponseBody
-    @GetMapping("/api/ol/user/authenticated")
-    public boolean isAuthenticated() {
+    @GetMapping("/api/ol/user")
+    public ResponseEntity<?> getUserOl() {
+        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+            String currentUsername = authentication.getName();
+            Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
 
-        return authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal());
+            if (account.isPresent()) {
+                Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
+                Optional<Employees> employeeEntity = Optional.ofNullable(olEmployeeService.findByAccount_Id(account.get().getId()));
 
+                if (customerEntity.isPresent()) {
+                    return ResponseEntity.ok(customerEntity);
+                } else if (employeeEntity.isPresent()) {
+                    // Trả về một đối tượng JSON với thuộc tính 'employeeLoggedIn' có giá trị true
+                    Map<String, Object> responseData = new HashMap<>();
+                    responseData.put("employeeLoggedIn", true);
+                    return ResponseEntity.ok(responseData);
+                }
+            }
+        }
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("loggedIn", false);
+        return ResponseEntity.ok(responseData);
     }
+
+
+
+//    @ResponseBody
+//    @GetMapping("/api/ol/user/authenticated")
+//    public boolean isAuthenticated() {
+//
+//        return authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal());
+//
+//    }
 
     @GetMapping("/auth/login/form")
     public String form(Model model){

@@ -68,6 +68,7 @@ public class OlCartServiceImpl implements OlCartService {
                         cart.setCustomer(customer.get());
                         cart.setCreatedAt(new Date());
                         cart.setUpdatedAt(new Date());
+                        cart.setStatus(1);
                         cart = olCartRepository.save(cart);
                     }
 
@@ -91,6 +92,7 @@ public class OlCartServiceImpl implements OlCartService {
                                 newCartDetail.setPrice(BigDecimal.valueOf(Long.valueOf(item.get("price").asText())));
                                 newCartDetail.setProductDetail(productDetail.get());
                                 newCartDetail.setQuantity(Integer.valueOf(item.get("quantity").asText()));
+                                newCartDetail.setStatus(1);
                                 olCartDetailService.save(newCartDetail);
                             }
                         }
