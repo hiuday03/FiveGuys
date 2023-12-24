@@ -1,4 +1,4 @@
 package com.example.demo.model.response.offlineSales;
 
-public class hello {
+public class OfModelBill {
 }

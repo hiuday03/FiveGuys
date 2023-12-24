@@ -1,5 +1,6 @@
-package com.example.demo.entity;
+package com.example.demo.model.response.offlineSales;
 
+import com.example.demo.entity.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
@@ -16,8 +17,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "Bills")
-
-public class Bill {
+public class OfModelAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
