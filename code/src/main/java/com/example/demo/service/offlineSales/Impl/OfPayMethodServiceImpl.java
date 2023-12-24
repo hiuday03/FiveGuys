@@ -14,8 +14,14 @@ public class OfPayMethodServiceImpl implements OfPayMethodService {
     @Autowired
     private PaymentMethodOfflineSalesRepository repository;
 
+
     @Override
-    public List<PaymentMethod> getAll() {
-        return repository.findAll();
+    public List<PaymentMethod> findActivePaymentMethods() {
+        return repository.findActivePaymentMethods();
+    }
+
+    @Override
+    public PaymentMethod getCOD() {
+        return repository.getCOD();
     }
 }
