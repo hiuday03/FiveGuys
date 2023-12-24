@@ -11,12 +11,12 @@
 <body ng-app="category-app" ng-controller="category-ctrl">
 <main id="main" class="main" layout:fragment="content">
     <div class="pagetitle">
-        <h1>Category</h1>
+        <h1>Loại Sản Phẩm</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                <li class="breadcrumb-item">Account</li>
-                <li class="breadcrumb-item active">Category</li>
+                <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                <li class="breadcrumb-item">Sản Phẩm</li>
+                <li class="breadcrumb-item active">Loại Sản Phẩm</li>
             </ol>
         </nav>
     </div>
@@ -24,7 +24,7 @@
     <section class="section">
         <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-            Create Category</button>
+            Thêm Loại Sản Phẩm</button>
         <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
             {{alertMessage}}
             <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -34,21 +34,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create Customer</h5>
+                        <h5 class="modal-title">Thêm Loại Sản Phẩm</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form name="formCreateCustomer" ng-submit="formCreateCustomer.$valid && create()"
                               novalidate>
                             <div class="row mb-3">
-                                <label for="inputFullName1" class="col-sm-3 col-form-label">FullName</label>
+                                <label for="inputFullName1" class="col-sm-3 col-form-label">Tên</label>
                                 <div class="col-sm-9">
                                     <input name="name" id="inputFullName1" type="text" class="form-control"
                                            ng-model="formInput.name" required>
                                     <span ng-show="formCreateCustomer.$submitted">
                                             <div ng-show="formCreateCustomer.name.$invalid"
                                                  class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                 <img src="" alt="" sizes="" srcset="">
                             </div> -->
                             <div class="row mb-3">
-                                <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                 <div class="col-sm-9">
                                     <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.status" required>
@@ -75,16 +75,16 @@
                                     <span ng-show="formUpdateCustomer.$submitted">
                                             <div ng-show="formUpdateCustomer.status.$invalid"
                                                  class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                                 <button ng-click="resetFormInput()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá form</button>
                                 <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                             </div>
                         </form>
                     </div>
@@ -98,21 +98,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update Corlor</h5>
+                        <h5 class="modal-title">Sửa Loại Sản Phẩm</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form name="formUpdateCustomer" ng-submit="formUpdateCustomer.$valid && update()"
                               novalidate>
                             <div class="row mb-3">
-                                <label for="inputFullName" class="col-sm-3 col-form-label">FullName</label>
+                                <label for="inputFullName" class="col-sm-3 col-form-label">Tên</label>
                                 <div class="col-sm-9">
                                     <input name="fullName" id="inputFullName" type="text" class="form-control"
                                            ng-model="formUpdate.name" required>
                                     <span ng-show="formUpdateCustomer.$submitted">
                                             <div ng-show="formUpdateCustomer.fullName.$invalid"
                                                  class="error-message text-danger form-text">
-                                                FullName cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                                 <img src="" alt="" sizes="" srcset="">
                             </div> -->
                             <div class="row mb-3">
-                                <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                 <div class="col-sm-9">
                                     <select class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.status">
@@ -139,7 +139,7 @@
                                     <span ng-show="formUpdateCustomer.$submitted">
                                             <div ng-show="formUpdateCustomer.status.$invalid"
                                                  class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                 </div>
                             </div>
@@ -155,11 +155,11 @@
                                 </div>
                             </div> -->
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Sửa</button>
                                 <button ng-click="resetFormUpdate()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá form</button>
                                 <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                             </div>
                         </form>
                     </div>
@@ -173,8 +173,8 @@
                     <thead>
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Tên</th>
+                        <th scope="col">Trạng Thái</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -203,9 +203,9 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button ng-click="delete(category)" type="button"
-                                                    class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+                                                    class="btn btn-primary" data-bs-dismiss="modal">Xoá</button>
                                             <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
+                                                    data-bs-dismiss="modal">Đóng</button>
                                         </div>
                                     </div>
                                 </div>
@@ -215,13 +215,17 @@
                     </tbody>
                 </table>
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
-                        <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item"><button ng-click="paper.first()"
+                                class="page-link">First</button></li>
+                        <li class="page-item"><button ng-click="paper.prev()"
+                                class="page-link">Previous</button></li>
+                        <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
                         </li>
-                        <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a></li>
-                        <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
-                        <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
+                        <li class="page-item"><button ng-click="paper.next()"
+                                class="page-link">Next</button></li>
+                        <li class="page-item"><button ng-click="paper.last()"
+                                class="page-link">Last</button></li>
                     </ul>
                 </nav>
 

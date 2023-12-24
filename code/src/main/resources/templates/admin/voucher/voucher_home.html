@@ -7,22 +7,26 @@
 
 <main id="main" class="main" layout:fragment="content" >
     <div>
-
-        <h1>Voucher</h1>
+        <h1>Khuyến Mại</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item li-breadcrumb-item-style"><a th:href="@{/admin/index}">Home</a></li>
-                <li class="breadcrumb-item active">Voucher</li>
+                <li class="breadcrumb-item li-breadcrumb-item-style"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                <li class="breadcrumb-item active">Khuyến Mại</li>
             </ol>
         </nav>
 
 
         <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal" ng-click="resetFormInput()"
                 data-bs-target="#modalAdd">
-            Create Voucher
+            Thêm Khuyến Mại
         </button>
+<<<<<<< HEAD
 
             <label>Add bằng Excel</label>
+=======
+        <div>
+            <label>Thêm bằng Excel</label>
+>>>>>>> origin/HieuGV
             <input type="file" onchange="angular.element(this).scope().insertExcelVoucher(this.files)" placeholder="Chọn file">
 
         <div class=" alert border-success fade show" role="alert" ng-show="showAlert">
@@ -40,6 +44,7 @@
             <table class="table" style="font-size: 13px;">
                 <thead>
                 <tr>
+<<<<<<< HEAD
                     <th>STT</th>
                     <th scope="">Code</th>
                     <th scope="">Name</th>
@@ -47,6 +52,14 @@
                     <th scope="">Minimum</th>
                     <th scope="">Quantity</th>
                     <th scope="">Status</th>
+=======
+                    <th scope="">Mã</th>
+                    <th scope="">tên</th>
+                    <th scope="">Loại Khuyến Mại</th>
+                    <th scope="">Tối Thiểu</th>
+                    <th scope="">Số Lượng</th>
+                    <th scope="">Trạng Thái</th>
+>>>>>>> origin/HieuGV
                     <th scope="">Action</th>
                 </tr>
                 </thead>
@@ -92,10 +105,10 @@
                                     <div class="modal-footer">
                                         <button type="button" ng-click="updateStatusVoucher(l)"
                                                 class="btn btn-primary"
-                                                data-bs-dismiss="modal">Delete
+                                                data-bs-dismiss="modal">Xoá
                                         </button>
                                         <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close
+                                                data-bs-dismiss="modal">Đóng
                                         </button>
                                     </div>
                                 </div>
@@ -152,7 +165,7 @@
                               style="font-size: 13px"
                               ng-required="true">
                             <div class="row mb-3">
-                                <label for="inputCode" class="col-sm-3 col-form-label">Code
+                                <label for="inputCode" class="col-sm-3 col-form-label">Mã
                                     <span ng-show="addformVoucher.code.$error.required"
                                           class="error-message text-danger form-text">
                                             *
@@ -163,11 +176,11 @@
                                            style="width: 100%; height: 34px; font-size: 13px" placeholder="Enter Code"
                                            ng-model="formInput.code" ng-required="true" ng-maxlength="10">
                                     <span ng-show="addformVoucher.code.$error.maxlength"
-                                          class="error-message text-danger form-text">Words must be less than 10</span>
+                                          class="error-message text-danger form-text">Số từ phải nhỏ hơn 10</span>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputName" class="col-sm-3 col-form-label">Name
+                                <label for="inputName" class="col-sm-3 col-form-label">Tên
                                     <span ng-show="addformVoucher.name.$error.required"
                                           class="error-message text-danger form-text">
                                          *
@@ -180,7 +193,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputValue" class="col-sm-3 col-form-label">Value
+                                <label for="inputValue" class="col-sm-3 col-form-label">Loại
                                     <span ng-show="addformVoucher.value.$error.required"
                                           class="error-message text-danger form-text">
                                             *
@@ -193,7 +206,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputValue" class="col-sm-3 col-form-label">ValueType
+                                <label for="inputValue" class="col-sm-3 col-form-label">Loại Giá Trị
                                     <span ng-show="addformVoucher.valueType.$error.required"
                                           class="error-message text-danger form-text">
                                             *
@@ -209,7 +222,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputMinimumTotalAmount" class="col-sm-3 col-form-label">Minimum
+                                <label for="inputMinimumTotalAmount" class="col-sm-3 col-form-label">Tối Thiểu
                                     <span ng-show="addformVoucher.minimumTotalAmount.$error.required"
                                           class="error-message text-danger form-text">
                                             *
@@ -224,7 +237,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputQuantity" class="col-sm-3 col-form-label">Quantity
+                                <label for="inputQuantity" class="col-sm-3 col-form-label">Số Lượng
                                     <span ng-show="addformVoucher.quantity.$error.required"
                                           class="error-message text-danger form-text">
                                         *
@@ -236,11 +249,11 @@
                                            class="form-control" placeholder="Enter Quantity"
                                            ng-model="formInput.quantity" ng-required="true" ng-min="0">
                                     <span ng-show="addformVoucher.quantity.$error.min"
-                                          class="error-message text-danger form-text">Quantity cannot be negative</span>
+                                          class="error-message text-danger form-text">Số lượng không thể âm</span>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputStartDate" class="col-sm-3 col-form-label">StartDate
+                                <label for="inputStartDate" class="col-sm-3 col-form-label">Ngày Bắt Đầu
                                     <span ng-show="addformVoucher.startDate.$error.required"
                                           class="error-message text-danger form-text">
                                             *
@@ -255,7 +268,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputEndDate" class="col-sm-3 col-form-label">EndDate
+                                <label for="inputEndDate" class="col-sm-3 col-form-label">Ngày Kết Thúc
                                     <span ng-show="addformVoucher.endDate.$error.required"
                                           class="error-message text-danger form-text">
                                        *
@@ -266,12 +279,12 @@
                                            style="width: 100%; height: 34px; font-size: 13px"
                                            ng-model="formInput.endDate" ng-value="formInput.endDate | date:'yyyy-MM-dd'"
                                            ng-required="true" ng-change="validateDate()">
-                                    <span ng-show="endDateError" style="color: red;">The end date must be greater than the start date</span>
+                                    <span ng-show="endDateError" style="color: red;">Ngày kết thú phải lớn hơn ngày bắt đầu</span>
 
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputDescribe" class="col-sm-3 col-form-label">Describe
+                                <label for="inputDescribe" class="col-sm-3 col-form-label">Mô Tả
                                     <span ng-show="addformVoucher.describe.$error.required"
                                           class="error-message text-danger form-text">
                                              *
@@ -291,12 +304,12 @@
                             <div class="modal-footer">
 
                                 <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close
+                                        data-bs-dismiss="modal">Đóng
                                 </button>
                                 <button ng-click="resetFormInput()" type="button"
-                                        class="btn btn-warning">Reset
+                                        class="btn btn-warning">Xoá form
                                 </button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </div>
 
                         </form>
@@ -323,55 +336,55 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td>Code</td>
+                                <td>Mã</td>
                                 <td>{{formShow.code}}</td>
                             </tr>
                             <tr>
-                                <td>Name</td>
+                                <td>Tên</td>
                                 <td>{{ formShow.name }}</td>
                             </tr>
                             <tr>
-                                <td>Value</td>
+                                <td>Loại</td>
                                 <td>{{formShow.value}}</td>
                             </tr>
                             <tr>
-                                <td>MinimumTotalAmount</td>
+                                <td>Tổng tiền tối thiêu</td>
                                 <td>{{formShow.minimumTotalAmount}}</td>
                             </tr>
                             <tr>
-                                <td>Quantity</td>
+                                <td>Số Lượng</td>
                                 <td>{{formShow.quantity}}</td>
                             </tr>
                             <tr>
-                                <td>Describe</td>
+                                <td>Mô tả</td>
                                 <td>{{formShow.describe}}</td>
                             </tr>
                             <tr>
-                                <td>StartDate</td>
+                                <td>Ngày Bắt Đầu</td>
                                 <td>{{formShow.startDate}}</td>
                             </tr>
                             <tr>
-                                <td>EndDate</td>
+                                <td>Ngày Kết Thúc</td>
                                 <td>{{formShow.endDate}}</td>
                             </tr>
                             <tr>
-                                <td>CreatedAt</td>
+                                <td>Ngày Tạo</td>
                                 <td>{{formShow.createdAt}}</td>
                             </tr>
                             <tr>
-                                <td>UpdatedAt</td>
+                                <td>Ngày Sửa</td>
                                 <td>{{formShow.updatedAt}}</td>
                             </tr>
                             <tr>
-                                <td>CreatedBy</td>
+                                <td>Người Tạo</td>
                                 <td>{{formShow.createdBy}}</td>
                             </tr>
                             <tr>
-                                <td>UpdatedBy</td>
+                                <td>Người Sửa</td>
                                 <td>{{formShow.updatedBy}}</td>
                             </tr>
                             <tr>
-                                <td>Status</td>
+                                <td>Trạng Thái</td>
                                 <td>{{formShow.status}}</td>
                             </tr>
                             </tbody>

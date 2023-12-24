@@ -73,7 +73,8 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
-        $http.post("/account", item).then(function (resp) {
+        item.active = true;
+        $http.post("/account/save", item).then(function (resp) {
             $scope.showSuccessMessage("Create account successfully");
             $scope.resetFormInput();
             $scope.initialize();

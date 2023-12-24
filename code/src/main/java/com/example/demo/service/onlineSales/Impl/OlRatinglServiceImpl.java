@@ -22,6 +22,6 @@ public class OlRatinglServiceImpl implements OlRatingService {
 
     @Override
     public List<RatingEntity> findByProductDetail(ProductDetail productDetail) {
-        return olRatingRepository.findByProductDetail(productDetail);
+        return olRatingRepository.findByProductDetailAndStatus(productDetail,1);
     }
 }

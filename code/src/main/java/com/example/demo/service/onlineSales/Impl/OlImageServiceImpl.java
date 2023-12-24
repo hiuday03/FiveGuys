@@ -21,6 +21,6 @@ public class OlImageServiceImpl implements OlImageService {
 
     @Override
     public List<Image> findByProductDetailId(Long productDetailId) {
-        return olImageRepostitory.findByProductDetailId(productDetailId);
+        return olImageRepostitory.findByProductDetailIdAndStatus(productDetailId,1);
     }
 }
