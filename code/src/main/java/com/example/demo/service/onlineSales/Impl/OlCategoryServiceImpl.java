@@ -18,4 +18,9 @@ public class OlCategoryServiceImpl implements OlCategoryService {
     public List<Category> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public Category findCategoryByProductId(Long productId) {
+        return repository.findCategoryByProductId(productId);
+    }
 }

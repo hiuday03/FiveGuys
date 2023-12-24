@@ -2,8 +2,11 @@ package com.example.demo.service;
 
 
 import com.example.demo.entity.Bill;
+import com.example.demo.entity.Statistical;
 
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface StatisticalService {
@@ -19,5 +22,13 @@ public interface StatisticalService {
 
     Integer listCustomerYear();
 
-    Long listCustomerDay(Integer ngayHienTai);
+    Integer listCustomerYearTile();
+
+    Long listCustomerDay(Date ngayHienTai);
+
+    Long listBillDay(Date ngayHienTai);
+
+    BigDecimal listDoanhThuDay(Date ngayHienTai);
+
+    List<Statistical> getThongKeSanPhamBanChay();
 }

@@ -15,8 +15,9 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
             "LEFT JOIN Customers C ON A.Id = C.IdAccount\n" +
             "LEFT JOIN Employees E ON A.Id = E.IdAccount\n" +
             "WHERE C.Id IS NULL AND E.Id IS NULL", nativeQuery = true)
-List<AccountEntity> loadAccount();
+    List<AccountEntity> loadAccount();
 
+    Optional<AccountEntity> findByAccount(String account);
 
-    Optional<AccountEntity> findByAccount(String username);
+    Optional<AccountEntity> findByEmail(String email);
 }

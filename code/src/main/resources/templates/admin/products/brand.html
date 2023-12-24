@@ -11,12 +11,12 @@
 <body ng-app="brand" ng-controller="brand-ctrl">
     <main id="main" class="main" layout:fragment="content">
         <div class="pagetitle">
-            <h1>Brand</h1>
+            <h1>Thương Hiệu</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                    <li class="breadcrumb-item">Product</li>
-                    <li class="breadcrumb-item active">Brand</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                    <li class="breadcrumb-item">Sản Phẩm</li>
+                    <li class="breadcrumb-item active">Thương Hiệu</li>
                 </ol>
             </nav>
             <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Brands..."
@@ -26,7 +26,7 @@
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-                Create Brand</button>
+                Thêm Thương Hiệu</button>
             <div class="alert border-success alert-dismissible fade show" brand="alert" ng-show="showAlert">
                 {{alertMessage}}
                 <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -36,19 +36,19 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Brand</h5>
+                            <h5 class="modal-title">Thêm Thương Hiệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form name="formCreateBrand" ng-submit="formCreateBrand.$valid && create()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputName" class="col-sm-3 col-form-label">Name</label>
+                                    <label for="inputName" class="col-sm-3 col-form-label">Tên</label>
                                     <div class="col-sm-9">
                                         <input name="name" id="inputName" type="text" class="form-control"
                                             ng-model="formInput.name" required>
                                         <div ng-show="formCreateBrand.$submitted && formCreateBrand.name.$error.required"
                                             class="error-message text-danger form-text">
-                                            Name cannot be blank
+                                            Không được để trống
                                         </div>
                                         <div ng-show="nameExists" class="error-message text-danger form-text">
                                             {{ errorMessage }}
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
+                                    <label for="inputCreatedAt" class="col-sm-3 col-form-label">Ngày Tạo</label>
                                     <div class="col-sm-9">
                                         <input name="createdAt" id="inputCreatedAt" type="text"
                                             class="form-control ng-pristine ng-untouched ng-valid"
@@ -64,7 +64,7 @@
                                         <span ng-show="formCreateBrand.$submitted">
                                             <div ng-show="formCreateBrand.createdAt.$invalid"
                                                 class="error-message text-danger form-text">
-                                                CreatedAt cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
@@ -81,27 +81,26 @@
                                 </div>
                             </div> -->
                                 <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm"
                                             aria-label="Small select example" ng-model="formInput.status" required>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            <option value="1">Đang hợp tác</option>
+                                            <option value="2">Ngừng hợp tác</option>
                                         </select>
                                         <span ng-show="formCreateBrand.$submitted">
                                             <div ng-show="formCreateBrand.status.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">Thêm</button>
                                     <button ng-click="resetFormInput()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá fomr</button>
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                                 </div>
                             </form>
                         </div>
@@ -115,22 +114,22 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Update Corlor</h5>
+                            <h5 class="modal-title">Sửa Thương Hiệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form name="formUpdateBrand" ng-submit="formUpdateBrand.$valid && update()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputName" class="col-sm-3 col-form-label">Name</label>
+                                    <label for="inputName" class="col-sm-3 col-form-label">Tên</label>
                                     <div class="col-sm-9">
                                         <input name="name" id="inputName" type="text" class="form-control"
                                             ng-model="formUpdate.name" required>
                                         <span ng-show="formUpdateBrand.$submitted">
                                             <div ng-show="formUpdateBrand.name.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Name cannot be blank</div>
+                                                Không được để trống</div>
                                                 <div ng-show="nameExists" class="error-message text-danger form-text">
-                                                    Name already exists
+                                                    Tên Không được trùng
                                                 </div>
                                         </span>
                                     </div>
@@ -149,19 +148,19 @@
                                 </div>
                             </div> -->
                                 <div class="row mb-3">
-                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
+                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">Ngày Sửa</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
                                             ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formUpdateBrand.$submitted">
                                             <div ng-show="formUpdateBrand.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
-                                                UpdatedAt cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm"
                                             aria-label="Small select example" ng-model="formUpdate.status">
@@ -172,16 +171,16 @@
                                         <span ng-show="formUpdateBrand.$submitted">
                                             <div ng-show="formUpdateBrand.status.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary">Sửa</button>
                                     <button ng-click="resetFormUpdate()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá form</button>
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                                 </div>
                             </form>
                         </div>
@@ -194,18 +193,18 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Tên</th>
+                                <!-- <th scope="col">Created At</th>
+                                <th scope="col">Updated At</th> -->
+                                <th scope="col">Trạng Thái</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="brand in paper.items">
                                 <td>{{brand.name}}</td>
-                                <td>{{brand.createdAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{brand.updatedAt | date:'yyyy-MM-dd'}}</td>
+                                <!-- <td>{{brand.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{brand.updatedAt | date:'yyyy-MM-dd'}}</td> -->
                                 <td>{{brand.status}}</td>
                                 <td>
                                     <button ng-click="edit(brand)" type="button" class="btn btn-info"
@@ -224,9 +223,9 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button ng-click="delete(brand)" type="button"
-                                                        class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+                                                        class="btn btn-primary" data-bs-dismiss="modal">Xoá</button>
                                                     <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                        data-bs-dismiss="modal">Đóng</button>
                                                 </div>
                                             </div>
                                         </div>

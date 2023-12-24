@@ -20,7 +20,7 @@ public class OlCartDetailServiceImpl implements OlCartDetailService {
 
     @Override
     public List<CartDetail> findAllByCart_Id(Long Id) {
-        return olCartDetailRepository.findAllByCart_Id(Id);
+        return olCartDetailRepository.findAllByCart_IdAndStatus(Id,1);
     }
 
     @Override

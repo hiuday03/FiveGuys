@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface OlCustomerService {
 
     Optional<CustomerEntity> findById(Long Id);
+
     CustomerEntity findByAccount_Id(Long accountId);
 
 

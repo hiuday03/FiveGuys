@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -149,43 +150,54 @@ public class HomeRestController {
             @RequestParam(value = "colors", required = false) List<Long> colorIds,
             @RequestParam(value = "categories", required = false) List<Long> categoryIds,
             @RequestParam(value = "materials", required = false) List<Long> materialIds,
-            @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "sortType", required = false) Integer sortType) {
 
         List<Size> sizes = sizeIds != null ? sizeIds.stream().map(Size::new).collect(Collectors.toList()) : null;
         List<Color> colors = colorIds != null ? colorIds.stream().map(Color::new).collect(Collectors.toList()) : null;
         List<Category> categories = categoryIds != null ? categoryIds.stream().map(Category::new).collect(Collectors.toList()) : null;
         List<Material> materials = materialIds != null ? materialIds.stream().map(Material::new).collect(Collectors.toList()) : null;
-        Page<OlHomeProductResponse> products;
-//        Page<Product> products2;
-        Pageable pageable = PageRequest.of(page, 8);
-
-//        products2 = olProductRepository.findProductsByFiltersSortedByPriceAscending(sizes, colors, categories, materials, pageable);
-
+        List<OlHomeProductResponse> products;
         if (sortType != null) {
             switch (sortType) {
                 case 0:
-                    products = olProductService.findProductsByFiltersSortedByNewest(sizes, colors, categories, materials, page);
+                    products = olProductService.findProductsByFiltersSortedByNewest(sizes, colors, categories, materials);
                     break;
                 case 1:
-                    products = olProductService.findProductsByFiltersOrderedByTotalQuantitySold(sizes, colors, categories, materials, page);
+                    products = olProductService.findProductsByFiltersOrderedByTotalQuantitySold(sizes, colors, categories, materials);
                     break;
                 case 2:
-                    products = olProductService.findProductsByFiltersSortedByPriceAscending(sizes, colors, categories, materials, page);
+                    products = olProductService.findProductsByFiltersSortedByPriceAscending(sizes, colors, categories, materials);
                     break;
                 case 3:
-                    products = olProductService.findProductsOrderedByAveragePriceDescending(sizes, colors, categories, materials, page);
+                    products = olProductService.findProductsOrderedByAveragePriceDescending(sizes, colors, categories, materials);
                     break;
                 default:
-                    products = olProductService.findProductsByFiltersSortedByNewest(sizes, colors, categories, materials, page);
+                    products = olProductService.findProductsByFiltersSortedByNewest(sizes, colors, categories, materials);
 
                     break;
             }
         } else {
-            products = olProductService.findProductsByFiltersSortedByNewest(sizes, colors, categories, materials, page);
+            products = olProductService.findProductsByFiltersSortedByNewest(sizes, colors, categories, materials);
 
         }
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/productsType")
+    public ResponseEntity<List<OlHomeProductResponse>> getProductsBySortType(@RequestParam("sortType") int sortType) {
+        List<OlHomeProductResponse> responses = new ArrayList<>();
+
+        if (sortType == 0) {
+            responses = olProductService.findProductsOrderedByCreatedAt();
+        } else if (sortType == 1) {
+            responses = olProductService.findAllProductsOrderedByTotalQuantitySold();
+        }
+
+        if (responses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(responses);
+        }
     }
 
 
@@ -195,6 +207,10 @@ public class HomeRestController {
         return ResponseEntity.ok(searchResults);
     }
 
-
+    @GetMapping("/products/category")
+    public ResponseEntity<?> getProductByCategory(@RequestParam(value = "productId", required = false) Long productId) {
+        List<OlHomeProductResponse> searchResults = olProductService.findProductsByCategoryId(productId);
+        return ResponseEntity.ok(searchResults);
+    }
 
 }
