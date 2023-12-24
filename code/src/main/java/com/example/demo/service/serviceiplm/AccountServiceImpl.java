@@ -2,9 +2,7 @@ package com.example.demo.service.serviceiplm;
 
 import com.example.demo.entity.AccountEntity;
 import com.example.demo.repository.AccountRepository;
-import com.example.demo.senderMail.AccountEmailSender;
-import com.example.demo.senderMail.UserService;
-import com.example.demo.senderMail.util.Helper;
+import com.example.demo.security.service.AccountEmailSender;
 import com.example.demo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 

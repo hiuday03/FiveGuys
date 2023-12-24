@@ -1,9 +1,11 @@
-package com.example.demo.senderMail;
+package com.example.demo.security.service;
 
 import com.example.demo.entity.AccountEntity;
+import com.example.demo.security.Request.UserRequestDTO;
+import com.example.demo.security.service.impl.UserService;
+import com.example.demo.security.util.Helper;
 import com.example.demo.senderMail.Respone.ResponseObject;
-import com.example.demo.senderMail.util.Helper;
-import com.example.demo.service.AccountService;
+import com.example.demo.service.onlineSales.OlAccountService;
 import com.example.demo.service.serviceiplm.AccountServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +17,16 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 //    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
     @Autowired
     private JavaMailSender javaMailSender;
 
-    private final AccountServiceImpl accountService;
+    @Autowired
+    private OlAccountService accountService;
+
     private final ModelMapper mapper;
     private final PasswordEncoder bcryptEncoder;
     private final Helper helper;
@@ -30,7 +34,6 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     public UserServiceImpl(AccountServiceImpl accountService, ModelMapper mapper, PasswordEncoder bcryptEncoder, Helper helper, AccountEmailSender accountEmailSender) {
-        this.accountService = accountService;
         this.mapper = mapper;
         this.bcryptEncoder = bcryptEncoder;
         this.helper = helper;
@@ -48,17 +51,17 @@ public class UserServiceImpl implements UserService{
         javaMailSender.send(message);
     }
     @Override
-    public ResponseObject register(AccountEntity user) {
-        AccountEntity userRequestDTO = helper.getUser(user.getAccount(), accountService.getAllAccount());
+    public ResponseObject register(UserRequestDTO user) {
+        UserRequestDTO userRequestDTO = helper.getUser(user.getAccount(), accountService.getAllAccount());
         if (userRequestDTO != null) {
             return new ResponseObject("400", "Email này tồn tại", null);
         } else {
             String otp = helper.generateOTP(); // Tạo mã OTP
             user.setActive(false);
             user.setPassword(bcryptEncoder.encode(user.getPassword()));
-            user.setConfirmationCode(otp); // Đặt mã OTP cho người dùng
-            // Lưu thông tin người dùng vào cơ sở dữ liệu với mã OTP
+
             AccountEntity savedUser = mapper.map(user, AccountEntity.class);
+            savedUser.setConfirmationCode(otp);
             savedUser = this.accountService.createAccount(savedUser);
 //            AccountEntity savedUser = accountService.createAccount(user);
             if (savedUser != null) {
@@ -71,50 +74,13 @@ public class UserServiceImpl implements UserService{
             }
         }
     }
-//
-//    @Override
-//    public ResponseObject register(AccountEntity user) {
-//        AccountEntity userRequestDTO = helper.getUser(user.getAccount(), accountService.getAllAccount());
-//        if (userRequestDTO != null) {
-//            return new ResponseObject("400", "This email exists", null);
-//        } else {
-//            String otp = helper.generateOTP();
-//            user.setConfirmationCode(otp);
-//            user.setActive(false);
-//            System.out.println(("Password: " + user.getPassword()));
-//            user.setPassword(bcryptEncoder.encode(user.getPassword()));
-//            AccountEntity user1 = mapper.map(user, AccountEntity.class);
-//            this.accountService.createAccount(user1);
-//            System.out.println("Created account with username: " + user.getAccount() + ", encoded password: " + user.getPassword());
-////            String subject = "Chúc mừng bạn đăng ký tài khoản thành công";
-////            String text = "Cảm ơn bạn đã đăng ký trên trang web của chúng tôi. Để hoàn tất đăng ký, vui lòng nhập mã xác thực sau đây: ";
-////            sendSimpleEmail(user.getEmail(), subject, text);
-//            return new ResponseObject("200", "User " + user.getAccount() + " register successfully. Go to your mail and active account", null);
-//
-//        }
-//    }
 
     @Override
-    public ResponseObject reSendOTP(String account) {
-        AccountEntity userRequestDTO = helper.getUser(account, accountService.getAllAccount());
-        if (userRequestDTO == null) {
-            return new ResponseObject("400", "email này không tồn tại", null);
-        } else {
-            String new_otp = helper.generateOTP();
-            userRequestDTO.setConfirmationCode(new_otp);
-            AccountEntity user1 = mapper.map(userRequestDTO, AccountEntity.class);
-            this.accountService.createAccount(user1);
-            sendSimpleEmail(userRequestDTO.getEmail(), new_otp, "Đây là OTP mới của bạn");
-            return new ResponseObject("200", "Gửi lại OTP thành công", null);
-        }
-    }
-
-    @Override
-    public ResponseObject active(AccountEntity userDTO) {
+    public ResponseObject active(UserRequestDTO userDTO) {
         try {
             Optional<AccountEntity> user = this.accountService.findByAccount(userDTO.getAccount());
             AccountEntity userRequestDTO = user.get();
-            if (userDTO.getConfirmationCode().equals(userRequestDTO.getConfirmationCode())) {
+            if (userDTO.getOtp().equals(userRequestDTO.getConfirmationCode())) {
                 userRequestDTO.setActive(true);
                 AccountEntity user1 = mapper.map(userRequestDTO, AccountEntity.class);
                 this.accountService.createAccount(user1);
@@ -129,6 +95,26 @@ public class UserServiceImpl implements UserService{
             return new ResponseObject("400", "Tai khoản này không tôn tại!", null);
         }
     }
+
+
+    @Override
+    public ResponseObject reSendOTP(String account) {
+        UserRequestDTO userRequestDTO = helper.getUser(account, accountService.getAllAccount());
+        if (userRequestDTO == null) {
+            return new ResponseObject("400", "email này không tồn tại", null);
+        } else {
+            String new_otp = helper.generateOTP();
+//            userRequestDTO.setOtp(new_otp);
+            AccountEntity user1 = mapper.map(userRequestDTO, AccountEntity.class);
+            user1.setConfirmationCode(new_otp);
+
+            this.accountService.createAccount(user1);
+            sendSimpleEmail(userRequestDTO.getEmail(), new_otp, "Đây là OTP mới của bạn");
+            return new ResponseObject("200", "Gửi lại OTP thành công", null);
+        }
+    }
+
+
 
     @Override
     public ResponseObject forgotPassword(String account) {

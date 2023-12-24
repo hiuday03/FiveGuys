@@ -1,4 +1,4 @@
-package com.example.demo.senderMail;
+package com.example.demo.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
