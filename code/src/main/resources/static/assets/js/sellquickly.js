@@ -1,3 +1,4 @@
+import generateInvoiceHTML from './invoice.js';
 const inputElement = document.getElementById('search-product');
 const hiddenElement = document.getElementById('item-list');
 inputElement.addEventListener('click', function() {
@@ -28,75 +29,208 @@ toastr.options = {
 }
 
 let app_sellQuickly = angular.module("sell-quickly", ["kendo.directives"]);
-app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeout){
+app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http){
     $scope.products = [];
     $scope.vouchers = [];
     $scope.payMethods = [];
-    $scope.cards = [];
-    $scope.banks = [];
     $scope.formCustomer = {};
     $scope.formAddress = {};
     $scope.formCustomer2 = {};
     $scope.formAddress2 = {};
-    $scope.formCard = {};
     $scope.employee = {};
     $scope.customers = [];
-    let headers = {
-        'x-client-id': '6fe80f99-3713-4e0e-b6ea-db59c5a2b8ce',
-        'x-api-key': '0697a401-a4d1-4ffe-8005-9ee802ae9bab',
-        'Content-Type': 'application/json'
-    };
-    $scope.showCustomerList = function () {
-        var inputElementCustomer = document.getElementById('search-client');
-        var hiddenElementCustomer = document.getElementById('customerList');
-        inputElementCustomer.addEventListener('click', function() {
+
+    function createDataSource(apiUrl) {
+        return new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: apiUrl,
+                    dataType: "json"
+                }
+            }
+        });
+    }
+
+    function createDataSourceDistrict(apiUrl) {
+        return new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: apiUrl,
+                    dataType: "json"
+                }
+            },
+            schema: {
+                data: function (response) {
+                    return response.districts || [];
+                }
+            }
+        });
+    }
+
+    function createDataSourceWard(apiUrl) {
+        return new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: apiUrl,
+                    dataType: "json"
+                }
+            },
+            schema: {
+                data: function (response) {
+                    return response.wards || [];
+                }
+            }
+        });
+    }
+
+    $scope.city = createDataSource("https://provinces.open-api.vn/api/?depth=1");
+
+    function createComboBoxOptionsCity(idCity, idDistrict, idWard) {
+        return {
+            dataSource: $scope.city,
+            dataTextField: "name",
+            dataValueField: "code",
+            placeholder: "Tỉnh/thành...",
+            change: () => {
+                var codeCity = $("#" + idCity).data('kendoComboBox').value();
+                if (!isNaN(codeCity)) {
+                    $("#" + idWard).data("kendoComboBox").setDataSource([]);
+                    $scope.resetInputWard(idWard);
+                    $scope.resetInputDistrict(idDistrict);
+                    $("#" + idDistrict).data("kendoComboBox").setDataSource(createDataSourceDistrict("https://provinces.open-api.vn/api/p/" + codeCity + "?depth=2"));
+                } else {
+                    $("#" + idWard).data("kendoComboBox").setDataSource([]);
+                    $("#" + idDistrict).data("kendoComboBox").setDataSource([]);
+                    $scope.resetInputWard(idWard);
+                    $scope.resetInputDistrict(idDistrict);
+                }
+                $("#" + idCity).data("kendoComboBox").close();
+            }
+        };
+    }
+
+    function createComboBoxOptionsDistrict(idDistrict, idWard) {
+        return {
+            dataSource: [],
+            dataTextField: "name",
+            dataValueField: "code",
+            placeholder: "Quận/huyện...",
+            change: () => {
+                var codeDistrict = $("#" + idDistrict).data('kendoComboBox').value();
+                if (!isNaN(codeDistrict)) {
+                    $scope.resetInputWard(idWard);
+                    $("#" + idWard).data("kendoComboBox").setDataSource(createDataSourceWard("https://provinces.open-api.vn/api/d/" + codeDistrict + "?depth=2"));
+                } else {
+                    $("#" + idWard).data("kendoComboBox").setDataSource([]);
+                    $scope.resetInputWard(idWard);
+                }
+                $("#" + idDistrict).data("kendoComboBox").close();
+            }
+        };
+    }
+
+    function createComboBoxOptionsWard(idWard) {
+        return {
+            dataSource: [],
+            dataTextField: "name",
+            dataValueField: "code",
+            placeholder: "Thị trấn/Xã/Phường...",
+            change: () => {
+                $("#" + idWard).data("kendoComboBox").close();
+            }
+        };
+    }
+
+    $scope.cityComboBoxOptions1 = createComboBoxOptionsCity("city1", "district1", "ward1");
+    $scope.cityComboBoxOptions2 = createComboBoxOptionsCity("city2", "district2", "ward2");
+
+
+    $scope.districtComboBoxOptions1 = createComboBoxOptionsDistrict("district1", "ward1");
+    $scope.districtComboBoxOptions2 = createComboBoxOptionsDistrict("district2", "ward2");
+
+    $scope.wardComboBoxOptions1 = createComboBoxOptionsWard("ward1");
+    $scope.wardComboBoxOptions2 = createComboBoxOptionsWard("ward2");
+
+    $scope.resetInputAddress = (idHouseNumber, idCity, idDistrict, idWard) => {
+        $("#" + idHouseNumber).val("");
+        $("#" + idWard).data("kendoComboBox").setDataSource([]);
+        $("#" + idDistrict).data("kendoComboBox").setDataSource([]);
+        $("#" + idCity).data("kendoComboBox").value("");
+        $("#" + idCity).data("kendoComboBox").text("");
+        $scope.resetInputDistrict(idDistrict);
+        $scope.resetInputWard(idWard);
+    }
+
+    $scope.resetInputDistrict = (id) => {
+        $("#" + id).data("kendoComboBox").value("");
+        $("#" + id).data("kendoComboBox").text("");
+    }
+
+    $scope.resetInputWard = (id) => {
+        $("#" + id).data("kendoComboBox").value("");
+        $("#" + id).data("kendoComboBox").text("");
+    }
+
+    function changeShowCustomerList(id1, id2) {
+        var inputElementCustomer = document.getElementById(id1);
+        var hiddenElementCustomer = document.getElementById(id2);
+        inputElementCustomer.addEventListener('click', () => {
             hiddenElementCustomer.style.display = 'block';
         });
 
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', event => {
             if (event.target !== inputElementCustomer && event.target !== hiddenElementCustomer) {
                 hiddenElementCustomer.style.display = 'none';
             }
         });
     };
-    $scope.removeAddress = function (selectedItem) {
+
+    $scope.showCustomerList1 = () => changeShowCustomerList('search-client', 'customerList');
+    $scope.showCustomerList2 = () => changeShowCustomerList('search-client-2', 'customerList-2');
+
+    $scope.removeAddress = selectedItem => {
         selectedItem.address = null;
-        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+        $scope.resetInputAddress("houseNumber3","city3", "district3", "ward3");
+        return localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
     }
 
-    $scope.showCustomerUpdate = function (selectedItem) {
-        $scope.resetFormUpdate();
+    $scope.showCustomerUpdate = selectedItem => {
         $scope.formCustomer2.fullName = selectedItem.address.customer.fullName;
-        $scope.formCustomer2.birthDate = new Date(selectedItem.address.customer.birthDate);
+        if (selectedItem.address.customer.birthDate != null) {
+            $scope.formCustomer2.birthDate = new Date(selectedItem.address.customer.birthDate);
+        }
         $scope.formCustomer2.gender = selectedItem.address.customer.gender.toString();
         $scope.formAddress2.phoneNumber = selectedItem.address.phoneNumber;
         $scope.formAddress2.addressType = selectedItem.address.addressType;
-        $scope.formAddress2.address = selectedItem.address.address;
+        var addressParts = selectedItem.address.address.split(', ');
+        $("#houseNumber2").val(addressParts[0]);
+        $("#city2").data("kendoComboBox").text(addressParts[3]);
+        $("#city2").data("kendoComboBox").trigger("change");
+        $("#district2").data("kendoComboBox").text(addressParts[2]);
+        $("#ward2").data("kendoComboBox").text(addressParts[1]);
     }
 
-    $scope.showSelectCustomer = function (selectedItem, customer) {
-        $http.get(`/address/get-by-customer/${customer.id}`).then(resp => {
-            selectedItem.address = resp.data[0];
+    $scope.showSelectCustomer = (selectedItem, customer) => {
+        $http.get(`/api/of-address/${customer.id}`).then(resp => {
+            selectedItem.address = resp.data;
+            var addressParts = selectedItem.address.address.split(', ');
+            $("#houseNumber3").val(addressParts[0]);
+            $("#city3").data("kendoComboBox").text(addressParts[3]);
+            $("#district3").data("kendoComboBox").text(addressParts[2]);
+            $("#ward3").data("kendoComboBox").text(addressParts[1]);
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
         })
     }
 
-    $scope.getListCustomer = function () {
+    $scope.getListCustomer = () => {
         $http.get("/customer").then(resp => {
             $scope.customers = resp.data;
         });
     }
 
-    $scope.getListCards = function () {
-        $http.get("/api/card").then(resp => {
-            $scope.cards = resp.data;
-        });
-    }
-
-    $scope.initialize = function () {
-        $http.get("/api/productDetail").then(resp => {
+    $scope.initialize = () => {
+        $http.get("/api/off-productDetail").then(resp => {
             $scope.products = resp.data;
-            console.log($scope.products)
         });
         $http.get("/api/user").then(resp => {
             $scope.employee = resp.data;
@@ -104,51 +238,29 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         $http.get("/api/pay-method").then(resp => {
             $scope.payMethods = resp.data;
         });
-        $http.get("https://api.vietqr.io/v2/banks").then(resp => {
-            $scope.banks = resp.data.data;
-        });
-        $http.get("/api/voucher").then(resp => {
+        $http.get("/api/off-voucher").then(resp => {
             $scope.vouchers = resp.data;
-        })
-        $scope.getListCards();
+        });
+        $http.get("/api/pay-method/cod").then(resp => {
+            $scope.cod = resp.data;
+        });
         $scope.getListCustomer();
     }
 
-
-
-    $scope.resetFormCard = function () {
-        $scope.formCard = {};
-    }
-
-    $scope.createCard = function () {
-        let card = {
-            bankName: $scope.formCard.bank.name,
-            bankCode: $scope.formCard.bank.code,
-            acqId: $scope.formCard.bank.bin,
-            accountNo: $scope.formCard.accountNo,
-            accountName: $scope.formCard.accountName,
-            description: $scope.formCard.description,
-            createdBy:  $scope.employee.fullName,
-            createdAt: new Date()
-        }
-        $http.post(`/api/card`, card).then(resp => {
-            toastr["success"]("Tạo thẻ ngân hàng thành công")
-            $scope.resetFormCard();
-            $scope.getListCards();
-            $('#modalCard').modal('hide');
-        }).catch(error => {
-            console.log("Error", error);
-        })
-    }
-
-    $scope.create = function (selectedItem) {
+    $scope.create = selectedItem => {
         $scope.formCustomer.status = 1;
         $scope.formCustomer.createdAt = new Date();
         $scope.formCustomer.createdBy = $scope.employee.fullName;
+        $scope.formAddress.address = printResult("houseNumber1", "city1", "district1", "ward1");
+        if (!$scope.formAddress.address) {
+            toastr["error"]("Vui lòng nhập đầy đủ địa chỉ");
+            return;
+        }
         var customer = angular.copy($scope.formCustomer);
         $http.post(`/customer`, customer).then(resp => {
             $scope.formAddress.createdAt = new Date();
             $scope.formAddress.status = 1;
+            $scope.formAddress.defaultAddress = true;
             $scope.formAddress.customer = resp.data;
             var address = angular.copy($scope.formAddress);
             $http.post(`/address`, address).then(resp => {
@@ -157,46 +269,56 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
                 selectedItem.address = resp.data;
                 $scope.getListCustomer();
                 $('#modalCustomer').modal('hide');
+            }).catch(error => {
+                console.log("Error", error);
             })
         }).catch(error => {
             console.log("Error", error);
         })
     }
 
-    $scope.update = function (selectedItem) {
+
+    $scope.update = selectedItem => {
         $scope.formAddress2.customer = $scope.formCustomer2;
         $scope.formAddress2.updatedAt = new Date();
         $scope.formAddress2.customer.updatedAt = new Date();
         $scope.formAddress2.customer.updatedBy =  $scope.employee.fullName;
         $scope.formAddress2.customer.id = selectedItem.address.customer.id;
+        $scope.formAddress2.address = printResult("houseNumber2", "city2", "district2", "ward2");
+        if (!$scope.formAddress2.address) {
+            toastr["error"]("Vui lòng nhập đầy đủ địa chỉ");
+            return;
+        }
         let item = angular.copy($scope.formAddress2);
         $http.put(`/address/${selectedItem.address.id}`, item).then(resp => {
-            toastr["success"]("Cập nhật khách hàng thành công")
+            toastr["success"]("Cập nhật khách hàng thành công");
+            $scope.resetFormUpdate();
             $('#modalCustomerUpdate').modal('hide');
             selectedItem.address = resp.data;
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
             $scope.getListCustomer();
-
         }).catch((error) => {
             console.log("Error", error);
         });
     }
 
-    $scope.resetFormUpdate = function () {
+    $scope.resetFormUpdate = () => {
         $scope.formAddress2 = {
             addressType: "Cá nhân"
         };
         $scope.formCustomer2 = {
             gender: "true"
         };
+        $scope.resetInputAddress("houseNumber2","city2", "district2", "ward2");
     }
-    $scope.resetForm = function () {
+    $scope.resetForm = () => {
         $scope.formAddress = {
             addressType: "Cá nhân"
         };
         $scope.formCustomer = {
             gender: "true"
         };
+        $scope.resetInputAddress("houseNumber1","city1", "district1", "ward1");
     }
 
     $scope.initialize();
@@ -213,7 +335,6 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         var bill = {
             name: 'Hóa đơn ' + uniqueId,
             createdAt: new Date(),
-            paymentDate: new Date(),
             itemQty: 0,
             moneyReturn: 0,
             customerPay: 0,
@@ -222,25 +343,28 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
             reciverName: null,
             deliveryDate: new Date(),
             shippingFee: 0,
-            address: null,
+            houseNumber: null,
+            city: null,
+            district: null,
+            ward: null,
             phoneNumber: null,
             note: null,
             status: 1,
             voucher: null,
             payMethod:  $scope.payMethods[0],
-            card: null,
-            cart: []
+            cart: [],
+            tabShip: false
         }
         return bill;
     };
 
-    $scope.addBill = function () {
+    $scope.addBill = () => {
         var newbill = makeBill();
         $scope.treeData.add(newbill);
         localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
     }
 
-    $scope.removeBill = function (item) {
+    $scope.removeBill = item => {
         var array = item.parent();
         var index = array.indexOf(item);
         array.splice(index, 1);
@@ -248,7 +372,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
     };
 
-    $scope.addProductCart = function (selectedItem, id) {
+    $scope.addProductCart = (selectedItem, id) => {
         if (selectedItem == null) {
             toastr["error"]("Vui lòng chọn hóa đơn hoặc tạo hóa đơn")
             return;
@@ -266,7 +390,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         }
     }
 
-    $scope.removeProductCart = function (id, selectedItem) {
+    $scope.removeProductCart = (id, selectedItem) => {
         var index = Object.values(selectedItem.cart).findIndex(item => item.id == id);
         if (index !== -1) {
             selectedItem.cart.splice(index, 1);
@@ -277,33 +401,38 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         }
     }
 
-    $scope.subtractQuantity = function (selectedItem, item) {
+    $scope.subtractQuantity = (selectedItem, item) => {
         if (item.qty > 1) {
             item.qty--;
             $scope.count(selectedItem);
         }
     };
 
-    $scope.addQuantity = function (selectedItem, item) {
+    $scope.addQuantity = (selectedItem, item) => {
         item.qty++;
         $scope.count(selectedItem);
     }
 
-    $scope.checkQuantityChange = function (selectedItem, item) {
+    $scope.checkQuantityChange = (selectedItem, item) => {
         if (isNaN(item.qty) || item.qty < 1 || !Number.isInteger(item.qty)) {
             item.qty = 1;
         }
         $scope.count(selectedItem);
     }
 
-    $scope.addVoucher = function (selectedItem, voucher) {
+    $scope.addVoucher = (selectedItem, voucher) => {
         selectedItem.voucher = voucher;
+        if (selectedItem.totalAmount < selectedItem.voucher.minimumTotalAmount) {
+             toastr["error"](`Voucher ${selectedItem.voucher.name} không thể áp dụng`);
+             selectedItem.voucher = null;
+             return;
+        }
         $scope.setCustomerPay(selectedItem);
         localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
         $('#modalVoucher').modal('hide');
     }
 
-    $scope.setCustomerPay = function (selectedItem) {
+    $scope.setCustomerPay = selectedItem => {
         if (selectedItem.voucher != null) {
             if (selectedItem.voucher.valueType == 2) {
                 selectedItem.totalCustomerPay = selectedItem.totalAmount * ((100 - selectedItem.voucher.value)/100);
@@ -318,96 +447,189 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http, $timeou
         $scope.changeCustomerPay(selectedItem);
     }
 
-    $scope.changeCustomerPay = function (selectedItem) {
+    $scope.changeCustomerPay = selectedItem => {
         if (selectedItem.customerPay > selectedItem.totalCustomerPay) {
             selectedItem.moneyReturn = selectedItem.customerPay - selectedItem.totalCustomerPay;
         } else {
             selectedItem.moneyReturn = 0;
         }
-        if (selectedItem.payMethod.name.toLowerCase() === 'chuyển khoản' && selectedItem.card != null) {
-            $scope.showQRCode(selectedItem);
-        } else {
-            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
-        }
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
     }
 
-    $scope.removeVoucher = function (selectedItem) {
-        selectedItem.voucher = {};
+    $scope.changeNote = () => {
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    }
+
+    $scope.removeVoucher = selectedItem => {
+        selectedItem.voucher = null;
         $scope.setCustomerPay(selectedItem);
         localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
     }
 
-    $scope.count = function (selectedItem) {
+    $scope.count = selectedItem => {
         selectedItem.itemQty = selectedItem.cart.reduce((total, item) => total + item.qty, 0);
         selectedItem.totalAmount = selectedItem.cart.reduce((total, item) => total + item.qty * item.price, 0);
         $scope.setCustomerPay(selectedItem);
     }
 
-    $scope.changePaymentMethod = function (selectedItem, item) {
+    $scope.changePaymentMethod = (selectedItem, item) => {
         selectedItem.payMethod = item;
-        if (selectedItem.payMethod.name.toLowerCase() === 'chuyển khoản' && selectedItem.card != null) {
-            $scope.showQRCode(selectedItem);
-        } else {
-            selectedItem.card = null;
-            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
-        }
+        $scope.setCustomerPay(selectedItem);
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
     }
 
-    $scope.showQRCode = function (selectedItem) {
-        let data = {
-            accountNo: selectedItem.card.accountNo,
-            accountName: selectedItem.card.accountName,
-            acqId: selectedItem.card.acqId,
-            addInfo: 'Chuyen khoan den ' + selectedItem.card.accountName,
-            amount: selectedItem.customerPay,
-            template: 'compact2'
-        };
-        $http({
-            method: 'POST',
-            url: 'https://api.vietqr.io/v2/generate',
-            headers: headers,
-            data: data
-        }).then(function(response) {
-            selectedItem.card.qrCode = response.data.data.qrDataURL;
-            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
-        }, function(error) {
-            // Handle error
-            console.error(error);
-        });
 
-    }
-
-    $scope.pay = function (selectedItem) {
+    $scope.pay = selectedItem => {
         if (selectedItem.cart.length == 0) {
             toastr["error"]("Phiếu hàng đang trống");
             return;
+        } else if (selectedItem.cart.some(item => item.quantity < item.qty)) {
+            toastr["error"]("Không đủ số lượng tồn kho");
+            return;
+        } else if (selectedItem.customerPay < selectedItem.totalCustomerPay) {
+            toastr["error"]("Hệ thống không theo dõi công nợ vui lòng nhập đầy đủ số tiền");
+            return;
         }
         let bill = {
-            createdAt: new Date(),
-            paymentDate: new Date(),
+            code: 'HD' + Number(String(new Date().getTime()).slice(-6)),
+            createdAt: selectedItem.createdAt,
             totalAmount: selectedItem.totalAmount,
-            totalAmountAfterDiscount: selectedItem.totalCustomerPay,
+            totalAmountAfterDiscount: selectedItem.totalCustomerPay == selectedItem.totalAmount ? 0 : selectedItem.totalCustomerPay,
             customerEntity: selectedItem.address ? selectedItem.address.customer : null,
+            address: selectedItem.address ? selectedItem.address.address : null,
+            reciverName: selectedItem.address ? selectedItem.address.customer.fullName : null,
+            phoneNumber: selectedItem.address ? selectedItem.address.phoneNumber : null,
             employee: $scope.employee,
             paymentMethod: selectedItem.payMethod,
             voucher: selectedItem.voucher,
-            card: selectedItem.card,
-            typeBill: 1,
-            status: 3,
+            note: selectedItem.note,
             get billDetail() {
                 return selectedItem.cart.map(item => {
                     return {
                         productDetail:{id: item.id},
                         price: item.price,
-                        quantity: item.qty
+                        quantity: item.qty,
+                        status: 1
                     }
                 })
             }
         };
-        $http.post(`/api/bill`, bill).then(resp => {
-            toastr["success"]("Hóa đơn được cập nhật thành công")
-            $scope.removeBill(selectedItem);
-        })
+        $http.post(`/api/payos/create`, bill).then(resp => {
+            if (resp.data.bill.paymentMethod.name.toLowerCase() === "chuyển khoản") {
+                $scope.openPaymentPopup(resp.data, selectedItem);
+            } else if(resp.data.bill.paymentMethod.name.toLowerCase() === "tiền mặt") {
+                toastr["success"]("Thanh toán thành công");
+                $scope.removeBill(selectedItem);
+                $scope.billAddress = null;
+                if (resp.data.bill.customerEntity) {
+                    $http.get(`/address/get-by-customer/${resp.data.bill.customerEntity.id}`).then(resp2 => {
+                        resp.data.bill.addressCustomer = resp2.data;
+                    })
+                }
+                $http.get(`/api/bill-detail/${resp.data.bill.id}`).then(billDT => {
+                    resp.data.bill.billDetail = billDT.data;
+                    $scope.confirmPrintBill(resp.data.bill);
+                })
+            }
+        }).catch((error) => {
+            console.log("Error", error);
+        });
     }
 
+    $scope.confirmPrintBill = resp => {
+        if (confirm('Bạn có muốn in hóa đơn không?')) {
+            $scope.printBill(resp);
+        } else {
+            return;
+        }
+    }
+
+    $scope.printBill = resp => {
+        const invoiceHTML = generateInvoiceHTML(resp);
+        const invoiceWindow = window.open('', '_blank');
+        invoiceWindow.document.write(invoiceHTML);
+        invoiceWindow.document.close();
+    }
+
+    $scope.openPaymentPopup = (data, selectedItem) => {
+        let payOSConfig = {
+            RETURN_URL: "http://localhost:8080/admin/sell-quicly",
+            ELEMENT_ID: "tab-page",
+            CHECKOUT_URL: data.data.checkoutUrl,
+            onSuccess: (event) => {
+                $http.post(`/api/payment/payos-of/success`, JSON.stringify(data.bill)).then(resp => {
+                    toastr["success"]("Thanh toán thành công");
+                    $scope.removeBill(selectedItem);
+                    $scope.initialize();
+                    if (resp.data.bill.customerEntity) {
+                        $http.get(`/address/get-by-customer/${resp.data.bill.customerEntity.id}`).then(resp2 => {
+                            resp.data.bill.addressCustomer = resp2.data;
+                        })
+                    }
+                    $http.get(`/api/bill-detail/${resp.data.bill.id}`).then(billDT => {
+                        resp.data.bill.billDetail = billDT.data;
+                        $scope.confirmPrintBill(resp.data.bill);
+                    })
+                })
+            },
+            onCancel: (event) => {
+                $http.put(`/api/payos/${event.orderCode}`).then(resp => {
+                    toastr["warning"]("Đã hủy thanh toán");
+                    console.log(resp.data);
+                });
+            },
+            onExit: (event) => {},
+        };
+
+        const {open} = PayOSCheckout.usePayOS(payOSConfig);
+        open();
+    }
+
+    function printResult (houseNumber, city, district, ward) {
+        let houseNumberVal = $("#" + houseNumber).val();
+        let cityVal = $("#" + city).data("kendoComboBox").text();
+        let districtVal = $("#" + district).data("kendoComboBox").text();
+        let wardVal = $("#" + ward).data("kendoComboBox").text();
+        let result = wardVal && houseNumberVal && cityVal && districtVal ? `${houseNumberVal}, ${wardVal}, ${districtVal}, ${cityVal}` : '';
+        if (result != '') {
+            return result;
+        }
+    }
+
+    $scope.paymethodCOD = selectedItem => {
+        selectedItem.tabShip = true;
+        selectedItem.payMethod = $scope.cod;
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    };
+
+    $scope.changeCash = selectedItem => {
+        selectedItem.payMethod =  $scope.payMethods[0];
+        selectedItem.tabShip = false;
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    }
+
+    $scope.changeCashAndCod = selectedItem => {
+        if (selectedItem.payMethod.paymentType === 3) {
+            selectedItem.payMethod =  $scope.payMethods[0];
+        } else {
+            selectedItem.payMethod =  $scope.cod;
+        }
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    }
+
+    $scope.changeHouseNumber = () => {
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    }
+
+    $scope.changeCity = () => {
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    }
+
+    $scope.changeDistrict = () => {
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    }
+
+    $scope.changeWard = () => {
+        localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+    }
 });

@@ -17,7 +17,12 @@ public class OfPaymethodController {
     private OfPayMethodServiceImpl payMethodService;
     @GetMapping()
     public ResponseEntity<List<PaymentMethod>> getAllAddress() {
-        List<PaymentMethod> paymentMethods = payMethodService.getAll();
+        List<PaymentMethod> paymentMethods = payMethodService.findActivePaymentMethods();
         return ResponseEntity.ok(paymentMethods);
+    }
+
+    @RequestMapping("/cod")
+    public ResponseEntity<?> getCOD() {
+        return ResponseEntity.ok(payMethodService.getCOD());
     }
 }

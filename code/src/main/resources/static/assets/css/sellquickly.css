@@ -20,6 +20,26 @@
     background: #fff;
 }
 
+#sell-quickly {
+    position: relative;
+}
+
+.cart-height-sell {
+    height: 520px;
+    padding-bottom: 10px;
+}
+
+.cart-height-ship {
+    height: 400px;
+    padding-bottom: 10px;
+}
+
+.tab-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%
+}
+
 .container-fluid form {
     width: 400px;
     border: 1px solid rgb(82, 74, 235);
@@ -44,7 +64,7 @@
     padding-left: 10px;
 }
 
-#customerList {
+.listCustomer {
     display: none;
     position: absolute;
     background-color: #fff;
@@ -69,6 +89,7 @@
     padding: 8px 4px;
     height: 400px;
     overflow-y: scroll;
+    z-index: 50;
 }
 
 .product {
@@ -111,10 +132,10 @@
     color: #1d1d1d;
 }
 
-.card {
+.card-product {
     align-items: center;
     padding: 15px;
-    height: 600px;
+    height: 560px;
 }
 
 .card form {
@@ -141,8 +162,11 @@
 }
 
 #pills-tab-footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
     background-color: #e3f2fd;
-    line-height: 35px;
+    line-height: 30px;
 }
 
 .content-pay {
@@ -287,3 +311,23 @@ input[type=number] {
 .k-panelbar .k-panelbar-item {
     outline-style: none;
 }
+
+.icon-bank {
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.icon-bank:hover {
+    background: #dddddd;
+    cursor: pointer;
+}
+
+.icon-map {
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    align-items: center;
+    color: #00B63E;
+}
+
