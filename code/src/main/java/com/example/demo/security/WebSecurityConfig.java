@@ -84,7 +84,7 @@ public PasswordEncoder passwordEncoder() {
                 authorizeRequests
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/templates/**", "/assets/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF")
+//                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF")
                         .anyRequest().permitAll() // Các request còn lại cần xác thực
         )
                 .cors().and()
