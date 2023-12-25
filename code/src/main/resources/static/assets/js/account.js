@@ -1,6 +1,7 @@
 let app_account = angular.module("account", []);
 
 app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
+    $scope.originalAccount = [];
     $scope.account = [];
     $scope.formUpdate = {};
     $scope.formInput = {};
@@ -19,16 +20,33 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
         $scope.showAlert = false;
     }
 
+    $scope.search = function () {
+        // Kiểm tra từ khóa tìm kiếm
+        if ($scope.searchKeyword.trim() !== '') {
+            $scope.account = $scope.originalAccount.filter(function (item) {
+                if (item && item.account) {
+                    return item.account.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+                }
+                return false;
+            });
+        } else {
+            // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAccount
+            $scope.account = angular.copy($scope.originalAccount);
+        }
+        // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+        $scope.changePageSize();
+    };
     $scope.initialize = function () {
         $http.get("/account").then(function (resp) {
-            $scope.account = resp.data;
+            $scope.originalAccount = resp.data;
+            $scope.account = angular.copy($scope.originalAccount);
         });
     }
 
     $scope.initialize();
 
     $scope.loadRoles = function () {
-        $http.get("/role") 
+        $http.get("/role")
             .then(function (resp) {
                 $scope.roles = resp.data;
             })
@@ -37,7 +55,7 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
             });
     }
 
-    $scope.loadRoles(); 
+    $scope.loadRoles();
 
     $scope.edit = function (account) {
         if ($scope.formUpdate.updatedAt) {
@@ -50,12 +68,13 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
     // $scope.edit = function (account) {
     //     $scope.formUpdate = angular.copy(account);
     // }
-    
+
 
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
-        $http.post("/account", item).then(function (resp) {
+        item.active = true;
+        $http.post("/account/save", item).then(function (resp) {
             $scope.showSuccessMessage("Create account successfully");
             $scope.resetFormInput();
             $scope.initialize();
@@ -100,9 +119,13 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateAccount.$setUntouched();
     }
 
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+
     $scope.paper = {
         page: 0,
-        size: 5,
+        size: 5, // Kích thước mặc định ban đầu
         get items() {
             let start = this.page * this.size;
             return $scope.account.slice(start, start + this.size);
@@ -114,19 +137,18 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
             this.page = 0;
         },
         prev() {
-            this.page--;
-            if (this.page < 0) {
-                this.last();
+            if (this.page > 0) {
+                this.page--;
             }
         },
         next() {
-            this.page++;
-            if (this.page >= this.count) {
-                this.first();
+            if (this.page < this.count - 1) {
+                this.page++;
             }
         },
         last() {
             this.page = this.count - 1;
         }
-    }
+    };
+
 });

@@ -2,12 +2,15 @@ package com.example.demo.service;
 
 import com.example.demo.entity.AddressEntity;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface AddressService {
 
     List<AddressEntity> getAllAddress();
+
+    List<AddressEntity> findByCustomerId(Long customerId);
 
 //    Page<AddressEntity> getAll(Integer page);
 

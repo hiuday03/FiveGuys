@@ -39,13 +39,24 @@ public class AccountRestController {
         return accountService.loadAccount();
     }
 
-    @PostMapping("")
-    public ResponseEntity<?> createAccount(@RequestBody AccountEntity accountEntity) {
+    @PostMapping("/save")
+    public ResponseEntity<?> save(@RequestBody AccountEntity accountEntity) {
         try {
-            AccountEntity createdAccount = accountService.createAccount(accountEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
+            AccountEntity save = accountService.save(accountEntity);
+            return ResponseEntity.status(HttpStatus.CREATED).body(save);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("")
+    public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity accountEntity) {
+        AccountEntity createdAccount = accountService.createAccount(accountEntity);
+
+        if (createdAccount != null) {
+            return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -19,7 +19,7 @@ public class ProductController {
 
     @GetMapping("/testp")
     public String product1(){
-        return "admin/products/product/product-form";
+        return "admin/products/product/product";
     }
 
     @GetMapping("/category")
@@ -35,5 +35,10 @@ public class ProductController {
     @GetMapping("/color")
     public String color(){
         return "admin/products/color/color-list";
+    }
+
+    @GetMapping("/size")
+    public String size(){
+        return "admin/products/size/size-list";
     }
 }

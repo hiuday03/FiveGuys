@@ -22,11 +22,17 @@ public class PaymentMethod {
     @Column(name = "Name")
     private String name;
 
+    @Column(name = "Path")
+    private String path;
+
     @Column(name = "CreatedAt")
     private Date createdAt;
 
     @Column(name = "UpdatedAt")
     private Date updatedAt;
+
+    @Column(name = "paymentType")
+    private Integer paymentType;
 
     @Column(name = "Status")
     private int status;

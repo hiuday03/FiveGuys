@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -35,7 +36,8 @@ public class Image {
     @Column(name = "Status")
     private Integer status;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}  )
+    @JsonIgnore
     @JoinColumn(name = "IdProductDetail")
     private ProductDetail productDetail;
 }

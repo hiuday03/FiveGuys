@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employees, Long> {
@@ -24,5 +25,6 @@ public interface EmployeeRepository extends JpaRepository<Employees, Long> {
     @Query("SELECT m FROM Employees m WHERE m.status = 1")
     List<Employees> getAllStatusDangLam();
 
+    Optional<Employees> findByAccount_Id(Long accountId);
 
 }

@@ -22,7 +22,7 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
 
     @Override
     public List<ProductDetail> findByProduct(Product product) {
-        return olProductDetailRepository.findByProduct(product);
+        return olProductDetailRepository.findByProductAndStatus(product,1);
     }
 
     @Override
@@ -43,6 +43,16 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
     @Override
     public Optional<ProductDetail> findById(Long productDetailId) {
         return olProductDetailRepository.findById(productDetailId);
+    }
+
+    @Override
+    public ProductDetail save(ProductDetail productDetail) {
+        return olProductDetailRepository.save(productDetail);
+    }
+
+    @Override
+    public List<ProductDetail> findByColorIdAndProductId(Long colorId, Long productId) {
+        return olProductDetailRepository.findByColorIdAndProductIdAndStatus(colorId,productId,1);
     }
 
 }

@@ -71,6 +71,15 @@ public class Bill {
     @JoinColumn(name = "IdVoucher")
     private Vouchers voucher;
 
+    @Column(name = "typeBill")
+    private int typeBill;
+
+    @Column(name = "PaymentStatus")
+    private int paymentStatus;
+//    @ManyToOne
+//    @JoinColumn(name = "IdCard")
+//    private Cards card;
+
     @Column(name = "Status")
     private int status;
 

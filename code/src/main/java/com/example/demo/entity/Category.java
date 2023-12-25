@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "Categories")
-public class Category {
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +33,8 @@ public class Category {
 
     @Column(name = "Status")
     private Integer status;
+
+    public Category(Long id) {
+        this.id = id;
+    }
 }

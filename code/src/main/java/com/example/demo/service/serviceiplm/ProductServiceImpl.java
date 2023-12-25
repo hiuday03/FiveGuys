@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product productReq) {
+        productReq.setCode(genmahd());
+        productReq.setCreatedBy("admin");
+        productReq.setCreatedAt(new Date());
+        productReq.setUpdatedBy("admin");
+        productReq.setUpdatedAt(new Date());
+        productReq.setStatus(2);
         return productRepository.save(productReq);
     }
 
@@ -59,6 +66,17 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
+    private String genmahd() {
+        List<Product> list = productRepository.findAll();
+        if (list.size() == 0) {
+            return "SP0001";
+        } else {
+            int num = list.size() + 1;
+            return "SP" + (String.format("%04d", num));
+        }
+    }
+
+
     @Override
     public void delete(Long id) {
         if(productRepository.existsById(id)){
@@ -78,5 +96,11 @@ public class ProductServiceImpl implements ProductService {
             return productRepository.save(product);
         }
         return null;
+    }
+
+    @Override
+    public Page<Product> searchByStatus(Integer status, Integer page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return productRepository.searchByStatus(status, pageable);
     }
 }

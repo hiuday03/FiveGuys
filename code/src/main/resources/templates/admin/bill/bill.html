@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+    layout:decorate="~{admin/index}">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard - FiveGuys</title>
+</head>
+<link rel="stylesheet" th:href="@{/assets/js/bill/bill.js}">
+<!-- <link rel="stylesheet" th:href="@{/assets/js/customer.js}"> -->
+
+<body ng-app="bill" ng-controller="bill-ctrl">
+    <main id="main" class="main" layout:fragment="content">
+        <div class="pagetitle">
+            <h1>Bill</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
+                    <li class="breadcrumb-item">Orders</li>
+                    <li class="breadcrumb-item active">Bills</li>
+                </ol>
+            </nav>
+            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Bill..."  class="form-control">
+        </div>
+        <!--  Begin code  -->
+        <section class="section">
+            <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
+                data-bs-target="#modalAdd">
+                Create Bill</button>
+            <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
+                {{alertMessage}}
+                <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
+            </div>
+            <!-- End Modal Add -->
+            <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detail: {{formUpdate.code}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-8">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-pills" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab"
+                                           ng-click="showAddBillDetail(bill)" href="#home">Bill</a>
+                                    </li>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a class="nav-link" data-bs-toggle="tab"-->
+<!--                                           ng-click="showAddBillDetail(describe)" href="#menu1">Describe</a>-->
+<!--                                    </li>-->
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" ng-click="showAddBillDetail('pd')"
+                                           href="#menu2">Bill detail</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="d-flex justify-content-end">
+                                        <button id="addBillDetail" class="btn btn-outline-success mb-2"
+                                                data-bs-toggle="modal" data-bs-target="#modalBillDetail"
+                                                data-bs-dismiss="modal">
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab detail Bill  -->
+                        <div class="tab-content mt-3">
+                            <div id="home" class="container tab-pane active">
+                                <div class="row mb-3">
+                                    <label for="updateCode" class="col-sm-3 col-form-label">Code</label>
+                                    <div class="col-sm-9">
+                                        <input name="code" id="updateCode" type="text" class="form-control"
+                                               placeholder="Enter code"
+                                               ng-model="formUpdate.code" readonly ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="createdAt" class="col-sm-3 col-form-label">CreatedAt</label>
+                                    <div class="col-sm-9">
+                                        <input name="createdAt" id="createdAt" type="text" class="form-control"
+                                               placeholder="Enter createdAt"
+                                               ng-model="formUpdate.createdAt" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="paymentDate" class="col-sm-3 col-form-label">Payment Date</label>
+                                    <div class="col-sm-9">
+                                        <input name="paymentDate" id="paymentDate" type="text" class="form-control"
+                                               placeholder="Enter paymentDate"
+                                               ng-model="formUpdate.paymentDate" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="totalAmount" class="col-sm-3 col-form-label">Total Amount</label>
+                                    <div class="col-sm-9">
+                                        <input name="totalAmount" id="totalAmount" type="text" class="form-control"
+                                               placeholder="Enter totalAmount"
+                                               ng-model="formUpdate.totalAmount" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="totalAmountAfterDiscount" class="col-sm-3 col-form-label">Total Amount After Discount</label>
+                                    <div class="col-sm-9">
+                                        <input name="totalAmountAfterDiscount" id="totalAmountAfterDiscount" type="text" class="form-control"
+                                               placeholder="Enter totalAmountAfterDiscount"
+                                               ng-model="formUpdate.totalAmountAfterDiscount" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="reciverName" class="col-sm-3 col-form-label">Reciver Name</label>
+                                    <div class="col-sm-9">
+                                        <input name="reciverName" id="reciverName" type="text" class="form-control"
+                                               placeholder="Enter reciverName"
+                                               ng-model="formUpdate.reciverName" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="deliveryDate" class="col-sm-3 col-form-label">Delivery Date</label>
+                                    <div class="col-sm-9">
+                                        <input name="deliveryDate" id="deliveryDate" type="text" class="form-control"
+                                               placeholder="Enter deliveryDate"
+                                               ng-model="formUpdate.deliveryDate" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="shippingFee" class="col-sm-3 col-form-label">Shipping Fee</label>
+                                    <div class="col-sm-9">
+                                        <input name="shippingFee" id="shippingFee" type="text" class="form-control"
+                                               placeholder="Enter shippingFee"
+                                               ng-model="formUpdate.shippingFee" readonly ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="address" class="col-sm-3 col-form-label">Address</label>
+                                    <div class="col-sm-9">
+                                        <input name="address" id="address" type="text" class="form-control"
+                                               placeholder="Enter address"
+                                               ng-model="formUpdate.address" readonly ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="phoneNumber" class="col-sm-3 col-form-label">Phone Number</label>
+                                    <div class="col-sm-9">
+                                        <input name="phoneNumber" id="phoneNumber" type="text" class="form-control"
+                                               placeholder="Enter phoneNumber"
+                                               ng-model="formUpdate.phoneNumber" readonly ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="note" class="col-sm-3 col-form-label">Note</label>
+                                    <div class="col-sm-9">
+                                        <input name="note" id="note" type="text" class="form-control"
+                                               placeholder="Enter note"
+                                               ng-model="formUpdate.note" readonly ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="customerEntity" class="col-sm-3 col-form-label">Customer Name</label>
+                                    <div class="col-sm-9">
+                                        <select name="customerEntity" class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.customerEntity.id" ng-required="true">
+                                            <option ng-repeat="customerEntity in customerEntitys" ng-value="customerEntity.id" readonly ng-required="true">
+                                                {{customerEntity.fullName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="employee" class="col-sm-3 col-form-label">Employee Name</label>
+                                    <div class="col-sm-9">
+                                        <select name="employee" class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.employee.id" ng-required="true">
+                                            <option ng-repeat="employee in employees" ng-value="employee.id" readonly ng-required="true">
+                                                {{employee.fullName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="paymentMethod" class="col-sm-3 col-form-label">Payment Method</label>
+                                    <div class="col-sm-9">
+                                        <input name="paymentMethod" id="paymentMethod" type="text" class="form-control"
+                                               placeholder="Enter paymentMethod"
+                                               ng-model="formUpdate.paymentMethod.id" readonly ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="voucher" class="col-sm-3 col-form-label">Voucher</label>
+                                    <div class="col-sm-9">
+                                        <select name="voucher" class="form-select form-select-sm" aria-label="Small select example"
+                                            ng-model="formUpdate.voucher.id" ng-required="true">
+                                            <option ng-repeat="voucher in vouchers" ng-value="voucher.id" readonly ng-required="true">
+                                                {{voucher.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="status" class="col-sm-3 col-form-label">Status</label>
+                                    <div class="col-sm-9">
+                                        <input name="status" id="status" type="text" class="form-control"
+                                               placeholder="Enter status"
+                                               ng-model="formUpdate.status" readonly ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" id="enableEdit" ng-click="enableEditForm(false, false)">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-secondary" id="cancelEdit" ng-click="cancelEdit()">Cancel
+                                    </button>
+                                    <button class="btn btn-primary" id="submitEdit" ng-click="update()">Save change
+                                    </button>
+                                </div>
+                            </div>
+<!--                            <div id="menu1" class="container tab-pane fade"><br>-->
+<!--                                <div>-->
+<!--                                    <div id="div_editor1" style="max-width: 20px">-->
+<!--                                        <p ng-bind="formUpdate.describe"></p>-->
+<!--                                    </div>-->
+<!--                                    <p style="width: 50px" ng-bind-html="formUpdate.describe"></p>-->
+<!--                                    <button onclick="cc2()"></button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div id="menu2" class="container tab-pane fade">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Color</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Import price</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Barcode</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="pd in BillDetails">
+                                        <td class="col-1">{{$index + 1}}</td>
+                                        <td class="col-1">{{pd.color.name}}</td>
+                                        <td class="col-1">{{pd.size.name}}</td>
+                                        <td class="col-2">{{pd.importPrice}}</td>
+                                        <td class="col-1">{{pd.price}}</td>
+                                        <td class="col-1">{{pd.quantity}}</td>
+                                        <td class="col-2">{{pd.barcode}}</td>
+                                        <td class="col-1" ng-switch="pd.status">
+                                            <span ng-switch-when="0">Đang bán</span>
+                                            <span ng-switch-when="1">Ngừng bán</span>
+                                            <span ng-switch-when="2">Chờ</span>
+                                            <span ng-switch-when="3">Ẩn</span></td>
+                                        <td class="col-2">
+                                            <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                               data-bs-target="#modalDetail"
+                                               ng-click="edit(p)"><i class="ri-eye-2-fill"></i></a>
+                                            <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                               data-bs-target="#modalUpdate"
+                                               ng-click="getBillById(p.id)"><i class="ri-edit-2-line"></i></a>
+                                        </td>
+                                    </tr>
+                                    <td colspan="8" ng-if="billDetails.length <= 0">
+                                        <p style="text-align: center">No Bill detail</p>
+                                    </td>
+                                    </tbody>
+                                </table>
+<!--                                <nav aria-label="Page navigation example">-->
+<!--                                    <ul class="pagination justify-content-center">-->
+<!--                                        <li class="page-item" ng-repeat="pageNum in displayPageRange()">-->
+<!--                                            <a class="page-link" href="#" ng-click="setPage(pageNum)">{{pageNum}}</a></li>-->
+<!--                                    </ul>-->
+<!--                                </nav>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- Begin Modal Update -->
+            <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Bill</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="formUpdateBill" ng-submit="formUpdateBill.$valid && update()" novalidate>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button ng-click="resetFormUpdate()" type="button"
+                                    class="btn btn-warning">Reset</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- End Modal Update -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">CreatedAt</th>
+                                <th scope="col">Payment Date</th>
+                                <th scope="col">Total Amount</th>
+                                <th scope="col">Total Amount After Discount</th>
+                                <th scope="col">Reciver Name</th>
+                                <th scope="col">Delivery Date</th>
+                                <th scope="col">Shipping Fee</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Employee Name</th>
+                                <th scope="col">Payment Method</th>
+                                <th scope="col">Voucher</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="bill in paper.items">
+                                <td>{{bill.code}}</td>
+                                <td>{{bill.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{bill.paymentDate | date:'yyyy-MM-dd'}}</td>
+                                <td>{{bill.totalAmount}}</td>
+                                <td>{{bill.totalAmountAfterDiscount}}</td>
+                                <td>{{bill.reciverName}}</td>
+                                <td>{{bill.deliveryDate | date:'yyyy-MM-dd'}}</td>
+                                <td>{{bill.shippingFee}}</td>
+                                <td>{{bill.address}}</td>
+                                <td>{{bill.phoneNumber}}</td>
+                                <td>{{bill.note}}</td>
+                                <td>{{bill.customerEntity.fullName}}</td>
+                                <td>{{bill.employee.fullName}}</td>
+                                <td>{{bill.paymentMethod.name}}</td>
+                                <td>{{bill.voucher.name}}</td>
+                                <td>{{bill.status}}</td>
+                                <td>
+                                    <button ng-click="edit(bill)" type="button" class="btn btn-info"
+                                        data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
+                                            class="ri-refresh-line"></i></button>
+                                    <!-- <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal-{{bill.id}}"><i
+                                            class="ri-delete-bin-fill"></i></button> -->
+                                    <div class="modal fade" id="deleteModal-{{bill.id}}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa
+                                                        không?</h5>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button ng-click="delete(bill)" type="button"
+                                                        class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row align-items-center">
+                        <div class="col-md-1"> <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+                            <select class="form-control" ng-model="paper.size" ng-change="changePageSize()" >
+                                <option value="selected">Xem mục</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-11">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item"><button ng-click="paper.first()"
+                                            class="page-link">First</button></li>
+                                    <li class="page-item"><button ng-click="paper.prev()"
+                                            class="page-link">Previous</button></li>
+                                    <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
+                                    </li>
+                                    <li class="page-item"><button ng-click="paper.next()"
+                                            class="page-link">Next</button></li>
+                                    <li class="page-item"><button ng-click="paper.last()"
+                                            class="page-link">Last</button></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--  End Code  -->
+    </main>
+</body>
+
+</html>

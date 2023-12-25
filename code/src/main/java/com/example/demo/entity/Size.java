@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import java.util.Date;
 @ToString
 @Entity
 @Table(name = "Sizes")
-public class Size {
+public class Size implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +32,8 @@ public class Size {
 
     @Column(name = "Status")
     private Integer status;
+
+    public Size(Long id) {
+        this.id = id;
+    }
 }

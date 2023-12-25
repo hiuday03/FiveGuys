@@ -1,6 +1,8 @@
 package com.example.demo.service.serviceiplm;
 
+import com.example.demo.entity.Brands;
 import com.example.demo.entity.Category;
+import com.example.demo.repository.BrandTestRepository;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    BrandTestRepository brandTestRepository;
 
     @Override
     public List<Category> getAll() {
@@ -73,5 +77,10 @@ public class CategoryServiceImpl implements CategoryService {
             return categoryRepository.save(category);
         }
         return null;
+    }
+
+    @Override
+    public List<Brands> getAllBrand() {
+        return brandTestRepository.findAll();
     }
 }

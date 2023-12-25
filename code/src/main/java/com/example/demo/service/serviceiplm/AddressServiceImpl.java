@@ -30,6 +30,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    public List<AddressEntity> findByCustomerId(Long customerId) {
+        return addressRepository.findByCustomerId(customerId);
+    }
+
+    @Override
     public AddressEntity getAddressById(Long id) {
         return addressRepository.findById(id).orElse(null);
     }

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Brands;
 import com.example.demo.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -21,4 +22,6 @@ public interface CategoryService {
     void delete(Long id);
 
     Category updateStatus(Long id);
+
+    List<Brands> getAllBrand();
 }

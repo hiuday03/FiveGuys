@@ -41,8 +41,14 @@ public class SizeRestController{
         return ResponseEntity.ok(size);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Size sizeReq){
+        Size size = sizeService.update(sizeReq, id);
+        return ResponseEntity.ok(size);
+    }
+
     @PutMapping("/status/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id){
+    public ResponseEntity<?> updateStatus(@PathVariable("id") Long id){
         Size size = sizeService.updateStatus(id);
         return ResponseEntity.ok(size);
     }

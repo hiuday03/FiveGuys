@@ -48,6 +48,13 @@ public class ProductDetailRestController {
         return ResponseEntity.ok(productDetail);
     }
 
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> updateStatus(@RequestBody Integer status,
+                                    @PathVariable("id") Long id){
+        ProductDetail productDetail = productDetailService.updateStatus(status, id);
+        return ResponseEntity.ok(productDetail);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id){
         productDetailService.delete(id);
