@@ -17,16 +17,14 @@ public class OlAccountServiceImpl implements OlAccountService {
     @Autowired
     private OlAccountRepository accountRepository;
 
-    public  UserRequestDTO mapAccountToUserRequestDTO(AccountEntity account) {
-        UserRequestDTO userRequestDTO = new UserRequestDTO();
-        userRequestDTO.setAccount(account.getAccount());
-        userRequestDTO.setEmail(account.getEmail());
-        userRequestDTO.setId(account.getId());
-        userRequestDTO.setActive(account.isActive());
-        userRequestDTO.setOtp(account.getConfirmationCode());
-        // Các trường thông tin khác
-        return userRequestDTO;
-    }
+//    public  UserRequestDTO mapAccountToUserRequestDTO(AccountEntity account) {
+//        UserRequestDTO userRequestDTO = new UserRequestDTO();
+//        userRequestDTO.setAccount(account.getAccount());
+//        userRequestDTO.setEmail(account.getEmail());
+//        userRequestDTO.setId(account.getId());
+//        // Các trường thông tin khác
+//        return userRequestDTO;
+//    }
 
     @Override
     public Optional<AccountEntity> findByAccount(String username) {
@@ -36,21 +34,21 @@ public class OlAccountServiceImpl implements OlAccountService {
         }
         return Optional.empty();
     }
-
-    @Override
-    public List<UserRequestDTO> getAllAccount() {
-        List<AccountEntity> accounts = accountRepository.findAll();
-        List<UserRequestDTO> userRequestDTOs = new ArrayList<>();
-        for (AccountEntity account : accounts) {
-            userRequestDTOs.add(mapAccountToUserRequestDTO(account));
-        }
-        return userRequestDTOs;
-    }
-
-    @Override
-    public AccountEntity createAccount(AccountEntity accountEntity) {
-        return accountRepository.save(accountEntity);
-    }
+//
+//    @Override
+//    public List<UserRequestDTO> getAllAccount() {
+//        List<AccountEntity> accounts = accountRepository.findAll();
+//        List<UserRequestDTO> userRequestDTOs = new ArrayList<>();
+//        for (AccountEntity account : accounts) {
+//            userRequestDTOs.add(mapAccountToUserRequestDTO(account));
+//        }
+//        return userRequestDTOs;
+//    }
+//
+//    @Override
+//    public AccountEntity createAccount(AccountEntity accountEntity) {
+//        return accountRepository.save(accountEntity);
+//    }
 
 
 }

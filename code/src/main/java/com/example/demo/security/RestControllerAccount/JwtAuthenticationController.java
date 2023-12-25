@@ -4,6 +4,8 @@ import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.Employees;
 import com.example.demo.repository.offlineSales.OfEmployeeRepository;
+import com.example.demo.security.Request.OTPConfirmationDTO;
+import com.example.demo.security.Request.OTPresetPassDTO;
 import com.example.demo.security.Request.UserRequestDTO;
 import com.example.demo.security.jwt.JwtTokenUtil;
 import com.example.demo.security.jwt.JwtUserDetailsService;
@@ -82,20 +84,40 @@ public class JwtAuthenticationController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseObject register(@RequestBody UserRequestDTO user) {
         return userService.register(user);
     }
-    @PostMapping("/active")
-    public ResponseObject active(@RequestBody UserRequestDTO user) {
-        return userService.active(user);
+//    @PostMapping("/active")
+//    public ResponseObject active(@RequestBody UserRequestDTO user) {
+//        return userService.active(user);
+//    }
+
+    @PostMapping("/auth/reSendOTP/{email}")
+    public ResponseObject reSendOTP(@PathVariable String email) {
+        System.out.println(email);
+
+        return userService.reSendOTP(email);
     }
 
-    @PostMapping("/reSendOTP")
-    public ResponseObject reSendOTP(@RequestParam String account) {
-        return userService.reSendOTP(account);
+    @PostMapping("/auth/confirm-otp")
+    public boolean confirmOTP(@RequestBody OTPConfirmationDTO otpConfirmationDTO) {
+        String email = otpConfirmationDTO.getEmail();
+        String enteredOTP = otpConfirmationDTO.getEnteredOTP();
+        return userService.confirmOTP(email, enteredOTP);
     }
-    @PostMapping("/forgot-password/{email}")
+
+
+    @PostMapping("/auth/reset-password")
+        public boolean resetPassword(@RequestBody OTPresetPassDTO otPresetPassDTO) {
+        System.out.println(otPresetPassDTO);
+        String email = otPresetPassDTO.getEmail();
+        String pass = otPresetPassDTO.getNewPassword();
+        return userService.resetPassword(email, pass);
+    }
+
+
+    @PostMapping("/auth/forgot-password/{email}")
     public ResponseObject forgotPassword(@PathVariable String email) {
         return userService.forgotPassword(email);
     }

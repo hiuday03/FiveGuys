@@ -27,8 +27,8 @@ public class AccountEmailSender {
             mimeMessageHelper.setText(
                     "Xin Chào " + accountName + ",\n\n"
                             + "Cảm ơn bạn đã đăng ký trên nền tảng của chúng tôi! Tài khoản của bạn có ID: " + id + " đã được tạo.\n\n"
-                            + "Vui lòng xác nhận email của bạn bằng cách nhập mã sau vào chỗ trống được cung cấp: " + confirmationCode + ".\n\n"
-                            + "Trân trọng,\n Nhóm nền tảng của bạn" + ".\n\n"
+//                            + "Vui lòng xác nhận email của bạn bằng cách nhập mã sau vào chỗ trống được cung cấp: " + confirmationCode + ".\n\n"
+//                            + "Trân trọng,\n Nhóm nền tảng của bạn" + ".\n\n"
 //                            + "Link nhập mã:" + "http://localhost:8080/login/" + id
             );
 

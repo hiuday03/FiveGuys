@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface OlAccountService {
 
     Optional<AccountEntity> findByAccount(String username);
-     List<UserRequestDTO> getAllAccount();
-    AccountEntity createAccount(AccountEntity accountEntity);
+//     List<UserRequestDTO> getAllAccount();
+//    AccountEntity createAccount(AccountEntity accountEntity);
 
 }

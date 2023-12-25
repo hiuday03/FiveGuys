@@ -9,8 +9,18 @@ import java.util.Random;
 
 @Service
 public class Helper {
-    public UserRequestDTO getUser(String account, List<UserRequestDTO> list){
-        return list.stream().filter(user -> user.getAccount().equals(account)).findAny().orElse(null);
+    public UserRequestDTO getUser(String account, List<UserRequestDTO> list) {
+        return list.stream()
+                .filter(user -> account != null && account.equals(user.getAccount()))
+                .findAny()
+                .orElse(null);
+    }
+
+    public UserRequestDTO getUserByEmail(String email, List<UserRequestDTO> list) {
+        return list.stream()
+                .filter(user -> email != null && email.equals(user.getEmail()))
+                .findAny()
+                .orElse(null);
     }
 
     public String generateOTP(){

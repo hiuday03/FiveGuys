@@ -26,10 +26,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (!user.isPresent()) {
             throw new UsernameNotFoundException("User not found with username: " + user.get().getAccount());
         }
-        if(!user.get().isActive()){
-            throw new UsernameNotFoundException("User is not activated: " + user.get().getAccount());
-        }
-
         return new User(user.get().getAccount(), user.get().getPassword(), new ArrayList<>());
     }
 
