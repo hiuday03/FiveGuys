@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html >
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -13,79 +12,89 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
 
-      <!-- angular-jwt -->
-  <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+    <!-- angular-jwt -->
+    <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
 </head>
 
 <body ng-app="security2" ng-controller="LoginCtrl2">
 
 
 
-<nav>
+    <!-- <nav>
     <button class="btn " ng-click="logout()">Logout</button>
      <a href="/auth/logoff">Logout</a>
- </nav>
- <div class="container" id="container">
-     <div class="form-container sign-up">
-         <form >
-             <h1>Create Account</h1>
-             <div class="social-icons">
-                 <!-- Các icon xã hội -->
-             </div>
-             <div class="input-row">
-                 <input type="text" ng-model="user.lastName" placeholder="Họ" required>
-                 <input type="text" ng-model="user.firstName" placeholder="Tên" required>
-             </div>
-             <input type="text" ng-model="user.email" placeholder="Email" required>
-             <input type="text" ng-model="user.account" placeholder="Tên tài khoản" required>
-             <input type="password" ng-model="user.password" placeholder="Mật khẩu" required>
-             <input type="password" ng-model="user.confirmPassword" placeholder="Xác nhận mật khẩu" required>
-             <button ng-click="registerUser()">Sign Up</button>
-         </form>
-         
-         
-     </div>
-     <div class="form-container sign-in">
-         <form >
-             <h1>Sign In</h1>
-             <div class="social-icons">
-                 <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
-                 <a href="#" class="icon"><i class="fa fa-facebook-f"></i></a>
-                 <a href="#" class="icon"><i class="fa fa-github"></i></a>
-                 <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
-             </div>
-             <span>Or use your email password</span>
-             <input type="text" placeholder="User name" ng-model="username" required>
-             <input type="password" placeholder="Password" ng-model="password">
-             <a href="http://127.0.0.1:5500/login/confirmOtp.html">Quên mật khẩu</a>
- 
- 
-             <div>
-                 <label for="remember">Remember me:</label>
-                 <input type="checkbox" id="remember" name="remember" th:checked="${remember}">
-             </div>
-             <button  ng-click="login()">Sign In</button>
-         </form>
- 
-     </div>
-     <div class="toggle-container">
-         <div class="toggle">
-             <div class="toggle-panel toggle-left">
-                 <h1>Welcome Back!</h1>
-                 <p>Enter your personal details to use all of site featusres</p>
-                 <button class="hidden" id="login"> Sign In</button>
-             </div>
-             <div class="toggle-panel toggle-right">
-                 <h1>Hello, friend!</h1>
-                 <p>Registter with your personal details to yse all of site features</p>
-                 <button class="hidden" id="register">Sign Up</button>
-             </div>
-         </div>
-     </div>
- </div>
+ </nav> -->
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form>
+                <h1>Đăng Ký</h1>
+                <div class="social-icons">
+                    <!-- Các icon xã hội -->
+                </div>
+                <div class="input-row">
+                    <input type="text" ng-model="user.lastName" placeholder="Họ" required>
+                    <input type="text" ng-model="user.firstName" placeholder="Tên" required>
+                </div>
+                <input type="text" ng-model="user.email" placeholder="Email" required>
+                <input type="text" ng-model="user.account" placeholder="Tên tài khoản" required>
+                <input type="password" ng-model="user.password" placeholder="Mật khẩu" required>
+                <input type="password" ng-model="user.confirmPassword" placeholder="Xác nhận mật khẩu" required>
+                <button ng-click="registerUser()">Đăng Ký</button>
+            </form>
 
- <script src="login.js"></script>
-<script src="loginAngularJs.js"></script>
+
+        </div>
+        <div class="form-container sign-in">
+            <form>
+                <h1>Đăng Nhập</h1>
+                <div class="social-icons">
+                    <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
+                    <a href="#" class="icon"><i class="fa fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fa fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
+                </div>
+                <span>Nhập tài khoản với mật khẩu</span>
+                <div>
+                    <input type="text" placeholder="User name" ng-model="username" name="username" required>
+                    <span ng-show="loginForm.username.$dirty && loginForm.username.$error.required"
+                        class="error-message">
+                        Tên người dùng là trường bắt buộc.
+                    </span>
+                </div>
+                <div>
+                    <input type="password" placeholder="Password" ng-model="password" name="password" required>
+                    <span ng-show="loginForm.password.$dirty && loginForm.password.$error.required"
+                        class="error-message">
+                        Mật khẩu là trường bắt buộc.
+                    </span>
+                </div>
+                <a href="/confirmOtp.html">Quên mật khẩu</a>
+                <div>
+                    <label for="remember">Nhớ tôi:</label>
+                    <input type="checkbox" id="remember" name="remember" th:checked="${remember}">
+                </div>
+                <button type="submit" ng-disabled="loginForm.$invalid" ng-click="login()">Đăng Nhập</button>
+            </form>
+
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Xin Chào trở lại!</h1>
+                    <p>Nhập thông tin cá nhân của bạn để sử dụng tất cả các tính năng của trang web.</p>
+                    <button class="hidden" id="login">Đăng Nhập</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Chào Bạn!</h1>
+                    <p>Đăng ký với thông tin cá nhân của bạn để sử dụng tất cả các tính năng của trang web.</p>
+                    <button class="hidden" id="register">Đăng Ký</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+    <script src="loginAngularJs.js"></script>
 </body>
 
 </html>
