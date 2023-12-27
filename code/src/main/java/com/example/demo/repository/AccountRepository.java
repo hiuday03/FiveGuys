@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
-    @Query(value = "SELECT A.Id, A.Account, A.Password, A.Email, A.PhoneNumber, A.IdRole, A.Status\n" +
+    @Query(value = "SELECT A.Id, A.Account, A.Password, A.Email, A.PhoneNumber, A.ConfirmationCode, A.IdRole, A.Status\n" +
             "FROM Accounts A\n" +
             "LEFT JOIN Customers C ON A.Id = C.IdAccount\n" +
             "LEFT JOIN Employees E ON A.Id = E.IdAccount\n" +

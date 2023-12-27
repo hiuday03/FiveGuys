@@ -1,13 +1,11 @@
 package com.example.demo.restcontroller.onlineSales;
 
 import com.example.demo.entity.*;
-import com.example.demo.security.AuthController;
-import com.example.demo.security.UserAuthentication;
 import com.example.demo.service.onlineSales.*;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,8 +18,6 @@ import java.util.*;
 @RequestMapping("/api/ol")
 public class CartRestController {
 
-    @Autowired
-    private UserAuthentication userAuthentication;
 
     @Autowired
     private OlCartService olCartService;
@@ -44,14 +40,12 @@ public class CartRestController {
     @Autowired
     private OLProductDetailService olProductDetailService;
 
-    @GetMapping("/cartDetail")
-    public ResponseEntity<List<CartDetail>> getCart() {
-        Authentication authentication = userAuthentication.getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String currentUsername = authentication.getName();
-            Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
+    ObjectMapper mapper = new ObjectMapper();
 
-            if (account.isPresent()) {
+    @GetMapping("/cartDetail")
+    public ResponseEntity<List<CartDetail>> getCart(@RequestParam(name = "username") String currentUsername) {
+        Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
+        if (account.isPresent()){
                 Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
                 if (customer.isPresent()) {
                     Cart gioHang = olCartService.findByCustomerId(customer.get().getId());
@@ -60,9 +54,7 @@ public class CartRestController {
                         return ResponseEntity.ok(chiTietGioHang);
                     }
                 }
-            }
-        }
-
+    }
         return ResponseEntity.ok(Collections.emptyList());
     }
 
@@ -71,17 +63,20 @@ public class CartRestController {
     @PostMapping("/cart/add")
     public ResponseEntity<?> creat(@RequestBody JsonNode orderData) {
 
+        String username =String.valueOf(orderData.get("username").asText());
 
-        Authentication authentication = userAuthentication.getAuthentication();
-        System.out.println(authentication);
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String currentUsername = authentication.getName();
-            System.out.println(currentUsername);
-            Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
+        Optional<AccountEntity> account = olAccountService.findByAccount(username);
+        if (account.isPresent()) {
+            Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
+            Optional<Employees> employeeEntity = Optional.ofNullable(olEmployeeService.findByAccount_Id(account.get().getId()));
 
-            if (account.isPresent()) {
-                Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
-                if (customer.isPresent()) {
+            if (employeeEntity != null && employeeEntity.isPresent()) {
+                Map<String, Object> responseData = new HashMap<>();
+                responseData.put("employeeLoggedIn", true);
+                return ResponseEntity.ok(responseData);
+            }
+
+            if ( customer != null && customer.isPresent()) {
                     Cart cart = olCartService.findByCustomerId(customer.get().getId());
 
                     if (cart == null) {
@@ -92,10 +87,9 @@ public class CartRestController {
                         cart.setStatus(1);
                         cart = olCartService.save(cart);
                     }
-                    Long productId =Long.valueOf(orderData.get("productId").asText());
+                    Long productDetailId =Long.valueOf(orderData.get("productDetailId").asText());
                     int quantity = orderData.get("quantity").asInt(); // Lấy giá trị số lượng
-                    Optional<ProductDetail> productDetail = olProductDetailService.findById((productId));
-                    System.out.println("Id productDetail " + productDetail.get().getId());
+                    Optional<ProductDetail> productDetail = olProductDetailService.findById((productDetailId));
                     if (productDetail.isPresent()) {
                         CartDetail cartDetail = null;
                         List<CartDetail> cartDetails = olCartDetailService.findAllByCart_Id(cart.getId());
@@ -128,15 +122,10 @@ public class CartRestController {
 
                         return ResponseEntity.ok(cartDetail);
                     }
-                }else if (!customer.isPresent()){
-                    Map<String, Object> responseData = new HashMap<>();
-                    responseData.put("employeeLoggedIn", true);
-                    return ResponseEntity.ok(responseData);
-                }else {
-                    return ResponseEntity.status(400).body(null);
+        }else {
+            return ResponseEntity.status(400).body(null);
 
-                }
-            }
+        }
         }
 
         return ResponseEntity.status(400).body(null);
@@ -144,15 +133,16 @@ public class CartRestController {
 
 
 
+
     @PostMapping("/cart/update")
     public ResponseEntity<?> update(
             @RequestBody JsonNode orderData) {
 
-        String productId = orderData.get("productId").asText(); // Lấy giá trị UUID dưới dạng String
+        String cartDetailId = orderData.get("cartDetailId").asText(); // Lấy giá trị UUID dưới dạng String
         int quantity = orderData.get("quantity").asInt(); // Lấy giá trị số lượng
 
-        if (productId != null && quantity >= 0) {
-            Optional<CartDetail> chiTietGioHang = olCartDetailService.findById(Long.valueOf(productId));
+        if (cartDetailId != null && quantity >= 0) {
+            Optional<CartDetail> chiTietGioHang = olCartDetailService.findById(Long.valueOf(cartDetailId));
             if (chiTietGioHang.isPresent()) {
                 Optional<ProductDetail> chiTietSanPham = olProductDetailService.findById(chiTietGioHang.get().getProductDetail().getId());
                 int soLuongThayDoi = chiTietGioHang.get().getQuantity() - quantity;
@@ -160,7 +150,7 @@ public class CartRestController {
                 if (quantity == 0) {
                     chiTietSanPham.get().setQuantity(chiTietSanPham.get().getQuantity() + soLuongThayDoi);
                     olProductDetailService.save(chiTietSanPham.get());
-                    olCartDetailService.deleteById(Long.valueOf(productId));
+                    olCartDetailService.deleteById(Long.valueOf(cartDetailId));
                     return ResponseEntity.ok("Updated and Deleted successfully");
                 }
 
@@ -181,11 +171,11 @@ public class CartRestController {
     public void remove(
             @RequestBody JsonNode orderData) {
 
-        String productId = orderData.get("productId").asText(); // Lấy giá trị UUID dưới dạng String
+        String cartDetailId = orderData.get("cartDetailId").asText(); // Lấy giá trị UUID dưới dạng String
 
 
-        if (productId != null) {
-            Optional<CartDetail> chiTietGioHang = olCartDetailService.findById(Long.valueOf(productId));
+        if (cartDetailId != null) {
+            Optional<CartDetail> chiTietGioHang = olCartDetailService.findById(Long.valueOf(cartDetailId));
 
             if (chiTietGioHang.isPresent()) {
                 ProductDetail chiTietSanPham = chiTietGioHang.get().getProductDetail();
@@ -196,7 +186,7 @@ public class CartRestController {
 //                chiTietSanPhamService.save(chiTietSanPham);
 
                 // Xóa ChiTietGioHang
-                olCartDetailService.deleteById(Long.valueOf(productId));
+                olCartDetailService.deleteById(Long.valueOf(cartDetailId));
             }
         }
 
@@ -207,11 +197,8 @@ public class CartRestController {
 
     @Transactional
     @PostMapping("/cart/clear")
-    public void clearCart() {
-        Authentication authentication = userAuthentication.getAuthentication();
+    public void clearCart(@RequestParam(name = "username") String currentUsername) {
 
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String currentUsername = authentication.getName();
 
             Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
 
@@ -238,8 +225,6 @@ public class CartRestController {
                     }
                 }
             }
-        }
-
     }
 
 
