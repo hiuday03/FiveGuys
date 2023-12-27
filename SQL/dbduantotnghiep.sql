@@ -20,7 +20,6 @@ create table Accounts
 	Password	varchar(100),
 	Email	varchar(100),
 	PhoneNumber	nvarchar(15),
-	IsActive bit,
 	ConfirmationCode nvarchar(30),
 	IdRole		bigint references Roles(Id),
 	Status		int

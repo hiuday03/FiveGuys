@@ -2,9 +2,8 @@ package com.example.demo.service.serviceiplm;
 
 import com.example.demo.entity.AccountEntity;
 import com.example.demo.repository.AccountRepository;
-import com.example.demo.senderMail.AccountEmailSender;
-import com.example.demo.senderMail.UserService;
-import com.example.demo.senderMail.util.Helper;
+import com.example.demo.security.Request.UserRequestDTO;
+import com.example.demo.security.service.AccountEmailSender;
 import com.example.demo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,9 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 
@@ -22,8 +21,8 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountEmailSender accountEmailSender;
 
-
-    private final AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     public AccountServiceImpl(AccountRepository accountRepository) {
@@ -127,5 +126,52 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountEntity> getAll() {
         return accountRepository.findAll();
+    }
+
+
+
+    public  UserRequestDTO mapAccountToUserRequestDTO(AccountEntity account) {
+        UserRequestDTO userRequestDTO = new UserRequestDTO();
+        userRequestDTO.setAccount(account.getAccount());
+        userRequestDTO.setEmail(account.getEmail());
+        userRequestDTO.setId(account.getId());
+        // Các trường thông tin khác
+        return userRequestDTO;
+    }
+
+    @Override
+    public Optional<AccountEntity> findByAccount2(String username) {
+        Optional<AccountEntity> account = accountRepository.findByAccount(username);
+        if (account.isPresent()){
+            return account;
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<UserRequestDTO> getAllAccount2() {
+        List<AccountEntity> accounts = accountRepository.findAll();
+        List<UserRequestDTO> userRequestDTOs = new ArrayList<>();
+        for (AccountEntity account : accounts) {
+            userRequestDTOs.add(mapAccountToUserRequestDTO(account));
+        }
+        return userRequestDTOs;
+    }
+
+    @Override
+    public AccountEntity createAccount2(AccountEntity accountEntity) {
+        return null;
+    }
+
+    @Override
+    public Optional<AccountEntity> findByEmail(String email) {
+
+        Optional<AccountEntity> account = accountRepository.findByEmail(email);
+        if (account.isPresent()){
+            return account;
+        }
+
+
+        return Optional.empty();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.AccountEntity;
+import com.example.demo.security.Request.UserRequestDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -26,5 +27,20 @@ public interface AccountService {
     void deleteAccount(Long id);
 
     List<AccountEntity> getAll();
+
+
+//    Tôi viết thêm hàm này nhiệm vụ security
+
+        Optional<AccountEntity> findByAccount2(String username);
+
+     List<UserRequestDTO> getAllAccount2();
+
+    AccountEntity createAccount2(AccountEntity accountEntity);
+
+    Optional<AccountEntity> findByEmail(String email);
+
+
+
+
 
 }
