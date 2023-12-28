@@ -73,9 +73,10 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
-        item.active = true;
+        item.password = "fiveguys123";
+        item.status = 1;
         $http.post("/account/save", item).then(function (resp) {
-            $scope.showSuccessMessage("Create account successfully");
+            $scope.showSuccessMessage("Thêm tài khoản thành công");
             $scope.resetFormInput();
             $scope.initialize();
             $('#modalAdd').modal('hide');
@@ -89,7 +90,7 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
         console.log(item)
         $http.put(`/account/${item.id}`, item).then(function (resp) {
 
-            $scope.showSuccessMessage("Update account successfully");
+            $scope.showSuccessMessage("Sửa tài khoản thành công");
             $scope.resetFormUpdate();
             $scope.initialize();
             $('#modalUpdate').modal('hide');
@@ -100,7 +101,7 @@ app_account.controller("account-ctrl", function ($scope, $http, $timeout) {
 
     $scope.delete = function (item) {
         $http.delete(`/account/${item.id}`).then(function (resp) {
-            $scope.showSuccessMessage("Delete account successfully");
+            $scope.showSuccessMessage("Xoá thành công");
             $scope.initialize();
         }).catch(function (error) {
             console.log("Error", error);

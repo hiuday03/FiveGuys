@@ -56,7 +56,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <!-- <div class="row mb-3">
                                     <label for="inputPassword" class="col-sm-3 col-form-label">Mật Khẩu</label>
                                     <div class="col-sm-9">
                                         <input name="password" id="inputPassword" type="password" class="form-control"
@@ -72,7 +72,7 @@
                                             </div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mb-3">
                                     <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Số Điện Thoại</label>
                                     <div class="col-sm-9">
@@ -117,21 +117,21 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label for="inputActive" class="col-sm-3 col-form-label">Trạng Thái</label>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
-                                        <select name="active" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.active" required>
-                                            <option value="true">Đang hoạt động</option>
-                                            <option value="false">Không hoạt động</option>
+                                        <select name="status" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formInput.status" required>
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formCreateAccount.$submitted">
-                                            <div ng-show="formCreateAccount.active.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Không được để trống</div>
-                                        </span>
+                                                <div ng-show="formCreateAccount.status.$invalid"
+                                                     class="error-message text-danger form-text">
+                                                    Không được để trống</div>
+                                            </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Thên</button>
                                     <button ng-click="resetFormInput()" type="button"
@@ -232,18 +232,18 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputActive" class="col-sm-3 col-form-label">Trạng Thái</label>
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
-                                        <select name="active" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.active">
-                                            <option ng-value="true">Đang hoạt động</option>
-                                            <option ng-value="false">Không hoạt động</option>
+                                        <select name="status" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formUpdate.status">
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formUpdateAccount.$submitted">
-                                            <div ng-show="formUpdateAccount.active.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Không được để trống</div>
-                                        </span>
+                                                <div ng-show="formUpdateAccount.status.$invalid"
+                                                     class="error-message text-danger form-text">
+                                                    Không được để trống</div>
+                                            </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -280,7 +280,7 @@
                                 <td>{{account.phoneNumber}}</td>
                                 <td>{{account.email}}</td> -->
                                 <td>{{account.role.fullName}}</td>
-                                <td>{{account.active == true ? 'Đang Hoạt Động' : 'Không Hoạt Động'}}</td>
+                                <td>{{account.status == 1 ?'Đang hoạt động' : 'Ngừng hoạt động'}}</td>
                                 <td>
                                     <button ng-click="edit(account)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
