@@ -42,7 +42,6 @@ public class OlBillServiceImpl implements OlBillService {
         } else {
             throw new IllegalArgumentException("orderDetails must be a non-null array");
         }
-
         return bill;
     }
 }

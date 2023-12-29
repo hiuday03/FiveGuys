@@ -244,7 +244,7 @@ app.controller("abcd", function ($scope, $http, $timeout) {
             x.style.display = "block";
             y.style.display = "none";
             z.style.display = "none";
-        }else{
+        } else {
             x.style.display = "none";
             y.style.display = "block";
             z.style.display = "block";
@@ -252,7 +252,6 @@ app.controller("abcd", function ($scope, $http, $timeout) {
     }
 
     $scope.enableEditForm = function (bool, bool1) {
-
         document.getElementById("updateName").readOnly = bool;
         document.getElementById("updateCollar").readOnly = bool;
         document.getElementById("updateWrist").readOnly = bool;
@@ -302,24 +301,6 @@ app.controller("abcd", function ($scope, $http, $timeout) {
         $scope.formInput.describe = editor1.getHTMLCode()
     };
 
-    // var editor2 = new RichTextEditor("#div_editor1");
-    // $scope.cc2 = function () {
-    //     editor2.setHTMLCode("Use inline HTML or setHTMLCode to init the default");
-    //     console.log(editor2.getHTMLCode())
-    // };
-
-
-
-    // var x = document.getElementById("enableEdit");
-    // x.style.display = "block";
-    // var y = document.getElementById("cancelEdit");
-    // var z = document.getElementById("submitEdit");
-    // y.style.display = "none";
-    // z.style.display = "none";
-    //
-
-
-
     $scope.cancelEdit = function () {
         $scope.enableEditForm(true, true);
         $http.get(apiUrlProduct + "/" + $scope.formUpdate.id)
@@ -368,86 +349,21 @@ app.controller("abcd", function ($scope, $http, $timeout) {
     const apiImage = "http://localhost:8080/api/image"
 
     $scope.formInputImage = {
-        path:null,
-        name:null,
-        productDetail:{
-            id:null
+        path: null,
+        name: null,
+        productDetail: {
+            id: null
         }
     }
 
-    $scope.submitProductDetail = function () {
-        // let fileInput1 = document.getElementById("image1");
-        // let fileInput2 = document.getElementById("image2");
-        // let fileInput3 = document.getElementById("image3");
-        // let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-        // if (fileInput1.files.length > 0) {
-        //     let data = new FormData();
-        //     data.append('file', fileInput1.files[0]);
-        //     $http.post('/rest/upload', data, {
-        //         transformRequest: angular.identity,
-        //         headers: { 'Content-Type': undefined }
-        //     }).then(resp => {
-        //         $scope.formInputImage.path = resp.data.name;
-        //         let item = angular.copy($scope.formInput);
-        //         item.createdAt = $scope.currentDate;
-        //         $http.post(`/api/image`, item).then(resp => {
-        //             console.log("them image thanh cong")
-        //         }).catch(error => {
-        //             console.log("Error", error);
-        //             return;
-        //         })
-        //     }).catch(error => {
-        //         console.log("Error", error);
-        //     })
-        // }
-        // if (fileInput2.files.length > 0) {
-        //     let data = new FormData();
-        //     data.append('file', fileInput2.files[0]);
-        //     $http.post('/rest/upload', data, {
-        //         transformRequest: angular.identity,
-        //         headers: { 'Content-Type': undefined }
-        //     }).then(resp => {
-        //         $scope.formInputImage.path = resp.data.name;
-        //         let item = angular.copy($scope.formInput);
-        //         item.createdAt = $scope.currentDate;
-        //         $http.post(`/api/image`, item).then(resp => {
-        //             console.log("them image thanh cong")
-        //         }).catch(error => {
-        //             console.log("Error", error);
-        //             return;
-        //         })
-        //     }).catch(error => {
-        //         console.log("Error", error);
-        //     })
-        // }
-        // if (fileInput3.files.length > 0) {
-        //     let data = new FormData();
-        //     data.append('file', fileInput3.files[0]);
-        //     $http.post('/rest/upload', data, {
-        //         transformRequest: angular.identity,
-        //         headers: { 'Content-Type': undefined }
-        //     }).then(resp => {
-        //         $scope.formInputImage.path = resp.data.name;
-        //         let item = angular.copy($scope.formInput);
-        //         item.createdAt = $scope.currentDate;
-        //         $http.post(`/api/image`, item).then(resp => {
-        //             console.log("them image thanh cong")
-        //         }).catch(error => {
-        //             console.log("Error", error);
-        //             return;
-        //         })
-        //     }).catch(error => {
-        //         console.log("Error", error);
-        //     })
-        // }
+    $scope.submitProductDetail = function (listImage) {
         console.log($scope.formInputPd)
         $scope.formInputPd.product.id = $scope.formUpdate.id
         let item = angular.copy($scope.formInputPd);
-        // item.product.id = $scope.formUpdate.id
-        $http.post(apiUrlProductDetail, item).then(resp => {
-            // alert("Create product detail successfully!")
-
-            console.log("pd")
+        item.product.id = $scope.formUpdate.id
+        let productDetailRequest = {productDetail: item, imagesList: listImage};
+        console.log(productDetailRequest)
+        $http.post(apiUrlProductDetail, productDetailRequest).then(resp => {
             $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
                 .then(function (response) {
                     console.log("pd" + response)
@@ -458,12 +374,36 @@ app.controller("abcd", function ($scope, $http, $timeout) {
                 //     var myModal1 = bootstrap.Modal.getOrCreateInstance(document.getElementById(idModal1));
                 //     myModal1.hide();
                 // }
-
                 $scope.formInputPd = {}
                 $scope.resetFormInput();
+
+                $scope.resetFormInputPd()
+                $scope.formInputPd = {}
             }
         }).catch(error => {
             console.log("Error", error);
+        })
+    }
+
+    $scope.submitProductDetail123 = function () {
+        $scope.checkTrungFK = false;
+        console.log($scope.formInputPd)
+        $scope.formInputPd.product.id = $scope.formUpdate.id
+        let item = angular.copy($scope.formInputPd);
+        $http.post(apiUrlProductDetail + "/checkFk", item).then(resp => {
+            if(resp.data == ''){
+                console.log("cc1")
+                $scope.checkTrungFK = false;
+                $('#modalProductDetail').modal('hide');
+                $('#modalDetail').modal('show');
+            }else{
+                console.log("cc2")
+                $scope.checkTrungFK = true;
+                // return true;
+            }
+        }).catch(error => {
+            console.log("Error", error);
+            // return false;
         })
     }
 
@@ -473,11 +413,14 @@ app.controller("abcd", function ($scope, $http, $timeout) {
                 console.log(response)
                 $scope.productDetails = response.data.content
             });
+        $scope.resetFormInputPd()
+        $scope.formInputPd = {}
     }
 
     imgShow("image1", "image-preview1");
     imgShow("image2", "image-preview2");
     imgShow("image3", "image-preview3");
+
     // imgShow("image-update", "image-preview-update");
 
     function imgShow(textInput, textPreview) {
@@ -517,6 +460,249 @@ app.controller("abcd", function ($scope, $http, $timeout) {
                 $scope.categories = response.data.content;
                 $scope.totalPage = response.data.totalPages
             });
+    }
+
+
+    $scope.saveImage = function () {
+        let images = [];
+        let fileInput1 = document.getElementById("image1");
+        let fileInput2 = document.getElementById("image2");
+        let fileInput3 = document.getElementById("image3");
+        let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (fileInput1.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput1.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                $timeout(function () {
+                    $scope.formInputImage.path = resp.data.name;
+                    images.push($scope.formInputImage)
+                }, 100);
+
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        if (fileInput2.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput2.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                $timeout(function () {
+                    $scope.formInputImage.path = resp.data.name;
+                    images.push($scope.formInputImage)
+                }, 100);
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        if (fileInput3.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput3.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                $timeout(function () {
+                    $scope.formInputImage.path = resp.data.name;
+                    images.push($scope.formInputImage)
+                }, 100);
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        $timeout(function () {
+            console.log(images)
+            return images;
+        }, 1000);
+    }
+
+    $scope.saveImage123 = function () {
+        let images = [];
+        let fileInput1 = document.getElementById("image1");
+        let fileInput2 = document.getElementById("image2");
+        let fileInput3 = document.getElementById("image3");
+        let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        // images.p
+        if (fileInput1.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput1.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                $timeout(function () {
+                    $scope.formInputImage.path = resp.data.name;
+                    images.push($scope.formInputImage)
+                }, 100);
+
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        if (fileInput2.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput2.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                $timeout(function () {
+                    $scope.formInputImage.path = resp.data.name;
+                    images.push($scope.formInputImage)
+                }, 100);
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        if (fileInput3.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput3.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                $timeout(function () {
+                    $scope.formInputImage.path = resp.data.name;
+                    images.push($scope.formInputImage)
+                }, 100);
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        $timeout(function () {
+            console.log(images)
+            return images;
+        }, 1000);
+    }
+
+    $scope.saveImage1233 = function () {
+        let images = [];
+        let fileInput1 = document.getElementById("image1");
+        let fileInput2 = document.getElementById("image2");
+        let fileInput3 = document.getElementById("image3");
+        let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        // images.p
+        if (fileInput1.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput1.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                let imagecc = {
+                    path: null,
+                    name: null,
+                    productDetail: {
+                        id: null
+                    }
+                }
+                imagecc.path = resp.data.name;
+                images.push(imagecc)
+
+                console.log(images)
+                if(fileInput2.files.length <= 0 && fileInput3.files.length <= 0){
+                    console.log("1")
+                    console.log(images)
+                    $scope.submitProductDetail(images)
+                }
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        if (fileInput2.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput2.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                let imagecc = {
+                    path: null,
+                    name: null,
+                    productDetail: {
+                        id: null
+                    }
+                }
+                imagecc.path = resp.data.name;
+                images.push(imagecc)
+
+                console.log(images)
+                if(fileInput3.files.length <= 0){
+                    console.log("2")
+                    console.log(images)
+                    $scope.submitProductDetail(images)
+                }
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+        if (fileInput3.files.length > 0) {
+            let data = new FormData();
+            data.append('file', fileInput3.files[0]);
+            $http.post('/rest/upload', data, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(resp => {
+                let imagecc = {
+                    path: null,
+                    name: null,
+                    productDetail: {
+                        id: null
+                    }
+                }
+                imagecc.path = resp.data.name;
+                images.push(imagecc)
+                console.log("3")
+                console.log(images)
+                $scope.submitProductDetail(images)
+            }).catch(error => {
+                console.log("Error", error);
+            })
+        }
+    }
+
+    $scope.formUpdatePd = {
+        product: {
+            id: null
+        }
+    }
+
+    $scope.editProductDetail = function (productDetail) {
+        $scope.formUpdatePd = angular.copy(productDetail);
+        $scope.getImageByPDid($scope.formUpdatePd.id)
+    }
+
+    $scope.imagelist = [];
+
+    $scope.getImageByPDid = function (id) {
+        $http.get(apiImage + "/pd/" + id)
+            .then(function (response) {
+                console.log(response.data)
+                $scope.imagelist = response.data.content
+            });
+    }
+
+    $scope.resetFormInputPd = function () {
+        let fileInput1 = document.getElementById("image1");
+        let imagePreview1 = document.getElementById("image-preview1");
+        let fileInput2 = document.getElementById("image2");
+        let imagePreview2 = document.getElementById("image-preview2");
+        let fileInput3 = document.getElementById("image3");
+        let imagePreview3 = document.getElementById("image-preview3");
+        imagePreview1.src = "/assets/img/no-img.png";
+        imagePreview2.src = "/assets/img/no-img.png";
+        imagePreview3.src = "/assets/img/no-img.png";
+        fileInput1.value = "";
+        fileInput1.type = "file";
+        fileInput2.value = "";
+        fileInput2.type = "file";
+        fileInput3.value = "";
+        fileInput3.type = "file";
     }
 
 });

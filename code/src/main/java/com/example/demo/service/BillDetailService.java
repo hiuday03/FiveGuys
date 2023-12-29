@@ -19,4 +19,5 @@ public interface BillDetailService {
 
     void deleteBillDetail(Long id);
 
+    List<BillDetail> getAllByBillId(Long id);
 }

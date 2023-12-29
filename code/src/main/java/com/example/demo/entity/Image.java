@@ -36,8 +36,9 @@ public class Image {
     @Column(name = "Status")
     private Integer status;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}  )
-    @JsonIgnore
+//    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}  )
+//    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "IdProductDetail")
     private ProductDetail productDetail;
 }

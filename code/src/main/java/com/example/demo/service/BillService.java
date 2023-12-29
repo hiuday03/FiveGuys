@@ -18,4 +18,7 @@ public interface BillService {
 
     void deleteBill(Long id);
 
+
+    Bill updateStatus(Integer status, Long id);
+
 }

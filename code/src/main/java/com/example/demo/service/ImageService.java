@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Image;
+import com.example.demo.entity.ProductDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,11 @@ public interface ImageService {
 
     Image save(Image image);
 
+    List<Image> saveAll(List<Image> images, ProductDetail productDetail);
+
     Image update(Image image, Long id);
 
     void delete(Long id);
+
+    List<Image> getByPDid(Long id);
 }

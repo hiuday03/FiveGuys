@@ -64,4 +64,9 @@ public class BillDetailServiceImpl implements BillDetailService {
             throw  new IllegalArgumentException("Khoong tìm thấy Hoá đơn chi tiết với ID " + id);
         }
     }
+
+    @Override
+    public List<BillDetail> getAllByBillId(Long id) {
+        return billDetailRepository.findAllByBillId(id);
+    }
 }
