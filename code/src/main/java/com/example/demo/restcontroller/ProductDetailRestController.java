@@ -1,6 +1,8 @@
 package com.example.demo.restcontroller;
 
+import com.example.demo.entity.Image;
 import com.example.demo.entity.ProductDetail;
+import com.example.demo.model.request.product.ProductDetailRequest;
 import com.example.demo.service.ProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,9 +37,18 @@ public class ProductDetailRestController {
         return ResponseEntity.ok(productDetail);
     }
 
+//    @PostMapping("")
+//    public ResponseEntity<?> add(@RequestBody ProductDetail productDetailReq,
+//                                 @RequestBody List<Image> images){
+//        ProductDetail productDetail = productDetailService.saveI(productDetailReq, images);
+//        return ResponseEntity.ok(productDetail);
+//    }
+
     @PostMapping("")
-    public ResponseEntity<?> add(@RequestBody ProductDetail productDetailReq){
-        ProductDetail productDetail = productDetailService.save(productDetailReq);
+    public ResponseEntity<?> add(@RequestBody ProductDetailRequest productDetailRequest){
+        ProductDetail productDetail
+                = productDetailService.saveI(productDetailRequest.getProductDetail(),
+                                    productDetailRequest.getImagesList());
         return ResponseEntity.ok(productDetail);
     }
 
@@ -58,6 +69,12 @@ public class ProductDetailRestController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id){
         productDetailService.delete(id);
+    }
+
+    @PostMapping("/checkFk")
+    public ProductDetail checkTrungFk(@RequestBody ProductDetail productDetailReq){
+        return productDetailService.checkTrungFK(
+                productDetailReq.getProduct(), productDetailReq.getColor(), productDetailReq.getSize());
     }
 
 }

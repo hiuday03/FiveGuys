@@ -61,7 +61,7 @@ public class BillServiceImpl implements BillService {
             bill1.setPaymentMethod(bill.getPaymentMethod());
             bill1.setVoucher(bill.getVoucher());
             bill1.setStatus(bill.getStatus());
-            return billRepository.save(bill);
+            return billRepository.save(bill1);
         }else{
             throw new IllegalArgumentException("Không tìm thấy bill với Id "+ id);
         }
@@ -71,6 +71,18 @@ public class BillServiceImpl implements BillService {
     public void deleteBill(Long id) {
         if (billRepository.existsById(id)){
             billRepository.deleteById(id);
+        }else{
+            throw new IllegalArgumentException("Không tìm thấy bill với Id "+ id);
+        }
+    }
+
+    @Override
+    public Bill updateStatus(Integer status, Long id) {
+        Optional<Bill> existingBill = billRepository.findById(id);
+        if (existingBill.isPresent()){
+            Bill bill1 = existingBill.get();
+            bill1.setStatus(status);
+            return billRepository.save(bill1);
         }else{
             throw new IllegalArgumentException("Không tìm thấy bill với Id "+ id);
         }

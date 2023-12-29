@@ -20,4 +20,5 @@ public class ImageCloud {
                 .get("url")
                 .toString();
     }
+
 }

@@ -19,12 +19,12 @@
 <main id="main" class="main" layout:fragment="content">
 
     <div class="pagetitle">
-        <h1>Products</h1>
+        <h1>Quản lý sản phẩm</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                <li class="breadcrumb-item">Products</li>
-                <li class="breadcrumb-item active">Products</li>
+                <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang chủ</a></li>
+                <li class="breadcrumb-item">Sản phẩm</li>
+                <li class="breadcrumb-item active">Quản lý sản phẩm</li>
             </ol>
         </nav>
     </div>
@@ -39,7 +39,7 @@
             <div class="col-8">
                 <button type="button" class="btn btn-outline-success mb-2 btn-sm" data-bs-toggle="modal"
                         data-bs-target="#exampleModalToggle">
-                    Add new product
+                    Thêm sản phẩm
                 </button>
             </div>
             <div class="col-4">
@@ -256,7 +256,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row mb-3" ng-init="statusUpdate=p.status">
-                                                <label class="col-sm-3 col-form-label">Status</label>
+                                                <label class="col-sm-3 col-form-label">Trạng thái</label>
                                                 <div class="col-sm-9">
                                                     <select class="form-select" aria-label="Small select example"
                                                             ng-model="statusUpdate">
@@ -270,10 +270,10 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Close
+                                                Hủy
                                             </button>
                                             <button type="button" class="btn btn-primary"
-                                                    ng-click="updateStatusProduct(p.id, statusUpdate)">Save changes
+                                                    ng-click="updateStatusProduct(p.id, statusUpdate)">Cập nhật
                                             </button>
                                         </div>
                                     </div>
@@ -346,7 +346,7 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Detail: {{formUpdate.code}} - {{formUpdate.name}}</h5>
+                        <h5 class="modal-title">Thông tin: {{formUpdate.code}} - {{formUpdate.name}}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -356,7 +356,7 @@
                                 <ul class="nav nav-pills" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab"
-                                           ng-click="showAddProductDetail(product)" href="#home">Product</a>
+                                           ng-click="showAddProductDetail(product)" href="#home">Thông tin sản phẩm</a>
                                     </li>
                                     <!--                                    <li class="nav-item">-->
                                     <!--                                        <a class="nav-link" data-bs-toggle="tab"-->
@@ -364,7 +364,7 @@
                                     <!--                                    </li>-->
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" ng-click="showAddProductDetail('pd')"
-                                           href="#menu2">Product detail</a>
+                                           href="#menu2">Chi tiết sản phẩm</a>
                                     </li>
                                 </ul>
                             </div>
@@ -374,7 +374,7 @@
                                         <button id="addProductDetail" class="btn btn-outline-success mb-2"
                                                 data-bs-toggle="modal" data-bs-target="#modalProductDetail"
                                                 data-bs-dismiss="modal">
-                                            Add
+                                            Thêm mới
                                         </button>
                                     </div>
                                 </div>
@@ -385,7 +385,7 @@
                         <div class="tab-content mt-3">
                             <div id="home" class="container tab-pane active">
                                 <div class="row mb-3">
-                                    <label for="updateCode" class="col-sm-3 col-form-label">Code</label>
+                                    <label for="updateCode" class="col-sm-3 col-form-label">Mã sản phẩm</label>
                                     <div class="col-sm-9">
                                         <input name="code" id="updateCode" type="text" class="form-control"
                                                placeholder="Enter code"
@@ -393,7 +393,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="updateName" class="col-sm-3 col-form-label">Name</label>
+                                    <label for="updateName" class="col-sm-3 col-form-label">Tên</label>
                                     <div class="col-sm-9">
                                         <input name="code" id="updateName" type="text" class="form-control"
                                                placeholder="Enter name"
@@ -401,7 +401,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="updateCollar" class="col-sm-3 col-form-label">Collar</label>
+                                    <label for="updateCollar" class="col-sm-3 col-form-label">Cổ áo</label>
                                     <div class="col-sm-9">
                                         <input name="code" id="updateCollar" type="text" class="form-control"
                                                placeholder="Enter collar"
@@ -409,7 +409,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="updateWrist" class="col-sm-3 col-form-label">Wrist</label>
+                                    <label for="updateWrist" class="col-sm-3 col-form-label">Tay áo</label>
                                     <div class="col-sm-9">
                                         <input name="code" id="updateWrist" type="text" class="form-control"
                                                placeholder="Enter wrist"
@@ -417,38 +417,38 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="updateCategory" class="col-sm-3 col-form-label">Category</label>
+                                    <label for="updateCategory" class="col-sm-3 col-form-label">Loại</label>
                                     <div class="col-sm-9">
                                         <!--                                        <input name="code" id="updateCategory" type="text" class="form-control"-->
                                         <!--                                               placeholder="Enter Code"-->
                                         <!--                                               ng-model="formUpdate.category.id" ng-required="true">-->
                                         <select class="form-select" id="updateCategory"
                                                 ng-model="formUpdate.category.id" required>
-                                            <option selected disabled value="">Choose...</option>
+                                            <!--                                            <option selected disabled value="">Choose...</option>-->
                                             <option ng-repeat="c in categories" ng-value="{{c.id}}">{{ c.name }}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="updateMaterial" class="col-sm-3 col-form-label">Material</label>
+                                    <label for="updateMaterial" class="col-sm-3 col-form-label">Chất liệu</label>
                                     <div class="col-sm-9">
                                         <!--                                        <input name="code" id="inputMaterial" type="text" class="form-control"-->
                                         <!--                                               placeholder="Enter Code"-->
                                         <!--                                               ng-model="formUpdate.material.id" ng-required="true">-->
                                         <select class="form-select" id="updateMaterial"
                                                 ng-model="formUpdate.material.id" required>
-                                            <option selected disabled value="">Choose...</option>
+                                            <!--                                            <option selected disabled value="">Choose...</option>-->
                                             <option ng-repeat="m in materials" ng-value="{{m.id}}">{{ m.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Brands</label>
+                                    <label class="col-sm-3 col-form-label">Thương hiệu</label>
                                     <div class="col-sm-9">
                                         <select class="form-select" id="updateBrand"
                                                 ng-model="formUpdate.brand.id" required>
-                                            <option selected disabled value="">Choose...</option>
+                                            <!--                                            <option selected disabled value="">Choose...</option>-->
                                             <option ng-repeat="b in brands" ng-value="{{b.id}}">{{ b.name }}</option>
                                         </select>
                                     </div>
@@ -456,12 +456,12 @@
                                 <div class="modal-footer">
                                     <button class="btn btn-primary" id="enableEdit"
                                             ng-click="enableEditForm(false, false)">
-                                        Edit
+                                        Sửa
                                     </button>
-                                    <button class="btn btn-secondary" id="cancelEdit" ng-click="cancelEdit()">Cancel
+                                    <button class="btn btn-secondary" id="cancelEdit" ng-click="cancelEdit()">Hủy
                                     </button>
                                     <button class="btn btn-primary" id="submitEdit" ng-click="update(formUpdate.id)">
-                                        Save change
+                                        Cập nhật
                                     </button>
                                 </div>
                             </div>
@@ -478,14 +478,14 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Color</th>
-                                        <th scope="col">Size</th>
-                                        <th scope="col">Import price</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Màu sắc</th>
+                                        <th scope="col">Kích cỡ</th>
+                                        <th scope="col">Giá nhập</th>
+                                        <th scope="col">Giá bán</th>
+                                        <th scope="col">Số lượng</th>
                                         <th scope="col">Barcode</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Trạng thái</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
@@ -495,7 +495,7 @@
                                         <td class="col-1">{{pd.color.name}}</td>
                                         <td class="col-1">{{pd.size.name}}</td>
                                         <td class="col-2">{{pd.importPrice}}</td>
-                                        <td class="col-1">{{pd.price}}</td>
+                                        <td class="col-2">{{pd.price}}</td>
                                         <td class="col-1">{{pd.quantity}}</td>
                                         <td class="col-2">{{pd.barcode}}</td>
                                         <td class="col-1" ng-switch="pd.status">
@@ -503,17 +503,20 @@
                                             <span ng-switch-when="1">Ngừng bán</span>
                                             <span ng-switch-when="2">Chờ</span>
                                             <span ng-switch-when="3">Ẩn</span></td>
-                                        <td class="col-2">
+                                        <td class="col-1">
+                                            <a id="updateProductDetail" class="btn btn-sm btn-success"
+                                                    data-bs-toggle="modal" data-bs-target="#modalUpdateDetail"
+                                                    data-bs-dismiss="modal" ng-click="editProductDetail(pd)">
+                                                <i class="ri-edit-2-fill"></i>
+                                            </a>
                                             <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
                                                data-bs-target="#modalDetail"
                                                ng-click="edit(p)"><i class="ri-eye-2-fill"></i></a>
-                                            <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                               data-bs-target="#modalUpdate"
-                                               ng-click="getProductById(p.id)"><i class="ri-edit-2-line"></i></a>
+
                                         </td>
                                     </tr>
-                                    <td colspan="8" ng-if="productDetails.length <= 0">
-                                        <p style="text-align: center">No product detail</p>
+                                    <td colspan="9" ng-if="productDetails.length <= 0">
+                                        <p style="text-align: center">Không có chi tiết sản phẩm</p>
                                     </td>
                                     </tbody>
                                 </table>
@@ -536,52 +539,57 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel1">Add new product detail</h5>
+                        <h5 class="modal-title" id="exampleModalLabel1">Thêm mới chi tiết sản phẩm</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div ng-if="checkTrungFK == true">
+                            <div class="alert alert-danger" role="alert">
+                                Đã tồn tại chi tiết sản phẩm này
+                            </div>
+                        </div>
                         <form name="multiStepForm" class="form-validation" role="form" novalidate>
                             <!--                                <div class="animate-switch" ng-switch-when="stage1">-->
                             <div class="row">
                                 <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Import price</label>
+                                    <label class="col-sm-3 col-form-label">Giá nhập</label>
                                     <div class="col-sm-9">
-                                        <input name="code" type="number" class="form-control"
-                                               placeholder="Enter import price"
+                                        <input name="" type="number" class="form-control"
+                                               placeholder="Nhập giá nhập..."
                                                ng-model="formInputPd.importPrice" ng-required="true">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Price</label>
+                                    <label class="col-sm-3 col-form-label">Giá bán</label>
                                     <div class="col-sm-9">
-                                        <input name="code" type="number" class="form-control"
-                                               placeholder="Enter price"
+                                        <input name="" type="number" class="form-control"
+                                               placeholder="Nhập giá bán..."
                                                ng-model="formInputPd.price" ng-required="true">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Color</label>
+                                    <label class="col-sm-3 col-form-label">Màu sắc</label>
                                     <div class="col-sm-9">
                                         <select class="form-select" ng-model="formInputPd.color.id" required>
-                                            <option selected disabled value="">Choose...</option>
+                                            <option selected disabled value="">Chọn màu sắc...</option>
                                             <option ng-repeat="c in colors" value="{{c.id}}">{{ c.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Size</label>
+                                    <label class="col-sm-3 col-form-label">Kích cớ</label>
                                     <div class="col-sm-9">
                                         <select class="form-select" ng-model="formInputPd.size.id" required>
-                                            <option selected disabled value="">Choose...</option>
+                                            <option selected disabled value="">Chọn kích cỡ...</option>
                                             <option ng-repeat="s in sizes" value="{{s.id}}">{{ s.name }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Quantity</label>
+                                    <label class="col-sm-3 col-form-label">Số lượng tồn</label>
                                     <div class="col-sm-9">
-                                        <input name="code" type="number" class="form-control"
-                                               placeholder="Enter quantity"
+                                        <input name="" type="number" class="form-control"
+                                               placeholder="Nhập số lượng..."
                                                ng-model="formInputPd.quantity" ng-required="true">
                                     </div>
                                 </div>
@@ -616,10 +624,118 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" ng-click="cancelEditPd()"
-                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Cancel
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Hủy
                         </button>
                         <button class="btn btn-primary" ng-click="submitProductDetail()"
-                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Submit
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Xác nhận
+                        </button>
+                        <button class="btn btn-primary" ng-click="saveImage()"
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">a
+                        </button>
+                        <button class="btn btn-primary" ng-click="saveImage1233()"
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">image
+                        </button>
+                        <button class="btn btn-primary" ng-click="submitProductDetail123()" type="submit">validate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal update productDetail-->
+        <div class="modal fade" id="modalUpdateDetail" tabindex="-1" aria-labelledby="exampleModalLabel1"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleUpdateLabel1">Thêm mới chi tiết sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="multiStepForm" class="form-validation" role="form" novalidate>
+                            <!--                                <div class="animate-switch" ng-switch-when="stage1">-->
+                            <div class="row">
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Giá nhập</label>
+                                    <div class="col-sm-9">
+                                        <input name="code" type="number" class="form-control"
+                                               placeholder="Enter import price"
+                                               ng-model="formUpdatePd.importPrice" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Giá bán</label>
+                                    <div class="col-sm-9">
+                                        <input name="code" type="number" class="form-control"
+                                               placeholder="Enter price"
+                                               ng-model="formUpdatePd.price" ng-required="true">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Màu sắc</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" ng-model="formUpdatePd.color.id" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option ng-repeat="c in colors" ng-value="{{c.id}}">{{ c.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Kích cỡ</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" ng-model="formUpdatePd.size.id" required>
+                                            <option selected disabled value="">Choose...</option>
+                                            <option ng-repeat="s in sizes" ng-value="{{s.id}}">{{ s.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Số lượng tồn</label>
+                                    <div class="col-sm-9">
+                                        <input name="code" type="number" class="form-control"
+                                               placeholder="Nhập số lượng tồn..."
+                                               ng-model="formUpdatePd.quantity" ng-required="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 d-flex justify-content-end">
+                                    <label for="image1">
+                                        <img src="/assets/img/no-img.png" id="imageupdate-preview1"
+                                             style="width: 100px; height: 100px;"/>
+                                    </label>
+                                    <input class="form-control" name="path" style="display: none"
+                                           type="file" id="imageUpdate1" accept="image/*"/>
+                                </div>
+                                <div class="col-4 d-flex justify-content-end">
+                                    <label for="image2">
+                                        <img src="/assets/img/no-img.png" id="imageupdate-preview2"
+                                             style="width: 100px; height: 100px;"/>
+                                    </label>
+                                    <input class="form-control" name="path" style="display: none"
+                                           type="file" id="imageUpdate2" accept="image/*"/>
+                                </div>
+                                <div class="col-4 d-flex justify-content-end">
+                                    <label for="image3">
+                                        <img src="/assets/img/no-img.png" id="imageupdate-preview3"
+                                             style="width: 100px; height: 100px;"/>
+                                    </label>
+                                    <input class="form-control" name="path" style="display: none"
+                                           type="file" id="imageUpdate3" accept="image/*"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" ng-click="cancelEditPd()"
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Hủy
+                        </button>
+                        <button class="btn btn-primary" ng-click="submitProductDetail()"
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">Xác nhận
+                        </button>
+                        <button class="btn btn-primary" ng-click="saveImage()"
+                                data-bs-toggle="modal" data-bs-target="#modalDetail" data-bs-dismiss="modal">a
                         </button>
                     </div>
                 </div>
@@ -632,59 +748,59 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalToggleLabel">Product</h5>
+                        <h5 class="modal-title" id="exampleModalToggleLabel">Thêm mới sản phẩm</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form name="multiStepForm" class="form-validation" role="form" novalidate>
                             <!--                                <div class="animate-switch" ng-switch-when="stage1">-->
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Name</label>
+                                <label class="col-sm-3 col-form-label">Tên</label>
                                 <div class="col-sm-9">
                                     <input name="code" type="text" class="form-control"
-                                           placeholder="Enter name"
+                                           placeholder="Nhập tên sản phẩm"
                                            ng-model="formInput.name" ng-required="true">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Collar</label>
+                                <label class="col-sm-3 col-form-label">Cổ áo</label>
                                 <div class="col-sm-9">
                                     <input name="code" type="text" class="form-control"
-                                           placeholder="Enter collar"
+                                           placeholder="Nhập cổ áo..."
                                            ng-model="formInput.collar" ng-required="true">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Wrist</label>
+                                <label class="col-sm-3 col-form-label">Tay áo</label>
                                 <div class="col-sm-9">
                                     <input name="code" type="text" class="form-control"
-                                           placeholder="Enter wrist"
+                                           placeholder="Nhập tay áo..."
                                            ng-model="formInput.wrist" ng-required="true">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Category</label>
+                                <label class="col-sm-3 col-form-label">Loại</label>
                                 <div class="col-sm-9">
                                     <select class="form-select" ng-model="formInput.category.id" required>
-                                        <option selected disabled value="">Choose...</option>
+                                        <option selected disabled value="">Chọn loại...</option>
                                         <option ng-repeat="c in categories" value="{{c.id}}">{{ c.name }}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Material</label>
+                                <label class="col-sm-3 col-form-label">Chất liệu</label>
                                 <div class="col-sm-9">
                                     <select class="form-select" ng-model="formInput.material.id" required>
-                                        <option selected disabled value="">Choose...</option>
+                                        <option selected disabled value="">Chọn chất liệu...</option>
                                         <option ng-repeat="m in materials" value="{{m.id}}">{{ m.name }}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Brands</label>
+                                <label class="col-sm-3 col-form-label">Thương hiệu</label>
                                 <div class="col-sm-9">
                                     <select class="form-select" ng-model="formInput.brand.id" required>
-                                        <option selected disabled value="">Choose...</option>
+                                        <option selected disabled value="">Chọn thương hiệu...</option>
                                         <option ng-repeat="b in brands" value="{{b.id}}">{{ b.name }}</option>
                                     </select>
                                 </div>
@@ -693,7 +809,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
-                                data-bs-dismiss="modal">Next
+                                data-bs-dismiss="modal">Tiếp
                         </button>
                     </div>
                 </div>
@@ -704,7 +820,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalToggleLabel2">Describe</h5>
+                        <h5 class="modal-title" id="exampleModalToggleLabel2">Mô tả</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -715,10 +831,10 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-info" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
-                                data-bs-dismiss="modal">Back
+                                data-bs-dismiss="modal">Quay lại
                         </button>
                         <button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
-                                data-bs-dismiss="modal" ng-click="cc1()">Next
+                                data-bs-dismiss="modal" ng-click="cc1()">Tiếp
                         </button>
                     </div>
                 </div>
@@ -729,23 +845,23 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalToggleLabel3">Submit</h5>
+                        <h5 class="modal-title" id="exampleModalToggleLabel3">Xác nhận thông tin</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Name: {{formInput.name}}</p>
-                        <p>Collar: {{formInput.collar}}</p>
-                        <p>Wrist: {{formInput.wrist}}</p>
-                        <p>Category: {{formInput.category}}</p>
-                        <p>Material: {{formInput.material}}</p>
-                        <p>Brand: {{formInput.brand}}</p>
+                        <p>Tên: {{formInput.name}}</p>
+                        <p>Cổ áo: {{formInput.collar}}</p>
+                        <p>Tay áo: {{formInput.wrist}}</p>
+                        <p>Loại: {{formInput.category}}</p>
+                        <p>Chất liệu: {{formInput.material}}</p>
+                        <p>Thương hiệu: {{formInput.brand}}</p>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-info" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"
-                                data-bs-dismiss="modal">Back
+                                data-bs-dismiss="modal">Quay lại
                         </button>
                         <button class="btn btn-success" data-bs-toggle="modal"
-                                data-bs-dismiss="modal" ng-click="create()">Submit
+                                data-bs-dismiss="modal" ng-click="create()">Xác nhận
                         </button>
                     </div>
                 </div>

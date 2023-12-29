@@ -21,15 +21,15 @@ public class ImageRestController {
     @GetMapping("")
     public ResponseEntity<?> index(){
         System.out.println("image");
-        List<Image> categories = imageService.getAll();
-        return ResponseEntity.ok(categories);
+        List<Image> images = imageService.getAll();
+        return ResponseEntity.ok(images);
     }
 
     @GetMapping("/page")
     public ResponseEntity<?> page(@RequestParam(value = "page", defaultValue = "0") Integer page){
         System.out.println("image");
-        Page<Image> categories = imageService.getAll(page);
-        return ResponseEntity.ok(categories);
+        Page<Image> images = imageService.getAll(page);
+        return ResponseEntity.ok(images);
     }
 
     @GetMapping("/{id}")
@@ -46,8 +46,15 @@ public class ImageRestController {
         return ResponseEntity.ok(image);
     }
 
+//    @PostMapping("/saveAll")
+//    public ResponseEntity<?> addAll(@RequestBody List<Image> imagesReq){
+//        List<Image> image = imageService.saveAll(imagesReq);
+//        return ResponseEntity.ok(image);
+//    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody Image imageReq){
+        System.out.println("aaaa"+imageReq);
         Image image = imageService.update(imageReq, id);
         return ResponseEntity.ok(image);
     }
@@ -55,5 +62,10 @@ public class ImageRestController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id){
         imageService.delete(id);
+    }
+
+    @GetMapping("/pd/{id}")
+    public ResponseEntity<?> getByPDid(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(imageService.getByPDid(id));
     }
 }

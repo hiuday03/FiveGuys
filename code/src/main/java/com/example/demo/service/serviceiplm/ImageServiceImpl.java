@@ -1,6 +1,7 @@
 package com.example.demo.service.serviceiplm;
 
 import com.example.demo.entity.Image;
+import com.example.demo.entity.ProductDetail;
 import com.example.demo.repository.ImageRepostitory;
 import com.example.demo.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ImageServiceImpl implements ImageService {
+public class    ImageServiceImpl implements ImageService {
 
     @Autowired
     ImageRepostitory imageRepository;
@@ -44,6 +45,23 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public List<Image> saveAll(List<Image> images, ProductDetail productDetail) {
+        System.out.println("cc");
+        System.out.println(images);
+        if(images.isEmpty()){
+            return null;
+        }
+        for (Image i: images) {
+            i.setStatus(0);
+            i.setCreatedAt(new Date());
+            i.setUpdatedAt(new Date());
+            i.setProductDetail(productDetail);
+            i.setName(productDetail.getId()+"");
+        }
+        return imageRepository.saveAll(images);
+    }
+
+    @Override
     public Image update(Image imageReq, Long id) {
         Optional<Image> imageOptional = imageRepository.findById(id);
         System.out.println(imageOptional);
@@ -52,7 +70,6 @@ public class ImageServiceImpl implements ImageService {
             image.setName(imageReq.getName());
             image.setPath(imageReq.getPath());
             image.setProductDetail(imageReq.getProductDetail());
-            image.setCreatedAt(imageReq.getCreatedAt());
             image.setUpdatedAt(new Date());
             image.setStatus(imageReq.getStatus());
             System.out.println(image);
@@ -69,5 +86,12 @@ public class ImageServiceImpl implements ImageService {
             System.err.println("Error delete ImageserviceImpl");
         }
     }
+
+    @Override
+    public List<Image> getByPDid(Long id) {
+        return imageRepository.findAllByProductDetailId(id);
+    }
+
+
 
 }
