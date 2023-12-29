@@ -39,16 +39,16 @@ public class OlBillServiceImpl implements OlBillService {
 
     private void updateProductQuantity(BillDetail billDetail) {
         Optional<ProductDetail> productDetail = olProductDetailService.findById(billDetail.getProductDetail().getId());
-    if (productDetail.isPresent()){
-        int quantityToRemove = billDetail.getQuantity();
-        if (isQuantityAvailable(productDetail.get(), quantityToRemove)) {
-            int currentQuantity = productDetail.get().getQuantity();
-            productDetail.get().setQuantity(currentQuantity - quantityToRemove);
-            olProductDetailService.save(productDetail.get());
-        } else {
-            throw new IllegalArgumentException("Not enough quantity available for product: " + productDetail.get().getId());
+        if (productDetail.isPresent()){
+            int quantityToRemove = billDetail.getQuantity();
+            if (isQuantityAvailable(productDetail.get(), quantityToRemove)) {
+                int currentQuantity = productDetail.get().getQuantity();
+                productDetail.get().setQuantity(currentQuantity - quantityToRemove);
+                olProductDetailService.save(productDetail.get());
+            } else {
+                throw new IllegalArgumentException("Not enough quantity available for product: " + productDetail.get().getId());
+            }
         }
-    }
     }
 
     private boolean isQuantityAvailable(ProductDetail productDetail, int quantityToRemove) {
@@ -71,14 +71,15 @@ public class OlBillServiceImpl implements OlBillService {
         // Kiểm tra số lượng tồn của voucher trước khi sử dụng
         if (bill.getVoucher() != null){
 
-        Vouchers existingVoucher = olVouchersRepository.findById(bill.getVoucher().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Voucher not found"));
+            Vouchers existingVoucher = olVouchersRepository.findById(bill.getVoucher().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Voucher not found"));
 
-        if (existingVoucher != null && existingVoucher.getStatus() == 1 && existingVoucher.getQuantity() > 0) {
-            existingVoucher.setQuantity(existingVoucher.getQuantity() - 1);
-            olVouchersRepository.save(existingVoucher);
-        } else {
-            throw new IllegalStateException("Voucher is not available");
+            if (existingVoucher != null && existingVoucher.getStatus() == 1 && existingVoucher.getQuantity() > 0) {
+                existingVoucher.setQuantity(existingVoucher.getQuantity() - 1);
+                olVouchersRepository.save(existingVoucher);
+            } else {
+                throw new IllegalStateException("Voucher is not available");
+            }
         }
 
         // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
