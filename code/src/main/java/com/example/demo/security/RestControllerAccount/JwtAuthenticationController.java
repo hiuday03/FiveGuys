@@ -17,6 +17,7 @@ import com.example.demo.service.onlineSales.OlAccountService;
 import com.example.demo.service.onlineSales.OlCustomerService;
 import com.example.demo.service.onlineSales.OlEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -72,6 +73,19 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    private String storedToken;
+
+    @PostMapping("/transfer-token")
+    public void transferToken(@RequestBody Map<String, String> tokenData) {
+        storedToken = tokenData.get("token");
+    }
+
+//    @GetMapping("/get-token")
+//    public ResponseEntity<String> getToken() {
+//        System.out.println(authenticationManager.authenticate().getName());
+//    }
+
+
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -110,7 +124,6 @@ public class JwtAuthenticationController {
 
     @PostMapping("/auth/reset-password")
         public boolean resetPassword(@RequestBody OTPresetPassDTO otPresetPassDTO) {
-        System.out.println(otPresetPassDTO);
         String email = otPresetPassDTO.getEmail();
         String pass = otPresetPassDTO.getNewPassword();
         return userService.resetPassword(email, pass);

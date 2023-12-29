@@ -32,4 +32,9 @@ public class OlEmployeeServiceImpl implements OlEmployeeService {
     public Employees findByAccount_Id(Long accountId) {
         return employeeRepository.findByAccount_Id(accountId);
     }
+
+    @Override
+    public Employees save(Employees employees) {
+        return employeeRepository.save(employees);
+    }
 }
