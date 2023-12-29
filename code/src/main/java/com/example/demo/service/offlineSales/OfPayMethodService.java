@@ -5,5 +5,7 @@ import com.example.demo.entity.PaymentMethod;
 import java.util.List;
 
 public interface OfPayMethodService {
-    List<PaymentMethod> getAll();
+    List<PaymentMethod> findActivePaymentMethods();
+
+    PaymentMethod getCOD();
 }

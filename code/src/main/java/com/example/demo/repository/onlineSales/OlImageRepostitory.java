@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface OlImageRepostitory extends JpaRepository<Image, Long> {
 
-    List<Image> findByProductDetailId(Long productDetailId);
+    List<Image> findByProductDetailIdAndStatus(Long productDetailId,int status);
 }

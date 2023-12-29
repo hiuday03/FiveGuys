@@ -15,17 +15,19 @@
             <h1>Account</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                    <li class="breadcrumb-item">Account</li>
-                    <li class="breadcrumb-item active">Account</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                    <li class="breadcrumb-item">Tài Khoản</li>
+                    <li class="breadcrumb-item active">Tài Khoản</li>
                 </ol>
             </nav>
+            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search ..."
+                   class="form-control">
         </div>
         <!--  Begin code  -->
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-                Create Account</button>
+                Thêm Tài Khoản</button>
             <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
                 {{alertMessage}}
                 <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -35,13 +37,13 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Account</h5>
+                            <h5 class="modal-title">Thêm Tài Khoản</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form name="formCreateAccount" ng-submit="formCreateAccount.$valid && create()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                    <label for="inputAccount" class="col-sm-3 col-form-label">Tài Khoản</label>
                                     <div class="col-sm-9">
                                         <!-- <input name="account" id="inputAccount" type="text" class="form-control"
                                             ng-model="formInput.account" required> -->
@@ -50,40 +52,40 @@
                                         <span ng-show="formCreateAccount.$submitted">
                                             <div ng-show="formCreateAccount.account.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Account cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Mật Khẩu</label>
                                     <div class="col-sm-9">
                                         <input name="password" id="inputPassword" type="password" class="form-control"
                                             ng-model="formInput.password" required ng-minlength="8">
                                         <span ng-show="formCreateAccount.$submitted">
                                             <div ng-show="formCreateAccount.password.$error.required"
                                             class="error-message text-danger form-text">
-                                                Password cannot be blank
+                                                Không được để trống
                                             </div>
                                             <div ng-show="formCreateAccount.password.$error.minlength"
                                                 class="error-message text-danger form-text">
-                                                Password should be at least 8 characters long
+                                                Mật khẩu phải có 8 ký tự trở lên
                                             </div>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row mb-3">
-                                    <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Phone Number</label>
+                                    <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Số Điện Thoại</label>
                                     <div class="col-sm-9">
                                         <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
                                             ng-model="formInput.phoneNumber" ng-pattern="/^[0-9]{10}$/" required>
                                         <span ng-show="formCreateAccount.$submitted">
                                             <div ng-show="formCreateAccount.phoneNumber.$error.required"
                                                 class="error-message text-danger form-text">
-                                                Phone Number is required
+                                                Không được để trống
                                             </div>
                                             <div ng-show="formCreateAccount.phoneNumber.$error.pattern"
                                                 class="error-message text-danger form-text">
-                                                Please enter a valid 10-digit phone number
+                                                Vui lòng nhập số điện thoại hợp lệ gồm 10 chữ số
                                             </div>
                                         </span>
                                     </div>
@@ -96,12 +98,12 @@
                                         <span ng-show="formCreateAccount.$submitted">
                                             <div ng-show="formCreateAccount.email.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Email cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                                    <label for="inputRole" class="col-sm-3 col-form-label">Vai Trò</label>
                                     <div class="col-sm-9">
                                         <select name="role" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.role.id" ng-required="true">
@@ -111,32 +113,31 @@
                                         <span ng-show="formCreateAccount.$submitted">
                                             <div ng-show="formCreateAccount.role.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Role cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                <!-- <div class="row mb-3">
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
-                                        <select name="status" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.status" required>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <select name="status" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formInput.status" required>
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formCreateAccount.$submitted">
-                                            <div ng-show="formCreateAccount.status.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
-                                        </span>
+                                                <div ng-show="formCreateAccount.status.$invalid"
+                                                     class="error-message text-danger form-text">
+                                                    Không được để trống</div>
+                                            </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">Thên</button>
                                     <button ng-click="resetFormInput()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá form</button>
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                                 </div>
                             </form>
                         </div>
@@ -156,7 +157,7 @@
                         <div class="modal-body">
                             <form name="formUpdateAccount" ng-submit="formUpdateAccount.$valid && update()" novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputAccount" class="col-sm-3 col-form-label">Account</label>
+                                    <label for="inputAccount" class="col-sm-3 col-form-label">Tài Khoản</label>
                                     <div class="col-sm-9">
                                         <!-- <input name="account" id="inputAccount" type="text" class="form-control"
                                             ng-model="formUpdate.account" readonly> -->
@@ -165,7 +166,7 @@
                                         <span ng-show="formUpdateAccount.$submitted">
                                             <div ng-show="formUpdateAccount.account.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Account cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
@@ -216,7 +217,7 @@
                                     </div>
                                 </div> -->
                                 <div class="row mb-3">
-                                    <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                                    <label for="inputRole" class="col-sm-3 col-form-label">Vai Trò</label>
                                     <div class="col-sm-9">
                                         <select name="role" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.role.id">
@@ -226,32 +227,31 @@
                                         <span ng-show="formUpdateAccount.$submitted">
                                             <div ng-show="formUpdateAccount.role.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Role cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
-                                        <select name="status" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.status">
-                                            <option ng-value="1">One</option>
-                                            <option ng-value="2">Two</option>
-                                            <option ng-value="3">Three</option>
+                                        <select name="status" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formUpdate.status">
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formUpdateAccount.$submitted">
-                                            <div ng-show="formUpdateAccount.status.$invalid"
-                                                class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
-                                        </span>
+                                                <div ng-show="formUpdateAccount.status.$invalid"
+                                                     class="error-message text-danger form-text">
+                                                    Không được để trống</div>
+                                            </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Update</button>
                                     <button ng-click="resetFormUpdate()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá form</button>
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                                 </div>
                             </form>
                         </div>
@@ -264,23 +264,23 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Account</th>
-                                <th scope="col">Password</th>
+                                <th scope="col">Tài Khoản</th>
+                                <!-- <th scope="col">Password</th>
                                 <th scope="col">Phone Number</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Email</th> -->
+                                <th scope="col">Vai Trò</th>
+                                <th scope="col">Trạng Thái</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="account in paper.items">
                                 <td>{{account.account}}</td>
-                                <td>{{account.password}}</td>
+                                <!-- <td>{{account.password}}</td>
                                 <td>{{account.phoneNumber}}</td>
-                                <td>{{account.email}}</td>
+                                <td>{{account.email}}</td> -->
                                 <td>{{account.role.fullName}}</td>
-                                <td>{{account.status}}</td>
+                                <td>{{account.status == 1 ?'Đang hoạt động' : 'Ngừng hoạt động'}}</td>
                                 <td>
                                     <button ng-click="edit(account)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
@@ -298,9 +298,9 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button ng-click="delete(account)" type="button"
-                                                        class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+                                                        class="btn btn-primary" data-bs-dismiss="modal">Xoá</button>
                                                     <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                        data-bs-dismiss="modal">Đóng</button>
                                                 </div>
                                             </div>
                                         </div>

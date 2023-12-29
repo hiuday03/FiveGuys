@@ -11,12 +11,12 @@
 <body ng-app="favorite" ng-controller="favorite-ctrl">
     <main id="main" class="main" layout:fragment="content">
         <div class="pagetitle">
-            <h1>Favorite</h1>
+            <h1>Yêu Thích</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Home</a></li>
-                    <li class="breadcrumb-item">Account</li>
-                    <li class="breadcrumb-item active">Favorite</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                    <li class="breadcrumb-item">Tài Khoản</li>
+                    <li class="breadcrumb-item active">Yêu Thích</li>
                 </ol>
             </nav>
         </div>
@@ -24,7 +24,7 @@
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
-                Create Favorite</button>
+                Thêm</button>
             <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
                 {{alertMessage}}
                 <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -34,14 +34,14 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Favorite</h5>
+                            <h5 class="modal-title">Thêm</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form name="formCreateFavorite" ng-submit="formCreateFavorite.$valid && create()"
                                 novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Customers</label>
+                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Khách Hàng</label>
                                     <div class="col-sm-9">
                                         <select name="customer" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.customer.id"  ng-required="true">
@@ -51,13 +51,13 @@
                                         <span ng-show="formCreateFavorite.$submitted">
                                             <div ng-show="formCreateFavorite.customer.$invalid"
                                                 class="error-message text-danger form-text">
-                                                customer cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputProductDetail"
-                                        class="col-sm-3 col-form-label">ProductDetail</label>
+                                        class="col-sm-3 col-form-label">Sản Phẩm</label>
                                     <div class="col-sm-9">
                                         <select name="productDetail" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.productDetail.id"  ng-required="true">
@@ -73,19 +73,19 @@
                                         <span ng-show="formCreateFavorite.$submitted">
                                             <div ng-show="formCreateFavorite.productDetail.$invalid"
                                                 class="error-message text-danger form-text">
-                                                ProductDetail cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputCreatedAt" class="col-sm-3 col-form-label">CreatedAt</label>
+                                    <label for="inputCreatedAt" class="col-sm-3 col-form-label">Ngày Tạo</label>
                                     <div class="col-sm-9">
                                         <input name="createdAt" id="inputCreatedAt" type="text" class="form-control"
                                         ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formCreateFavorite.$submitted">
                                             <div ng-show="formCreateFavorite.createdAt.$invalid"
                                                 class="error-message text-danger form-text">
-                                                CreatedAt cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
@@ -102,27 +102,26 @@
                                     </div>
                                 </div> -->
                                 <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formInput.status"  ng-required="true">
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            <option value="1">Đang hoạt động</option>
+                                            <option value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formCreateFavorite.$submitted">
                                             <div ng-show="formCreateFavorite.status.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">Thêm</button>
                                     <button ng-click="resetFormInput()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá form</button>
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                                 </div>
                             </form>
                         </div>
@@ -136,14 +135,14 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Update Favorite</h5>
+                            <h5 class="modal-title">Sửa</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form name="formUpdateFavorite" ng-submit="formUpdateFavorite.$valid && update()"
                                 novalidate>
                                 <div class="row mb-3">
-                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Customer</label>
+                                    <label for="inputCustomer" class="col-sm-3 col-form-label">Khách Hàng</label>
                                     <div class="col-sm-9">
                                         <select name="customer" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.customer.id" ng-required="true">
@@ -153,13 +152,13 @@
                                         <span ng-show="formUpdateFavorite.$submitted">
                                             <div ng-show="formUpdateFavorite.customer.$invalid"
                                                 class="error-message text-danger form-text">
-                                                customer cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputProductDetail"
-                                        class="col-sm-3 col-form-label">ProductDetail</label>
+                                        class="col-sm-3 col-form-label">Sản Phẩm</label>
                                     <div class="col-sm-9">
                                         <select name="productDetail" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.productDetail.id"  ng-required="true">
@@ -175,7 +174,7 @@
                                         <span ng-show="formUpdateFavorite.$submitted">
                                             <div ng-show="formUpdateFavorite.productDetail.$invalid"
                                                 class="error-message text-danger form-text">
-                                                ProductDetail cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
@@ -193,39 +192,38 @@
                                     </div>
                                 </div> -->
                                 <div class="row mb-3">
-                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">UpdatedAt</label>
+                                    <label for="inputUpdatedAt" class="col-sm-3 col-form-label">Ngày Sửa</label>
                                     <div class="col-sm-9">
                                         <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
                                         ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                         <span ng-show="formUpdateFavorite.$submitted">
                                             <div ng-show="formUpdateFavorite.updatedAt.$invalid"
                                                 class="error-message text-danger form-text">
-                                                UpdatedAt cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="inputStatus" class="col-sm-3 col-form-label">Status</label>
+                                    <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                                             ng-model="formUpdate.status" ng-required="true">
-                                            <option ng-value="1">One</option>
-                                            <option ng-value="2">Two</option>
-                                            <option ng-value="3">Three</option>
+                                            <option ng-value="1">Đang hoạt động</option>
+                                            <option ng-value="2">Nừng hoạt động</option>
                                         </select>
                                         <span ng-show="formUpdateFavorite.$submitted">
                                             <div ng-show="formUpdateFavorite.status.$invalid"
                                                 class="error-message text-danger form-text">
-                                                Status cannot be blank</div>
+                                                Không được để trống</div>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary">Sửa</button>
                                     <button ng-click="resetFormUpdate()" type="button"
-                                        class="btn btn-warning">Reset</button>
+                                        class="btn btn-warning">Xoá form</button>
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">Đóng</button>
                                 </div>
                             </form>
                         </div>
@@ -238,12 +236,12 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Name Custoemr(Id Custoemr)</th>
-                                <th scope="col">Name ProductDetail(ID ProductDetail)</th>
+                                <th scope="col">Khách Hàng</th>
+                                <th scope="col">Sản Phẩm</th>
                                 <!-- <th scope="col">Image ProductDetail</th> -->
-                                <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
-                                <th scope="col">Status</th>
+                                <!-- <th scope="col">Created At</th>
+                                <th scope="col">Updated At</th> -->
+                                <th scope="col">Trạng Thái</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -256,9 +254,9 @@
                                     {{favorite.productDetail.color.name}},
                                     {{favorite.productDetail.size.name}}</td>
                                 <!-- <td>{{favorite.productDetail.image.name}}</td> -->
-                                <td>{{favorite.createdAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{favorite.updatedAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{favorite.status}}</td>
+                                <!-- <td>{{favorite.createdAt | date:'yyyy-MM-dd'}}</td>
+                                <td>{{favorite.updatedAt | date:'yyyy-MM-dd'}}</td> -->
+                                <td>{{favorite.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
                                 <td>
                                     <button ng-click="edit(favorite)" type="button" class="btn btn-info"
                                         data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
@@ -275,9 +273,9 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button ng-click="delete(favorite)" type="button"
-                                                        class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+                                                        class="btn btn-primary" data-bs-dismiss="modal">Xoá</button>
                                                     <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                        data-bs-dismiss="modal">Đóng</button>
                                                 </div>
                                             </div>
                                         </div>

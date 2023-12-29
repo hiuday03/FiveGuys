@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface OLRatingRepository extends JpaRepository<RatingEntity, Long> {
 
-    List<RatingEntity> findByProductDetail(ProductDetail productDetail);
+    List<RatingEntity> findByProductDetailAndStatus(ProductDetail productDetail,int status);
 
 
 }

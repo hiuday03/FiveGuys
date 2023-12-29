@@ -96,18 +96,20 @@ app_favorite.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
-        console.log(item)
+        console.log(item);
         item.updatedAt = $scope.currentDate;
-        $http.put(`/favorite/${item.id}`, item).then(function (resp) {
-
-            $scope.showSuccessMessage("Update favorite successfully");
-            $scope.resetFormUpdate();
-            $scope.initialize();
-            $('#modalUpdate').modal('hide');
-        }).catch(function (error) {
-            console.log("Error", error);
-        });
-    }
+        
+        $http.put(`/favorite/${item.id}`, item)
+            .then(function (resp) {
+                $scope.showSuccessMessage("Update Favorite successfully");
+                $scope.resetFormUpdate();
+                $scope.initialize();
+                $('#modalUpdate').modal('hide');
+            })
+            .catch(function (error) {
+                console.log("Error", error);
+            });
+    };
 
     $scope.delete = function (item) {
         $http.delete(`/favorite/${item.id}`).then(function (resp) {

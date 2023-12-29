@@ -20,6 +20,7 @@ public class OlBillDetailServiceImpl implements OlBillDetailService {
 
     @Override
     public List<BillDetail> findByProductDetail(ProductDetail productDetail) {
-        return olBillDetailRepository.findByProductDetail(productDetail);
+
+        return olBillDetailRepository.findByProductDetailAndStatus(productDetail,1);
     }
 }

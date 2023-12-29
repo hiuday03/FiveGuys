@@ -17,59 +17,59 @@
 </nav>
 <h2 th:text="${message}"></h2>
 <p th:text="${name}"></p>
-    <div class="container" id="container">
-        <div class="form-container sign-up">
-            <form>
-                <h1>Careate Account</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
-                    <a href="#" class="icon"><i class="fa fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
-                </div>
-                <span>Or use your email for registeration</span>
-                <input type="text" placeholder="Name">
-                <input type="email" placeholder="Emaill">
-                <input type="password" placeholder="Password">
-                <button>Sign UP</button>
-            </form>
-        </div>
-        <div class="form-container sign-in">
-            <form action="/auth/login" method="post">
-                <h1>Sign In</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
-                    <a href="#" class="icon"><i class="fa fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
-                </div>
-                <span>Or use your email password</span>
-                <input type="text"  placeholder="User name" name="username" th:value="${username}" required>
-                <input type="password" placeholder="Password" name="password">
-                <a href="#">Forget Your Password?</a>
-                <div>
-                    <label for="remember">Remember me:</label>
-                    <input type="checkbox" id="remember" name="remember" th:checked="${remember}">
-                </div>
-                <button type="submit">Sign In</button>
-            </form>
-        </div>
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site featusres</p>
-                    <button class="hidden" id="login"> Sign In</button>
-                </div>
-                <div class="toggle-panel toggle-right">
-                    <h1>Hello, friend!</h1>
-                    <p>Registter with your personal details to yse all of site features</p>
-                    <button class="hidden" id="register">Sign Up</button>
-                </div>
+<div class="container" id="container">
+    <div class="form-container sign-up">
+        <form>
+            <h1>Careate Account</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
+                <a href="#" class="icon"><i class="fa fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
+            </div>
+            <span>Or use your email for registeration</span>
+            <input type="text" placeholder="Name">
+            <input type="email" placeholder="Emaill">
+            <input type="password" placeholder="Password">
+            <button>Sign UP</button>
+        </form>
+    </div>
+    <div class="form-container sign-in">
+        <form action="/auth/login" method="post">
+            <h1>Sign In</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
+                <a href="#" class="icon"><i class="fa fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
+            </div>
+            <span>Or use your email password</span>
+            <input type="text"  placeholder="User name" name="username" th:value="${username}" required>
+            <input type="password" placeholder="Password" name="password">
+            <a href="#">Forget Your Password?</a>
+            <div>
+                <label for="remember">Remember me:</label>
+                <input type="checkbox" id="remember" name="remember" th:checked="${remember}">
+            </div>
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <h1>Welcome Back!</h1>
+                <p>Enter your personal details to use all of site featusres</p>
+                <button class="hidden" id="login"> Sign In</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1>Hello, friend!</h1>
+                <p>Registter with your personal details to yse all of site features</p>
+                <button class="hidden" id="register">Sign Up</button>
             </div>
         </div>
     </div>
-    <script th:src="@{/assets/js/Login.js}"></script>
+</div>
+<script th:src="@{/assets/js/Login.js}"></script>
 </body>
 
 </html>

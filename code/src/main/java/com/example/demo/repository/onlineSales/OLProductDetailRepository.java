@@ -16,20 +16,20 @@ import java.util.UUID;
 @Repository
 public interface OLProductDetailRepository extends JpaRepository<ProductDetail, Long> {
 
-    List<ProductDetail> findByProduct(Product product);
+    List<ProductDetail> findByProductAndStatus(Product product,int status);
 
 //    @Query("SELECT c FROM ProductDetail c WHERE c.color.id = :colorId AND c.product.id = :productId")
 //    List<ProductDetail> findChiTietSanPhamByMauSacAndSanPham(@Param("colorId") Long colorId, @Param("productId") UUID productId);
 
-    @Query("SELECT c.color FROM ProductDetail c WHERE c.product.id = :productId GROUP BY c.color")
+    @Query("SELECT c.color FROM ProductDetail c WHERE c.product.id = :productId AND c.status = 1 GROUP BY c.color")
     List<Color> findDistinctColorsBySanPhamId(@Param("productId") Long productId);
 
-    @Query("SELECT c.size FROM ProductDetail c WHERE c.product.id = :productId GROUP BY c.size")
+    @Query("SELECT c.size FROM ProductDetail c WHERE c.product.id = :productId AND c.status = 1 GROUP BY c.size")
     List<Size> findDistinctSizesBySanPhamId(@Param("productId") Long productId);
 
     ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
 
     Optional<ProductDetail> findById(Long productDetailId);
 
-    List<ProductDetail> findByColorIdAndProductId(Long colorId, Long productId);
+    List<ProductDetail> findByColorIdAndProductIdAndStatus(Long colorId, Long productId,int status);
 }

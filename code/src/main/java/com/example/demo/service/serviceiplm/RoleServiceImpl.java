@@ -18,24 +18,24 @@ public class RoleServiceImpl implements RoleService {
     RoleRepository roleRepository;
 
     @Override
-    public List<Roles> getAll(){
+    public List<Roles> getAll() {
         return roleRepository.findAll();
     }
 
     @Override
-    public Roles save(Roles roles){
+    public Roles save(Roles roles) {
         return roleRepository.save(roles);
     }
 
     @Override
-    public void delete(Long id){
-         roleRepository.deleteById(id);
+    public void delete(Long id) {
+        roleRepository.deleteById(id);
     }
 
     @Override
-    public Roles update(Long id, Roles roles){
+    public Roles update(Long id, Roles roles) {
         Optional<Roles> rolesOptional = roleRepository.findById(id);
-        if(rolesOptional.isPresent()){
+        if (rolesOptional.isPresent()) {
             Roles roles1 = rolesOptional.get();
             roles1.setFullName(roles.getFullName());
             roles1.setCreatedAt(roles.getCreatedAt());
@@ -43,8 +43,17 @@ public class RoleServiceImpl implements RoleService {
             roles1.setStatus(roles.getStatus());
 
             return roleRepository.save(roles1);
-        }else {
+        } else {
             throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
         }
+    }
+
+    @Override
+    public Optional<Roles> findByFullNameAndStatus(String fullName, int status) {
+        Optional<Roles> roles = roleRepository.findByFullNameAndStatus(fullName, 1);
+        if (roles.isPresent()) {
+            return roles;
+        }
+        return Optional.empty();
     }
 }

@@ -20,6 +20,7 @@ create table Accounts
 	Password	varchar(100),
 	Email	varchar(100),
 	PhoneNumber	nvarchar(15),
+	ConfirmationCode nvarchar(30),
 	IdRole		bigint references Roles(Id),
 	Status		int
 )
@@ -50,6 +51,7 @@ create table PaymentMethods
 	Name		nvarchar(100),
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
+	paymentType int,
 	Status		int
 )
 
@@ -63,6 +65,15 @@ create table Materials
 )
 
 create table Categories
+(
+	Id			bigint identity(1,1) primary key,
+	Name		nvarchar(100),
+	CreatedAt	datetime,
+	UpdatedAt	datetime,
+	Status		int
+)
+
+create table Brands
 (
 	Id			bigint identity(1,1) primary key,
 	Name		nvarchar(100),
@@ -90,6 +101,13 @@ create table Sizes
 	Status		int
 )
 
+create table Branchs(
+	Id			bigint identity(1,1) primary key,
+	PhoneNumber	nvarchar(15),
+	Email		nvarchar(255),
+	Address     nvarchar(MAX),
+)
+
 create table Employees
 (
 	Id			bigint identity(1,1) primary key,
@@ -99,13 +117,15 @@ create table Employees
 	BirthDate	datetime,
 	Gender		bit,
 	Address		nvarchar(MAX),
-	IdAccount		bigint, 
+	IdAccount	bigint, 
+	IdBranch    bigint,
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	CreatedBy	nvarchar(100),
 	UpdatedBy	nvarchar(100),
 	Status		int,
-	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id)
+	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id),
+	FOREIGN KEY (IdBranch) REFERENCES Branchs(Id)
 )
 
 
@@ -147,7 +167,7 @@ create table Products
 	Collar		nvarchar(100),
 	Wrist		nvarchar(100),
 	Describe	nvarchar(MAX),
-	Brand		nvarchar(100),
+	IdBrand		bigint references Brands(Id),
 	IdCategory	bigint references Categories(Id),
 	IdMaterial	bigint references Materials(Id),
 	CreatedAt	datetime,
@@ -203,7 +223,8 @@ create table Bills
 	IdEmployee		bigint references Employees(Id),
 	IdPaymentMethod		bigint references PaymentMethods(Id),
 	IdVoucher	bigint references Vouchers(Id),
-	Status		int
+	typeBill int,
+	Status	int
 )
 
 create table BillDetails

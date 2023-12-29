@@ -2,27 +2,23 @@ package com.example.demo.service.onlineSales.Impl;
 
 import com.example.demo.entity.*;
 import com.example.demo.repository.onlineSales.OLCartRepository;
-import com.example.demo.security.AuthController;
 import com.example.demo.service.onlineSales.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class OlCartServiceImpl implements OlCartService {
 
     @Autowired
     private OlAccountService olAccountService;
-
-    @Autowired
-    private AuthController authController;
 
     @Autowired
     private OLCartRepository olCartRepository;
@@ -39,6 +35,9 @@ public class OlCartServiceImpl implements OlCartService {
     @Autowired
     private OLProductDetailService olProductDetailService;
 
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
     @Override
     public Cart findByCustomerId(Long id) {
         return olCartRepository.findByCustomerId(id);
@@ -51,12 +50,8 @@ public class OlCartServiceImpl implements OlCartService {
 
     @Override
     public Cart saveAllProductDetail(JsonNode orderData) {
-        Authentication authentication = authController.getAuthentication();
-
-        if (authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
-            String currentUsername = authentication.getName();
+        String currentUsername =String.valueOf(orderData.get("username").asText());
             Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
-
             if (account.isPresent()) {
                 Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
 
@@ -68,12 +63,13 @@ public class OlCartServiceImpl implements OlCartService {
                         cart.setCustomer(customer.get());
                         cart.setCreatedAt(new Date());
                         cart.setUpdatedAt(new Date());
+                        cart.setStatus(1);
                         cart = olCartRepository.save(cart);
                     }
 
                     List<CartDetail> cartDetails = olCartDetailService.findAllByCart_Id(cart.getId());
 
-                    for (JsonNode item : orderData) {
+                    for (JsonNode item : orderData.get("localStorageData")) {
                         Long productId = Long.valueOf(item.get("id").asText());
                         Optional<ProductDetail> productDetail = olProductDetailService.findById(productId);
 
@@ -91,6 +87,7 @@ public class OlCartServiceImpl implements OlCartService {
                                 newCartDetail.setPrice(BigDecimal.valueOf(Long.valueOf(item.get("price").asText())));
                                 newCartDetail.setProductDetail(productDetail.get());
                                 newCartDetail.setQuantity(Integer.valueOf(item.get("quantity").asText()));
+                                newCartDetail.setStatus(1);
                                 olCartDetailService.save(newCartDetail);
                             }
                         }
@@ -98,7 +95,6 @@ public class OlCartServiceImpl implements OlCartService {
                     return cart;
                 }
             }
-        }
         return null;
     }
 
