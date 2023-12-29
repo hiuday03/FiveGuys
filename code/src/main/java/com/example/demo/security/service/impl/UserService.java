@@ -17,4 +17,6 @@ public interface UserService {
 
     boolean resetPassword(String email, String newPassword);
 
+    boolean resetPassword2(String username, String newPassword);
+
 }

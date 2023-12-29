@@ -76,6 +76,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean resetPassword2(String username, String newPassword) {
+        Optional<AccountEntity> accountEntity = accountService.findByAccount2(username);
+        if (accountEntity.isPresent()){
+            accountEntity.get().setPassword(bcryptEncoder.encode(newPassword));
+            accountService.createAccount(accountEntity.get());
+            return true; // Trả về true khi reset mật khẩu thành công
+        } else {
+            return false; // Trả về false nếu không tìm thấy tài khoản để reset mật khẩu
+        }
+    }
+
+    @Override
     public ResponseObject register(UserRequestDTO user) {
         UserRequestDTO userRequestDTO = helper.getUser(user.getAccount(), accountService.getAllAccount2());
         if (userRequestDTO != null) {

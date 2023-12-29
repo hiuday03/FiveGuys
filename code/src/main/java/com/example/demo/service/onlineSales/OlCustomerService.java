@@ -11,5 +11,8 @@ public interface OlCustomerService {
 
     CustomerEntity findByAccount_Id(Long accountId);
 
+    CustomerEntity save(CustomerEntity customerEntity);
+
+
 
 }

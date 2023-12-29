@@ -1,6 +1,7 @@
 package com.example.demo.service.onlineSales;
 
 import com.example.demo.entity.AccountEntity;
+import com.example.demo.model.request.onlineSales.accountManage.UserInfoRequest;
 import com.example.demo.security.Request.UserRequestDTO;
 
 import java.util.List;
@@ -11,5 +12,7 @@ public interface OlAccountService {
     Optional<AccountEntity> findByAccount(String username);
 //     List<UserRequestDTO> getAllAccount();
 //    AccountEntity createAccount(AccountEntity accountEntity);
+
+    boolean updateUser(UserInfoRequest userInfoRequest);
 
 }

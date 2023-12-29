@@ -31,4 +31,9 @@ public class OlCustomerServiceImpl implements OlCustomerService {
     public CustomerEntity findByAccount_Id(Long accountId) {
         return olCustomerRepository.findByAccount_Id(accountId);
     }
+
+    @Override
+    public CustomerEntity save(CustomerEntity customerEntity) {
+        return olCustomerRepository.save(customerEntity);
+    }
 }

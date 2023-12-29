@@ -28,17 +28,22 @@ import java.util.Collections;
 public class WebSecurityConfig {
 
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private final UserDetailsService jwtUserDetailsService;
+//    private final UserDetailsService jwtUserDetailsService;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
-    private final JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserDetailsService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter) {
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
+    @Autowired
+    private UserDetailsService jwtUserDetailsService;
+
+//    public WebSecurityConfig(, ) {
+//        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+//        this.jwtUserDetailsService = jwtUserDetailsService;
+//    }
 
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -85,6 +90,7 @@ public PasswordEncoder passwordEncoder() {
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/templates/**", "/assets/**").permitAll()
 //                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF")
+//                        .requestMatchers("/api/admin").hasAuthority("ADMIN")
                         .anyRequest().permitAll() // Các request còn lại cần xác thực
         )
                 .cors().and()
