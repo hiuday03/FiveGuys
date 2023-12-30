@@ -114,6 +114,7 @@ public class UserServiceImpl implements UserService {
                 CustomerEntity customerEntity = new CustomerEntity();
                 customerEntity.setAccount(savedUser);
                 customerEntity.setFullName(user.getLastName() + user.getFirstName());
+                customerEntity.setAvatar("https://res.cloudinary.com/dvtz5mjdb/image/upload/v1703880421/image/InfoHome/a2mnm9slz4bf7n3ivkhf.jpg");
                 customerEntity.setStatus(1);
                 customerEntity.setCreatedAt(new Date());
                 customerService.createCustomer(customerEntity);

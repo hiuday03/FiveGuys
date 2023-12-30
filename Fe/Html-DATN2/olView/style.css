@@ -1,0 +1,811 @@
+body {
+  color: #000;
+  font-family: 'Roboto Condensed','Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  
+}
+
+.icon-hover-primary:hover {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+  }
+  
+  .icon-hover-primary:hover i {
+    color: #3b71ca !important;
+  }
+  .icon-hover-danger:hover {
+    border-color: #dc4c64 !important;
+    background-color: white !important;
+  }
+  
+  .icon-hover-danger:hover i {
+    color: #dc4c64 !important;
+  }
+  .icon-hover:hover {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+    color: #3b71ca !important;
+  }
+  
+  .icon-hover:hover i {
+    color: #3b71ca !important;
+  }
+  
+  .colors {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
+  
+  .product-title, .price, .sizes, .colors {
+    text-transform: UPPERCASE;
+    font-weight: bold; }
+
+    /* CSS */
+/* .color-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.btncolorsize{
+  margin-right: 14px;
+} */
+
+
+.btn-selected {
+  background-color: #2f5acf !important;
+  color: white;
+  border: 2px red;
+}
+.btn-selected2 {
+  border-color: blue !important;
+  /* padding: 2px; */
+  box-shadow: 0 0 0 0px rgba(0, 128, 255, 0.5), inset 0 0 0 3px white;
+}
+
+    .form-control {
+    }
+    .discount {
+      margin-top: 20px;
+    }
+
+    .input-number {
+      padding-left: 30px;
+    }
+
+.input-number input{
+  width: 70%;
+}
+.btn-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 40px;
+  margin-right: 14px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 16px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden; /* Thêm thuộc tính overflow */
+  background-color: #f2f2f2; /* Đây là mã màu xám nhạt */
+
+}
+
+.color-circle-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.color-circle {
+  width: 38px; 
+  height: 38px; 
+  border-radius: 50%; 
+  cursor: pointer;
+  border: 1px solid #ccc;
+  margin: 2px;
+}
+.single-column-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-item {
+  padding-top: 10px;
+  /* border-top: 1px solid #ccc; */
+}
+
+.label {
+  font-weight: bold;
+}
+
+.special-title{
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  text-transform: uppercase;
+  position: relative;
+  margin-bottom: 16px;
+
+}
+.title-product{
+  font-size: 32px;
+  line-height: 1.25em;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.productdetail-price{
+  font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000;
+}
+
+.product-price{
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 28px;
+  color: #000;
+}
+select {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  vertical-align: middle;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+/* Điều chỉnh CSS theo yêu cầu thiết kế của bạn */
+
+
+.custom-bg {
+  background-color: #f1f1f1;
+    }
+
+    .zero-quantity {
+      color: grey;
+    }
+    
+    .add-to-cart {
+      background-color: #000;
+      font-size: 14px;
+      color: #fff;
+      width: 70%;
+      cursor: pointer;
+    }
+    
+    .no-product {
+      background-color: #ccc;
+      font-size: 14px;
+      color: #fff;
+      width: 70%;
+      cursor: not-allowed;
+    }
+    
+   
+/* Kiểu dáng cho voucher */
+.voucher-item {
+  margin-bottom: 10px;
+}
+
+/* Phần tử chứa thông tin của voucher */
+.voucher-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+/* Phần tử chứa thông tin mã và quantity */
+.voucher-code {
+  flex: 1;
+}
+
+/* Phần tử chứa thông tin giá trị và đơn hàng */
+.voucher-details {
+  flex: 1;
+  display: flex;
+  /* flex-direction: row; */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voucher-details-content{
+  flex: 1;
+  display: flex;
+  /* flex-direction: row; */
+  align-items: center;
+  justify-content: revert;
+}
+/* Kiểu dáng cho endDate */
+.voucher-end-date {
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+/* Màu và viền cho phần tử voucher-item */
+.voucher-item {
+
+  border: 1px solid #ddd; /* Viền */
+  border-radius: 5px; /* Bo góc */
+  padding: 10px; /* Khoảng cách bên trong */
+  margin-bottom: 10px; /* Khoảng cách giữa các phần tử */
+}
+
+/* Kiểu dáng cho voucher-details-content */
+.voucher-details-content {
+
+  align-items: center;
+}
+
+/* Màu và font cho voucher code */
+.voucher-details-content h5 {
+  color: #333; /* Màu chữ */
+  font-weight: bold; /* Độ đậm */
+  font-size: 16px; /* Kích thước chữ */
+}
+
+/* Màu cho quantity và HSD */
+.voucher-details-content p {
+  color: #666; /* Màu chữ */
+  font-size: 14px; /* Kích thước chữ */
+}
+
+/* Màu cho Giảm và Đơn hàng */
+.voucher-value p {
+  font-size: 14px; /* Kích thước chữ */
+  font-weight: bold; /* Độ đậm */
+}
+
+.card-header{
+  margin-top: 16px;
+}
+
+/* CSS cho checkbox */
+.custom-checkbox {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Khi checkbox được chọn */
+.custom-checkbox:checked::before {
+  content: '\2714'; /* Ký tự checkmark */
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #fff;
+  background-color: #ff0000; /* Màu nền khi chọn */
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  border-radius: 3px;
+}
+/* CSS cho phần tử bao quanh voucher */
+.voucher-item {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+/* CSS khi voucher được chọn */
+.selected-voucher {
+  border: 4px solid #ff0000;
+}
+
+.voucher-details {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.voucher-value {
+  padding: 10px;
+}
+.voucher-item {
+  margin-bottom: 10px;
+}
+
+
+.voucher-details {
+  text-align: right;
+}
+.voucher-item {
+  margin-bottom: 10px;
+}
+
+.voucher-name {
+  text-align: center;
+  display: flex;
+}
+/* Định dạng cho modal */
+.modal-dialog {
+  max-width: 600px; /* Điều chỉnh chiều rộng tối đa của modal */
+  height: 600px; /* Điều chỉnh chiều cao của modal */
+}
+
+/* Thiết lập thanh cuộn cho danh sách voucher */
+.voucher-list {
+  max-height: 500px; /* Điều chỉnh chiều cao tối đa của danh sách voucher */
+  overflow-y: auto; /* Tạo thanh cuộn nếu danh sách voucher dài hơn */
+  overflow-x: hidden;
+  position: relative;
+
+}
+
+/* Giao diện đè lên */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* Màu nền với độ trong suốt */
+  z-index: 1000; /* Chỉ số z để đè lên header */
+}
+
+/* Hiển thị overlay khi được kích hoạt */
+.overlay.active {
+  display: block;
+}
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 99999;
+}
+
+.header-search {
+  padding: 20px;
+  background: #fff;
+  width: 100%;
+  height: 107px;  
+  display: flex;
+}
+
+.input-group{
+  width: 90%;
+}
+
+.product-display {
+  padding: 20px;
+  margin-top: 20px;
+  background: #fff;
+  display: block;
+  width: 1000px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 10px auto 0;
+}
+
+.from-search{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 532px;
+  margin: 0 auto;
+  transition: all .3s;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+}
+
+.info-search{
+  text-transform: none;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+
+.policies-body {
+  margin: auto;
+  display: flex;
+  flex-wrap: no-wrap;
+  justify-content: space-between;
+  overflow: auto;
+  padding: 0 64px;
+}
+.policies-body .policies-item {
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  flex: 0 0 calc(25% - 15px);
+  /* padding: 10px; */
+}
+.policies-body .policies-item .policies-title {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 5px;
+}
+.policies-body .policies-item .policies-desc {
+  opacity: .75;
+}
+.heading-bar__title{
+color: var(--text-color);
+font-size: 2em;
+margin: 0;
+line-height: 1.2;
+text-align: center;
+font-weight: 400;
+}
+.policies-image {
+  flex: 0 0 12%; /* Kích thước tùy chỉnh */
+  /* max-width: 12%; */
+  height: auto;
+  margin-right: 10px; /* Khoảng cách giữa policies-image và policies-info */
+}
+
+.policies-info {
+  flex: 1; /* Để lấp đầy phần còn lại của không gian */
+}
+.category-body{
+  margin: auto;
+  display: flex;
+  flex-wrap: no-wrap;
+  justify-content: space-between;
+  overflow: auto;
+  padding: 0 64px;
+}
+.category-image img {
+  width: 100%; /* Đảm bảo hình ảnh điền vào toàn bộ không gian của col-md-2 */
+  height: auto; /* Giữ tỷ lệ khung hình ảnh */
+}
+.category-item{
+  padding: 30px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.category-info {
+  margin-top: 10px; 
+}
+.voucher-content{
+  display: flex;
+}
+.voucher2-code {
+  background-color: #001f5d; /* Màu nền xanh */
+  padding: 5px 5px;
+  color: white;
+  margin: 4px;
+}
+.voucher-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 15px;
+  position: relative;
+    background: #fff;
+    filter: drop-shadow(0px 0 3px rgba(0,0,0,.15));
+}
+.voucher2-info{
+  padding-left: 15px;
+}
+.voucher2-name {
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  height: 100%; /* Để chiều cao của nó được căn giữa */
+}
+.voucher2-name span{
+  color: #001f5d;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+.btn-main {
+  border-color: black;
+  color: black;
+  border-radius: 5px;
+  border: solid 1px black;
+  text-decoration: none; /* Bỏ gạch chân mặc định của thẻ a */
+  padding: 16px 30px; /* Tùy chỉnh khoảng cách nút */
+  transition: background-color 0.3s, color 0.3s; /* Tạo hiệu ứng chuyển đổi */
+  background-color: white;
+}
+
+.btn-main:hover {
+  background-color: black;
+  color: white;
+}
+.product-title{
+  font-size: 28px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.content-footer{
+  display: flex;
+  align-items: baseline;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.shop-footer{
+  align-items: baseline;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: white;
+}
+.content-footer span{
+margin-left: 10px;
+}
+.info-product_header{
+  position: absolute;
+z-index: 1;
+margin: 8px;
+}
+.selected-payment {
+  border: 1px solid #2f5acf !important;
+  border-radius: 14px; /* Góc cong */
+}
+
+
+.select-payment {
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc; /* Mặc định là viền xám */
+  border-radius: 14px; /* Góc cong */
+  display: flex;
+}
+.select-payment img{
+  width: 35px;
+  height: 35px;
+  margin: 0 12px;
+}
+
+.shop-footer li{
+  margin-bottom: 16px;
+}
+.title-main_footer{
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: inherit;
+  font-weight: bold;
+}
+  .img_footer img{
+width: 32px;
+height: 32px;
+margin-right: 12px;
+  }
+  .center-text {
+    text-align: center;
+  }
+/* Trong tệp CSS của bạn */
+.success {
+  background-color: #5cb85c;
+  color: white;
+  /* Các thuộc tính CSS khác cho thông báo thành công */
+}
+
+.error {
+  background-color: #d9534f;
+  color: white;
+  /* Các thuộc tính CSS khác cho thông báo lỗi */
+}
+
+.product-display {
+  max-height: 530px ; /* Đặt chiều cao tối đa cho vùng chứa dữ liệu */
+  overflow-y: auto; /* Hiển thị thanh cuộn dọc khi dữ liệu vượt quá kích thước */
+  padding-top: 30px;
+}
+.red-text {
+  color: red;
+}
+
+
+.header {
+  position: fixed;
+  top: 0;
+   left: 0;
+  width: 100%;
+  z-index: 2;  
+
+
+}
+
+.quantity-input {
+  display: flex;
+  align-items: center;
+  width: 18%;
+
+}
+
+.quantity-border {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 2px; 
+}
+
+input[type="number"] {
+  border: none;
+  outline: none;
+  width: 100%; /* Để input nằm hết phần còn lại bên trong border */
+  padding: 5px; /* Điều chỉnh khoảng cách bên trong input nếu cần */
+  border-radius: inherit; /* Kế thừa border-radius từ border bên ngoài */
+}
+
+
+ /* acount.html */
+ .account-page-title{
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  color: #000;
+  margin-bottom: 35px;
+  position: relative;
+ }
+
+.collapsible-account-content{
+  border: 1px solid #e0e0e0;
+  padding: 0 20px 8px;
+}
+
+.block-title{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 26px 0 31px;
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: 15px;
+}
+.nav li a{
+  font-size: 16px;
+  line-height: 20px;
+  color: #000;
+  padding: 10px 12px 10px 0;
+  background-color: transparent;
+  border: none;
+}
+
+.column-main{
+  margin-top: 90px;
+  padding-bottom: 100px;
+  padding-left: 40px;
+}
+.page-title-wrapper{
+  border-bottom: 1px solid #cacaca;
+  padding-bottom: 25px;
+  margin-bottom: 30px;
+  font-size: 15px;
+  line-height: 18px;
+}
+.page-title{
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  margin: 0;
+}
+.base{
+  font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+}
+.block-account-information{
+
+}
+.personal-information{
+  width: 50%;
+  padding: 0 30px;
+}
+.form {
+  display: block;
+    margin-top: 0em;
+}
+.fieldset {
+  border: 0;
+  margin: 0 0 16px;
+  padding: 0;
+  letter-spacing: -.31em;
+  margin-bottom: 0;
+}
+.form-group .form-control{
+  background: #f1f1f1;
+  background-clip: padding-box;
+  border: 1px solid #e4e4e4;
+  border-radius: 0;
+  font-family: 'Roboto Condensed','Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size: 15px;
+  height: 48px;
+  line-height: 1.5;
+  padding: 0 15px;
+  vertical-align: baseline;
+  width: 100%;
+  box-sizing: border-box;
+}
+.form-edit-account .form-control{
+  background: #f1f1f1;
+  background-clip: padding-box;
+  border: 1px solid #e4e4e4;
+  border-radius: 0;
+  font-family: 'Roboto Condensed','Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size: 15px;
+  height: 48px;
+  line-height: 1.5;
+  padding: 0 15px;
+  vertical-align: baseline;
+  width: 70%;
+  box-sizing: border-box;
+}
+/* .address-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.default-address {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+} */
+
+.account-address__head {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.account-address__item {
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0,0,0,.1333333333);
+}
+.account-address__item {
+  margin-bottom: 20px; /* Khoảng cách giữa các địa chỉ */
+}
+
+.account-address__head {
+  font-size: 18px; /* Kích thước lớn hơn cho Họ và tên */
+  font-weight: bold; /* Đậm hơn */
+  margin-bottom: 5px; /* Khoảng cách dưới */
+}
+
+.default-address {
+  font-weight: bold; /* Đậm hơn */
+  color: red; /* Màu đỏ nổi bật hơn */
+  margin-top: 5px; /* Khoảng cách trên */
+}
+
+.address-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.address-info {
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+}
+
+.btn-update,
+.btn-delete {
+  margin-left: 10px;
+}

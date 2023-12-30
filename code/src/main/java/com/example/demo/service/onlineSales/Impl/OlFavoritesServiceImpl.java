@@ -117,7 +117,8 @@ public class OlFavoritesServiceImpl implements OlFavoritesService {
 
     @Override
     public boolean addFavorite(FavoriteEntity favoriteEntity) {
+        favoriteEntity.setCreatedAt(new Date());
         olFavoritesRepository.save(favoriteEntity);
-        return false;
+        return true;
     }
 }

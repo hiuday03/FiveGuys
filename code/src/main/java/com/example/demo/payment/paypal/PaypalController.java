@@ -112,7 +112,7 @@ public class PaypalController {
         if (paymentSuccessful) {
             response.sendRedirect(Config.fe_liveServer_Success);
         } else {
-            response.sendRedirect("http://127.0.0.1:5502/index.html#!/home");
+            response.sendRedirect("http://127.0.0.1:5502/olView/index.html#!/home");
         }
     }
 

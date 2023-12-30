@@ -1,0 +1,53 @@
+<!--Main Navigation-->
+
+<!-- sidebar + content -->
+<section style="    margin-top: 82px;"  class="container-fluid">
+
+  <div style="margin-bottom: 40px;padding: 0 64px;" class="row">
+      
+    <img  src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702112722/image/InfoHome/nmqp0augpazcu2t9udmo.webp" loading="lazy"
+      class="d-block w-100" alt="...">
+    
+  </div>
+  
+
+  <div style="margin-bottom: 40px;padding: 0 64px;" class="row">
+          
+            <div ng-repeat="product in productsSortType" class="col-lg-2 col-md-6 col-sm-6 mb-4">
+            <div class="card w-100 my-2 shadow-2-strong">
+              <!-- <img ng-src="{{ product.path }}"class="card-img-top" /> -->
+              <a href="#!product-detail/{{product.id}}">
+                <div class="d-flex justify-content-between align-items-center info-product_header">
+                  <div class="d-flex align-items-center">
+                    <p style="    color: black;" class="mb-0 me-1">{{product.rate}}</p>
+                    <i style="    margin: 0 2px;color: black;
+                    font-size: 10px;" class="fa-solid fa-star"></i>
+                  </div>
+                  <p class="mb-0">({{product.totalQuantity}})</p>
+                </div>
+                <img style="position: relative;" class="card-img-top" width="100%" height="100%" class="rounded-2" loading="lazy"
+                  ng-src="{{ product.path }}" />
+              </a>
+              <div class="card-body d-flex flex-column">
+                <div style="display: flex; justify-content: space-between;">
+                  <span class="product-price"> {{ product.price | number}} đ</span>
+                  <a href="#" class="btn btn-light  py-2 icon-hover px-3">
+                    <i class="me-1 fa fa-heart fa-lg"></i>
+                  </a>
+                </div>
+                <p class="card-title">
+                  {{ product.name }}
+                  {{ product.nameCategory }}
+                  {{ product.nameMaterial }}
+                  {{ product.code }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+        <hr />
+  
+        <button ng-if="showLoadMore" class="btn btn-primary" ng-click="loadMore()">Xem thêm</button>
+      </div>
+    <!-- </div> -->
+  </section>
