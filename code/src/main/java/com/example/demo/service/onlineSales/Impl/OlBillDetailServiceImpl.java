@@ -23,4 +23,11 @@ public class OlBillDetailServiceImpl implements OlBillDetailService {
 
         return olBillDetailRepository.findByProductDetailAndStatus(productDetail,1);
     }
+
+    @Override
+    public List<BillDetail> findByBill_IdAndStatus(Long Id) {
+        return  olBillDetailRepository.findByBill_IdAndStatus(Id,1);
+    }
+
+
 }

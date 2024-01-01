@@ -1,4 +1,5 @@
 
+// import generateInvoiceHTML from './invoice.js';
 
 
 var app = angular.module("myAppOfView", ["ngRoute", "angular-jwt"]);
@@ -62,7 +63,6 @@ app.config(function($routeProvider) {
 
 
 
-
 // <!-- Hieu -->
 
 
@@ -81,8 +81,26 @@ app.config(function($routeProvider) {
 
 app.controller("myAppOfView-ctrl", function ($scope,$rootScope, $http, $routeParams,$location,jwtHelper) {
 
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
 // $scope.callAdminEndpoint = function() {
-//     $http.get('http://localhost:8080/api/admin') // Sử dụng 'text' làm kiểu dữ liệu trả về
+//     $http.get('http://localhost:8080http://localhost:8080/api/admin') // Sử dụng 'text' làm kiểu dữ liệu trả về
 //         .then(function(response) {
 //             // In dữ liệu phản hồi từ endpoint '/api/admin'
 //             console.log('Response from admin endpoint:');
@@ -107,3 +125,4 @@ app.controller("myAppOfView-ctrl2", function ($scope,$rootScope, $http, $routePa
 // Tạo cái mới đừng dùng những cái có sẵn chỉ để tham khảo
 // Các phím tắt khi sử dụng visual
 // https://www.thegioididong.com/game-app/tong-hop-cac-phim-tat-trong-visual-studio-code-giup-lap-trinh-1314635
+

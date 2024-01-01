@@ -9,4 +9,6 @@ import java.util.List;
 public interface OLAddressRepository extends JpaRepository<AddressEntity, Long> {
 
     List<AddressEntity> findAllByCustomer_IdAndStatus(Long Id,int status);
+
+    List<AddressEntity> findByDefaultAddressTrue();
 }

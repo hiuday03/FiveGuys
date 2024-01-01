@@ -1,6 +1,7 @@
 package com.example.demo.restcontroller.onlineSales;
 
 import com.example.demo.entity.*;
+import com.example.demo.model.response.onlineSales.OlCartResponse;
 import com.example.demo.service.onlineSales.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,25 +39,47 @@ public class CartRestController {
     private OLProductService olProductService;
 
     @Autowired
+    private OlImageService olImageService;
+
+    @Autowired
     private OLProductDetailService olProductDetailService;
 
     ObjectMapper mapper = new ObjectMapper();
 
     @GetMapping("/cartDetail")
-    public ResponseEntity<List<CartDetail>> getCart(@RequestParam(name = "username") String currentUsername) {
+    public ResponseEntity<List<OlCartResponse>> getCart(@RequestParam(name = "username") String currentUsername) {
         Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
-        if (account.isPresent()){
-                Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
-                if (customer.isPresent()) {
-                    Cart gioHang = olCartService.findByCustomerId(customer.get().getId());
-                    if (gioHang != null) {
-                        List<CartDetail> chiTietGioHang = olCartDetailService.findAllByCart_Id(gioHang.getId());
-                        return ResponseEntity.ok(chiTietGioHang);
+        if (account.isPresent()) {
+            Optional<CustomerEntity> customer = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
+            if (customer.isPresent()) {
+                Cart gioHang = olCartService.findByCustomerId(customer.get().getId());
+                if (gioHang != null) {
+                    List<CartDetail> chiTietGioHang = olCartDetailService.findAllByCart_Id(gioHang.getId());
+                    List<OlCartResponse> olCartResponses = new ArrayList<>();
+                    for (CartDetail cartDetail : chiTietGioHang) {
+                        OlCartResponse olCartResponse = new OlCartResponse();
+                        olCartResponse.setId(cartDetail.getId());
+                        olCartResponse.setQuantity(cartDetail.getQuantity());
+                        olCartResponse.setPrice(cartDetail.getPrice());
+                        olCartResponse.setCart(cartDetail.getCart());
+                        olCartResponse.setProductDetail(cartDetail.getProductDetail());
+                        olCartResponse.setStatus(cartDetail.getStatus());
+
+                        List<Image> images = olImageService.findByProductDetailId(cartDetail.getProductDetail().getId());
+                        if (!images.isEmpty()) {
+                            olCartResponse.setPath(images.get(0).getPath());
+                        }
+
+                        olCartResponses.add(olCartResponse);
                     }
+                    return ResponseEntity.ok(olCartResponses);
                 }
-    }
+            }
+        }
         return ResponseEntity.ok(Collections.emptyList());
     }
+
+
 
 
 

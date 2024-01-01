@@ -25,8 +25,18 @@ public class OlAddressInfoRestController {
         return olAddressService.getAddressListByUsername(username);
     }
 
+    @GetMapping("/address/{id}")
+    public AddressEntity getAddress(@PathVariable Long id) {
+        return olAddressService.findById(id).get();
+    }
+
+    @GetMapping("/addressDefault")
+    public AddressEntity getAddressDefault() {
+        return olAddressService.findByDefaultAddressTrue();
+    }
+
     // Trong controller của bạn
-    @DeleteMapping("/address/{id}")
+    @DeleteMapping("/deleteAddress/{id}")
     public void deleteAddressById(@PathVariable Long id) {
         // Gọi service để xóa địa chỉ với ID tương ứng
         olAddressService.deleteAddress(id);

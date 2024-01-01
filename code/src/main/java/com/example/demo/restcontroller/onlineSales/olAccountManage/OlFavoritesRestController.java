@@ -2,6 +2,7 @@ package com.example.demo.restcontroller.onlineSales.olAccountManage;
 
 import com.example.demo.entity.AddressEntity;
 import com.example.demo.entity.FavoriteEntity;
+import com.example.demo.model.response.onlineSales.OlFavoritesResponse;
 import com.example.demo.security.service.impl.UserService;
 import com.example.demo.service.onlineSales.OlAddressService;
 import com.example.demo.service.onlineSales.OlFavoritesService;
@@ -23,7 +24,7 @@ public class OlFavoritesRestController {
 
 
     @GetMapping("/favorites")
-    public List<FavoriteEntity> listFavorites(@RequestParam("username") String username) {
+    public List<OlFavoritesResponse> listFavorites(@RequestParam("username") String username) {
         return olFavoritesService.getFavoriteListByUsername(username);
     }
 

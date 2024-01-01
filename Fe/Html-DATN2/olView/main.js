@@ -31,7 +31,6 @@ app.factory('authInterceptor', ['$q', '$rootScope', function($q, $rootScope) {
 }]);
 
 
-
 app.config(['$compileProvider', function($compileProvider){
   $compileProvider.debugInfoEnabled(false);
   }]);
@@ -92,6 +91,10 @@ app.config(function($routeProvider) {
   })
   .when("/account-history", {
     templateUrl : "accountManagemrnt/account-history.html",
+    controller : "myApp-ctrl2"
+  })
+  .when("/account-historyDetail", {
+    templateUrl : "accountManagemrnt/account-historyDetail.html",
     controller : "myApp-ctrl2"
   })
   .when("/account-evaluate", {
@@ -545,6 +548,9 @@ function countTotalPrice(items) {
 
           }
     }
+   
+
+
     
     // Watch for changes in cart.items and update countProduct
     $scope.$watchCollection('cart.items', function (newVal, oldVal) {
@@ -813,48 +819,53 @@ function countTotalPrice(items) {
       }
   },
           purchase() {
-            $scope.isPaymentClicked = true;
-          if ($scope.isPaymentClicked) {
-            if (
-              !$scope.bill.reciverName   ||
-              !$scope.bill.phoneNumber   ||
-              !$scope.selectedPayment ||
-              !$scope.bill.address
-            ){
-              if (!$scope.bill.reciverName) {
-              }
-            if (!$scope.bill.address) {
-                }
-            //     var vnfRegex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+           
+   
+          // Kiểm tra các trường thông tin bắt buộc
+    let isBillReciverInvalid = !$scope.bill.reciverName || $scope.bill.reciverName.trim().length === 0;
+    let isBillAddressDetailInvalid = !$scope.billAddressDetail || $scope.billAddressDetail.trim().length === 0;
+    let isBillAddressCityInvalid = !$scope.billAddressCity || $scope.billAddressCity.trim().length === 0;
+    let isBillAddressDistrictInvalid = !$scope.billAddressDistrict || $scope.billAddressDistrict.trim().length === 0;
+    let isBillAddressWardInvalid = !$scope.billAddressWard || $scope.billAddressWard.trim().length === 0;
+  
+    let isBillPhoneNumberInvalid = !isValidPhoneNumber($scope.bill.phoneNumber);
+    
+    let isBillPaymentInvalid = $scope.selectedPayment == null;
 
-            //     if ($scope.bill.phoneNumber) {
-            //         if (!vnfRegex.test($scope.bill.phoneNumber)) {
-            // $scope.checkPhoneNumber= true;
 
-            //             return;
-            //         }
-            //     } else {
-            // $scope.checkPhoneNumber= true;
 
-            //         return;
-            //     }
-            //     console.log($scope.bill.reciverName)
-            //     console.log($scope.bill.phoneNumber)
-            //     console.log($scope.bill.paymentMethod)
-            //     console.log($scope.bill.address)
-                $scope.showErrorNotification("Vui lòng điền đầy đủ thông tin giao hàng!");
+    // Thêm kiểm tra cho các trường khác nếu cần
+  
+    // Hiển thị thông báo lỗi dưới các trường thông tin
+    $scope.isBillReciverInvalid = isBillReciverInvalid;
+    $scope.isBillAddressDetailInvalid = isBillAddressDetailInvalid;
+    $scope.isBillAddressCityInvalid = isBillAddressCityInvalid;
+    $scope.isBillAddressDistrictInvalid = isBillAddressDistrictInvalid;
+    $scope.isBillAddressWardInvalid = isBillAddressWardInvalid;
+    $scope.isBillPhoneNumberInvalid = isBillPhoneNumberInvalid;
+    $scope.isBillPaymentInvalid = isBillPaymentInvalid;
+    // Hiển thị thông báo lỗi cho các trường khác nếu cần
+  
+    // Tiếp tục chỉ khi không có lỗi
+    if (isBillReciverInvalid || isBillAddressDetailInvalid || isBillAddressCityInvalid || isBillAddressDistrictInvalid || isBillAddressWardInvalid || isBillPhoneNumberInvalid || isBillPaymentInvalid) {
+      $scope.showErrorNotification("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
 
-                return;
-
-            }
-
-          
+            var fullAddress =
+      $scope.billAddressDetail +
+      ', ' +
+      $scope.billAddressWard +
+      ', ' +
+      $scope.billAddressDistrict +
+      ', ' +
+      $scope.billAddressCity;
 
             // Nếu thông tin đã đầy đủ, tiến hành gửi dữ liệu lên server
             var bill = angular.copy(this);
             bill.totalAmount = $scope.totalAmount;
             bill.totalAmountAfterDiscount = $scope.totalAmountAfterDiscount;
-            bill.address = $scope.address;
+            bill.address = fullAddress;
             bill.paymentMethod = $scope.selectedPayment;
             bill.voucher = $scope.voucherData;
             bill.customerEntity = $scope.userData;
@@ -870,7 +881,7 @@ function countTotalPrice(items) {
                 alert("Đặt hàng thất bại");
                 console.log(error);
               });
-          }
+       
         }
           
       }
@@ -1043,6 +1054,17 @@ $scope.checkQuantityChange2 = function(quantity) {
     $('#voucherModal').modal('show');
   };
 
+  // Chọn address
+
+  $scope.openAddress = function() {
+    $('#addressModal').modal('show');
+  };
+  $scope.closeAddress = function() {
+    $('#addressModal').modal('hide');
+  };
+
+
+
   // JS Search home
   $scope.overlayActive = false;
   $scope.productSearch = [];
@@ -1191,92 +1213,92 @@ $scope.checkSearch();
   //Js Address
 
 
-  const host = "https://provinces.open-api.vn/api/";
+//   const host = "https://provinces.open-api.vn/api/";
 
-  const renderData = (array, select) => {
-    const element = document.querySelector("#" + select);
-    if (element) {
-        let row = '<option disable value="">Chọn</option>';
-        array.forEach(element => {
-            row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
-        });
-        element.innerHTML = row;
-    }
-}
+//   const renderData = (array, select) => {
+//     const element = document.querySelector("#" + select);
+//     if (element) {
+//         let row = '<option disable value="">Chọn</option>';
+//         array.forEach(element => {
+//             row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
+//         });
+//         element.innerHTML = row;
+//     }
+// }
 
   
-  const callAPI = (api, callback) => {
-      return axios.get(api)
-          .then((response) => {
-              callback(response.data);
-          })
-          .catch((error) => {
-              console.error("Error fetching data:", error);
-          });
-  }
+//   const callAPI = (api, callback) => {
+//       return axios.get(api)
+//           .then((response) => {
+//               callback(response.data);
+//           })
+//           .catch((error) => {
+//               console.error("Error fetching data:", error);
+//           });
+//   }
   
-  const callApiDistrict = (api, dropdownId) => {
-      callAPI(api, (data) => {
-          renderData(data.districts, dropdownId);
-      });
-  }
+//   const callApiDistrict = (api, dropdownId) => {
+//       callAPI(api, (data) => {
+//           renderData(data.districts, dropdownId);
+//       });
+//   }
   
-  const callApiWard = (api, dropdownId) => {
-      callAPI(api, (data) => {
-          renderData(data.wards, dropdownId);
-      });
-  }
+//   const callApiWard = (api, dropdownId) => {
+//       callAPI(api, (data) => {
+//           renderData(data.wards, dropdownId);
+//       });
+//   }
   
-  const printResult = () => {
-    let houseNumber1 = $("#houseNumber1").val();
-    let city1 = $("#city1 option:selected").text();
-    let district1 = $("#district1 option:selected").text();
-    let ward1 = $("#ward1 option:selected").text();
+//   const printResult = () => {
+//     let houseNumber1 = $("#houseNumber1").val();
+//     let city1 = $("#city1 option:selected").text();
+//     let district1 = $("#district1 option:selected").text();
+//     let ward1 = $("#ward1 option:selected").text();
 
-    let result1 = houseNumber1 && district1 && city1 && ward1 ? `${houseNumber1}, ${ward1}, ${district1}, ${city1}` : '';
-    $scope.address = result1;
+//     let result1 = houseNumber1 && district1 && city1 && ward1 ? `${houseNumber1}, ${ward1}, ${district1}, ${city1}` : '';
+//     $scope.address = result1;
 
 
-    $("#resultInput1").val(result1);
-}
+//     $("#resultInput1").val(result1);
+// }
   
-  // Load city data for the first set of elements
-  callAPI(host + '?depth=1', (data) => {
-      renderData(data, "city1");
-  });
+//   // Load city data for the first set of elements
+//   callAPI(host + '?depth=1', (data) => {
+//       renderData(data, "city1");
+//   });
   
-  // Load city data for the second set of elements
-  callAPI(host + '?depth=1', (data) => {
-      renderData(data, "city2");
-  });
+//   // Load city data for the second set of elements
+//   callAPI(host + '?depth=1', (data) => {
+//       renderData(data, "city2");
+//   });
   
-  // Event listeners and initial call
-  $("#city1, #city2, #district1, #district2, #ward1, #ward2, #houseNumber1, #houseNumber2").on('change input', function () {
-      const id = $(this).attr("id");
+//   // Event listeners and initial call
+//   $("#city1, #city2, #district1, #district2, #ward1, #ward2, #houseNumber1, #houseNumber2").on('change input', function () {
+//       const id = $(this).attr("id");
   
-      if (id.startsWith("city")) {
-          const districtId = id.replace("city", "district");
-          const selectedCityId = $(this).find(':selected').data('id');
-          $("#" + districtId).empty().html('<option value="" selected>Chọn quận huyện</option>');
+//       if (id.startsWith("city")) {
+//           const districtId = id.replace("city", "district");
+//           const selectedCityId = $(this).find(':selected').data('id');
+//           $("#" + districtId).empty().html('<option value="" selected>Chọn quận huyện</option>');
   
-          if (selectedCityId) {
-              callApiDistrict(host + "p/" + selectedCityId + "?depth=2", districtId);
-          }
-      } else if (id.startsWith("district")) {
-          const wardId = id.replace("district", "ward");
-          const selectedDistrictId = $(this).find(':selected').data('id');
-          $("#" + wardId).empty().html('<option value="" selected>Chọn phường xã</option>');
+//           if (selectedCityId) {
+//               callApiDistrict(host + "p/" + selectedCityId + "?depth=2", districtId);
+//           }
+//       } else if (id.startsWith("district")) {
+//           const wardId = id.replace("district", "ward");
+//           const selectedDistrictId = $(this).find(':selected').data('id');
+//           $("#" + wardId).empty().html('<option value="" selected>Chọn phường xã</option>');
   
-          if (selectedDistrictId) {
-              callApiWard(host + "d/" + selectedDistrictId + "?depth=2", wardId);
-          }
-      }
+//           if (selectedDistrictId) {
+//               callApiWard(host + "d/" + selectedDistrictId + "?depth=2", wardId);
+//           }
+//       }
   
-      printResult();
-  });
+//       printResult();
+//   });
   
-  // Initial call when the page loads
-  printResult();
+//   // Initial call when the page loads
+//   printResult();
   
 
 //Js Home Slide 
@@ -1506,9 +1528,41 @@ $scope.fillDataToUpdate = function(selectedAddress) {
 
 };
 
+$scope.fillDataToBill  = function(address) {
+  $scope.defaultAddress = address;
+
+  // Gán dữ liệu từ địa chỉ mặc định vào hóa đơn
+  $scope.bill.reciverName = $scope.defaultAddress.name;
+  $scope.bill.phoneNumber = $scope.defaultAddress.phoneNumber;
+
+  // Xử lý dữ liệu địa chỉ
+  var addressComponents = $scope.defaultAddress.address.split(',');
+
+  if (addressComponents.length >= 4) {
+      $scope.billAddressCity = addressComponents[3].trim();
+      $scope.billAddressDistrict = addressComponents[2].trim();
+      $scope.billAddressWard = addressComponents[1].trim();
+      $scope.billAddressDetail = addressComponents[0].trim();
+  }
+};
+
+$scope.getDefaultAddress  = function() {
+  $http.get('http://localhost:8080/api/ol/addressDefault')
+      .then(function(response) {
+       $scope.fillDataToBill(response.data);
+      })
+      .catch(function(error) {
+          console.error('Error:', error);
+      });
+};
+
+$scope.selectAddressBill  = function(address) {
+  $scope.fillDataToBill(address);
+
+};
 
 $scope.deleteDataAddress = function(addressId) {
-  $http.delete('http://localhost:8080/api/ol/address/' + addressId)
+  $http.delete('http://localhost:8080/api/ol/deleteAddress/' + addressId)
       .then(function successCallback(response) {
         $scope.getAddressList();
           $scope.showSuccessNotification("Đã xóa địa chỉ thành công");
@@ -1602,13 +1656,13 @@ $scope.addAddress = function() {
   }
 
   var fullAddress =
-      $scope.addressData.addressDetail +
+      $scope.addressDataaddressDetail +
       ', ' +
-      $scope.addressData.ward +
+      $scope.addressDataward +
       ', ' +
-      $scope.addressData.district +
+      $scope.addressDatadistrict +
       ', ' +
-      $scope.addressData.city;
+      $scope.addressDatacity;
 
   // Tạo object để gửi thông tin địa chỉ mới
   var newAddress = {
@@ -1657,7 +1711,11 @@ $scope.deleteDataFavorite = function(favorites) {
 
 
 $scope.addFavorite = function(productDetailId) {
+
+  if(productDetailId != null){
+
   var newFavorite = {
+
     customer: $scope.userData, // Thay vào đây thông tin về khách hàng đã đăng nhập
     productDetail:  productDetailId , 
     status: 1 
@@ -1672,9 +1730,100 @@ $scope.addFavorite = function(productDetailId) {
       // Xử lý khi thêm yêu thích thất bại
       $scope.showErrorNotification("Không thể thêm vào yêu thích!");
     });
+
+
+}else{
+  $scope.showErrorNotification("Vui lòng chọn sản phẩm cụ thể");
+  return;
+}
+}
+
+$scope.choiceProductDetail = function(productDetail){
+  // ng-click="choiceProductDetail(favorite.productDetail)"
+console.log(productDetail);
+  $scope.selectSize(productDetail.size.id);
+  $scope.selectColor(productDetail.color.id);
+  // $scope.productDetailInfo.olViewProductDetailRespone.id = productDetail.product.id;
+}
+
+
+// bill
+
+$scope.listBills = function() {
+  $http({
+      method: 'GET',
+      url: 'http://localhost:8080/api/ol/bills?username=' + $scope.username 
+  }).then(function successCallback(response) {
+      $scope.listBills = response.data;
+  }, function errorCallback(response) {
+      console.error('Error:', response.data);
+  });
 };
 
 
+$scope.showBillDetail = function() {
+  var billId = $routeParams.billId;
+if(billId != null){
+  $http.get('http://localhost:8080/api/ol/bills/' + billId)
+      .then(function(response) {
+      $scope.selectedBill = response.data;
+      console.log($scope.selectedBill)
+      })
+      .catch(function(error) {
+          console.error('Error fetching bill details:', error);
+      });
+};
+}
+
+$scope.openReview = function() {
+  $('#reviewModal').modal('show');
+};
+$scope.closeReview = function() {
+  $('#reviewModal').modal('hide');
+};
+
+
+$scope.toggleStars = function(index) {
+  const stars = document.querySelectorAll('.fa-star');
+  for (let i = 0; i <= index; i++) {
+      stars[i].classList.add('checked');
+  }
+  for (let i = index + 1; i < stars.length; i++) {
+      stars[i].classList.remove('checked');
+  }
+}
+
+
+// rate
+
+
+$scope.listRatesFuc = function() {
+  $http({
+      method: 'GET',
+      url: 'http://localhost:8080/api/ol/rates?username=' + $scope.username 
+  }).then(function (response) {
+      $scope.listRates = response.data;
+  }, function errorCallback(response) {
+      console.error('Error:', response.data);
+  });
+};
+
+
+$scope.getNumber = function(num) {
+  return new Array(num);
+};
+
+
+$scope.deleteDataRate = function(rate) {
+  $http.delete('http://localhost:8080/api/ol/deleteRate/' + rate)
+      .then(function(response) {
+        $scope.listRatesFuc();
+        $scope.showSuccessNotification("Xóa đánh giá thành công");
+
+      }, function errorCallback(response) {
+      $scope.showErrorNotification("Xóa đánh giá thất bại");
+      });
+};
 
 });
 

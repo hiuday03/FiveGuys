@@ -90,5 +90,20 @@ public class OlAddressServiceImpl implements OlAddressService {
         return true;
     }
 
+    @Override
+    public AddressEntity findByDefaultAddressTrue() {
+        return repository.findByDefaultAddressTrue().get(0);
+    }
+
+    @Override
+    public Optional<AddressEntity> findById(Long id) {
+        Optional<AddressEntity> addressEntity = repository.findById(id);
+        if (addressEntity.isPresent()){
+            return addressEntity;
+        }
+
+        return Optional.empty();
+    }
+
 
 }

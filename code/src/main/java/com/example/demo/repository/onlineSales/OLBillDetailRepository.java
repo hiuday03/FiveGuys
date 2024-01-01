@@ -13,5 +13,5 @@ public interface OLBillDetailRepository extends JpaRepository<BillDetail, Long> 
 
     List<BillDetail> findByProductDetailAndStatus(ProductDetail productDetail,int status);
 
-
+    List<BillDetail> findByBill_IdAndStatus(Long Id,int status);
 }
