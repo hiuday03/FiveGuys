@@ -16,14 +16,14 @@
 
 <body ng-app="otp" ng-controller="otpCtrcl">
     <div class="container">
-        <h1>Forgot Password</h1>
         <form class="otp-form">
+            <h1 style="margin: 5%;">Quên mật khẩu</h1>
             <div class="input-group">
-                <label for="email">Enter your email</label>
-                <input type="email" id="email" ng-model="email" placeholder="Your email" required>
+                <label for="email">Nhập Email của bạn</label>
+                <input type="email" id="email" ng-model="email" placeholder="Email" required>
             </div>
             <div class="input-group">
-                <label for="otp">Enter OTP</label>
+                <label for="otp">Nhập OTP</label>
                 <input type="text" id="otp" ng-model="otp" placeholder="OTP" required>
             </div>
             <button ng-click="forgotPassword()">Gửi lại mã</button>
