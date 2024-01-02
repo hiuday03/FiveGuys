@@ -69,30 +69,30 @@ public class OlBillServiceImpl implements OlBillService {
         Bill bill = mapper.convertValue(orderData, Bill.class);
 
         // Kiểm tra số lượng tồn của voucher trước khi sử dụng
-        if (bill.getVoucher() != null){
+        if (bill.getVoucher() != null) {
 
-        Vouchers existingVoucher = olVouchersRepository.findById(bill.getVoucher().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Voucher not found"));
+            Vouchers existingVoucher = olVouchersRepository.findById(bill.getVoucher().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Voucher not found"));
 
-        if (existingVoucher != null && existingVoucher.getStatus() == 1 && existingVoucher.getQuantity() > 0) {
-            existingVoucher.setQuantity(existingVoucher.getQuantity() - 1);
-            olVouchersRepository.save(existingVoucher);
-        } else {
-            throw new IllegalStateException("Voucher is not available");
+            if (existingVoucher != null && existingVoucher.getStatus() == 1 && existingVoucher.getQuantity() > 0) {
+                existingVoucher.setQuantity(existingVoucher.getQuantity() - 1);
+                olVouchersRepository.save(existingVoucher);
+            } else {
+                throw new IllegalStateException("Voucher is not available");
+            }
+
+            // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
+            List<BillDetail> billDetails = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {
+            });
+            for (BillDetail detail : billDetails) {
+                updateProductQuantity(detail); // Cập nhật số lượng sản phẩm cho mỗi chi tiết hóa đơn
+                detail.setBill(bill);
+            }
+            // Lưu thông tin hóa đơn và chi tiết hóa đơn vào cơ sở dữ liệu
+            Bill savedBill = olProductDetailRepository.save(bill);
+            olBillDetailRepository.saveAll(billDetails);
+            return savedBill;
         }
-
-        // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
-        List<BillDetail> billDetails = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
-        for (BillDetail detail : billDetails) {
-            updateProductQuantity(detail); // Cập nhật số lượng sản phẩm cho mỗi chi tiết hóa đơn
-            detail.setBill(bill);
-        }
-        // Lưu thông tin hóa đơn và chi tiết hóa đơn vào cơ sở dữ liệu
-        Bill savedBill = olProductDetailRepository.save(bill);
-        olBillDetailRepository.saveAll(billDetails);
-        return savedBill;
-    }
-
 
 
 //    @Override
@@ -117,4 +117,6 @@ public class OlBillServiceImpl implements OlBillService {
 //
 //        return bill;
 //    }
+        return null;
+    }
 }
