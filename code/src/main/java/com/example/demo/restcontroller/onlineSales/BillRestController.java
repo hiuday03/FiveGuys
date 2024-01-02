@@ -9,7 +9,7 @@ import com.example.demo.payment.momo.enums.RequestType;
 import com.example.demo.payment.momo.models.PaymentResponse;
 import com.example.demo.payment.momo.processor.CreateOrderMoMo;
 import com.example.demo.payment.paypal.PaypalService;
-import com.example.demo.payment.vnpay.config.Config;
+import com.example.demo.payment.vnpay.config.ConfigVNPay;
 import com.example.demo.service.onlineSales.OLProductDetailService;
 import com.example.demo.service.onlineSales.OlBillService;
 import com.example.demo.service.onlineSales.OlCartDetailService;
@@ -182,9 +182,10 @@ public class BillRestController {
             String orderType = "other";
 
             String vnp_TxnRef = codeBill;
-            String vnp_IpAddr = Config.getIpAddress(req);
+            System.out.println(codeBill);
+            String vnp_IpAddr = ConfigVNPay.getIpAddress(req);
 
-            String vnp_TmnCode = Config.vnp_TmnCode;
+            String vnp_TmnCode = ConfigVNPay.vnp_TmnCode;
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
@@ -199,8 +200,9 @@ public class BillRestController {
             vnp_Params.put("vnp_OrderType", orderType);
 
             vnp_Params.put("vnp_Locale", "vn");
-            vnp_Params.put("vnp_ReturnUrl",Config.vnp_ReturnUrl);
+            vnp_Params.put("vnp_ReturnUrl", ConfigVNPay.vnp_ReturnUrl);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+
 //            vnp_Params.put("vnp_orderData", encodedOrderDataString);
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -236,9 +238,11 @@ public class BillRestController {
                 }
             }
             String queryUrl = query.toString();
-            String vnp_SecureHash = Config.hmacSHA512(Config.secretKey, hashData.toString());
+            String vnp_SecureHash = ConfigVNPay.hmacSHA512(ConfigVNPay.secretKey, hashData.toString());
+
+            System.out.println(vnp_SecureHash);
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-            String paymentUrlVNPAY = Config.vnp_PayUrl + "?" + queryUrl;
+            String paymentUrlVNPAY = ConfigVNPay.vnp_PayUrl + "?" + queryUrl;
 
             Map<String, String> jsonResponse = new HashMap<>();
             jsonResponse.put("rederect", paymentUrlVNPAY);
@@ -253,7 +257,7 @@ public class BillRestController {
 
         }else if (namePayment.equals("MoMo")){
             String requestId = String.valueOf(System.currentTimeMillis());
-            String orderId = codeBill;
+            String orderId = String.valueOf(System.currentTimeMillis());
 
             String orderInfo = "Thanh toán cho đơn hàng ";
             String redirectUrl = "http://localhost:8080/api/ol/payment-momo/success";

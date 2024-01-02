@@ -21,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author CTT VNPAY
  */
-public class Config {
+public class ConfigVNPay {
 
 //    Ngân hàng	NCB
 //    Số thẻ	9704198526191432198

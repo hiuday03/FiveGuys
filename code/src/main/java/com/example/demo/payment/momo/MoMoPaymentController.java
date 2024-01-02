@@ -6,12 +6,9 @@ import com.example.demo.entity.BillDetail;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.ProductDetail;
 import com.example.demo.payment.momo.config.Environment;
-import com.example.demo.payment.momo.enums.ConfirmRequestType;
-import com.example.demo.payment.momo.enums.RequestType;
-import com.example.demo.payment.momo.models.ConfirmResponse;
-import com.example.demo.payment.momo.models.PaymentResponse;
-import com.example.demo.payment.momo.processor.ConfirmTransaction;
-import com.example.demo.payment.momo.processor.CreateOrderMoMo;
+import com.example.demo.payment.momo.models.QueryStatusTransactionRequest;
+import com.example.demo.payment.momo.models.QueryStatusTransactionResponse;
+import com.example.demo.payment.momo.processor.QueryTransactionStatus;
 import com.example.demo.restcontroller.onlineSales.BillRestController;
 import com.example.demo.security.AuthController;
 import com.example.demo.service.onlineSales.OLProductDetailService;
@@ -27,7 +24,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -60,24 +56,41 @@ public class MoMoPaymentController {
 
 
 
-    @PostMapping("/payment-momo/confirm-transaction")
-    public ResponseEntity<String> confirmTransaction() {
-        String requestId = String.valueOf(System.currentTimeMillis());
-        String orderId = String.valueOf(System.currentTimeMillis());
-        long amount = 50000;
-
-        Environment environment = Environment.selectEnv("dev");
+    @PostMapping("/query-transaction")
+    public ResponseEntity<QueryStatusTransactionResponse> queryTransactionStatus(@RequestBody QueryStatusTransactionRequest request) {
+                Environment environment = Environment.selectEnv("dev");
 
         try {
-            ConfirmResponse confirmResponse = ConfirmTransaction.process(environment, orderId, requestId, Long.toString(amount), ConfirmRequestType.CAPTURE, "");
-
-            // Xử lý và trả về kết quả, ví dụ: trả về thông tin xác nhận giao dịch
-            return ResponseEntity.ok("Transaction confirmed successfully.");
+            QueryStatusTransactionResponse response = QueryTransactionStatus.process(environment, request.getOrderId(), request.getRequestId());
+            if (response != null) {
+                System.out.println(response.getResultCode());
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
         } catch (Exception e) {
-            // Xử lý lỗi nếu có
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to confirm transaction: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+//    @PostMapping("/payment-momo/confirm-transaction")
+//    public ResponseEntity<String> confirmTransaction() {
+//        String requestId = "1704179397755";
+//        String orderId = "1704179397755";
+//        long amount = 280000;
+//
+//        Environment environment = Environment.selectEnv("dev");
+//
+//        try {
+//            ConfirmResponse confirmResponse = ConfirmTransaction.process(environment, orderId, requestId, Long.toString(amount), ConfirmRequestType.CAPTURE, "");
+//
+//            // Xử lý và trả về kết quả, ví dụ: trả về thông tin xác nhận giao dịch
+//            return ResponseEntity.ok("Transaction confirmed successfully.");
+//        } catch (Exception e) {
+//            // Xử lý lỗi nếu có
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to confirm transaction: " + e.getMessage());
+//        }
+//    }
 
     private void restoreProductQuantity(List<BillDetail> billDetails) {
         for (BillDetail detail : billDetails) {

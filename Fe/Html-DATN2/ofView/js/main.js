@@ -122,6 +122,7 @@ app.controller("myAppOfView-ctrl2", function ($scope,$rootScope, $http, $routePa
 });
 
 
+
 // Tạo cái mới đừng dùng những cái có sẵn chỉ để tham khảo
 // Các phím tắt khi sử dụng visual
 // https://www.thegioididong.com/game-app/tong-hop-cac-phim-tat-trong-visual-studio-code-giup-lap-trinh-1314635
