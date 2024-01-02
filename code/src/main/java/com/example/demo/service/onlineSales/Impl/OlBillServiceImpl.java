@@ -80,9 +80,6 @@ public class OlBillServiceImpl implements OlBillService {
             } else {
                 throw new IllegalStateException("Voucher is not available");
             }
-<<<<<<< HEAD
-=======
-
             // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
             List<BillDetail> billDetails = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {
             });
@@ -94,7 +91,6 @@ public class OlBillServiceImpl implements OlBillService {
             Bill savedBill = olProductDetailRepository.save(bill);
             olBillDetailRepository.saveAll(billDetails);
             return savedBill;
->>>>>>> origin/nguyen
         }
 
 
