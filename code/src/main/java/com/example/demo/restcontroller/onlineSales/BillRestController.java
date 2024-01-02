@@ -295,6 +295,7 @@ public class BillRestController {
 
                 e.printStackTrace();
             }
+
         }else if (namePayment.equals("COD")){
             olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
             if (bill.getCustomerEntity() != null){
