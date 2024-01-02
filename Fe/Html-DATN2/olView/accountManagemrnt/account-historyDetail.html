@@ -1,0 +1,184 @@
+
+
+
+<section style="margin-top: 82px;" class="container-fluid" ng-init="showBillDetail()" >
+
+    <div style="margin-bottom: 40px;padding: 0 64px;" class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+
+            <div class="account-page-title">
+                <span>Tài khoản của bạn</span>
+            </div>
+
+
+            <div class="collapsible-account-content">
+                <div class="block-title">
+                    <strong class="customer-name"> Hải Phạm</strong>
+                </div>
+                <div class="block-content block-collapsible-nav-content">
+    
+    
+                    <ul class="nav items">
+                        <li class="nav item current"><a href="#!account-info">Thông tin tài khoản</a></li>
+                    </ul>
+                    <ul class="nav items">
+                        <li class="nav item current"><a href="#!account-history"><strong>Lịch sử mua hàng</strong></a></li>
+                    </ul>
+                    <ul class="nav items">
+                        <li class="nav item current"><a href="#!account-address">Địa chỉ giao hàng</a></li>
+                    </ul>
+                    <ul class="nav items">
+                        <li class="nav item current"><a href="#!account-favorite">Sản phẩm yêu thích</a></li>
+                    </ul>
+                    <ul class="nav items"><li class="nav item current"><a href="#!account-evaluate">Đánh giá và phản hồi</a></li>
+                    </ul>
+                <hr>
+    
+                <ul class="nav items">
+                    <li class="nav item current"><a href=""   ng-click="logout()">Đăng xuất</a></li>
+                </ul>
+                </div>
+            </div>
+      
+        </div>
+        <div class="col-lg-9 col-md-6 col-sm-6 mb-4">
+            <div class="column-main">
+                <div class="page-title-wrapper">
+                    <h1 class="page-title">
+                        <span class="base">Thông tin chi tiết</span>
+                    </h1>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <table class="table">
+                                        <tr>
+                                            <td>Mã hóa đơn:</td>
+                                            <td>{{ selectedBill.code }}</td>
+                                            <td>Trạng thái thanh toán:</td>
+                                            <td>{{ selectedBill.paymentStatus }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ngày thanh toán:</td>
+                                            <td>{{ selectedBill.paymentDate | date:'dd/MM/yyyy' }}</td>
+                                            <td>Địa chỉ:</td>
+                                            <td>{{ selectedBill.address }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ngày giao hàng:</td>
+                                            <td>{{ selectedBill.deliveryDate | date:'dd/MM/yyyy' }}</td>
+                                            <td>Số điện thoại:</td>
+                                            <td>{{ selectedBill.phoneNumber }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phí vận chuyển:</td>
+                                            <td>{{ selectedBill.shippingFee }}</td>
+                                            <td>Phương thức thanh toán:</td>
+                                            <td>{{ selectedBill.paymentMethod.name }}</td>
+                                        </tr>
+                                        <!-- Thêm các trường thông tin khác -->
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mã hàng</th>
+                                    <th>Tên hàng</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Giá bán</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="detail in selectedBill.billDetail">
+                                    <td>{{ detail.productDetail.product.code }}</td>
+                                    <td>{{ detail.productDetail.product.name }}</td>
+                                    <td>{{ detail.quantity }}</td>
+                                    <td>{{ detail.productDetail.price }}</td>
+                                    <td>{{ detail.productDetail.price - detail.discount }}</td>
+                                    <td>{{ detail.quantity * (detail.productDetail.price - detail.discount) }}</td>
+                                    <td><button class="btn btn-primary" ng-click="openReview()">Đánh giá</button></td>
+
+                                        <!-- Modal -->
+                                    <div class="modal fade show" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="reviewModalLabel">Đánh giá sản phẩm</h5>
+                                   
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="star-container">
+                                                        <span class="fa fa-star" ng-click="toggleStars(0)"></span>
+                                                        <span class="fa fa-star" ng-click="toggleStars(1)"></span>
+                                                        <span class="fa fa-star" ng-click="toggleStars(2)"></span>
+                                                        <span class="fa fa-star" ng-click="toggleStars(3)"></span>
+                                                        <span class="fa fa-star" ng-click="toggleStars(4)"></span>
+                                                    </div>
+                                                    
+                                                    
+                                                    
+                                                      
+                                                    <!-- Nội dung đánh giá -->
+                                                    <textarea rows="4" cols="50" placeholder="Nhập nội dung đánh giá..."></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" ng-click="closeReview()">Đóng</button>
+
+                                                    <button type="button" class="btn btn-primary">Đánh giá</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                 
+                </div>
+                <div class="row" style="    display: flex;
+                justify-content: flex-end;">
+                    <div class="col-md-4">
+                        <table class="table">
+                            <!-- Thêm một hàng mới hiển thị các thông tin tổng hợp -->
+                            <tfoot>
+                                <tr>
+                                    <td><strong>Tổng số lượng:</strong></td>
+                                    <!-- <td >{{ (selectedBill.billDetail) }}</td> -->
+                                </tr>
+                                <tr>
+                                    <td><strong>Tổng tiền hàng:</strong></td>
+                                    <td class="text-right">{{ (selectedBill.totalAmount)  }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Giảm giá hóa đơn:</strong></td>
+                                    <td class="text-right">{{ (selectedBill.totalAmountAfterDiscount)  }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <button class="btn btn-danger">Hủy</button>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        
+    </div>
+
+</section>

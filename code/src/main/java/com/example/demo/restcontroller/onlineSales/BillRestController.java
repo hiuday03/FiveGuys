@@ -3,12 +3,14 @@ package com.example.demo.restcontroller.onlineSales;
 import com.example.demo.entity.Bill;
 import com.example.demo.entity.BillDetail;
 import com.example.demo.entity.Cart;
+import com.example.demo.entity.ProductDetail;
 import com.example.demo.payment.momo.config.Environment;
 import com.example.demo.payment.momo.enums.RequestType;
 import com.example.demo.payment.momo.models.PaymentResponse;
 import com.example.demo.payment.momo.processor.CreateOrderMoMo;
 import com.example.demo.payment.paypal.PaypalService;
-import com.example.demo.payment.vnpay.config.Config;
+import com.example.demo.payment.vnpay.config.ConfigVNPay;
+import com.example.demo.service.onlineSales.OLProductDetailService;
 import com.example.demo.service.onlineSales.OlBillService;
 import com.example.demo.service.onlineSales.OlCartDetailService;
 import com.example.demo.service.onlineSales.OlCartService;
@@ -24,6 +26,7 @@ import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,17 +82,59 @@ public class BillRestController {
     @Autowired
     private OlCartDetailService olCartDetailService;
 
+    @Autowired
+    private OLProductDetailService olProductDetailService;
+
     ObjectMapper mapper = new ObjectMapper();
+
+    private void updateProductQuantity(BillDetail billDetail) {
+        Optional<ProductDetail> productDetail = olProductDetailService.findById(billDetail.getProductDetail().getId());
+        if (productDetail.isPresent()){
+            int quantityToRemove = billDetail.getQuantity();
+            if (isQuantityAvailable(productDetail.get(), quantityToRemove)) {
+                int currentQuantity = productDetail.get().getQuantity();
+                productDetail.get().setQuantity(currentQuantity - quantityToRemove);
+                olProductDetailService.save(productDetail.get());
+            } else {
+                throw new IllegalArgumentException("Not enough quantity available for product: " + productDetail.get().getId());
+            }
+        }
+    }
+
+    private boolean isQuantityAvailable(ProductDetail productDetail, int quantityToRemove) {
+        int currentQuantity = productDetail.getQuantity();
+        return currentQuantity >= quantityToRemove;
+    }
+
+
+
 
     @Transactional
     @PostMapping("/bill/create")
-    public ResponseEntity<?> TaoHoaDonNguoiDungChuaDangNhap(@RequestBody JsonNode orderData, HttpServletResponse  response, HttpServletRequest req) throws IOException {
+    public ResponseEntity<?> TaoHoaDonNguoiDungChuaDangNhap(@RequestBody JsonNode orderData, HttpServletResponse  response, HttpServletRequest req, HttpSession session) throws IOException {
         Bill bill = mapper.convertValue(orderData, Bill.class);
         BigDecimal totalAmountAfterDiscount = new BigDecimal(String.valueOf(bill.getTotalAmountAfterDiscount()));
         String describe = String.valueOf(bill.getNote());
         String namePayment = bill.getPaymentMethod().getName();
-        String orderDataString = mapper.writeValueAsString(orderData);
         billData = orderData;
+
+        String codeBill = String.valueOf(System.currentTimeMillis());
+        session.setAttribute(codeBill,orderData);
+        session.setAttribute("hello","hello");
+
+//        JsonNode yourJsonNode = (JsonNode) session.getAttribute(codeBill);
+//
+//        if (yourJsonNode != null) {
+//            // Sử dụng JsonNode theo nhu cầu của bạn
+//            System.out.println(yourJsonNode.toString());
+//        }
+
+        // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
+        List<BillDetail> billDetailsCheck = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
+        for (BillDetail detail : billDetailsCheck) {
+            updateProductQuantity(detail); // Cập nhật số lượng sản phẩm cho mỗi chi tiết hóa đơn
+        }
+
         if (namePayment.equals("QR")) {
             try {
                 if (orderData == null) {
@@ -109,15 +154,14 @@ public class BillRestController {
 
                     for (BillDetail billDetail : billDetails) {
                         String productName = "Hello";
-                        int quantity = billDetail.getQuantity(); // Thay bằng phương thức lấy số lượng từ BillDetail
-                        int price = Integer.valueOf(String.valueOf(billDetail.getPrice())); // Thay bằng phương thức lấy giá từ BillDetail
+                        int quantity = billDetail.getQuantity();
+                        int price = Integer.valueOf(String.valueOf(billDetail.getPrice()));
 
                         ItemData item = new ItemData(productName, quantity, price);
                         itemList.add(item);
                     }
                 }
-                String currentTimeString = String.valueOf(new Date().getTime());
-                int orderCode = Integer.parseInt(currentTimeString.substring(currentTimeString.length() - 6));
+                int orderCode = Integer.parseInt(codeBill);
                 PaymentData paymentData = new PaymentData(orderCode, Integer.valueOf(String.valueOf(totalAmountAfterDiscount)), description, itemList, cancelUrl, returnUrl);
                 JsonNode data = payOS.createPaymentLink(paymentData);
 
@@ -137,10 +181,11 @@ public class BillRestController {
             String vnp_Command = "pay";
             String orderType = "other";
 
-            String vnp_TxnRef = Config.getRandomNumber(8);
-            String vnp_IpAddr = Config.getIpAddress(req);
+            String vnp_TxnRef = codeBill;
+            System.out.println(codeBill);
+            String vnp_IpAddr = ConfigVNPay.getIpAddress(req);
 
-            String vnp_TmnCode = Config.vnp_TmnCode;
+            String vnp_TmnCode = ConfigVNPay.vnp_TmnCode;
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
@@ -155,8 +200,9 @@ public class BillRestController {
             vnp_Params.put("vnp_OrderType", orderType);
 
             vnp_Params.put("vnp_Locale", "vn");
-            vnp_Params.put("vnp_ReturnUrl",Config.vnp_ReturnUrl);
+            vnp_Params.put("vnp_ReturnUrl", ConfigVNPay.vnp_ReturnUrl);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+
 //            vnp_Params.put("vnp_orderData", encodedOrderDataString);
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -192,9 +238,11 @@ public class BillRestController {
                 }
             }
             String queryUrl = query.toString();
-            String vnp_SecureHash = Config.hmacSHA512(Config.secretKey, hashData.toString());
+            String vnp_SecureHash = ConfigVNPay.hmacSHA512(ConfigVNPay.secretKey, hashData.toString());
+
+            System.out.println(vnp_SecureHash);
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-            String paymentUrlVNPAY = Config.vnp_PayUrl + "?" + queryUrl;
+            String paymentUrlVNPAY = ConfigVNPay.vnp_PayUrl + "?" + queryUrl;
 
             Map<String, String> jsonResponse = new HashMap<>();
             jsonResponse.put("rederect", paymentUrlVNPAY);
@@ -236,6 +284,7 @@ public class BillRestController {
                 Payment payment = paypalService.createPayment(price, "USD", "PayPal",
                         "sale", describe, "http://localhost:8080/api/ol/payment-paypal/cancel",
                         "http://localhost:8080/api/ol/payment-paypal/success");
+                payment.setId(codeBill);
                 for(Links link:payment.getLinks()) {
                     if(link.getRel().equals("approval_url")) {
                         Map<String, String> jsonResponse = new HashMap<>();
@@ -250,6 +299,7 @@ public class BillRestController {
 
                 e.printStackTrace();
             }
+
         }else if (namePayment.equals("COD")){
             olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
             if (bill.getCustomerEntity() != null){

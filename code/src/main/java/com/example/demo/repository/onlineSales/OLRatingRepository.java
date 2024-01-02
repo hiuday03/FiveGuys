@@ -1,6 +1,7 @@
 package com.example.demo.repository.onlineSales;
 
 import com.example.demo.entity.BillDetail;
+import com.example.demo.entity.FavoriteEntity;
 import com.example.demo.entity.ProductDetail;
 import com.example.demo.entity.RatingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,6 @@ public interface OLRatingRepository extends JpaRepository<RatingEntity, Long> {
 
     List<RatingEntity> findByProductDetailAndStatus(ProductDetail productDetail,int status);
 
+    List<RatingEntity> findAllByCustomer_Id(Long Id);
 
 }

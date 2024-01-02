@@ -12,4 +12,6 @@ import java.util.List;
 public interface OlBillDetailService {
     List<BillDetail> findByProductDetail(ProductDetail productDetail);
 
+    List<BillDetail> findByBill_IdAndStatus(Long Id);
+
 }

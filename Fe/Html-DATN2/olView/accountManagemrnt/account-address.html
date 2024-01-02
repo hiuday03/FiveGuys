@@ -54,14 +54,14 @@
                 <div ng-repeat="address in addressList" class="account-address__item">
                     <div class="address-info">
                         <span class="address-line">
-                            <div class="account-address__head">Họ và tên: {{ address.name }}</div>
+                            <div class="account-address__head"><strong>Họ và tên:</strong>  {{  address.name }}</div>
                             <div class="actions">
                                 <button class="btn-update btn btn-primary" ng-click="fillDataToUpdate(address)">Cập nhật</button>
                                 <button class="btn-delete btn btn-primary" ng-click="deleteDataAddress(address.id)">Xóa</button>
                             </div>
                         </span>
-                        <div>Số điện thoại: {{ address.phoneNumber }}</div>
-                        <div>Địa chỉ: {{ address.address }}</div>
+                        <div><strong>Số điện thoại:</strong> {{ address.phoneNumber }}</div>
+                        <div><strong>Địa chỉ:</strong> {{ address.address }}</div>
                         <div ng-if="address.defaultAddress" class="default-address">Địa chỉ mặc định</div>
                     </div>
                 </div>

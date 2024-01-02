@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Tabs</title>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- toastr -->
+  <!-- <link href="node_modules/toastr/build/toastr.min.css" rel="stylesheet"> -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+  <!-- angular-jwt -->
+  <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+
+
+
+  <link rel="stylesheet" href="css/sellquickly.css">
+  <link rel="stylesheet" href="css/default-main.css">
+  <script  src="./js/kendo.all.min.js"></script>
+  <script  src="./js/kendo-ui-license.js"></script>
+</head>
+<body ng-app="sell-quickly">
+
+    <div  ng-controller="sell-quickly-ctrl" class="tab-content" id="tab-page">
+    <nav class="navbar p-0 bg-primary">
+        <div class="container-fluid justify-content-start">
+            <div class="form-group has-search">
+                <form>
+                    <i class="ri-search-line"></i>
+                    <input ng-model="searchProduct" id="search-product" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" >
+                </form>
+                <div id="item-list" class="row product-list">
+                    <div ng-repeat="item in products | filter:searchProduct" class="product" ng-click="addProductCart(selectedItem, item.id)">
+                        <img class="col-3" ng-src="{{item.images[0].path}}" alt="">
+                        <div class="col-7 p-details">
+                            <h2>{{item.product.name}} {{item.product.material.name}}</h2>
+                            <h3>Size: {{item.size.name}}</h3>
+                            <h3>Quantity: {{item.quantity}}</h3>
+                        </div>
+                        <div class="col-2 p-details">
+                            <h1>{{item.price | number:'0':'symbol':'short'}}₫</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav nav-pills ms-3">
+                <ul style="display: flex;" class="horizontal-list" kendo-panel-bar="tree"
+                    k-data-source="treeData"
+                    k-on-change="selectedItem = dataItem">
+                    <span k-template>
+                        {{dataItem.name}} <i ng-show="selectedItem === dataItem" class="ri-close-fill" ng-click='removeBill(selectedItem)'></i>
+                    </span>
+                </ul>
+                <button ng-click="addBill()" class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button></div>
+        </div>
+    </nav>
+    <div class="tab-pane fade" ng-class="{ 'show active': selectedItem.tabShip === false }" id="sell-quickly" role="tabpanel" aria-labelledby="sell-quickly">
+        <div class="tab-content pt-4 pb-4">
+            <div class="row m-0">
+                <div class="col-sm-8">
+                    <div class="cart-height-sell">
+                        <table ng-if="selectedItem.cart.length > 0" class="table">
+                            <tbody>
+                            <tr ng-repeat="item in selectedItem.cart">
+                                <td>{{item.product.name}} {{item.product.material.name}} Size {{item.size.name}}</td>
+                                <td>
+                                    <div class="d-flex" style="width: 40%">
+                                        <button class="btn btn-outline-primary btn-sm px-2"
+                                                ng-click="subtractQuantity(selectedItem, item)">
+                                            <i class="ri-subtract-line"></i>
+                                        </button>
+
+                                            <input id="form1" min="1" name="quantity" ng-model="item.qty" type="number" ng-change="checkQuantityChange(selectedItem, item)"
+                                                   class="text-center mx-2 form-control form-control-sm" />
+
+                                        <button class="btn btn-outline-primary btn-sm px-2"
+                                                ng-click="addQuantity(selectedItem, item)">
+                                            <i class="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td style="line-height: 35px"><p class="m-0 fw-bold" ng-style="{'color': item.quantity < item.qty ? 'red' : 'inherit'}">{{item.price | number:'0':'symbol':'short'}}₫</p></td>
+                                <td><button ng-click="removeProductCart(item.id, selectedItem)" class="btn btn-light border text-danger icon-hover-danger"><i class="ri-delete-bin-6-line"></i></button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <input type="text" ng-model="selectedItem.note" placeholder="Ghi chú đơn hàng" class="form-control" ng-change="changeNote()">
+                </div>
+                <div class="col-sm-4">
+                    <div class="card card-product">
+                        <div ng-if="selectedItem.address != null" class="customer-current">
+                            <span class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCustomerUpdate" ng-click="showCustomerUpdate(selectedItem)">
+                                <i class="ri-user-3-fill"></i>
+                                {{selectedItem.address.customer.fullName}}
+                            </span>
+                            <i ng-if="selectedItem" ng-click="removeAddress(selectedItem)" class="i-close ri-close-fill"></i>
+                        </div>
+                        <form ng-if="selectedItem.address == null">
+                            <i class="ri-search-line icon-search"></i>
+                            <input id="search-client" ng-model="searchClient" ng-disabled="!selectedItem" type="text" class="form-control" placeholder="Tìm kiếm khách hàng" ng-click="showCustomerList1()">
+                            <div ng-if="selectedItem" id="customerList" class="listCustomer">
+                                <div class="list-group">
+                                    <button ng-repeat="cus in customers | filter:searchClient" ng-click="showSelectCustomer(selectedItem,cus)" type="button" class="border-0 list-group-item list-group-item-action">
+                                        {{cus.fullName}} <br>
+                                        Mã: {{cus.id}}
+                                    </button>
+                                </div>
+                            </div>
+                            <i ng-if="selectedItem" data-bs-toggle="modal" data-bs-target="#modalCustomer" class="i-plus ri-add-fill icon-plus"></i>
+                        </form>
+
+                        <div class="content-pay justify-content-center mt-3">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <p>Tổng tiền hàng</p>
+                                </div>
+                                <div class="col-xl-3">
+                                    <p>{{selectedItem.itemQty}}</p>
+                                </div>
+                                <div class="col-xl-5">
+                                    <p class="float-end">
+                                        {{selectedItem.totalAmount | number:'0':'symbol':'short'}}₫
+                                    </p>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div ng-if="selectedItem" class="row">
+                                <div class="col-xl-3">
+                                    <p style="margin-top: 5px">Voucher</p>
+                                </div>
+                                <div class="mb-2 col-xl-9">
+                                    <div ng-if="selectedItem.voucher != null" class="row align-items-center">
+                                        <button type="button" class="w-75 btn btn-outline-primary"><i class="ri-ticket-line"></i> {{selectedItem.voucher.code}} - {{selectedItem.voucher.value}}{{selectedItem.voucher.valueType == 2 ? '%' : '₫'}}</button>
+                                        <button ng-click="removeVoucher(selectedItem)" type="button" class="ms-2 small btn-close" aria-label="Close"></button>
+                                    </div>
+                                    <button ng-if="selectedItem.voucher == null" data-bs-toggle="modal" data-bs-target="#modalVoucher" ng-click="getListVoucher(selectedItem)" type="button" class="btn btn-outline-success"><i class="ri-add-line"></i> Chọn voucher</button>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-5">
+                                    <p>Khách cần trả</p>
+                                </div>
+                                <div class="col-xl-7">
+                                    <p class="float-end">
+                                        {{selectedItem.totalCustomerPay | number:'0':'symbol':'short'}}₫
+                                    </p>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div ng-if="selectedItem.cart.length > 0 && selectedItem.payMethod.name.toLowerCase() === 'tiền mặt'" class="row">
+                                <div class="col-xl-5">
+                                    <p>Khách thanh toán</p>
+                                </div>
+                                <div class="col-xl-7">
+                                    <p class="float-end">
+                                        <input type="number" ng-model="selectedItem.customerPay" ng-change="changeCustomerPay(selectedItem)" class="input-customerPay text-end"  >
+                                    </p>
+                                </div>
+                                <hr class="mb-2">
+                            </div>
+                            <div ng-if="selectedItem.cart.length > 0" class="row mb-3">
+                                <div class="d-flex">
+                                    <div class="form-check me-3" ng-repeat="p in payMethods">
+                                        <label class="form-check-label" ng-click="changePaymentMethod(selectedItem, p)">
+                                            <input class="form-check-input" ng-checked="selectedItem.payMethod.id === p.id" type="radio" name="paymentmethod">
+                                            {{p.name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="selectedItem && selectedItem.moneyReturn != 0" class="row mt-2">
+                                <div class="col-xl-5">
+                                    <p>Tiền thừa trả khách</p>
+                                </div>
+                                <div class="col-xl-7">
+                                    <p class="float-end">
+                                        {{selectedItem.moneyReturn | number:'0':'symbol':'short'}}₫
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button ng-click="pay(selectedItem)" class="btn btn-primary" ng-disabled="!selectedItem" type="button">THANH TOÁN</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
+                    <button type="button" ng-click="resetForm()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAddCustomer" name="formAddCustomer" ng-submit="formAddCustomer.$valid && create(selectedItem)" novalidate>
+                        <div class="row mb-3">
+                            <label for="inputfullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
+                            <div class="col-sm-10">
+                                <input ng-model="formCustomer.fullName" name="fullName" id="inputfullName" type="text" class="form-control" required>
+                                <span ng-show="formAddCustomer.$submitted">
+                                    <div ng-show="formAddCustomer.fullName.$invalid" class="error-message text-danger form-text">
+                                        Tên không được để trống
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputPhone" class="col-sm-2 col-form-label">Điện thoại</label>
+                            <div class="col-sm-10">
+                                <input ng-model="formAddress.phoneNumber" name="phoneNumber" id="inputPhone" type="number" class="form-control" required>
+                                <span ng-if="formAddCustomer.$submitted && formAddCustomer.phoneNumber.$invalid" class="error-message text-danger form-text">
+                                <span ng-if="formAddCustomer.phoneNumber.$error.required">Số điện thoại không được để trống</span>
+                                <span ng-if="formAddCustomer.phoneNumber.$error.number">Số điện thoại phải là số</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mb-3 justify-content-end">
+                            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+                            <div class="form-outline custom-bg col-sm-10">
+                                <input type="text" name="address" id="houseNumber1" placeholder="Số nhà" class="form-control mt-2" />
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <div class="form-outline">
+                                    <input kendo-combo-box k-options="cityComboBoxOptions1" id="city1" class="k-input" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <div class="form-outline">
+                                    <input kendo-combo-box k-options="districtComboBoxOptions1" id="district1" class="k-input" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4 mt-3">
+                                <div class="form-outline">
+                                    <input kendo-combo-box k-options="wardComboBoxOptions1" id="ward1" class="k-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputDate" class="col-sm-2 col-form-label">Ngày sinh</label>
+                            <div class="col-sm-10">
+                                <input ng-model="formCustomer.birthDate" name="birthDate" id="inputDate" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <fieldset class="row mb-3">
+                            <legend class="col-form-label col-sm-2 pt-0">Giới tính</legend>
+                            <div class="col-sm-10" ng-init="formCustomer.gender='true'">
+                                <div class="form-check form-check-inline">
+                                    <input ng-model="formCustomer.gender" class="form-check-input" type="radio" name="gioiTinh" id="addRadioMan" value="true">
+                                    <label class="form-check-label" for="addRadioMan">
+                                        Nam
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input ng-model="formCustomer.gender" class="form-check-input" type="radio" name="gioiTinh" id="addRadioFemale" value="false">
+                                    <label class="form-check-label" for="addRadioFemale">
+                                        Nữ
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="row mb-3">
+                            <legend class="col-form-label col-sm-2 pt-0">Loại khách</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline" ng-init="formAddress.addressType='Cá nhân'">
+                                    <input ng-model="formAddress.addressType" class="form-check-input" type="radio" name="loaiKhach" id="addRadioPersonal" value="Cá nhân">
+                                    <label class="form-check-label" for="addRadioMan">
+                                        Cá nhân
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input ng-model="formAddress.addressType" class="form-check-input" type="radio" name="loaiKhach" id="addRadioWork" value="Công ty">
+                                    <label class="form-check-label" for="addRadioFemale">
+                                        Công ty
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" ng-click="resetForm()" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalCustomerUpdate" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{selectedItem.address.customer.fullName}} - Id: {{selectedItem.address.customer.id}}</h5>
+                    <button type="button" ng-click="resetFormUpdate()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form name="formUpdate" ng-submit="formUpdate.$valid && update(selectedItem)" novalidate>
+                        <div class="row mb-3">
+                            <label for="updatefullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
+                            <div class="col-sm-10">
+                                <input ng-model="formCustomer2.fullName" name="fullName" id="updatefullName" type="text" class="form-control" required>
+                                <span ng-show="formUpdate.$submitted">
+                                            <div ng-show="formUpdate.fullName.$invalid" class="error-message text-danger form-text">
+                                           Tên không được để trống</div>
+                                        </span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="updatePhone" class="col-sm-2 col-form-label">Điện thoại</label>
+                            <div class="col-sm-10">
+                                <input ng-model="formAddress2.phoneNumber" name="phoneNumber" id="updatePhone" type="text" class="form-control" required>
+                                <span ng-if="formUpdate.$submitted && form.phoneNumber.$invalid" class="error-message text-danger form-text">
+                                                    <span ng-if="formUpdate.phoneNumber.$error.required">Số điện thoại không được để trống</span>
+                                                    <span ng-if="formUpdate.phoneNumber.$error.number">Số điện thoại phải là số</span>
+                                            </span>
+                            </div>
+                        </div>
+                        <div class="row mb-3 justify-content-end">
+                            <label class="col-sm-2 col-form-label">Địa chỉ</label>
+                            <div class="form-outline custom-bg col-sm-10">
+                                <input type="text" name="address" id="houseNumber2" placeholder="Số nhà" class="form-control mt-2" />
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <div class="form-outline">
+                                    <input kendo-combo-box k-options="cityComboBoxOptions2" id="city2" class="k-input" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <div class="form-outline">
+                                    <input kendo-combo-box k-options="districtComboBoxOptions2" id="district2" class="k-input" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4 mt-3">
+                                <div class="form-outline">
+                                    <input kendo-combo-box k-options="wardComboBoxOptions2" id="ward2" class="k-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="updateDate" class="col-sm-2 col-form-label">Ngày sinh</label>
+                            <div class="col-sm-10">
+                                <input ng-model="formCustomer2.birthDate" name="birthDate" id="updateDate" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <fieldset class="row mb-3">
+                            <legend class="col-form-label col-sm-2 pt-0">Giới tính</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input ng-model="formCustomer2.gender" class="form-check-input" ng-checked="selectedItem.address.customer.gender === 'True'" type="radio" name="gioiTinh" id="updateRadioMan" value="true">
+                                    <label class="form-check-label" for="addRadioMan">
+                                        Nam
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input ng-model="formCustomer2.gender" class="form-check-input" ng-checked="selectedItem.address.customer.gender === 'False'" type="radio" name="gioiTinh" id="updateRadioFemale" value="false">
+                                    <label class="form-check-label" for="addRadioFemale">
+                                        Nữ
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="row mb-3">
+                            <legend class="col-form-label col-sm-2 pt-0">Loại khách</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input ng-model="formAddress2.addressType" ng-checked="selectedItem.address.addressType === 'Cá nhân'" class="form-check-input" type="radio" name="loaiKhach" id="updateRadioPersonal" value="Cá nhân">
+                                    <label class="form-check-label" for="addRadioMan">
+                                        Cá nhân
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input ng-model="formAddress2.addressType" ng-checked="selectedItem.address.addressType === 'Công ty'" class="form-check-input" type="radio" name="loaiKhach" id="updateRadioWork" value="Công ty">
+                                    <label class="form-check-label" for="addRadioFemale">
+                                        Công ty
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" ng-click="resetFormUpdate()" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="selectedItem" class="modal fade" id="modalVoucher" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title w-50">
+                        <input ng-model="searchVoucher" type="text" class="form-control" placeholder="Tìm kiếm voucher" >
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div ng-repeat="voucher in vouchers | filter:searchVoucher" class="col-sm-4 mb-2" ng-click="addVoucher(selectedItem, voucher)">
+                            <div class="card voucher">
+                                <div class="cross-bg"></div>
+                                <div class="content">
+                                    <div class="text-center text-uppercase text-white off">
+                                        <h1 class="mt-0">{{voucher.name}}</h1>
+                                    </div>
+                                    <div class="text-center text-uppercase text-white off">
+                                        <h3 class="m-0">Code: {{voucher.code}}</h3>
+                                        <h3 class="m-0">{{voucher.value}}{{voucher.valueType == 2 ? '%' : '₫'}}</h3>
+                                    </div>
+                                    <span class="voucher-qty">{{voucher.quantity}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" ng-class="{ 'show active': selectedItem.tabShip === true }" id="shipment" role="tabpanel" aria-labelledby="shipment">
+        <div class="tab-content pt-4 pb-4">
+            <div class="row m-0">
+                <div class="col-sm-8">
+                    <div class="cart-height-ship">
+                        <table ng-if="selectedItem.cart.length > 0" class="table">
+                            <tbody>
+                            <tr ng-repeat="item in selectedItem.cart">
+                                <td>{{item.product.name}} {{item.product.material.name}} Size {{item.size.name}}</td>
+                                <td>
+                                    <div class="d-flex" style="width: 40%">
+                                        <button class="btn btn-outline-primary btn-sm px-2"
+                                                ng-click="subtractQuantity(selectedItem, item)">
+                                            <i class="ri-subtract-line"></i>
+                                        </button>
+
+                                        <input min="1" name="quantity" ng-model="item.qty" type="number" ng-change="checkQuantityChange(selectedItem, item)"
+                                               class="text-center mx-2 form-control form-control-sm" />
+
+                                        <button class="btn btn-outline-primary btn-sm px-2"
+                                                ng-click="addQuantity(selectedItem, item)">
+                                            <i class="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td style="line-height: 35px"><p class="m-0 fw-bold">{{item.price | number:'0':'symbol':'short'}}₫</p></td>
+                                <td><button ng-click="removeProductCart(item.id, selectedItem)" class="btn btn-light border text-danger icon-hover-danger"><i class="ri-delete-bin-6-line"></i></button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="text" ng-model="selectedItem.note" placeholder="Ghi chú đơn hàng" class="form-control" ng-change="changeNote()">
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p>Tổng tiền hàng</p>
+                                        </div>
+                                        <div class="col-xl-3">
+                                            <p>{{selectedItem.itemQty}}</p>
+                                        </div>
+                                        <div class="col-xl-5">
+                                            <p class="float-end">
+                                                {{selectedItem.totalAmount | number:'0':'symbol':'short'}}₫
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div ng-if="selectedItem" class="row">
+                                        <div class="col-xl-3">
+                                            <p style="margin-top: 5px">Voucher</p>
+                                        </div>
+                                        <div class="mb-2 col-xl-9">
+                                            <div ng-if="selectedItem.voucher != null" class="row align-items-center">
+                                                <button type="button" class="w-75 btn btn-outline-primary"><i class="ri-ticket-line"></i> {{selectedItem.voucher.code}} - {{selectedItem.voucher.value}}{{selectedItem.voucher.valueType == 2 ? '%' : '₫'}}</button>
+                                                <button ng-click="removeVoucher(selectedItem)" type="button" class="ms-2 small btn-close" aria-label="Close"></button>
+                                            </div>
+                                            <button ng-if="selectedItem.voucher == null" data-bs-toggle="modal" data-bs-target="#modalVoucher" ng-click="getListVoucher(selectedItem)" type="button" class="btn btn-outline-success"><i class="ri-add-line"></i> Chọn voucher</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-5">
+                                            <p>Khách cần trả</p>
+                                        </div>
+                                        <div class="col-xl-7">
+                                            <p class="float-end">
+                                                {{selectedItem.totalCustomerPay | number:'0':'symbol':'short'}}₫
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card card-product">
+                        <div ng-if="selectedItem.address != null" class="customer-current">
+                            <span class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCustomerUpdate" ng-click="showCustomerUpdate(selectedItem)">
+                                <i class="ri-user-3-fill"></i>
+                                {{selectedItem.address.customer.fullName}}
+                            </span>
+                            <i ng-if="selectedItem" ng-click="removeAddress(selectedItem)" class="i-close ri-close-fill"></i>
+                        </div>
+                        <form ng-if="selectedItem.address == null">
+                            <i class="ri-search-line icon-search"></i>
+                            <input id="search-client-2" ng-model="searchClient2" ng-disabled="!selectedItem" type="text" class="form-control" placeholder="Tìm kiếm khách hàng" ng-click="showCustomerList2()">
+                            <div ng-if="selectedItem" id="customerList-2" class="listCustomer">
+                                <div class="list-group">
+                                    <button ng-repeat="cus in customers | filter:searchClient2" ng-click="showSelectCustomer(selectedItem,cus)" type="button" class="border-0 list-group-item list-group-item-action">
+                                        {{cus.fullName}} <br>
+                                        Mã: {{cus.id}}
+                                    </button>
+                                </div>
+                            </div>
+                            <i ng-if="selectedItem" data-bs-toggle="modal" data-bs-target="#modalCustomer" class="i-plus ri-add-fill icon-plus"></i>
+                        </form>
+                        <div class="content-pay justify-content-center mt-3">
+                            <div ng-if="selectedItem.cart.length > 0 && selectedItem.payMethod.paymentType !== 3" class="row">
+                                <div class="col-xl-7">
+                                    <b>Khách thanh toán</b>
+                                </div>
+                                <div class="col-xl-5">
+                                    <p class="float-end">
+                                        <input type="number" ng-model="selectedItem.customerPay" ng-change="changeCustomerPay(selectedItem)" class="input-customerPay text-end" style="width: 150px" >
+                                    </p>
+                                </div>
+                            </div>
+                            <div ng-if="selectedItem && selectedItem.moneyReturn != 0 && selectedItem.payMethod.paymentType !== 3" class="row">
+                                <div class="col-xl-5">
+                                    <p>Tiền thừa trả khách</p>
+                                </div>
+                                <div class="col-xl-7">
+                                    <p class="float-end">
+                                        {{selectedItem.moneyReturn | number:'0':'symbol':'short'}}₫
+                                    </p>
+                                </div>
+                            </div>
+                            <div ng-if="selectedItem.cart.length > 0 && selectedItem.payMethod.paymentType !== 3" class="row mb-3">
+                                <div class="d-flex justify-content-center">
+                                    <div class="form-check me-3" ng-repeat="p in payMethods">
+                                        <label class="form-check-label" ng-click="changePaymentMethod(selectedItem, p)">
+                                            <input class="form-check-input" ng-checked="selectedItem.payMethod.id === p.id" type="radio" name="paymentmethod2">
+                                            {{p.name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="selectedItem.cart.length > 0" class="row mb-3">
+                                <div class="col-xl-5">
+                                    <b>Thu hộ tiền (COD)</b>
+                                </div>
+                                <div class="col-xl-2">
+                                    <div class="form-check form-switch">
+                                        <input ng-checked="selectedItem.payMethod.paymentType === 3" ng-click="changeCashAndCod(selectedItem)" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="selectedItem" class="row">
+                                <div class="col-xl-1 icon-map align-items-start">
+                                    <i class="ri-map-pin-2-fill"></i>
+                                </div>
+                                <div class="col-xl-11">
+                                    <div class="row mb-3">
+                                        <input ng-model="selectedItem.address.customer.fullName" type="text" placeholder="Tên người nhận" class="input-customerPay" >
+                                    </div>
+                                    <div class="row mb-3">
+                                        <input ng-model="selectedItem.address.phoneNumber" type="text" placeholder="Điện thoại" class="input-customerPay" >
+                                    </div>
+                                    <div class="row mb-3">
+                                        <input ng-model="selectedItem.houseNumber" ng-change="changeHouseNumber()" type="text" placeholder="Số nhà" class="input-customerPay" >
+                                    </div>
+                                    <div class="row mb-3">
+                                        <input ng-model="selectedItem.city" ng-change="changeCity()" placeholder="Tỉnh/thành..." type="text" class="input-customerPay" />
+                                    </div>
+                                    <div class="row mb-3">
+                                        <input ng-model="selectedItem.district" ng-change="changeDistrict()" placeholder="Quận/huyện..." type="text" class="input-customerPay" />
+                                    </div>
+                                    <div class="row mb-3">
+                                        <input ng-model="selectedItem.ward" ng-change="changeWard()" placeholder="Thị trấn/Xã/Phường..." type="text" class="input-customerPay" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button ng-click="pay(selectedItem)" class="btn btn-primary" ng-disabled="!selectedItem" type="button">THANH TOÁN</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="nav nav-pills navbar-light" id="pills-tab-footer" role="tablist">
+        <li class="nav-item" role="presentation" >
+            <button class="nav-link" ng-class="{ 'active': selectedItem.tabShip === false, 'disabled': !selectedItem}" id="tab-sell-quicly" ng-click="changeCash(selectedItem)" data-bs-toggle="pill" data-bs-target="#sell-quickly" type="button" role="tab" aria-controls="pills-home" aria-selected="{{selectedItem.tabShip === false}}" style="border-radius: unset;"><i class="ri-dvd-line"></i> Bán nhanh</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" ng-class="{ 'active': selectedItem.tabShip === true, 'disabled': !selectedItem}" id="tab-shipment" ng-click="paymethodCOD(selectedItem)" data-bs-toggle="pill" data-bs-target="#shipment" type="button" role="tab" aria-controls="pills-profile" aria-selected="{{selectedItem.tabShip === true}}"><i class="ri-e-bike-2-line"></i> Bán giao hàng</button>
+        </li>
+    </ul>
+</div>
+
+
+<script src="https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script src="js/main.js"></script>
+</body>
+</html>

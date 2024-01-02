@@ -1,5 +1,5 @@
 <!-- cart + summary -->
-<section style="    margin-top: 82px;"  class="bg-light ">
+<section style="    margin-top: 82px;"  class="bg-light " ng-init="getAddressList(); getDefaultAddress()">
   <div class="container-fluid">
     <div style="padding: 46px;;" class="row">
       <!-- cart -->
@@ -14,8 +14,8 @@
                 <div class="col-lg-5">
                   <div class="me-lg-5">
                     <div class="d-flex" style="align-items: center;">
-                      <img ng-src="{{ item.images[0].path }}" class="border rounded me-3"
-                        style="width: 96px; height: 96px" />
+                      <img ng-src="{{ item.path }}" class="border rounded me-3"
+                        style="width: 96px; height: 100px" />
                       <div class="title-name">
                         <p href="#" class="nav-link">
                           <!-- Hiển thị thông tin khi đã đăng nhập -->
@@ -49,7 +49,7 @@
                   </div>
                   <div class="input-number flex-grow-1">
                     <input ng-model="item.quantity" type="number" min="1" ng-change="checkQuantityChange(item)"
-                      ng-blur="cart.update(item.id, item.quantity)" class="form-control"
+                      ng-blur="cart.update(item.id, item.quantity)" class="form-control   updateQuantityProduct"
                       style="max-width: 70px; overflow: hidden" />
                   </div>
 
@@ -83,80 +83,112 @@
 
             <!-- Checkout -->
             <div class="p-4">
-              <div class="d-flex align-items-center mb-3">
-                <i style="margin-right: 6px;" class="fa-solid fa-map-location-dot"></i>
-                <h5 class="m-0 ">Thông tin giao hàng</h5>
+              <div style="display: flex;justify-content: space-between;">
+                <div class="d-flex align-items-center mb-3">
+                  <i style="margin-right: 6px;" class="fa-solid fa-map-location-dot"></i>
+                  <h5 class="m-0 ">Thông tin giao hàng</h5>
+  
+                </div>
+                <div>
+                  <i style="margin-right: 6px;" class="fa-solid fa-address-book"></i>
+                  <a class="" style="cursor: pointer;" ng-click="openAddress()">Chọn từ sổ địa chỉ</a>
+                </div>
+           
+
               </div>
+       
+
               <hr />
 
               <div class="row">
-                <!-- <div class="col-md-6 col-lg-4 mb-3">
-                  <p class="mb-0">Tên người nhận:</p>
-                  <div class="form-outline custom-bg">
-                    <input ng-model="bill.reciverName" type="text" id="reciverName" placeholder="Nhập tên người nhận"
-                      class="form-control" />
+             <!-- Modal -->
+                <div class="modal fade show" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialogAddress" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="addressModalLabel">Thông tin địa chỉ</h5>
+                          </div>
+                          <div class="modal-body listAddress">
+                            <div ng-repeat="address in addressList" class="cart-address__item">
+                              <div class="address-info">
+                                  <span class="address-line">
+                                      <div class="account-address__head"><strong>Họ và tên:</strong>  {{  address.name }}</div>
+                                      <div class="actions">
+                                          <button class="btn-delete btn btn-primary" ng-click="selectAddressBill(address)">Chọn</button>
+                                      </div>
+                                  </span>
+                                  <div><strong>Số điện thoại:</strong> {{ address.phoneNumber }}</div>
+                                  <div><strong>Địa chỉ:</strong> {{ address.address }}</div>
+                                  <div ng-if="address.defaultAddress"   class="default-address">Địa chỉ mặc định</div>
+                              </div>
+                          </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" ng-click="closeAddress()">Đóng</button>
+                          </div>
+                      </div>
                   </div>
-                </div> -->
+                </div>
 
                 <div class="col-md-6 col-lg-4 mb-3">
                   <p class="mb-0">Tên người nhận:</p>
-                  <div class="form-outline custom-bg" ng-style="{'border-color': isPaymentClicked && !bill.reciverName ? 'red' : ''}">
-                      <input ng-model="bill.reciverName" type="text" id="reciverName" placeholder="Nhập tên người nhận"
+                  <div class="form-outline custom-bg" >
+                      <input ng-model="bill.reciverName" type="text" id="reciverName" 
                           class="form-control" />
                   </div>
-                  <span ng-show="isPaymentClicked && !bill.reciverName" style="color: red;">Vui lòng nhập tên người nhận</span>
+                  <p style="color: red;" class="error-message" ng-if="isBillReciverInvalid">Vui lòng nhập thông tin này.</p>
               </div>
 
-                <div class="col-md-6 col-lg-4 mb-3">
-                  <p class="mb-0">Tỉnh/Thành phố</p>
-                  <div class="form-outline">
-                    <select id="city1" class="form-select custom-bg">
-                      <option value="" selected>Chọn tỉnh thành</option>
-                    </select>
-                  </div>
-                </div>
 
+           
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <p class="mb-0">Tỉnh/Thành phố:</p>
+                  <div class="form-outline custom-bg">
+                      <input ng-model="billAddressCity" id="city"  type="text" class="form-control " />
+                  </div>
+                  
+                 <p style="color: red;" class="error-message" ng-if="isBillAddressCityInvalid">Vui lòng nhập thông tin này.</p>
+              </div>
+          
                 <div class="col-md-6 col-lg-4 mb-3">
                   <p class="mb-0">Quận/Huyện:</p>
-                  <div class="form-outline">
-                    <select id="district1" class="form-select custom-bg">
-                      <option value="" selected>Chọn quận huyện</option>
-                    </select>
+                  <div class="form-outline custom-bg">
+                      <input ng-model="billAddressDistrict" id="district"  type="text" class="form-control " />
                   </div>
-                </div>
+                 <p style="color: red;" class="error-message" ng-if="isBillAddressDistrictInvalid">Vui lòng nhập thông tin này.</p>
+              </div>
 
                 <div class="col-md-6 col-lg-4 mb-3">
                   <p class="mb-0">Phường/Xã:</p>
-                  <div class="form-outline">
-                    <select id="ward1" class="form-select custom-bg">
-                      <option value="" selected>Chọn phường xã</option>
-                    </select>
+                  <div class="form-outline custom-bg">
+                      <input ng-model="billAddressWard" id="ward"  type="text" class="form-control " />
                   </div>
-                </div>
+                 <p style="color: red;" class="error-message" ng-if="isBillAddressWardInvalid">Vui lòng nhập thông tin này.</p>
+              </div>
 
                 <div class="col-md-6 col-lg-4 mb-3">
                   <p class="mb-0">Địa chỉ giao hàng:</p>
-                  <div class="form-outline custom-bg" ng-style="{'border-color': isPaymentClicked && !bill.address ? 'red' : ''}">
-                      <input ng-model="bill.address" type="text" id="houseNumber1" placeholder="Số nhà" class="form-control mt-2" />
+                  <div class="form-outline custom-bg">
+                      <input ng-model="billAddressDetail" id="address" type="text" class="form-control " />
                   </div>
-                  <span ng-show="isPaymentClicked && !bill.address" style="color: red;">Vui lòng nhập địa chỉ giao hàng</span>
+                 <p style="color: red;" class="error-message" ng-if="isBillAddressDetailInvalid">Vui lòng nhập thông tin này.</p>
               </div>
-              
 
                 <div class="col-md-6 col-lg-4 mb-3">
                   <p class="mb-0">Số điện thoại:</p>
-                  <div class="form-outline custom-bg" ng-style="{'border-color': isPaymentClicked && (bill.phoneNumber) && checkPhoneNumber ? 'red' : ''}">
-                      <input ng-model="bill.phoneNumber" type="tel" id="phoneNumber" placeholder="Nhập số điện thoại"
-                          class="form-control" />
+                  <div class="form-outline custom-bg" >
+                      <input ng-model="bill.phoneNumber" type="tel" id="phoneNumber" 
+                          class="form-control " />
                   </div>
-                  <span ng-show="isPaymentClicked && (!bill.phoneNumber) && checkPhoneNumber" style="color: red;">Vui lòng nhập số điện thoại hợp lệ (VD: 09xxxxxxxx)</span>
+                  <p style="color: red;" class="error-message" ng-if="isBillPhoneNumberInvalid">Số điện thoại không hợp lệ.</p>
+                  
               </div>
               
 
                 <div class="col-md-12 mb-3">
                   <label class="form-label" for="note">Ghi chú</label>
                   <textarea ng-model="bill.note" class="form-control card custom-bg" id="note"
-                    placeholder="Nhập ghi chú" rows="4"></textarea>
+                     rows="4"></textarea>
                 </div>
               </div>
 
@@ -175,7 +207,7 @@
               <!-- Modal -->
               <div class="modal fade" id="voucherModal" tabindex="-1" role="dialog" aria-labelledby="voucherModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-dialogVoucher" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="voucherModalLabel">Chọn giảm giá</h5>
@@ -272,9 +304,10 @@
                       </label>
                   </div>
               </div>
+    
           </ul>
           
-          
+          <p style="color: red;" class="error-message" ng-if="isBillPaymentInvalid">Vui lòng chọn phương thức thanh toán.</p>
           
           
             
@@ -284,7 +317,7 @@
                 Thanh toán
             </button>
           
-            <a href="#!/home" class="btn btn-light w-100 border mt-2">Quay lại</a>
+            <a href="#!/home" class="btn btn-light w-100 border ">Quay lại</a>
           </div>
           
           
