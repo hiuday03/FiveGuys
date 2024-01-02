@@ -104,18 +104,18 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
             if(filterStatus == undefined && filterTypeBill == undefined){
                 if (fromDate != undefined && toDate == undefined) {
                     if (item && item.createdAt) {
-                        return (new Date(item.createdAt).getTime() >= new Date(fromDate).getTime())
+                        return (new Date(item.createdAt).getDate()>= new Date(fromDate).getDate())
                     }
                 }
                 if (fromDate == undefined && toDate != undefined) {
                     if (item && item.createdAt) {
-                        return (new Date(item.createdAt).getTime() <= new Date(toDate).getTime())
+                        return (new Date(item.createdAt).getDate() <= new Date(toDate).getDate())
                     }
                 }
                 if (fromDate != undefined && toDate != undefined) {
                     if (item && item.createdAt) {
-                        return ((new Date(item.createdAt).getTime() >= new Date(fromDate).getTime())
-                            && (new Date(item.createdAt).getTime() <= new Date(toDate).getTime()))
+                        return ((new Date(item.createdAt).getDate() >= new Date(fromDate).getDate())
+                            && (new Date(item.createdAt).getDate() <= new Date(toDate).getDate()))
                     }
                 }
             }
