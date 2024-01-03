@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <title>Dashboard - FiveGuys</title>
 </head>
-<link rel="stylesheet" th:href="@{/assets/js/account.js}">
-<!-- <link rel="stylesheet" th:href="@{/assets/js/customer.js}"> -->
+<link rel="stylesheet" href="@{/assets/js/account.js}">
+<!-- <link rel="stylesheet" href="@{/assets/js/customer.js}"> -->
 
 <body ng-app="account" ng-controller="account-ctrl">
     <main id="main" class="main" layout:fragment="content">
@@ -15,13 +15,13 @@
             <h1>Account</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                    <li class="breadcrumb-item"><a href="@{/admin/index}">Trang Chủ</a></li>
                     <li class="breadcrumb-item">Tài Khoản</li>
                     <li class="breadcrumb-item active">Tài Khoản</li>
                 </ol>
             </nav>
             <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search ..."
-                   class="form-control">
+                class="form-control">
         </div>
         <!--  Begin code  -->
         <section class="section">
@@ -105,8 +105,9 @@
                                 <div class="row mb-3">
                                     <label for="inputRole" class="col-sm-3 col-form-label">Vai Trò</label>
                                     <div class="col-sm-9">
-                                        <select name="role" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formInput.role.id" ng-required="true">
+                                        <select name="role" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formInput.role.id"
+                                            ng-required="true">
                                             <option ng-repeat="role in roles" ng-value="role.id">
                                                 {{role.fullName}}</option>
                                         </select>
@@ -134,8 +135,8 @@
                                 </div> -->
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Thên</button>
-                                    <button ng-click="resetFormInput()" type="button"
-                                        class="btn btn-warning">Xoá form</button>
+                                    <button ng-click="resetFormInput()" type="button" class="btn btn-warning">Xoá
+                                        form</button>
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Đóng</button>
                                 </div>
@@ -219,8 +220,8 @@
                                 <div class="row mb-3">
                                     <label for="inputRole" class="col-sm-3 col-form-label">Vai Trò</label>
                                     <div class="col-sm-9">
-                                        <select name="role" class="form-select form-select-sm" aria-label="Small select example"
-                                            ng-model="formUpdate.role.id">
+                                        <select name="role" class="form-select form-select-sm"
+                                            aria-label="Small select example" ng-model="formUpdate.role.id">
                                             <option ng-repeat="role in roles" ng-value="role.id">
                                                 {{role.fullName}}</option>
                                         </select>
@@ -235,21 +236,21 @@
                                     <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                     <div class="col-sm-9">
                                         <select name="status" class="form-select form-select-sm"
-                                                aria-label="Small select example" ng-model="formUpdate.status">
+                                            aria-label="Small select example" ng-model="formUpdate.status">
                                             <option ng-value="1">Đang hoạt động</option>
                                             <option ng-value="2">Ngừng hoạt động</option>
                                         </select>
                                         <span ng-show="formUpdateAccount.$submitted">
-                                                <div ng-show="formUpdateAccount.status.$invalid"
-                                                     class="error-message text-danger form-text">
-                                                    Không được để trống</div>
-                                            </span>
+                                            <div ng-show="formUpdateAccount.status.$invalid"
+                                                class="error-message text-danger form-text">
+                                                Không được để trống</div>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Update</button>
-                                    <button ng-click="resetFormUpdate()" type="button"
-                                        class="btn btn-warning">Xoá form</button>
+                                    <button ng-click="resetFormUpdate()" type="button" class="btn btn-warning">Xoá
+                                        form</button>
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Đóng</button>
                                 </div>
@@ -283,7 +284,8 @@
                                 <td>{{account.status == 1 ?'Đang hoạt động' : 'Ngừng hoạt động'}}</td>
                                 <td>
                                     <button ng-click="edit(account)" type="button" class="btn btn-info"
-                                        data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="fa-regular fa-pen-to-square"></i></button>
+                                        data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
+                                            class="fa-regular fa-pen-to-square"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                         data-bs-target="#deleteModal-{{account.id}}"><i
                                             class="ri-delete-bin-fill"></i></button>
@@ -310,7 +312,7 @@
                     </table>
                     <div class="row align-items-center">
                         <div class="col-md-1"> <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-                            <select class="form-control" ng-model="paper.size" ng-change="changePageSize()" >
+                            <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
                                 <option value="selected">Xem mục</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>

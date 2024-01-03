@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title>Dashboard - FiveGuys</title>
 </head>
-<link rel="stylesheet" th:href="@{/assets/js/customer.js}">
+<link rel="stylesheet" href="@{/assets/js/customer.js}">
 
 <body ng-app="customer" ng-controller="customer-ctrl">
     <main id="main" class="main" layout:fragment="content">
@@ -19,21 +19,21 @@
             <h1>Khách Hàng</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang Chủ</a></li>
+                    <li class="breadcrumb-item"><a href="@{/admin/index}">Trang Chủ</a></li>
                     <li class="breadcrumb-item">Tài Khoản</li>
                     <li class="breadcrumb-item active">Khách Hàng</li>
                 </ol>
             </nav>
             <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Customers..."
-                   class="form-control">
+                class="form-control">
         </div>
         <!--  Begin code  -->
         <section class="section">
             <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal"
                 data-bs-target="#modalAdd">
                 Thêm Khách Hàng</button>
-                <button type="button" class="btn btn-outline-success mb-2" ng-click="xuatFile()">
-                    Xuất File</button>
+            <button type="button" class="btn btn-outline-success mb-2" ng-click="xuatFile()">
+                Xuất File</button>
             <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
                 {{alertMessage}}
                 <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
@@ -244,8 +244,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">Thêm</button>
-                                        <button ng-click="resetFormInput()" type="button"
-                                            class="btn btn-warning">Xoá form</button>
+                                        <button ng-click="resetFormInput()" type="button" class="btn btn-warning">Xoá
+                                            form</button>
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Đóng</button>
                                     </div>
@@ -423,7 +423,7 @@
                                         <label for="inputUpdatedAt" class="col-sm-3 col-form-label">Ngày Sửa</label>
                                         <div class="col-sm-9">
                                             <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
-                                            ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
+                                                ng-value="currentDate | date:'yyyy-MM-dd'" readonly>
                                             <span ng-show="formUpdateCustomer.$submitted">
                                                 <div ng-show="formUpdateCustomer.updatedAt.$invalid"
                                                     class="error-message text-danger form-text">
@@ -458,8 +458,8 @@
                                     <div class="row mb-3">
                                         <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
                                         <div class="col-sm-9">
-                                            <select name="status" class="form-select form-select-sm" aria-label="Small select example"
-                                                ng-model="formUpdate.status">
+                                            <select name="status" class="form-select form-select-sm"
+                                                aria-label="Small select example" ng-model="formUpdate.status">
                                                 <option ng-value="1">Đang hoạt động</option>
                                                 <option ng-value="2">Ngừng hoạt động</option>
                                             </select>
@@ -483,8 +483,8 @@
                                 </div> -->
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">Sửa</button>
-                                        <button ng-click="resetFormUpdate()" type="button"
-                                            class="btn btn-warning">Xoá form</button>
+                                        <button ng-click="resetFormUpdate()" type="button" class="btn btn-warning">Xoá
+                                            form</button>
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Đóng</button>
                                     </div>
@@ -530,7 +530,8 @@
                                 <td>{{customer.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
                                 <td>
                                     <button ng-click="edit(customer)" type="button" class="btn btn-info"
-                                        data-bs-toggle="modal" data-bs-target="#modalUpdate"><i class="fa-regular fa-pen-to-square"></i></button>
+                                        data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
+                                            class="fa-regular fa-pen-to-square"></i></button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                         data-bs-target="#deleteModal-{{customer.id}}"><i
                                             class="ri-delete-bin-fill"></i></button>
@@ -557,7 +558,7 @@
                     </table>
                     <div class="row align-items-center">
                         <div class="col-md-1"> <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-                            <select class="form-control" ng-model="paper.size" ng-change="changePageSize()" >
+                            <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
                                 <option value="selected">Xem mục</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
