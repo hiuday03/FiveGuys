@@ -39,18 +39,33 @@ public interface StatisticalRepository extends JpaRepository<Bill, Long> {
     @Query("SELECT COALESCE(SUM(b.totalAmountAfterDiscount), 0) as hihi from Bill b where b.paymentDate  = :day")
     BigDecimal ListDoanhThuDay(Date day);
 
-//    @Query("SELECT spct.id AS sanpham_id, sp.name AS ten_sanpham, COUNT(hdct.id) AS so_luong_ban, ha.name AS anh_mac_dinh\n" +
-//            "    FROM\n" +
-//            "        ProductDetail spct\n" +
-//            "    JOIN\n" +
-//            "        BillDetail hdct ON spct.id = hdct.productDetail\n" +
-//            "    JOIN\n" +
-//            "        Product sp ON spct.product = sp.id\n" +
-//            "    JOIN\n" +
-//            "        Image ha ON spct.id = ha.id\n" +
-//            "    GROUP BY\n" +
-//            "        spct.id,sp.name, ha.name\n" +
-//            "    ORDER BY so_luong_ban DESC"
-//        )
-//    List<Statistical> statisticalGetAll();
+//    @Query(
+//            "SELECT TOP 5 " +
+//                    "    spct.Id AS sanpham_id, " +
+//                    "    sp.Name AS ten_sanpham, " +
+//                    "    spct.Price AS price, " +
+//                    "    COUNT(hdct.id) AS so_luong_ban, " +
+//                    "    SUM(hdct.Price) AS doanh_thu, " +
+//                    "    ha.Name AS anh_mac_dinh " +
+//                    "FROM " +
+//                    "    ProductDetails spct " +
+//                    "JOIN " +
+//                    "    BillDetails hdct ON spct.id = hdct.IdProductDetail " +
+//                    "JOIN " +
+//                    "    Products sp ON spct.IdProduct = sp.id " +
+//                    "JOIN " +
+//                    "    Images ha ON spct.id = ha.Id " +
+//                    "GROUP BY spct.id, sp.Name, ha.Name, spct.Price " +
+//                    "ORDER BY so_luong_ban DESC",
+//            ((rs, rowNum) -> new Statistical(
+//                    rs.getLong("sanpham_id"),
+//                    rs.getString("ten_sanpham"),
+//                    rs.getBigDecimal("price"),
+//                    rs.getInt("so_luong_ban"),
+//                    rs.getBigDecimal("doanh_thu"),
+//                    rs.getString("anh_mac_dinh")
+//            ))
+//    )
+//                                )
+//    List<Statistical> top5Banchay();
 }

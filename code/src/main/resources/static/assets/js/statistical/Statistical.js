@@ -74,6 +74,18 @@ app_statistical.controller("statistical-ctrl", function ($scope, $http, $timeout
     }
     $scope.TopBanChay();
 
+    // top 5 Bán chạy theo ngay
+    $scope.TopBanChayDate = function (){
+        var today = new Date();
+        today.setDate(today.getDate());
+        let todayfomat = $filter('date')(today, 'yyyy-MM-dd')
+        $http.get(api+"/top5-ban-chay-date/"+`${todayfomat}`,todayfomat).then(data=>{
+            $scope.topbanchaydate = data.data
+            console.log($scope.topbanchaydate)
+        })
+    }
+    $scope.TopBanChayDate();
+
     //Sơ đồ thống kê --------------------------------------------------------
     //Tổng khách hàng trong 1 năm
     $scope.listCustomerDay = function () {
@@ -169,6 +181,9 @@ app_statistical.controller("statistical-ctrl", function ($scope, $http, $timeout
     }
 
     function renderChart() {
+        let tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() +1);
+        $scope.formattedDateTomorrow = $filter('date')(tomorrow, 'yyyy-MM-dd')
         let yesterday = new Date();
         yesterday.setDate(yesterday.getDate());
         $scope.formattedDate = $filter('date')(yesterday, 'yyyy-MM-dd')
@@ -230,7 +245,7 @@ app_statistical.controller("statistical-ctrl", function ($scope, $http, $timeout
             },
             xaxis: {
                 type: 'datetime',
-                categories: [ $scope.formattedDate6, $scope.formattedDate5, $scope.formattedDate4, $scope.formattedDate3, $scope.formattedDate2, $scope.formattedDate1, $scope.formattedDate]
+                categories: [ $scope.formattedDate6, $scope.formattedDate5, $scope.formattedDate4, $scope.formattedDate3, $scope.formattedDate2, $scope.formattedDate1, $scope.formattedDate, $scope.formattedDateTomorrow]
             },
             tooltip: {
                 x: {
@@ -239,14 +254,136 @@ app_statistical.controller("statistical-ctrl", function ($scope, $http, $timeout
             }
         }).render();
     };
+
     angular.element(document).ready(function () {
         $scope.listCustomerDay();
+
     });
+
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
+
+    // function hi(){
+    //     echarts.init(document.querySelector("#reportsChart"), {
+    //         tooltip: {
+    //             trigger: 'item'
+    //         },
+    //         legend: {
+    //             top: '5%',
+    //             left: 'center'
+    //         },
+    //         series: [{
+    //             name: 'Access From',
+    //             type: 'pie',
+    //             radius: ['40%', '70%'],
+    //             avoidLabelOverlap: false,
+    //             label: {
+    //                 show: false,
+    //                 position: 'center'
+    //             },
+    //             emphasis: {
+    //                 label: {
+    //                     show: true,
+    //                     fontSize: '18',
+    //                     fontWeight: 'bold'
+    //                 }
+    //             },
+    //             labelLine: {
+    //                 show: false
+    //             },
+    //             data: [{
+    //                 value: 48,
+    //                 name: 'áo so mi 1'
+    //             },
+    //                 {
+    //                     value: 735,
+    //                     name: 'Direct'
+    //                 },
+    //                 {
+    //                     value: 580,
+    //                     name: 'Email'
+    //                 },
+    //                 {
+    //                     value: 484,
+    //                     name: 'Union Ads'
+    //                 },
+    //                 {
+    //                     value: 300,
+    //                     name: 'Video Ads'
+    //                 }
+    //             ]
+    //         }]
+    //     });
+    // }
+    $scope.trafficChart= function (){
+            echarts.init(document.querySelector("#trafficChart")).setOption({
+
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: '5%',
+                    left: 'center'
+                },
+                series: [{
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [{
+                        value: 48,
+                        name: 'áo so mi 1'
+                    },
+                        // {
+                        //     value: 735,
+                        //     name: 'Direct'
+                        // },
+                        // {
+                        //     value: 580,
+                        //     name: 'Email'
+                        // },
+                        // {
+                        //     value: 484,
+                        //     name: 'Union Ads'
+                        // },
+                        // {
+                        //     value: 300,
+                        //     name: 'Video Ads'
+                        // },
+                        // {
+                        //     value: 150,
+                        //     name: 'tinh'
+                        // },
+                        // {
+                        //     value: 150,
+                        //     name: 'tinhdd'
+                        // }
+                    ]
+                }]
+            });
+
+    }
+    $scope.trafficChart();
 
     // Phan trang all bill
     $scope.paper = {
         page: 0,
-        size: 7,
+        size: 5,
         get items() {
             let start = this.page * this.size;
             if ($scope.getallbilllist) {

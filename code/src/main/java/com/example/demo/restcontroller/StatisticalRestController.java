@@ -81,4 +81,8 @@ public class StatisticalRestController {
     public ResponseEntity<?> topbanchay(){
         return ResponseEntity.ok().body(statisticalService.getThongKeSanPhamBanChay());
     }
+    @GetMapping("/top5-ban-chay-date/{sl}")
+    public ResponseEntity<?> topbanchayDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date sl){
+        return ResponseEntity.ok().body(statisticalService.getThongKeSanPhamBanChayDate(sl));
+    }
 }

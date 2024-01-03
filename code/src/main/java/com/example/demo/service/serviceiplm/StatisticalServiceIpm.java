@@ -103,7 +103,7 @@ public class StatisticalServiceIpm implements StatisticalService {
                         "        spct.Id AS sanpham_id,\n" +
                         "        sp.Name AS ten_sanpham,\n" +
                         "        spct.Price AS price,\n" +
-                        "        COUNT(hdct.id) AS so_luong_ban,\n" +
+                        "        SUM(hdct.Quantity) AS so_luong_ban,\n" +
                         "        SUM(hdct.Price) AS doanh_thu,\n" +
                         "        ha.Name AS anh_mac_dinh\n" +
                         "    FROM\n" +
@@ -116,6 +116,40 @@ public class StatisticalServiceIpm implements StatisticalService {
                         "        Images ha ON spct.id = ha.Id\n" +
                         "    GROUP BY spct.id, sp.Name, ha.Name, spct.Price\n" +
                         "    ORDER BY so_luong_ban DESC",
+                ((rs, rowNum) -> new Statistical(
+                        rs.getLong("sanpham_id"),
+                        rs.getString("ten_sanpham"),
+                        rs.getBigDecimal("price"),
+                        rs.getInt("so_luong_ban"),
+                        rs.getBigDecimal("doanh_thu"),
+                        rs.getString("anh_mac_dinh")
+                ))
+        );
+    }
+    @Override
+    public List<Statistical> getThongKeSanPhamBanChayDate(Date date) {
+        return jdbctemplate.query(
+                "SELECT TOP 5 " +
+                        "spct.Id AS sanpham_id, " +
+                        "sp.Name AS ten_sanpham, " +
+                        "spct.Price AS price, " +
+                        "SUM(hdct.Quantity) AS so_luong_ban, " +
+                        "SUM(hdct.Price) AS doanh_thu, " +
+                        "ha.Name AS anh_mac_dinh " +
+                        "FROM " +
+                        "ProductDetails spct " +
+                        "JOIN " +
+                        "BillDetails hdct ON spct.id = hdct.IdProductDetail " +
+                        "JOIN " +
+                        "Bills hd ON hd.id = hdct.IdBill " +
+                        "JOIN " +
+                        "Products sp ON spct.IdProduct = sp.id " +
+                        "JOIN " +
+                        "Images ha ON spct.id = ha.Id " +
+                        "WHERE hd.paymentDate = ? " +
+                        "GROUP BY spct.id, sp.Name, ha.Name, spct.Price " +
+                        "ORDER BY so_luong_ban DESC",
+                new Object[]{date},
                 ((rs, rowNum) -> new Statistical(
                         rs.getLong("sanpham_id"),
                         rs.getString("ten_sanpham"),

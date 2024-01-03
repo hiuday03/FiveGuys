@@ -85,7 +85,7 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
 
     $scope.loadAccounts();
 
-
+    // create employee
     $scope.create = function () {
         let fileInput = document.getElementById("image");
         let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
@@ -123,6 +123,67 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
                 console.log("Error", error);
             })
         }
+    }
+    // create account
+    $scope.createAccount = function () {
+        let item = angular.copy($scope.formInput);
+        item.createdAt = $scope.currentDate;
+        item.active = true;
+        $http.post("/account/save", item).then(function (resp) {
+            $scope.getRole();
+            $scope.resetFormInput();
+            $('#modalAdd').modal('hide');
+        }).catch(function (error) {
+            console.log("Error", error);
+        });
+    }
+    $scope.getRole = function () {
+        $http.get("/account").then(function (resp) {
+        });
+    }
+    $scope.getRole();
+    $scope.loadRoles = function () {
+        $http.get("/role")
+            .then(function (resp) {
+                $scope.roles = resp.data;
+            })
+            .catch(function (error) {
+                console.log("Error loading customers", error);
+            });
+    }
+    $scope.loadRoles();
+
+    //Add employee Bằng file excel
+    $scope.insertExcelEmployee = function (files) {
+        var reader = new FileReader();
+        reader.onloadend = async () => {
+            var workbook = new ExcelJS.Workbook();
+            await workbook.xlsx.load(reader.result);
+            const worksheet = workbook.getWorksheet('Sheet1');
+            worksheet.eachRow((row, index) => {
+                if (index > 1) {
+                    //import bigdecimel
+                    // var bigDecimalValue = new Big(row.getCell(3).value);
+                    // var bigDecimalMinimumTotalAmount = new Big(row.getCell(5).value);
+                    //import date
+                    var BirthDate = new Date(row.getCell(2).value)
+                    var Gender = new Boolean(row.getCell(3).value)
+                    let employee = {
+                        // code: row.getCell(1).value,
+                        fullName: row.getCell(1).value,
+                        birthDate: BirthDate,
+                        gender: Gender,
+                        address: row.getCell(4).value,
+                    }
+                    $http.post("/employee", employee).then(resp => {
+                        alert("Add Employee successfully")
+                        $scope.initialize();
+                        console.log("success", resp.data);
+                    })
+                }
+            });
+        }
+        reader.readAsArrayBuffer(files[0]);
     }
    
     $scope.apiUpdate = function () {

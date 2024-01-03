@@ -11,8 +11,9 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     $scope.hihi = {};
 
     $scope.label1 = {
-        update: "Add voucher",
+        update: "Thêm",
     }
+    $scope.button={};
 
     $scope.showSuccessMessage = function (message) {
         $scope.alertMessage = message;
@@ -57,7 +58,8 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
         $scope.formInput.valid_until = new Date(voucher.valid_until); // Hoặc là giá trị ngày mặc định của bạn
         $scope.formInput.startDate = new Date(voucher.startDate);
         $scope.formInput.endDate = new Date(voucher.endDate);
-        $scope.label1.update = "Update Voucher";
+        $scope.label1.update = "Sửa";
+        document.getElementById('myButton').style.display = 'none';
     }
 
     //detail voucher chi tiết
@@ -77,15 +79,12 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
             $http.post("/api/voucher", item).then(function (resp) {
                 $scope.showSuccessMessage("Create Voucher Successfully");
                 $scope.resetFormInput();
-                // alert("Create customer successfully")
                 $scope.getAll();
             }).catch(function (error) {
                 console.log("Error", error);
             });
         }
-
     }
-
     // update Voucher
     $scope.updateVoucher = function () {
         let item = angular.copy($scope.formInput);
@@ -123,7 +122,8 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
         $scope.formInput = {};
         $scope.addformVoucher.$setPristine();
         $scope.addformVoucher.$setUntouched();
-        $scope.label1.update = "Add Voucher";
+        $scope.label1.update = "Thêm";
+        document.getElementById('myButton').style.display = 'block';
     }
 
     $scope.showSuccessMessage = function (message) {
@@ -189,7 +189,9 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
         }
         reader.readAsArrayBuffer(files[0]);
     }
-
+    $scope.changePageSize = function () {
+        $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
 
     // Phan trang
     $scope.paper = {
