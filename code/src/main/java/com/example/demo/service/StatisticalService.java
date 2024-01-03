@@ -31,4 +31,6 @@ public interface StatisticalService {
     BigDecimal listDoanhThuDay(Date ngayHienTai);
 
     List<Statistical> getThongKeSanPhamBanChay();
+    List<Statistical> getThongKeSanPhamBanChayDate(Date paymentDate);
+
 }

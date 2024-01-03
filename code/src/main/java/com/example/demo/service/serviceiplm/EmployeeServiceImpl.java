@@ -57,9 +57,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         employees1.setAccount(employees.getAccount());
         employees1.setCreatedAt(new Date());
         employees1.setUpdatedAt(new Date());
-        employees1.setCreatedBy(employees.getCreatedBy());
-        employees1.setUpdatedBy(employees.getUpdatedBy());
-        employees1.setStatus(employees.getStatus());
+        employees1.setCreatedBy("admin");
+        employees1.setUpdatedBy("admin");
+        employees1.setStatus(1);
 
         return employeeRepository.save(employees1);
 
@@ -84,8 +84,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             employees1.setAccount(employees.getAccount());
             employees1.setCreatedAt(employees.getCreatedAt());
             employees1.setUpdatedAt(new Date());
-            employees1.setCreatedBy(employees.getCreatedBy());
-            employees1.setUpdatedBy(employees.getUpdatedBy());
+            employees1.setCreatedBy("admin");
+            employees1.setUpdatedBy("admin");
             employees1.setStatus(employees.getStatus());
 
             return employeeRepository.save(employees1); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
@@ -97,7 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public String zenMaHD(List<Employees> lst) {
-        String maNV = "FG000";
+        String maNV = "FG";
 
         return maNV + (lst.size() + 1);
     }
