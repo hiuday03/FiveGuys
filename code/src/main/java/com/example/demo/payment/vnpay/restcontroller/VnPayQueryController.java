@@ -22,7 +22,7 @@ import java.util.TimeZone;
 public class VnPayQueryController {
 
     @PostMapping
-    public void doPost(HttpServletRequest req, @RequestParam("order_id") String orderId) throws Exception {
+    public ResponseEntity<String> doPost(HttpServletRequest req, @RequestParam("order_id") String orderId) throws Exception {
         String vnp_RequestId = ConfigVNPay.getRandomNumber(8);
         String vnp_Version = "2.1.0";
         String vnp_Command = "querydr";
@@ -50,7 +50,7 @@ public class VnPayQueryController {
         vnp_Params.addProperty("vnp_CreateDate", vnp_CreateDate);
         vnp_Params.addProperty("vnp_IpAddr", vnp_IpAddr);
 
-        String hash_Data = String.join("|", vnp_RequestId, vnp_Version, vnp_Command, vnp_TmnCode, vnp_TxnRef, vnp_TransDate, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
+        String hash_Data= String.join("|", vnp_RequestId, vnp_Version, vnp_Command, vnp_TmnCode, vnp_TxnRef, vnp_TransDate, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
         String vnp_SecureHash = ConfigVNPay.hmacSHA512(ConfigVNPay.secretKey, hash_Data.toString());
 
         vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
@@ -58,7 +58,7 @@ public class VnPayQueryController {
         URL url = new URL(ConfigVNPay.vnp_ApiUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Content-Type", "Application/json");
         con.setDoOutput(true);
         String postData = vnp_Params.toString();
         con.setRequestProperty("Content-Length", String.valueOf(postData.length()));
@@ -79,7 +79,7 @@ public class VnPayQueryController {
         System.out.println("Sending 'POST' request to URL : " + url);
         System.out.println("Post Data : " + vnp_Params);
         System.out.println("Response Code : " + responseCode);
-        System.out.println(response.getBody()); // Assuming you want to print the response body
+       return response;
     }
 
 

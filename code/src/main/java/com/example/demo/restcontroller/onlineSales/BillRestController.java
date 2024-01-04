@@ -40,7 +40,13 @@ import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 @CrossOrigin("*")
 @RestController
@@ -107,6 +113,29 @@ public class BillRestController {
     }
 
 
+//    private  final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+//
+//    public void scheduleBillDeletion(JsonNode orderData) {
+//        Runnable task = () -> {
+//            Bill bill = olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
+//
+//            if (bill.getStatus() == 1) {
+//                deleteBill(bill);
+//            } else {
+//                System.out.println("Đơn hàng không ở trạng thái cần xóa.");
+//            }
+//        };
+//
+//        ScheduledFuture<?> future = scheduler.schedule(task, 2, TimeUnit.MINUTES);
+//    }
+//
+//
+//
+//    private  void deleteBill(Bill bill) {
+//        // Xóa đơn hàng ở đây
+//        System.out.println("Đã xóa đơn hàng có ID: " + bill.getId());
+//    }
+
 
 
     @Transactional
@@ -119,8 +148,7 @@ public class BillRestController {
         billData = orderData;
 
         String codeBill = String.valueOf(System.currentTimeMillis());
-        session.setAttribute(codeBill,orderData);
-        session.setAttribute("hello","hello");
+
 
 //        JsonNode yourJsonNode = (JsonNode) session.getAttribute(codeBill);
 //
@@ -130,11 +158,15 @@ public class BillRestController {
 //        }
 
         // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
-        List<BillDetail> billDetailsCheck = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
-        for (BillDetail detail : billDetailsCheck) {
-            updateProductQuantity(detail); // Cập nhật số lượng sản phẩm cho mỗi chi tiết hóa đơn
-        }
+//        List<BillDetail> billDetailsCheck = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
+//        for (BillDetail detail : billDetailsCheck) {
+//            updateProductQuantity(detail); // Cập nhật số lượng sản phẩm cho mỗi chi tiết hóa đơn
+//        }
 
+
+
+        Bill bill1 = olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
+//        scheduleBillDeletion(orderData);
         if (namePayment.equals("QR")) {
             try {
                 if (orderData == null) {
@@ -163,9 +195,11 @@ public class BillRestController {
                 }
                 int orderCode = Integer.parseInt(codeBill);
                 PaymentData paymentData = new PaymentData(orderCode, Integer.valueOf(String.valueOf(totalAmountAfterDiscount)), description, itemList, cancelUrl, returnUrl);
-                JsonNode data = payOS.createPaymentLink(paymentData);
+                System.out.println(paymentData);
 
+                JsonNode data = payOS.createPaymentLink(paymentData);
                 String checkoutUrl = data.get("checkoutUrl").asText();
+
                 Map<String, String> jsonResponse = new HashMap<>();
                 jsonResponse.put("rederect", checkoutUrl);
                 Gson gson = new Gson();
@@ -182,7 +216,6 @@ public class BillRestController {
             String orderType = "other";
 
             String vnp_TxnRef = codeBill;
-            System.out.println(codeBill);
             String vnp_IpAddr = ConfigVNPay.getIpAddress(req);
 
             String vnp_TmnCode = ConfigVNPay.vnp_TmnCode;
@@ -202,7 +235,6 @@ public class BillRestController {
             vnp_Params.put("vnp_Locale", "vn");
             vnp_Params.put("vnp_ReturnUrl", ConfigVNPay.vnp_ReturnUrl);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
-
 //            vnp_Params.put("vnp_orderData", encodedOrderDataString);
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -256,8 +288,8 @@ public class BillRestController {
 
 
         }else if (namePayment.equals("MoMo")){
-            String requestId = String.valueOf(System.currentTimeMillis());
-            String orderId = String.valueOf(System.currentTimeMillis());
+            String requestId = String.valueOf(bill1.getId());
+            String orderId = String.valueOf(bill1.getId());
 
             String orderInfo = "Thanh toán cho đơn hàng ";
             String redirectUrl = "http://localhost:8080/api/ol/payment-momo/success";
@@ -275,6 +307,9 @@ public class BillRestController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create order: " + e.getMessage());
             }
         }else if (namePayment.equals("PayPal")){
+
+            System.out.println(codeBill);
+
             try {
                 BigDecimal exchangeRate = getExchangeRate(); // Tỷ giá USD/VND
 
@@ -283,12 +318,14 @@ public class BillRestController {
 
                 Payment payment = paypalService.createPayment(price, "USD", "PayPal",
                         "sale", describe, "http://localhost:8080/api/ol/payment-paypal/cancel",
-                        "http://localhost:8080/api/ol/payment-paypal/success");
-                payment.setId(codeBill);
+                        codeBill , "http://localhost:8080/api/ol/payment-paypal/success");
+                System.out.println("Payment ID: " + payment.getTransactions().get(0).getInvoiceNumber());
                 for(Links link:payment.getLinks()) {
                     if(link.getRel().equals("approval_url")) {
                         Map<String, String> jsonResponse = new HashMap<>();
                         jsonResponse.put("rederect", link.getHref());
+                        String orderId2 = jsonResponse.get("id");
+                        System.out.println(orderId2);
                         Gson gson = new Gson();
                         String json = gson.toJson(jsonResponse);
                         return ResponseEntity.ok(json);

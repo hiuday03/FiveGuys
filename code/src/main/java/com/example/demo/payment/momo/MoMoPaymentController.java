@@ -5,6 +5,7 @@ import com.example.demo.entity.Bill;
 import com.example.demo.entity.BillDetail;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.ProductDetail;
+import com.example.demo.model.response.onlineSales.OlBillResponse;
 import com.example.demo.payment.momo.config.Environment;
 import com.example.demo.payment.momo.models.QueryStatusTransactionRequest;
 import com.example.demo.payment.momo.models.QueryStatusTransactionResponse;
@@ -108,14 +109,12 @@ public class MoMoPaymentController {
     @Transactional
     @GetMapping("/payment-momo/success")
     public void handleMoMoIPN2(@RequestParam("resultCode") String code,@RequestParam("orderId") String orderId, HttpServletResponse response, HttpSession session) throws IOException {
+        OlBillResponse bill = olBillService.findBYId(Long.valueOf(orderId));
 
-                JsonNode bilData = (JsonNode) session.getAttribute(orderId);
-        System.out.println("Hello");
-        System.out.println(bilData);
-        if(code.equals("0") && bilData != null){
-            olBillService.TaoHoaDonNguoiDungChuaDangNhap(bilData);
 
-            Bill bill = mapper.convertValue(bilData, Bill.class);
+        if(code.equals("0") ){
+
+
 
             if (bill.getCustomerEntity() != null){
                 Cart cart = olCartService.findByCustomerId(bill.getCustomerEntity().getId());
@@ -130,7 +129,7 @@ public class MoMoPaymentController {
             response.sendRedirect(Config.fe_liveServer_Success);
 
         }else {
-            List<BillDetail> billDetailsCheck = mapper.convertValue(bilData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
+            List<BillDetail> billDetailsCheck = bill.getBillDetail();
 
             restoreProductQuantity(billDetailsCheck);
             response.sendRedirect(Config.fe_liveServer_Failed);
