@@ -129,7 +129,7 @@ public class StatisticalServiceIpm implements StatisticalService {
     @Override
     public List<Statistical> getThongKeSanPhamBanChayDate(Date date) {
         return jdbctemplate.query(
-                "SELECT TOP 5 " +
+                "SELECT " +
                         "spct.Id AS sanpham_id, " +
                         "sp.Name AS ten_sanpham, " +
                         "spct.Price AS price, " +

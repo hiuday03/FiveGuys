@@ -476,7 +476,7 @@ h6 {
   list-style: none;
 }
 
-.header-nav>ul {
+.header-nav > ul {
   margin: 0;
   padding: 0;
 }
@@ -645,7 +645,6 @@ h6 {
 }
 
 @media (min-width: 1200px) {
-
   #main,
   #footer {
     margin-left: 300px;
@@ -659,7 +658,6 @@ h6 {
 }
 
 @media (min-width: 1200px) {
-
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
     margin-left: 0;
@@ -898,7 +896,7 @@ h6 {
 }
 
 /* News & Updates */
-.dashboard .news .post-item+.post-item {
+.dashboard .news .post-item + .post-item {
   margin-top: 15px;
 }
 
@@ -1164,7 +1162,7 @@ h6 {
   padding: 12px 15px;
 }
 
-.contact .php-email-form button[type=submit] {
+.contact .php-email-form button[type="submit"] {
   background: #4154f1;
   border: 0;
   padding: 10px 30px;
@@ -1173,7 +1171,7 @@ h6 {
   border-radius: 4px;
 }
 
-.contact .php-email-form button[type=submit]:hover {
+.contact .php-email-form button[type="submit"]:hover {
   background: #5969f3;
 }
 
@@ -1247,11 +1245,10 @@ h6 {
   color: #012970;
 }
 
-
 /*
 Style Employee
 */
-.heading-breadcrumb-style {
+/* .heading-breadcrumb-style {
   font-size: 16px;
   font-weight: 700;
 }
@@ -1306,12 +1303,12 @@ Style Employee
 }
 /*modal show employee*/
 
-.modalshow{
+.modalshow {
   width: 800px;
   height: 800px;
 }
 
-.style__table-info {
+/* .style__table-info {
   border-collapse: collapse;
   width: 100%;
   font-size: 12px;
@@ -1333,10 +1330,10 @@ Style Employee
 
 .style__table-info th {
   /* padding-top: 12px; */
-  /* padding-bottom: 12px; */
-  text-align: left;
+/* padding-bottom: 12px; */
+/* text-align: left;
   background-color: #c8c8c8;
   color: #100f0f;
-}
+}  */
 
 /* css Employee*/
