@@ -128,7 +128,6 @@ app.config(function ($routeProvider) {
     // <!-- Tinh -->
 
 
-    ;
 });
 
 // Hieu js
