@@ -156,9 +156,9 @@ app_employee.controller("employee-ctrl", function ($scope, $http, $timeout) {
     //Add employee Bằng file excel
     $scope.insertExcelEmployee = function (files) {
         var reader = new FileReader();
-        reader.onloadend = async () => {
+        reader.onloadend =  () => {
             var workbook = new ExcelJS.Workbook();
-            await workbook.xlsx.load(reader.result);
+             workbook.xlsx.load(reader.result);
             const worksheet = workbook.getWorksheet('Sheet1');
             worksheet.eachRow((row, index) => {
                 if (index > 1) {

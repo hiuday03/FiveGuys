@@ -1,0 +1,432 @@
+<section class="section dashboard" ng-controller="statistical-ctrl">
+  <div class="row">
+    <!-- Left side columns -->
+    <div class="col-lg-8">
+      <div class="row">
+        <!-- Sales Card -->
+        <div class="col-xxl-4 col-md-6">
+          <div class="card info-card sales-card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"
+                ><i class="bi bi-three-dots"></i
+              ></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Sales <span>| Today</span></h5>
+
+              <div class="d-flex align-items-center">
+                <div
+                  class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                >
+                  <i class="bi bi-cart"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{getcodeday}}</h6>
+                  <span class="text-success small pt-1 fw-bold"
+                    >{{(getcodeday / getcodedaytile)}}%</span
+                  >
+                  <span class="text-muted small pt-2 ps-1"
+                    >{{getcodeday >= getcodedaytile ? 'increase':
+                    'decrease'}}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Sales Card -->
+
+        <!-- Revenue Card -->
+        <div class="col-xxl-4 col-md-6">
+          <div class="card info-card revenue-card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"
+                ><i class="bi bi-three-dots"></i
+              ></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Revenue <span>| This Month</span></h5>
+
+              <div class="d-flex align-items-center">
+                <div
+                  class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                >
+                  <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{getsum}}</h6>
+                  <span class="text-success small pt-1 fw-bold"
+                    >{{(getsum / getsum1)}}%</span
+                  >
+                  <span class="text-muted small pt-2 ps-1"
+                    >{{getsum >= getsum1 ? 'increase': 'decrease'}}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Revenue Card -->
+
+        <!-- Customers Card -->
+        <div class="col-xxl-4 col-xl-12">
+          <div class="card info-card customers-card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"
+                ><i class="bi bi-three-dots"></i
+              ></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Customers <span>| This Year</span></h5>
+
+              <div class="d-flex align-items-center">
+                <div
+                  class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                >
+                  <i class="bi bi-people"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{{listcustomeryear}}</h6>
+                  <span class="text-danger small pt-1 fw-bold"
+                    >{{listcustomeryear/listcustomeryeartile}}%</span
+                  >
+                  <span class="text-muted small pt-2 ps-1"
+                    >{{listcustomeryear >= listcustomeryeartile ? 'increase':
+                    'decrease'}}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Customers Card -->
+
+        <!-- Reports -->
+        <div class="col-12">
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"
+                ><i class="bi bi-three-dots"></i
+              ></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Reports <span>/Last 7 days</span></h5>
+
+              <!-- Line Chart -->
+              <div id="reportsChart"></div>
+            </div>
+          </div>
+        </div>
+        <!-- End Reports -->
+
+        <!-- Recent Sales -->
+        <div class="col-12">
+          <div class="card recent-sales overflow-auto">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"
+                ><i class="bi bi-three-dots"></i
+              ></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Todayhihi</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Recent Sales <span>| Today</span></h5>
+              <div class="row">
+                <div class="col-md-2">
+                  <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+                  <select
+                    class="form-control"
+                    ng-model="paper.size"
+                    ng-change="changePageSize()"
+                    style="width: 70px"
+                  >
+                    <option value="selected">0</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </div>
+                <div class="col-md-10">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="fullName"
+                    ng-model="searchVoucher"
+                    placeholder="Search"
+                    style="width: 250px; margin-left: 320px"
+                  />
+                </div>
+              </div>
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="get in paper.items | filter: searchVoucher">
+                    <td>{{$index + (paper.page * paper.size) +1}}</td>
+                    <td>{{get.customerEntity.fullName}}</td>
+                    <td>
+                      <a href="#" class="text-primary"
+                        >{{get.employee.fullName}}</a
+                      >
+                    </td>
+                    <td>{{get.totalAmountAfterDiscount}}</td>
+                    <td ng-switch="get.status">
+                      <span ng-switch-when="0">DA_HUY</span>
+                      <span ng-switch-when="1">CHO_THANH_TOAN</span>
+                      <span ng-switch-when="2">YEU_CAU_XAC_NHAN</span>
+                      <span ng-switch-when="3">HOAN_THANH</span>
+                      <span ng-switch-when="4">DANG_CHUAN_BI_HANG</span>
+                      <span ng-switch-when="5">GIAO_CHO_DON_VI_VAN_CHUYEN</span>
+                      <span ng-switch-when="6"
+                        >DA_GIAO_CHO_DON_VI_VAN_CHUYEN</span
+                      >
+                      <span ng-switch-when="7">YEU_CAU_DOI_TRA</span>
+                      <span ng-switch-when="8">XAC_NHAN_DOI_TRA</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <nav
+                aria-label="Page navigation example"
+                style="margin-left: 200px"
+              >
+                <ul class="pagination justify-content-e nd">
+                  <li class="page-item">
+                    <button ng-click="paper.first()" class="page-link">
+                      First
+                    </button>
+                  </li>
+                  <li class="page-item">
+                    <button ng-click="paper.prev()" class="page-link">
+                      Previous
+                    </button>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link"
+                      >{{paper.page + 1}} of {{paper.count}}</a
+                    >
+                  </li>
+                  <li class="page-item">
+                    <button ng-click="paper.next()" class="page-link">
+                      Next
+                    </button>
+                  </li>
+                  <li class="page-item">
+                    <button ng-click="paper.last()" class="page-link">
+                      Last
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <!-- End Recent Sales -->
+
+        <!-- Top Selling -->
+        <div class="col-12">
+          <div class="card top-selling overflow-auto">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"
+                ><i class="bi bi-three-dots"></i
+              ></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">
+                Top Selling
+                <!--                                    <span>| Today</span>-->
+              </h5>
+
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">Preview</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Sold</th>
+                    <th scope="col">Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="top in topbanchay">
+                    <th scope="row">
+                      <a href="#"
+                        ><img
+                          src="{{top.anh_mac_dinh}}"
+                          alt=""
+                          height="50px"
+                          width="50px"
+                      /></a>
+                    </th>
+                    <td>
+                      <a href="#" class="text-primary fw-bold"
+                        >{{top.ten_sanpham}}</a
+                      >
+                    </td>
+                    <td>{{top.price}}</td>
+                    <td class="fw-bold">{{top.so_luong_ban}}</td>
+                    <td>{{top.price * top.so_luong_ban}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- End Top Selling -->
+      </div>
+    </div>
+    <!-- End Left side columns -->
+
+    <!-- Right side columns -->
+    <div class="col-lg-4">
+      <!-- Website Traffic -->
+      <div class="card">
+        <div class="filter">
+          <a class="icon" href="#" data-bs-toggle="dropdown"
+            ><i class="bi bi-three-dots"></i
+          ></a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+            <li class="dropdown-header text-start">
+              <h6>Filter</h6>
+            </li>
+
+            <li><a class="dropdown-item" href="#">Today</a></li>
+            <li><a class="dropdown-item" href="#">This Month</a></li>
+            <li><a class="dropdown-item" href="#">This Year</a></li>
+          </ul>
+        </div>
+
+        <div class="card-body pb-0">
+          <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+
+          <div id="trafficChart" style="min-height: 400px" class="echart"></div>
+
+          <!--                        <script>-->
+          <!--                            document.addEventListener("DOMContentLoaded", () => {-->
+          <!--                                echarts.init(document.querySelector("#trafficChart")).setOption({-->
+          <!--                                    tooltip: {-->
+          <!--                                        trigger: 'item'-->
+          <!--                                    },-->
+          <!--                                    legend: {-->
+          <!--                                        top: '5%',-->
+          <!--                                        left: 'center'-->
+          <!--                                    },-->
+          <!--                                    series: [{-->
+          <!--                                        name: 'Access From',-->
+          <!--                                        type: 'pie',-->
+          <!--                                        radius: ['40%', '70%'],-->
+          <!--                                        avoidLabelOverlap: false,-->
+          <!--                                        label: {-->
+          <!--                                            show: false,-->
+          <!--                                            position: 'center'-->
+          <!--                                        },-->
+          <!--                                        emphasis: {-->
+          <!--                                            label: {-->
+          <!--                                                show: true,-->
+          <!--                                                fontSize: '18',-->
+          <!--                                                fontWeight: 'bold'-->
+          <!--                                            }-->
+          <!--                                        },-->
+          <!--                                        labelLine: {-->
+          <!--                                            show: false-->
+          <!--                                        },-->
+          <!--                                        data: [{-->
+          <!--                                            value: 48,-->
+          <!--                                            name: 'áo so mi 1'-->
+          <!--                                        },-->
+          <!--                                            {-->
+          <!--                                                value: 735,-->
+          <!--                                                name: 'Direct'-->
+          <!--                                            },-->
+          <!--                                            {-->
+          <!--                                                value: 580,-->
+          <!--                                                name: 'Email'-->
+          <!--                                            },-->
+          <!--                                            {-->
+          <!--                                                value: 484,-->
+          <!--                                                name: 'Union Ads'-->
+          <!--                                            },-->
+          <!--                                            {-->
+          <!--                                                value: 300,-->
+          <!--                                                name: 'Video Ads'-->
+          <!--                                            }-->
+          <!--                                        ]-->
+          <!--                                    }]-->
+          <!--                                });-->
+          <!--                            });-->
+          <!--                        </script>-->
+        </div>
+      </div>
+      <!-- End Website Traffic -->
+    </div>
+    <!-- End Right side columns -->
+  </div>
+</section>
