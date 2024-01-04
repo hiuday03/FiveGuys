@@ -75,4 +75,10 @@ public class PaypalService {
 		return Payment.get(apiContext, orderId);
 	}
 
+
+	public String getPaypalToken() throws PayPalRESTException {
+		return apiContext.fetchAccessToken();
+	}
+
+
 }

@@ -148,10 +148,8 @@ public class JwtAuthenticationController {
             if (customerEntity.isPresent()) {
                 return ResponseEntity.ok(customerEntity);
             } else if (employeeEntity.isPresent()) {
-                // Trả về một đối tượng JSON với thuộc tính 'employeeLoggedIn' có giá trị true
-                Map<String, Object> responseData = new HashMap<>();
-                responseData.put("employeeLoggedIn", true);
-                return ResponseEntity.ok(responseData);
+
+                return ResponseEntity.ok(employeeEntity);
             }
         }
         Map<String, Object> responseData = new HashMap<>();

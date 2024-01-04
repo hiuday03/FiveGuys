@@ -92,25 +92,26 @@ public class PaypalController {
     @Transactional
     @GetMapping("/payment-paypal/success")
     public void successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletResponse response) throws IOException {
-        boolean paymentSuccessful = false;
+        boolean paymentSuccessful = true;
 
         try {
             Payment payment = service.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
-                olBillService.TaoHoaDonNguoiDungChuaDangNhap(billRestController.getBillData());
-                paymentSuccessful = true;
-                Bill bill = mapper.convertValue(billRestController.getBillData(), Bill.class);
+                System.out.println(payment);
+//                olBillService.TaoHoaDonNguoiDungChuaDangNhap(billRestController.getBillData());
+//                paymentSuccessful = true;
+//                Bill bill = mapper.convertValue(billRestController.getBillData(), Bill.class);
 
-                if (bill.getCustomerEntity() != null){
-                    Cart cart = olCartService.findByCustomerId(bill.getCustomerEntity().getId());
-
-                    if (cart != null) {
-                        olCartDetailService.deleteAllByCart_Id(cart.getId());
-                    }
-                }else {
-                    billRestController.setCheckOutBill(true);
-
-                }
+//                if (bill.getCustomerEntity() != null){
+//                    Cart cart = olCartService.findByCustomerId(bill.getCustomerEntity().getId());
+//
+//                    if (cart != null) {
+//                        olCartDetailService.deleteAllByCart_Id(cart.getId());
+//                    }
+//                }else {
+//                    billRestController.setCheckOutBill(true);
+//
+//                }
 
             }
         } catch (PayPalRESTException e) {
