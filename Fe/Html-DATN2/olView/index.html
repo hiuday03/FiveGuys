@@ -48,33 +48,22 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="login/login.css"> -->
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-  <body ng-app="myApp">
-    <div class="overlay" id="overlay" class="inactive">
-      <div class="header-search">
-        <button
-          type="button"
-          class="btn btn-light shadow-0 closeBtn"
-          onclick="toggleOverlay()"
-        >
-          <i class="fa-solid fa-xmark fa-lg"></i>
-        </button>
-        <form class="from-search" action="">
-          <div class="input-group">
-            <div class="form-outline w-100">
-              <input
-                style="border-bottom: 1px solid #cdcdcd"
-                type="search"
-                id="form1"
-                class="form-control"
-                oninput="loadProductSearch(this.value)"
-              />
-            </div>
-            <button type="button" class="btn btn-primary shadow-0">
-              <i class="fas fa-search"></i>
-            </button>
+<body ng-app="myApp" >
+
+  <div class="overlay" id="overlay" class="inactive">
+    <div class="header-search">
+      <button type="button" class="btn btn-light shadow-0 closeBtn" onclick="toggleOverlay()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
+      <form class="from-search" action="">
+        <div class="input-group">
+          <div class="form-outline w-100">
+            <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
+            oninput="loadProductSearch(this.value)" />
+     
           </div>
         </form>
       </div>

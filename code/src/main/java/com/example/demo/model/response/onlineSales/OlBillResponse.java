@@ -49,7 +49,7 @@ public class OlBillResponse {
 
     private int typeBill;
 
-    private int paymentStatus;
+//    private int paymentStatus;
 
     private int status;
 

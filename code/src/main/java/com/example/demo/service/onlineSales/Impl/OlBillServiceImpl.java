@@ -46,7 +46,24 @@ public class OlBillServiceImpl implements OlBillService {
     private OLBillRepository olBillRepository;
 
 
+    private void updateProductQuantity(BillDetail billDetail) {
+        Optional<ProductDetail> productDetail = olProductDetailService.findById(billDetail.getProductDetail().getId());
+        if (productDetail.isPresent()){
+            int quantityToRemove = billDetail.getQuantity();
+            if (isQuantityAvailable(productDetail.get(), quantityToRemove)) {
+                int currentQuantity = productDetail.get().getQuantity();
+                productDetail.get().setQuantity(currentQuantity - quantityToRemove);
+                olProductDetailService.save(productDetail.get());
+            } else {
+                throw new IllegalArgumentException("Not enough quantity available for product: " + productDetail.get().getId());
+            }
+        }
+    }
 
+    private boolean isQuantityAvailable(ProductDetail productDetail, int quantityToRemove) {
+        int currentQuantity = productDetail.getQuantity();
+        return currentQuantity >= quantityToRemove;
+    }
 
     @Override
     public Bill TaoHoaDonNguoiDungChuaDangNhap(JsonNode orderData) {
@@ -74,10 +91,11 @@ public class OlBillServiceImpl implements OlBillService {
         // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
         List<BillDetail> billDetails = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
         for (BillDetail detail : billDetails) {
-//            updateProductQuantity(detail);
+            updateProductQuantity(detail);
             detail.setBill(bill);
         }
         // Lưu thông tin hóa đơn và chi tiết hóa đơn vào cơ sở dữ liệu
+        bill.setStatus(1);
         Bill savedBill = olProductDetailRepository.save(bill);
         olBillDetailRepository.saveAll(billDetails);
         return savedBill;
@@ -95,7 +113,7 @@ public class OlBillServiceImpl implements OlBillService {
         Optional<Bill> optionalBill = olBillRepository.findById(billId);
         if (optionalBill.isPresent()) {
             Bill bill = optionalBill.get();
-            bill.setPaymentStatus(paymentStatus);
+            bill.setStatus(paymentStatus);
             olBillRepository.save(bill);
             return true;
         }
@@ -121,7 +139,7 @@ public class OlBillServiceImpl implements OlBillService {
         olBillResponse.setPaymentMethod(bill.getPaymentMethod());
         olBillResponse.setVoucher(bill.getVoucher());
         olBillResponse.setTypeBill(bill.getTypeBill());
-        olBillResponse.setPaymentStatus(bill.getPaymentStatus());
+//        olBillResponse.setPaymentStatus(bill.getPaymentStatus());
         olBillResponse.setStatus(bill.getStatus());
         olBillResponse.setBillDetail(olBillDetailService.findByBill_IdAndStatus(bill.getId()));
         return olBillResponse;

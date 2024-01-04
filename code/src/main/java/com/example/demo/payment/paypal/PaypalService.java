@@ -31,6 +31,7 @@ public class PaypalService {
 			String intent,
 			String description,
 			String cancelUrl,
+			 String orderId,
 			String successUrl) throws PayPalRESTException{
 		Amount amount = new Amount();
 		amount.setCurrency(currency);
@@ -40,7 +41,7 @@ public class PaypalService {
 		Transaction transaction = new Transaction();
 		transaction.setDescription(description);
 		transaction.setAmount(amount);
-
+		transaction.setInvoiceNumber(orderId);
 		List<Transaction> transactions = new ArrayList<>();
 		transactions.add(transaction);
 
@@ -55,7 +56,7 @@ public class PaypalService {
 		redirectUrls.setCancelUrl(cancelUrl);
 		redirectUrls.setReturnUrl(successUrl);
 		payment.setRedirectUrls(redirectUrls);
-
+		System.out.println(payment);
 		return payment.create(apiContext);
 	}
 
@@ -65,6 +66,13 @@ public class PaypalService {
 		PaymentExecution paymentExecute = new PaymentExecution();
 		paymentExecute.setPayerId(payerId);
 		return payment.execute(apiContext, paymentExecute);
+	}
+
+
+	public Payment getTransactionDetails(String orderId) throws PayPalRESTException {
+		// Sử dụng APIContext để lấy thông tin giao dịch dựa trên orderId
+		System.out.println(apiContext);
+		return Payment.get(apiContext, orderId);
 	}
 
 }

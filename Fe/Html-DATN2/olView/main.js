@@ -798,7 +798,7 @@ function countTotalPrice(items) {
           note: "",
           typeBill: 2,
           status: 1,
-          paymentStatus: 0,
+          // paymentStatus: 0,
           paymentMethod: "",
           voucher: "",
           customerEntity: "",

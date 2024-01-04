@@ -57,7 +57,7 @@ public class OBillRestController {
 
 
 
-    @PutMapping("/{billId}/updatePaymentStatus")
+    @PutMapping("/updatePaymentStatus/{billId}")
     public ResponseEntity<String> updatePaymentStatus(
             @PathVariable Long billId,
             @RequestParam(name = "paymentStatus") int paymentStatus
