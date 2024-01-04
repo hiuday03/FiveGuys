@@ -13,11 +13,6 @@ import java.util.Map;
 @Configuration
 public class PaypalConfig {
 
-//    Sandbox URL https://sandbox.paypal.com
-//    Email sb-odful28490406@personal.example.com
-//    Password 12345678
-
-
     @Value("${paypal.client.id}")
     private String clientId;
 
@@ -43,7 +38,10 @@ public class PaypalConfig {
     public APIContext apiContext() throws PayPalRESTException {
         APIContext context = new APIContext(oAuthTokenCredential().getAccessToken());
         context.setConfigurationMap(paypalSdkConfig());
+
+        // Hiển thị token ra console
+        System.out.println("Access Token: " + context.getAccessToken());
+
         return context;
     }
-
 }

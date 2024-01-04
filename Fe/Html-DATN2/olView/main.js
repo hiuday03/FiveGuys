@@ -427,6 +427,7 @@ function checkUserLoggedIn(username) {
         if (response.data.employeeLoggedIn === true) {
           $scope.isEmployeeLoggedIn = true;
           $scope.userData = response.data;
+          console.log(userData)
           console.log("Employee is logged in.");
           return ;
         } else if(response.data.loggedIn === false){

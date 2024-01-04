@@ -319,7 +319,8 @@ public class BillRestController {
                 Payment payment = paypalService.createPayment(price, "USD", "PayPal",
                         "sale", describe, "http://localhost:8080/api/ol/payment-paypal/cancel",
                         codeBill , "http://localhost:8080/api/ol/payment-paypal/success");
-                System.out.println("Payment ID: " + payment.getTransactions().get(0).getInvoiceNumber());
+                payment.setId(codeBill);
+                System.out.println(codeBill);
                 for(Links link:payment.getLinks()) {
                     if(link.getRel().equals("approval_url")) {
                         Map<String, String> jsonResponse = new HashMap<>();
@@ -328,6 +329,7 @@ public class BillRestController {
                         System.out.println(orderId2);
                         Gson gson = new Gson();
                         String json = gson.toJson(jsonResponse);
+
                         return ResponseEntity.ok(json);
                     }
                 }
