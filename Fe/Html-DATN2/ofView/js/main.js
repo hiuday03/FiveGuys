@@ -132,7 +132,7 @@ app.config(function ($routeProvider) {
 
 // Hieu js
 
-app_statistical.controller("statistical-ctrl", function ($scope, $http, $timeout, $document, $filter) {
+app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document, $filter) {
   $scope.customes = {
     decrease: "decrease",
   };
@@ -864,7 +864,7 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
   };
 });
 
-app_brand.controller("brand-ctrl", function ($scope, $http, $timeout) {
+app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   $scope.originalbrand = [];
   $scope.brand = [];
   $scope.formUpdate = {};
