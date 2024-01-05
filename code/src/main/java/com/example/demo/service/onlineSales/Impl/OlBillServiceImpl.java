@@ -5,6 +5,10 @@ import com.example.demo.entity.BillDetail;
 import com.example.demo.entity.ProductDetail;
 import com.example.demo.entity.Vouchers;
 import com.example.demo.model.response.onlineSales.OlBillResponse;
+import com.example.demo.payment.momo.config.Environment;
+import com.example.demo.payment.momo.models.QueryStatusTransactionResponse;
+import com.example.demo.payment.momo.processor.QueryTransactionStatus;
+import com.example.demo.payment.vnpay.config.ConfigVNPay;
 import com.example.demo.repository.onlineSales.OLBillDetailRepository;
 import com.example.demo.repository.onlineSales.OLBillRepository;
 import com.example.demo.repository.onlineSales.OLProductDetailRepository;
@@ -17,12 +21,23 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 public class OlBillServiceImpl implements OlBillService {
@@ -44,6 +59,8 @@ public class OlBillServiceImpl implements OlBillService {
 
     @Autowired
     private OLBillRepository olBillRepository;
+
+
 
 
     private void updateProductQuantity(BillDetail billDetail) {
@@ -95,7 +112,6 @@ public class OlBillServiceImpl implements OlBillService {
             detail.setBill(bill);
         }
         // Lưu thông tin hóa đơn và chi tiết hóa đơn vào cơ sở dữ liệu
-        bill.setStatus(1);
         Bill savedBill = olProductDetailRepository.save(bill);
         olBillDetailRepository.saveAll(billDetails);
         return savedBill;
@@ -153,6 +169,23 @@ public class OlBillServiceImpl implements OlBillService {
         }
         return null;
     }
+
+    @Override
+    public Bill save(Bill bill) {
+        return olBillRepository.save(bill);
+    }
+
+    @Override
+    public Bill findById(Long id) {
+        Optional<Bill> bill = olBillRepository.findById(id);
+        if (bill.isPresent()){
+            return bill.get();
+        }
+        return null;
+    }
+
+
+
 
 
 }

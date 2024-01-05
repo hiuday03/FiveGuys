@@ -136,7 +136,7 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
                 console.log('Đăng nhập thành công:', response.data.token);
                 alert('Đăng nhập thành công');
 
-                window.location.href = 'http://127.0.0.1:5500/index.html#!/home';
+                window.location.href = 'http://127.0.0.1:5502/olView/index.html#!/home';
             })
             .catch(function (error) {
                 if (error.status === 404) {
@@ -190,7 +190,7 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
         localStorage.removeItem('token');
         alert('Đăng xuất thành công');
 
-        window.location.href = 'http://127.0.0.1:5500/index.html#!/home';
+        window.location.href = 'http://127.0.0.1:5502/olView/index.html#!/home';
 
         // Reset trạng thái của ứng dụng
         // $scope.isCustomerLoggedIn = false;

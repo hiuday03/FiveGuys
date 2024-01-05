@@ -16,7 +16,7 @@ public class OlCategoryServiceImpl implements OlCategoryService {
 
     @Override
     public List<Category> findAll() {
-        return repository.findAll();
+        return repository.findAllByStatusEqualsOne();
     }
 
     @Override

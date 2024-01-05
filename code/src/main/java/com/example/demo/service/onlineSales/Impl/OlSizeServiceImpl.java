@@ -20,6 +20,6 @@ public class OlSizeServiceImpl implements OlSizeService {
 
     @Override
     public List<Size> findAll() {
-        return repository.findAll();
+        return repository.findAllByStatusEqualsOne();
     }
 }
