@@ -38,7 +38,7 @@ public class    ImageServiceImpl implements ImageService {
 
     @Override
     public Image save(Image imageReq) {
-        imageReq.setStatus(0);
+        imageReq.setStatus(1);
         imageReq.setCreatedAt(new Date());
         imageReq.setUpdatedAt(new Date());
         return imageRepository.save(imageReq);
@@ -52,7 +52,7 @@ public class    ImageServiceImpl implements ImageService {
             return null;
         }
         for (Image i: images) {
-            i.setStatus(0);
+            i.setStatus(1);
             i.setCreatedAt(new Date());
             i.setUpdatedAt(new Date());
             i.setProductDetail(productDetail);

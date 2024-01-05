@@ -149,7 +149,7 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
     }
 
     $scope.initialize = function () {
-        $http.get("/bills").then(function (resp) {
+        $http.get("http://localhost:8080/bills").then(function (resp) {
             $scope.originalBill = resp.data;
             $scope.bill = angular.copy($scope.originalBill);
         });
@@ -157,7 +157,7 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
     $scope.initialize();
 
     $scope.loadCustomers = function () {
-        $http.get("/customer") // Thay đổi đường dẫn API tương ứng
+        $http.get("http://localhost:8080/customer") // Thay đổi đường dẫn API tương ứng
             .then(function (resp) {
                 $scope.customerEntitys = resp.data;
             })
@@ -169,7 +169,7 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
     $scope.loadCustomers();
 
     $scope.loadEmployees = function () {
-        $http.get("/employee") // Thay đổi đường dẫn API tương ứng
+        $http.get("http://localhost:8080/employee") // Thay đổi đường dẫn API tương ứng
             .then(function (resp) {
                 $scope.employees = resp.data;
             })
@@ -180,7 +180,7 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
     $scope.loadEmployees();
 
     $scope.loadVoucher = function () {
-        $http.get("/api/voucher") // Thay đổi đường dẫn API tương ứng
+        $http.get("http://localhost:8080/api/voucher") // Thay đổi đường dẫn API tương ứng
             .then(function (resp) {
                 $scope.vouchers = resp.data;
             })
@@ -260,7 +260,7 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
     $scope.create = function () {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
-        $http.post("/bills", item).then(function (resp) {
+        $http.post("http://localhost:8080/bills", item).then(function (resp) {
             $scope.showSuccessMessage("Create bill successfully");
             $scope.resetFormInput();
             $scope.initialize();
@@ -273,7 +273,7 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
     $scope.update = function () {
         let item = angular.copy($scope.formUpdate);
         console.log(item)
-        $http.put(`/bills/${item.id}`, item).then(function (resp) {
+        $http.put(`http://localhost:8080/bills/${item.id}`, item).then(function (resp) {
 
             $scope.showSuccessMessage("Update bill successfully");
             $scope.resetFormUpdate();
@@ -288,7 +288,7 @@ app_bill1.controller("newbill-ctrl", function ($scope, $http, $timeout) {
         console.log("c")
         console.log(status)
         console.log(item)
-        $http.put(`/bills/status/${item.id}`, status).then(function (resp) {
+        $http.put(`http://localhost:8080/bills/status/${item.id}`, status).then(function (resp) {
 
             $scope.showSuccessMessage("Cập nhật hóa đơn thành công");
             $scope.resetFormUpdate();
