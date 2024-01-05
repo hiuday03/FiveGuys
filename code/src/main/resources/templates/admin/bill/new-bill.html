@@ -59,8 +59,8 @@
                             <select class="form-select" aria-label="Small select example"
                                     ng-model="typeBill">
                                 <option value="">Chọn loại</option>
-                                <option ng-value="1">Đặt hàng online</option>
-                                <option ng-value="2">Bán nhanh</option>
+                                <option ng-value="1">Bán nhanh</option>
+                                <option ng-value="2">Đặt hàng online</option>
                                 <option ng-value="3">Bán giao hàng</option>
                             </select>
                         </div>
@@ -103,55 +103,29 @@
 <!--                    <div class="modal-header">-->
 <!--                        <h5 class="modal-title">Hóa đơn: {{formUpdate.code}}</h5>-->
 <!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" id="tabhome1"
-                                   ng-click="showAddBillDetail(bill)" href="#home1">Thông tin hóa đơn</a>
-                            </li>
-                            <!--                                    <li class="nav-item">-->
-                            <!--                                        <a class="nav-link" data-bs-toggle="tab"-->
-                            <!--                                           ng-click="showAddBillDetail(describe)" href="#menu1">Describe</a>-->
-                            <!--                                    </li>-->
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" ng-click="showAddBillDetail('pd')"
-                                   href="#menu2">Danh sách sản phẩm</a>
-                            </li>
-                        </ul>
+<!--                        <ul class="nav nav-tabs" role="tablist">-->
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link active" data-bs-toggle="tab" id="tabhome1"-->
+<!--                                   ng-click="showAddBillDetail(bill)" href="#home1">Thông tin hóa đơn</a>-->
+<!--                            </li>-->
+<!--                            <li class="nav-item">-->
+<!--                                <a class="nav-link" data-bs-toggle="tab" ng-click="showAddBillDetail('pd')"-->
+<!--                                   href="#menu2">Danh sách sản phẩm</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
 <!--                    </div>-->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" id="tabhome"
+                               ng-click="showAddBillDetail(bill)" href="#home1">Thông tin hóa đơn</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" ng-click="showAddBillDetail('pd')"
+                               href="#menu2">Danh sách sản phẩm</a>
+                        </li>
+                    </ul>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-8">
-                                <!-- Nav tabs -->
-                                <ul class="nav nav-pills" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" data-bs-toggle="tab" id="tabhome"
-                                           ng-click="showAddBillDetail(bill)" href="#home1">Thông tin hóa đơn</a>
-                                    </li>
-                                    <!--                                    <li class="nav-item">-->
-                                    <!--                                        <a class="nav-link" data-bs-toggle="tab"-->
-                                    <!--                                           ng-click="showAddBillDetail(describe)" href="#menu1">Describe</a>-->
-                                    <!--                                    </li>-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" ng-click="showAddBillDetail('pd')"
-                                           href="#menu2">Danh sách sản phẩm</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-4">
-<!--                                <div class="row">-->
-<!--                                    <div class="d-flex justify-content-end">-->
-<!--                                        <button id="addBillDetail" class="btn btn-outline-success mb-2"-->
-<!--                                                data-bs-toggle="modal" data-bs-target="#modalBillDetail"-->
-<!--                                                data-bs-dismiss="modal">-->
-<!--                                            Add-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-                            </div>
-                        </div>
-
                         <div class="tab-content mt-3">
-
                             <div id="home1" class="container tab-pane active">
                                 <div class="row">
                                     <label class="col-sm-2">Mã hóa đơn</label>
@@ -189,9 +163,9 @@
                                     <label class="col-sm-2">Loại hóa đơn</label>
                                     <div class="col-sm-4" ng-switch="formUpdate.typeBill">
                                         <input name="code" type="text" ng-switch-when="1"
-                                               class="form-control bg-secondary-light" value="Đặt hàng online" readonly>
-                                        <input name="code" type="text" ng-switch-when="2"
                                                class="form-control bg-secondary-light" value="Bán nhanh" readonly>
+                                        <input name="code" type="text" ng-switch-when="2"
+                                               class="form-control bg-secondary-light" value="Đặt hàng online" readonly>
                                         <input name="code" type="text" ng-switch-when="3"
                                                class="form-control bg-secondary-light" value="Bán giao hàng" readonly>
                                         <!--                                        <input name="code" type="text"-->
@@ -211,7 +185,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <div class="accordion accordion-flush" id="accordionFlushExample"  ng-if="formUpdate.typeBill != 2">
+                                <div class="accordion accordion-flush" id="accordionFlushExample"  ng-if="formUpdate.typeBill != 1">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -258,7 +232,7 @@
                                                         <div class="col-sm-10">
                                                 <textarea id="address" type="text"
                                                           class="form-control bg-secondary-light" readonly
-                                                          ng-model="formUpdate.note"
+                                                          ng-model="formUpdate.address"
                                                           ng-required="true">{{formUpdate.address}}</textarea>
                                                         </div>
                                                     </div>
@@ -352,7 +326,7 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button ng-if="formUpdate.typeBill != 1" class="btn btn-primary" id="update"> Cập nhật
+                                    <button ng-if="formUpdate.typeBill == 3" class="btn btn-primary" id="update"> Cập nhật
                                     </button>
                                     <button class="btn btn-success" id="save" ng-click="updateStatus( formUpdate.status ,formUpdate)">Lưu
                                     </button>
@@ -801,8 +775,8 @@
                         <td>{{bill.totalAmount}}</td>
                         <td>{{bill.totalAmount - bill.totalAmountAfterDiscount}}</td>
                         <td class="col-1" ng-switch="bill.typeBill">
-                            <span ng-switch-when="1">Online</span>
-                            <span ng-switch-when="2">Bán nhanh</span>
+                            <span ng-switch-when="1">Bán nhanh</span>
+                            <span ng-switch-when="2">Online</span>
                             <span ng-switch-when="3">Bán giao hàng</span>
                         </td>
                         <td class="col-2" ng-switch="bill.status">

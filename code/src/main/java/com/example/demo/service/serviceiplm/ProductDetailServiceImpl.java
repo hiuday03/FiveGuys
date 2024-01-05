@@ -9,11 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class ProductDetailServiceImpl implements ProductDetailService {
@@ -112,9 +110,8 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public Page<ProductDetail> getAllByPId(Long pid, Integer page) {
-        Pageable pageable = PageRequest.of(page, 100);
-        return productDetailRepository.findAllByProductId(pid, pageable);
+    public List<ProductDetail> getAllByPId(Long pid) {
+        return productDetailRepository.findAllByProductIdOrderByCreatedAtDesc(pid);
     }
 
     @Override
@@ -124,9 +121,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         productDetailReq.setUpdatedAt(new Date());
         productDetailReq.setUpdatedBy("admin");
         productDetailReq.setBarcode(genBarcode());
-        productDetailReq.setStatus(2);
         ProductDetail newProductDetail = productDetailRepository.save(productDetailReq);
-        imageService.saveAll(images, newProductDetail);
+        if(!images.isEmpty()){
+            imageService.saveAll(images, newProductDetail);
+        }
+
         return newProductDetail;
     }
 
@@ -149,7 +148,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             productDetail.setColor(productDetailReq.getColor());
 
             ProductDetail newProductDetail = productDetailRepository.save(productDetail);
-            imageService.saveAll(images, newProductDetail);
+//            imageService.saveAll(images, newProductDetail);
+            if(!images.isEmpty()){
+                imageService.saveAll(images, newProductDetail);
+            }
             return newProductDetail;
 //            return productDetailRepository.save(productDetail);
         }

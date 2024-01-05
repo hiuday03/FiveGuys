@@ -46,6 +46,8 @@ public class ProductDetailRestController {
 
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody ProductDetailRequest productDetailRequest){
+        System.out.println("cc");
+        System.out.println(productDetailRequest.getImagesList());
         ProductDetail productDetail
                 = productDetailService.saveI(productDetailRequest.getProductDetail(),
                                     productDetailRequest.getImagesList());
@@ -53,9 +55,11 @@ public class ProductDetailRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody ProductDetail productDetailReq,
+    public ResponseEntity<?> update(@RequestBody ProductDetailRequest productDetailRequest,
                                     @PathVariable("id") Long id){
-        ProductDetail productDetail = productDetailService.update(productDetailReq, id);
+        ProductDetail productDetail
+                = productDetailService.updateI(productDetailRequest.getProductDetail(), id,
+                    productDetailRequest.getImagesList());
         return ResponseEntity.ok(productDetail);
     }
 
