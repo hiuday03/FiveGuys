@@ -16,6 +16,7 @@ import com.example.demo.service.onlineSales.OLProductDetailService;
 import com.example.demo.service.onlineSales.OlBillService;
 import com.example.demo.service.onlineSales.OlCartDetailService;
 import com.example.demo.service.onlineSales.OlCartService;
+import com.example.demo.untility.OlBillUntility;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +55,9 @@ public class MoMoPaymentController {
     @Autowired
     private OLProductDetailService olProductDetailService;
 
-    ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    private OlBillUntility olBillUntility;
+
 
 
 
@@ -74,48 +78,20 @@ public class MoMoPaymentController {
         }
     }
 
-//    @PostMapping("/payment-momo/confirm-transaction")
-//    public ResponseEntity<String> confirmTransaction() {
-//        String requestId = "1704179397755";
-//        String orderId = "1704179397755";
-//        long amount = 280000;
-//
-//        Environment environment = Environment.selectEnv("dev");
-//
-//        try {
-//            ConfirmResponse confirmResponse = ConfirmTransaction.process(environment, orderId, requestId, Long.toString(amount), ConfirmRequestType.CAPTURE, "");
-//
-//            // Xử lý và trả về kết quả, ví dụ: trả về thông tin xác nhận giao dịch
-//            return ResponseEntity.ok("Transaction confirmed successfully.");
-//        } catch (Exception e) {
-//            // Xử lý lỗi nếu có
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to confirm transaction: " + e.getMessage());
-//        }
-//    }
 
-    private void restoreProductQuantity(List<BillDetail> billDetails) {
-        for (BillDetail detail : billDetails) {
-            Optional<ProductDetail> productDetail = olProductDetailService.findById(detail.getProductDetail().getId());
-            if (productDetail.isPresent()){
-                int quantityToAdd = detail.getQuantity();
-                int currentQuantity = productDetail.get().getQuantity();
-                productDetail.get().setQuantity(currentQuantity + quantityToAdd);
-                olProductDetailService.save(productDetail.get());
-            }
-        }
-    }
+
+
+
+
 
     //Momo
     @Transactional
     @GetMapping("/payment-momo/success")
     public void handleMoMoIPN2(@RequestParam("resultCode") String code,@RequestParam("orderId") String orderId, HttpServletResponse response, HttpSession session) throws IOException {
-        OlBillResponse bill = olBillService.findBYId(Long.valueOf(orderId));
+        Bill bill = olBillService.findById(olBillUntility.decodeId(orderId));
 
 
         if(code.equals("0") ){
-
-
-
             if (bill.getCustomerEntity() != null){
                 Cart cart = olCartService.findByCustomerId(bill.getCustomerEntity().getId());
 
@@ -126,12 +102,16 @@ public class MoMoPaymentController {
                 billRestController.setCheckOutBill(true);
 
             }
+
+            bill.setStatus(1);
+            olBillService.save(bill);
+
             response.sendRedirect(Config.fe_liveServer_Success);
 
         }else {
-            List<BillDetail> billDetailsCheck = bill.getBillDetail();
-
-            restoreProductQuantity(billDetailsCheck);
+            bill.setStatus(4);
+            olBillUntility.restoreProductQuantity(bill.getBillDetail());
+            olBillService.save(bill);
             response.sendRedirect(Config.fe_liveServer_Failed);
         }
         System.out.println(code);

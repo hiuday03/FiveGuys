@@ -27,9 +27,9 @@ public interface OLProductDetailRepository extends JpaRepository<ProductDetail, 
     @Query("SELECT c.size FROM ProductDetail c WHERE c.product.id = :productId AND c.status = 1 GROUP BY c.size")
     List<Size> findDistinctSizesBySanPhamId(@Param("productId") Long productId);
 
-    ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
+    ProductDetail findByColorIdAndSizeIdAndProductIdAndStatus(Long colorId, Long sizeId, Long productId, int status);
 
-    Optional<ProductDetail> findById(Long productDetailId);
+//    Optional<ProductDetail> findByIdAndStatus(Long productDetailId, int status);
 
     List<ProductDetail> findByColorIdAndProductIdAndStatus(Long colorId, Long productId,int status);
 }

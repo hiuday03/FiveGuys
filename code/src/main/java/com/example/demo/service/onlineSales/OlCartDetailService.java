@@ -20,6 +20,9 @@ public interface OlCartDetailService {
 
     void deleteAllByCart_Id(Long idGioHang);
 
+    int getTotalQuantityInCart( Long cartId,  Long productDetailId);
+
+    CartDetail findCartDetail( Long cartId, Long productDetailId);
 
 
 }

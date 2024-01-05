@@ -19,6 +19,6 @@ public class OlMaterialServiceImpl implements OlMaterialService {
 
     @Override
     public List<Material> findAll() {
-        return repository.findAll();
+        return repository.findAllByStatusEqualsOne();
     }
 }

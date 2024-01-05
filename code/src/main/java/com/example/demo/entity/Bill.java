@@ -86,6 +86,6 @@ public class Bill {
     private int status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "bill",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "bill",  cascade = CascadeType.ALL)
     private List<BillDetail> billDetail;
 }
