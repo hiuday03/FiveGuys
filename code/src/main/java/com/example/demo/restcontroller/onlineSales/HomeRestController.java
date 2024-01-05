@@ -207,4 +207,20 @@ public class HomeRestController {
         return ResponseEntity.ok(searchResults);
     }
 
+
+
+    // lấy số lượng productDetail validate
+    @GetMapping("/productDetail/quantity/{id}")
+    public ResponseEntity<?> getProductQuantity(@PathVariable("id") Long id) {
+        Optional<ProductDetail> productDetailOptional = olProductDetailService.findById(id);
+
+        if (productDetailOptional.isPresent()) {
+            ProductDetail productDetail = productDetailOptional.get();
+            return ResponseEntity.ok(productDetail.getQuantity());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

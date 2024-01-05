@@ -600,14 +600,31 @@ function countTotalPrice(items) {
 
               // Thực hiện hành động khi chưa đăng nhập
               var item = $scope.cart.items.find(item => item.id == productDetailId);
-              
-              if (item) {
-                  item.quantity += $scope.quantitySelected;
-                  $scope.cart.saveToLocalStorage();
-                  count();
-                  $scope.showSuccessNotification("Thêm vào giỏ thành công!");
-                  loadLocal();
-              } else {
+
+        if (item) {
+    $http.get('http://localhost:8080/api/ol/productDetail/quantity/' + item.id)
+        .then(quantityResp => {
+            var availableQuantity = quantityResp.data;
+            if (availableQuantity !== null && typeof availableQuantity === 'number') {
+                var totalQuantity = item.quantity + $scope.quantitySelected;
+                if (totalQuantity <= availableQuantity) {
+                    item.quantity = totalQuantity;
+                    $scope.cart.saveToLocalStorage();
+                    count();
+                    $scope.showSuccessNotification("Thêm vào giỏ thành công!");
+                    loadLocal();
+                } else {
+                    $scope.showErrorNotification("Số lượng vượt quá số lượng hiện có!");
+                }
+            } else {
+                $scope.showErrorNotification("Không thể lấy số lượng sản phẩm!");
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching product quantity:', error);
+            // Handle error if the product quantity couldn't be fetched
+        });
+      } else {
                   $http.get('http://localhost:8080/api/ol/products/detail/' + productDetailId)
                       .then(resp => {
                           if (typeof resp.data === 'object') {
@@ -651,38 +668,53 @@ function countTotalPrice(items) {
 
                     if (response.data === 1)  {
                       $scope.showSuccessNotification("Cập nhật giỏ thành công!");
-
-              
                     } else if (response.data === 2)  {
                       $scope.showErrorNotification("Sản phẩm không có đủ số lượng trong kho!");
-              
                     }else {
                       $scope.showErrorNotification("Cập nhật giỏ thất bại!");
-
                     }
-
-
                       if (response.data) {
                         loadCart();
                       count();
-                      // $scope.showSuccessNotification("Cập nhật giỏ thành công!");
-
                       } 
                   })
                   .catch(function (error) {
                     $scope.showWarningNotification("Có lỗi xảy ra!");
                       console.error(error);
                   });
-
           } else {
-              // Thực hiện hành động khi chưa đăng nhập
-              var item = $scope.cart.items.find(item => item.id == cartDetailId);
-              if (item) {
-                  item.quantity = quantity;
-                  $scope.cart.saveToLocalStorage();
-              count();
+            var item = $scope.cart.items.find(item => item.id == cartDetailId);
 
-              }
+            if (item) {
+                $http.get('http://localhost:8080/api/ol/productDetail/quantity/' + item.id)
+                    .then(quantityResp => {
+                        var availableQuantity = quantityResp.data;
+                        if (availableQuantity !== null && typeof availableQuantity === 'number') {
+                            if (quantity <= availableQuantity) {
+                                item.quantity = quantity;
+                                $scope.cart.saveToLocalStorage();
+                                count();
+                                loadLocal();
+                                $scope.showSuccessNotification("Cập nhật giỏ hàng thành công!");
+                            } else {
+                              item.quantity = availableQuantity;
+                              $scope.cart.saveToLocalStorage();
+                              count();
+                              loadLocal();
+                                $scope.showErrorNotification("Số lượng vượt quá số lượng hiện có!");
+                            }
+                        } else {
+                            $scope.showErrorNotification("Không thể lấy số lượng sản phẩm!");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product quantity:', error);
+                        // Handle error if the product quantity couldn't be fetched
+                    });
+            } else {
+                // Rest of your existing logic for updating item in cart...
+            }
+            
               loadLocal();
           }
           $scope.applyVoucher();
@@ -902,13 +934,32 @@ function countTotalPrice(items) {
             bill.paymentMethod = $scope.selectedPayment;
             bill.voucher = $scope.voucherData;
             bill.customerEntity = $scope.userData;
-            console.log(bill);
-          
             // Tiến hành gửi dữ liệu lên server
             $http.post("http://localhost:8080/api/ol/bill/create", bill)
               .then(resp => {
-                console.log(bill);
-                window.location.href = resp.data.rederect;
+               // Xử lý phản hồi từ server
+                  let body = resp.data;
+                  console.log(body);
+                  if (body != null && body.hasOwnProperty("redirect") ) {
+                      window.location.href = body.redirect; 
+                  } else if (typeof body === 'number') {
+                      // Nếu phản hồi là một số nguyên
+                      if (body === 2) {
+                       $scope.showErrorNotification("Sản phẩm này đã hết vui lòng chọn sản phẩm khác!")
+                      } else if (body === 3) {
+                          // Nếu giá trị là 3
+                          console.log("Returned 3");
+                          // Xử lý logic tương ứng
+                      } else {
+                          // Các giá trị khác
+                          console.log("Returned other");
+                          // Xử lý logic tương ứng
+                      }
+                  } else {
+                      // Các trường hợp khác
+                      console.log("Returned other types");
+                      // Xử lý logic tương ứng
+                  }
               })
               .catch(error => {
                 alert("Đặt hàng thất bại");

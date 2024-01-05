@@ -1,57 +1,38 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>AngularJS SPA Example</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <!-- CSS Bootstrap -->
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- MDB -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
-      rel="stylesheet"
-    />
-    <!-- MDB -->
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
-    ></script>
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- toastr -->
-    <!-- <link href="node_modules/toastr/build/toastr.min.css" rel="stylesheet"> -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
-      rel="stylesheet"
-    />
-    <!-- angular-jwt -->
-    <script
-      type="text/javascript"
-      src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"
-    ></script>
+<head>
+  <title>Ngày 18-1</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- CSS Bootstrap -->
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+  <!-- MDB -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
 
-    <!-- css login -->
-    <!-- <link rel="stylesheet" th:href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- toastr -->
+  <!-- <link href="node_modules/toastr/build/toastr.min.css" rel="stylesheet"> -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+  <!-- angular-jwt -->
+  <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+
+  <!-- css login -->
+  <!-- <link rel="stylesheet" th:href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="login/login.css"> -->
+
 
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body ng-app="myApp" >
+<body ng-app="myApp">
 
   <div class="overlay" id="overlay" class="inactive">
     <div class="header-search">
@@ -62,49 +43,46 @@
         <div class="input-group">
           <div class="form-outline w-100">
             <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
-            oninput="loadProductSearch(this.value)" />
-     
-          </div>
-        </form>
-      </div>
-      <div class="product-display">
-        <div class="container-fluid">
-          <div class="row" id="productDisplay">
-            <div ng-repeat="product in productSearch" class="col-md-3 mb-4">
-              <div class="card my-2 shadow-2-strong">
-                <button
-                  type="button"
-                  class="btn btn-light shadow-0 closeBtn"
-                  onclick="toggleOverlay()"
-                ></button>
-                <h1>HHHHH</h1>
+              oninput="loadProductSearch(this.value)" />
 
-                <a href="#!product-detail/{{product.id}}">
-                  <img
-                    class="card-img-top"
-                    width="100%"
-                    height="100%"
-                    class="rounded-2"
-                    loading="lazy"
-                    ng-src="{{ product.path }}"
-                  />
-                </a>
-                <div class="card-body d-flex flex-column">
-                  <div style="display: flex; justify-content: space-between">
-                    <span class="product-price"> {{ product.price}} đ</span>
-                    <a href="#" class="btn btn-light py-2 icon-hover px-3">
-                      <i class="me-1 fa fa-heart fa-lg"></i>
-                    </a>
-                  </div>
-                  <p class="card-title">
-                    {{ product.name }} {{ product.nameCategory }} {{
-                    product.nameMaterial }} {{ product.code }}
-                  </p>
+          </div>
+          <button type="button" class="btn btn-primary shadow-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="product-display">
+      <div class="container-fluid">
+        <div class="row" id="productDisplay">
+          <div ng-repeat="product in productSearch" class="col-md-3 mb-4">
+            <div class="card  my-2 shadow-2-strong ">
+              <button type="button" class="btn btn-light shadow-0 closeBtn" onclick="toggleOverlay()">
+              </button>
+              <h1>HHHHH</h1>
+
+              <a href="#!product-detail/{{product.id}}">
+                <img class="card-img-top" width="100%" height="100%" class="rounded-2" loading="lazy"
+                  ng-src="{{ product.path }}" />
+              </a>
+              <div class="card-body d-flex flex-column">
+                <div style="display: flex; justify-content: space-between;">
+                  <span class="product-price"> {{ product.price}} đ</span>
+                  <a href="#" class="btn btn-light  py-2 icon-hover px-3">
+                    <i class="me-1 fa fa-heart fa-lg"></i>
+                  </a>
                 </div>
+                <p class="card-title">
+                  {{ product.name }}
+                  {{ product.nameCategory }}
+                  {{ product.nameMaterial }}
+                  {{ product.code }}
+                </p>
               </div>
             </div>
           </div>
-          <!-- <div class="text-center">
+        </div>
+        <!-- <div class="text-center">
           <div class="row">
             <div class="text-center mt-3 col-12">
               <a href="#!product-search" id="loadMoreBtn" class="btn btn-main btn-light" onclick="loadProductSearch()" style="display: none;">
@@ -113,335 +91,216 @@
             </div>
           </div>
         </div> -->
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <!-- Jumbotron -->
+    <div class="header text-center bg-white border-bottom">
+      <div class="container-fluid">
+        <div style="    padding: 22px 64px;" class="row gy-3">
+          <!-- Left elements -->
+          <div class="col-lg-2 col-sm-4 col-4">
+            <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
+              <a href="#!home">home</a>
+              <a href="#!product">Product</a>
+              <a href="/login/login.html">Login</a>
+            </a>
+          </div>
+          <!-- Left elements -->
+
+          <!-- Center elements -->
+          <div class="order-lg-last col-lg-4 col-sm-8 col-8">
+            <div class="d-flex justify-content-end align-items-center">
+              <!-- Ô tìm kiếm -->
+              <div class="flex-fill d-flex justify-content-start">
+                <div style=" border-radius: 10px;" class="input-group">
+                  <div class="form-outline">
+                    <input style="border-bottom: 1px solid #cdcdcd;" type="search" onclick="openOverlay()"
+                      class="form-control" readonly />
+                    <label class="form-label">Tìm kiếm sản phẩm</label>
+                  </div>
+                  <button type="button" class="btn btn-primary shadow-0" onclick="openOverlay()">
+                    <i class="fas fa-search fa-lg"></i>
+                  </button>
+
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <!-- Dropdown người dùng -->
+                <div class="dropdown">
+                  <a href="#!account-info" style="color: black;" class="dropdown-toggle" href="#" role="button"
+                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-user fa-lg"></i>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="http://localhost:8080/login">Đăng nhập</a>
+                    <a class="dropdown-item" href="http://localhost:8080/auth/logoff">Đăng xuất</a>
+                  </div>
+                </div>
+
+
+
+                <a href="#!account-favorite"
+                  class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative">
+                  <i class="fa fa-heart fa-lg"></i>
+                  <!-- <span ng-bind="countProduct"
+                  class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-circle">{{countProduct}}</span> -->
+                </a>
+
+                <a href="#!cart" class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative">
+                  <i class="fas fa-shopping-cart fa-lg"></i>
+
+                  <span ng-bind="countProduct"
+                    class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-circle">{{countProduct}}</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Center elements -->
+
+          <!-- Right elements -->
+          <div class="col-lg-6 col-md-12 col-12">
+            <div class="input-group float-center">
+            </div>
+          </div>
+          <!-- Right elements -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- View -->
+
+  <div ng-view></div>
+
+  <!-- View -->
+
+
+  <!-- Footer -->
+  <footer class="container-fluid text-center text-lg-start text-muted bg-primary mt-3">
+    <div style="padding: 64px 64px;" class="row">
+      <section class="col-12 col-lg-3 col-sm-6 mb-2">
+        <!-- Content -->
+        <div style="margin-bottom: 16px;">
+          <a ng-href="#!home" target="" class="text-white h2">
+            Five Guys
+          </a>
+        </div>
+        <div class="content-footer">
+          <i class="fa-solid fa-phone fa-lg"></i>
+          <span>
+            Số điện thoại: 02873066060</span>
+        </div>
+        <div class="content-footer">
+          <i class="fa-solid fa-envelope fa-lg"></i>
+          <span>
+            Email: example@example.com</span>
+        </div>
+        <hr>
+        <h6 class="text-uppercase text-white  title-main_footer">
+          KẾT NỐI VỚI CHÚNG TÔI
+        </h6>
+        <div style="display: flex;" class="img_footer">
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/ybpljhnnmp1yk6wheuur.webp" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/segbk9pkgx7sqqogszw7.webp" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/rzknuv4yor9enuyfyejn.webp" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/yrtrzleyw1omuljpuzoa.webp" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/jmjsy9gpcjnnkoohxchq.webp" />
+        </div>
+
+      </section>
+
+      <div class="col-6 col-sm-6 col-lg-3 mb-2">
+        <!-- Links -->
+        <h6 class="text-uppercase text-white  title-main_footer">
+          HỖ TRỢ KHÁCH HÀNG
+        </h6>
+        <ul class="list-unstyled mb-4 shop-footer">
+          <li><a class="text-white" href="#">Chính sách khách hàng thân thiết</a></li>
+          <li><a class="text-white" href="#">Chính sách đổi trả</a></li>
+          <li><a class="text-white" href="#">Chính sách bảo hành</a></li>
+          <li><a class="text-white" href="#">Chính sách bảo mật</a></li>
+          <li><a class="text-white" href="#">Câu hỏi thường gặp</a></li>
+          <li><a class="text-white" href="#">Hướng dẫn mua hàng online</a></li>
+          <li><a class="text-white" ref="#">Hướng dẫn kiểm tra hạng thẻ thành viên</a></li>
+        </ul>
+
+      </div>
+
+      <div class="col-6 col-sm-6 col-lg-3 mb-2">
+        <!-- Links -->
+        <h6 class="text-uppercase text-white   title-main_footer">
+          HỆ THỐNG CỬA HÀNG
+        </h6>
+        <ul class="shop-footer list-unstyled">
+          <li><i class="fas fa-store"></i> Store 1: 12-12Bis, CMT8, P.Bến Thành, Q.1, HCM</li>
+          <li><i class="fas fa-store"></i> Store 2: 484, Lê Văn Sỹ, P.14, Q.3, HCM</li>
+          <li><i class="fas fa-store"></i> Store 3: 477 - 481, Sư Vạn Hạnh, P.12, Q.10, HCM</li>
+          <li><i class="fas fa-store"></i> Store 1: 12-12Bis, CMT8, P.Bến Thành, Q.1, HCM</li>
+          <li><i class="fas fa-store"></i> Store 2: 484, Lê Văn Sỹ, P.14, Q.3, HCM</li>
+          <li><i class="fas fa-store"></i> Store 3: 477 - 481, Sư Vạn Hạnh, P.12, Q.10, HCM</li>
+          <!-- Các cửa hàng khác -->
+        </ul>
+      </div>
+
+      <div class="col-6 col-sm-6 col-lg-3 mb-2">
+        <h6 class="text-uppercase text-white title-main_footer ">ĐĂNG KÝ NHẬN TIN</h6>
+        <p class="text-white">Stay in touch with latest updates about our products and offers</p>
+        <div class="input-group mb-3">
+          <input type="email" class="form-control border" placeholder="Email" aria-label="Email"
+            aria-describedby="button-addon2" />
+          <button class="btn btn-light border shadow-0" type="button" id="button-addon2" data-mdb-ripple-color="dark">
+            Đăng ký
+          </button>
+        </div>
+        <h6 class="text-uppercase text-white  title-main_footer">
+          PHƯƠNG THỨC THANH TOÁN
+        </h6>
+        <div style="display: flex;" class="img_footer">
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890724/image/PaymentMethod/drl5taivsp4bfcivweab.svg" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890725/image/PaymentMethod/qprorcpqfjw6fjsfm3qw.webp" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890726/image/PaymentMethod/hbhpazgzg8kcykpbrh01.svg" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701891189/image/PaymentMethod/z7yyd5hgfvymxcpilkgy.svg" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701891752/image/PaymentMethod/tfz60l0qbuwilrkemtro.svg" />
+          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
+            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701964925/image/PaymentMethod/rkhixoumyxpj9n5hgpbb.png" />
+
         </div>
       </div>
     </div>
 
-    <header>
-      <!-- Jumbotron -->
-      <div class="header text-center bg-white border-bottom">
-        <div class="container-fluid">
-          <div style="padding: 22px 64px" class="row gy-3">
-            <!-- Left elements -->
-            <div class="col-lg-2 col-sm-4 col-4">
-              <a
-                href="https://mdbootstrap.com/"
-                target="_blank"
-                class="float-start"
-              >
-                <a href="#!home">home</a>
-                <a href="#!product">Product</a>
-                <a href="/login/login.html">Login</a>
-              </a>
-            </div>
-            <!-- Left elements -->
+  </footer>
+  <!-- Footer -->
+  <script>
 
-            <!-- Center elements -->
-            <div class="order-lg-last col-lg-4 col-sm-8 col-8">
-              <div class="d-flex justify-content-end align-items-center">
-                <!-- Ô tìm kiếm -->
-                <div class="flex-fill d-flex justify-content-start">
-                  <div style="border-radius: 10px" class="input-group">
-                    <div class="form-outline">
-                      <input
-                        style="border-bottom: 1px solid #cdcdcd"
-                        type="search"
-                        onclick="openOverlay()"
-                        class="form-control"
-                        readonly
-                      />
-                      <label class="form-label">Tìm kiếm sản phẩm</label>
-                    </div>
-                    <button
-                      type="button"
-                      class="btn btn-primary shadow-0"
-                      onclick="openOverlay()"
-                    >
-                      <i class="fas fa-search fa-lg"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                  <!-- Dropdown người dùng -->
-                  <div class="dropdown">
-                    <a
-                      href="#!account-info"
-                      style="color: black"
-                      class="dropdown-toggle"
-                      href="#"
-                      role="button"
-                      id="dropdownMenuLink"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="fa-solid fa-user fa-lg"></i>
-                    </a>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuLink"
-                    >
-                      <a
-                        class="dropdown-item"
-                        href="http://localhost:8080/login"
-                        >Đăng nhập</a
-                      >
-                      <a
-                        class="dropdown-item"
-                        href="http://localhost:8080/auth/logoff"
-                        >Đăng xuất</a
-                      >
-                    </div>
-                  </div>
+  </script>
 
-                  <a
-                    href="#!account-favorite"
-                    class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative"
-                  >
-                    <i class="fa fa-heart fa-lg"></i>
-                    <!-- <span ng-bind="countProduct"
-                  class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-circle">{{countProduct}}</span> -->
-                  </a>
 
-                  <a
-                    href="#!cart"
-                    class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative"
-                  >
-                    <i class="fas fa-shopping-cart fa-lg"></i>
+  <script src="main.js"></script>
 
-                    <span
-                      ng-bind="countProduct"
-                      class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-circle"
-                      >{{countProduct}}</span
-                    >
-                  </a>
-                </div>
-              </div>
-            </div>
+  <script src="header.js"></script>
 
-            <!-- Center elements -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-            <!-- Right elements -->
-            <div class="col-lg-6 col-md-12 col-12">
-              <div class="input-group float-center"></div>
-            </div>
-            <!-- Right elements -->
-          </div>
-        </div>
-      </div>
-    </header>
 
-    <!-- View -->
+</body>
 
-    <div ng-view></div>
-
-    <!-- View -->
-
-    <!-- Footer -->
-    <footer
-      class="container-fluid text-center text-lg-start text-muted bg-primary mt-3"
-    >
-      <div style="padding: 64px 64px" class="row">
-        <section class="col-12 col-lg-3 col-sm-6 mb-2">
-          <!-- Content -->
-          <div style="margin-bottom: 16px">
-            <a ng-href="#!home" target="" class="text-white h2"> Five Guys </a>
-          </div>
-          <div class="content-footer">
-            <i class="fa-solid fa-phone fa-lg"></i>
-            <span> Số điện thoại: 02873066060</span>
-          </div>
-          <div class="content-footer">
-            <i class="fa-solid fa-envelope fa-lg"></i>
-            <span> Email: example@example.com</span>
-          </div>
-          <hr />
-          <h6 class="text-uppercase text-white title-main_footer">
-            KẾT NỐI VỚI CHÚNG TÔI
-          </h6>
-          <div style="display: flex" class="img_footer">
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/ybpljhnnmp1yk6wheuur.webp"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/segbk9pkgx7sqqogszw7.webp"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/rzknuv4yor9enuyfyejn.webp"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/yrtrzleyw1omuljpuzoa.webp"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1702026488/image/InfoHome/jmjsy9gpcjnnkoohxchq.webp"
-            />
-          </div>
-        </section>
-
-        <div class="col-6 col-sm-6 col-lg-3 mb-2">
-          <!-- Links -->
-          <h6 class="text-uppercase text-white title-main_footer">
-            HỖ TRỢ KHÁCH HÀNG
-          </h6>
-          <ul class="list-unstyled mb-4 shop-footer">
-            <li>
-              <a class="text-white" href="#"
-                >Chính sách khách hàng thân thiết</a
-              >
-            </li>
-            <li><a class="text-white" href="#">Chính sách đổi trả</a></li>
-            <li><a class="text-white" href="#">Chính sách bảo hành</a></li>
-            <li><a class="text-white" href="#">Chính sách bảo mật</a></li>
-            <li><a class="text-white" href="#">Câu hỏi thường gặp</a></li>
-            <li>
-              <a class="text-white" href="#">Hướng dẫn mua hàng online</a>
-            </li>
-            <li>
-              <a class="text-white" ref="#"
-                >Hướng dẫn kiểm tra hạng thẻ thành viên</a
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div class="col-6 col-sm-6 col-lg-3 mb-2">
-          <!-- Links -->
-          <h6 class="text-uppercase text-white title-main_footer">
-            HỆ THỐNG CỬA HÀNG
-          </h6>
-          <ul class="shop-footer list-unstyled">
-            <li>
-              <i class="fas fa-store"></i> Store 1: 12-12Bis, CMT8, P.Bến Thành,
-              Q.1, HCM
-            </li>
-            <li>
-              <i class="fas fa-store"></i> Store 2: 484, Lê Văn Sỹ, P.14, Q.3,
-              HCM
-            </li>
-            <li>
-              <i class="fas fa-store"></i> Store 3: 477 - 481, Sư Vạn Hạnh,
-              P.12, Q.10, HCM
-            </li>
-            <li>
-              <i class="fas fa-store"></i> Store 1: 12-12Bis, CMT8, P.Bến Thành,
-              Q.1, HCM
-            </li>
-            <li>
-              <i class="fas fa-store"></i> Store 2: 484, Lê Văn Sỹ, P.14, Q.3,
-              HCM
-            </li>
-            <li>
-              <i class="fas fa-store"></i> Store 3: 477 - 481, Sư Vạn Hạnh,
-              P.12, Q.10, HCM
-            </li>
-            <!-- Các cửa hàng khác -->
-          </ul>
-        </div>
-
-        <div class="col-6 col-sm-6 col-lg-3 mb-2">
-          <h6 class="text-uppercase text-white title-main_footer">
-            ĐĂNG KÝ NHẬN TIN
-          </h6>
-          <p class="text-white">
-            Stay in touch with latest updates about our products and offers
-          </p>
-          <div class="input-group mb-3">
-            <input
-              type="email"
-              class="form-control border"
-              placeholder="Email"
-              aria-label="Email"
-              aria-describedby="button-addon2"
-            />
-            <button
-              class="btn btn-light border shadow-0"
-              type="button"
-              id="button-addon2"
-              data-mdb-ripple-color="dark"
-            >
-              Đăng ký
-            </button>
-          </div>
-          <h6 class="text-uppercase text-white title-main_footer">
-            PHƯƠNG THỨC THANH TOÁN
-          </h6>
-          <div style="display: flex" class="img_footer">
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890724/image/PaymentMethod/drl5taivsp4bfcivweab.svg"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890725/image/PaymentMethod/qprorcpqfjw6fjsfm3qw.webp"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890726/image/PaymentMethod/hbhpazgzg8kcykpbrh01.svg"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701891189/image/PaymentMethod/z7yyd5hgfvymxcpilkgy.svg"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701891752/image/PaymentMethod/tfz60l0qbuwilrkemtro.svg"
-            />
-            <img
-              class="card-img-top rounded-2"
-              width="32px"
-              height="32px"
-              loading="lazy"
-              ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701964925/image/PaymentMethod/rkhixoumyxpj9n5hgpbb.png"
-            />
-          </div>
-        </div>
-      </div>
-    </footer>
-    <!-- Footer -->
-    <script></script>
-
-    <script src="main.js"></script>
-
-    <script src="header.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  </body>
 </html>

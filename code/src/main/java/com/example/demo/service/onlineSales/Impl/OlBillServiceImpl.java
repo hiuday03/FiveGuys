@@ -27,16 +27,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 @Service
@@ -82,10 +72,11 @@ public class OlBillServiceImpl implements OlBillService {
         return currentQuantity >= quantityToRemove;
     }
 
+
     @Override
-    public Bill TaoHoaDonNguoiDungChuaDangNhap(JsonNode orderData) {
+    public ResponseEntity<?> TaoHoaDonNguoiDungChuaDangNhap(JsonNode orderData) {
         if (orderData == null) {
-            throw new IllegalArgumentException("orderData cannot be null");
+            return ResponseEntity.ok(0);
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -101,20 +92,24 @@ public class OlBillServiceImpl implements OlBillService {
                 existingVoucher.setQuantity(existingVoucher.getQuantity() - 1);
                 olVouchersRepository.save(existingVoucher);
             } else {
-                throw new IllegalStateException("Voucher is not available");
+                return ResponseEntity.ok(3);
             }
         }
 
         // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
         List<BillDetail> billDetails = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
         for (BillDetail detail : billDetails) {
-            updateProductQuantity(detail);
-            detail.setBill(bill);
+            try {
+                updateProductQuantity(detail);
+                detail.setBill(bill);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.ok(2);
+            }
         }
         // Lưu thông tin hóa đơn và chi tiết hóa đơn vào cơ sở dữ liệu
         Bill savedBill = olProductDetailRepository.save(bill);
         olBillDetailRepository.saveAll(billDetails);
-        return savedBill;
+        return ResponseEntity.ok(savedBill);
     }
 
 

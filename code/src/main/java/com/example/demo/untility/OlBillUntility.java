@@ -10,6 +10,7 @@ import com.example.demo.payment.vnpay.config.ConfigVNPay;
 import com.example.demo.service.onlineSales.OLProductDetailService;
 import com.example.demo.service.onlineSales.OlBillDetailService;
 import com.example.demo.service.onlineSales.OlBillService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.DataOutputStream;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -62,7 +64,7 @@ public class OlBillUntility {
     }
 
 
-    public boolean authenticationCheckVnPay(String orderId) throws Exception {
+    public boolean authenticationCheckVnPay(String orderId) {
         try {
             HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String vnp_RequestId = ConfigVNPay.getRandomNumber(8);
@@ -117,17 +119,13 @@ public class OlBillUntility {
 
             ResponseEntity<String> response = restTemplate.postForEntity(ConfigVNPay.vnp_ApiUrl, requestEntity, String.class);
             String responseBody = response.getBody();
-
             JsonObject jsonObject = new Gson().fromJson(responseBody, JsonObject.class);
-
             String transactionStatus = jsonObject.get("vnp_TransactionStatus").getAsString();
-
-            System.out.println("vnp_TransactionStatus: " + transactionStatus);
             boolean isTransactionSuccessful = "00".equals(transactionStatus);
 
             return isTransactionSuccessful;
         } catch (Exception e) {
-            e.printStackTrace(); // Xử lý lỗi nếu cần
+            e.printStackTrace();
         }
         return false;
     }
@@ -193,6 +191,20 @@ public class OlBillUntility {
         };
         timer.schedule(task, 50000); // 60000 milliseconds = 1 minute
     }
+
+
+//    private final String EXCHANGE_RATE_API = "https://openexchangerates.org/api/latest.json?base=USD&symbols=VND&app_id=8bbe0880013e4460b9b81960a33980ed";
+//
+//    public BigDecimal getExchangeRate() {
+//        RestTemplate restTemplate = new RestTemplate();
+//        JsonNode response = restTemplate.getForObject(EXCHANGE_RATE_API, JsonNode.class);
+//
+//        // Lấy tỷ giá từ JSON response
+//        JsonNode rates = response.get("rates");
+//        BigDecimal exchangeRate = rates.get("VND").decimalValue();
+//
+//        return exchangeRate;
+//    }
 
 
 

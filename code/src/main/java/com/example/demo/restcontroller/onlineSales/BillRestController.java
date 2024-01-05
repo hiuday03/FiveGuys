@@ -63,17 +63,9 @@ public class BillRestController {
         this.checkOutBill = checkOutBill;
     }
 
-//    private final PayOS payOS;
-
-//    public BillRestController(PayOS payOS) {
-//        super();
-//        this.payOS = payOS;
-//    }
 
     @Autowired
     private OlBillService olBillService;
-
-
 
     @Autowired
     private PaypalService paypalService;
@@ -93,35 +85,26 @@ public class BillRestController {
     ObjectMapper mapper = new ObjectMapper();
 
 
-
-
-
-
-
-
-
-
-
-
     @Transactional
     @PostMapping("/bill/create")
     public ResponseEntity<?> TaoHoaDonNguoiDungChuaDangNhap(@RequestBody JsonNode orderData, HttpServletResponse  response, HttpServletRequest req, HttpSession session) throws IOException {
-        Bill bill = mapper.convertValue(orderData, Bill.class);
-        BigDecimal totalAmountAfterDiscount = new BigDecimal(String.valueOf(bill.getTotalAmountAfterDiscount()));
-        String describe = String.valueOf(bill.getNote());
-        String namePayment = bill.getPaymentMethod().getName();
-//        billData = orderData;
-
-//        String codeBill = String.valueOf(System.currentTimeMillis());
-
-
-        Bill newBill = olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
-        String codeBill = String.valueOf(olBillUntility.encodeId(newBill.getId()));
-        olBillUntility.scheduleBillDeletion(newBill.getId());
 
 
 
-//        if (namePayment.equals("QR")) {
+
+        ResponseEntity<?> newBill = olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
+        Object body = newBill.getBody();
+        if (body != null && body instanceof Bill) {
+            Bill billData = (Bill) body;
+
+            BigDecimal totalAmountAfterDiscount = new BigDecimal(String.valueOf(billData.getTotalAmountAfterDiscount()));
+            String describe = String.valueOf(billData.getNote());
+            String namePayment = billData.getPaymentMethod().getName();
+
+            String codeBill = String.valueOf(olBillUntility.encodeId(billData.getId()));
+
+
+            //        if (namePayment.equals("QR")) {
 //            try {
 //                if (orderData == null) {
 //                    throw new IllegalArgumentException("orderData cannot be null");
@@ -165,99 +148,102 @@ public class BillRestController {
 //            }
 //        } else
             if (namePayment.equals("VNPAY")) {
+                olBillUntility.scheduleBillDeletion(billData.getId());
 
-            String vnp_Version = "2.1.0";
-            String vnp_Command = "pay";
-            String orderType = "other";
+                String vnp_Version = "2.1.0";
+                String vnp_Command = "pay";
+                String orderType = "other";
 
 
-            String vnp_IpAddr = ConfigVNPay.getIpAddress(req);
+                String vnp_IpAddr = ConfigVNPay.getIpAddress(req);
 
-            String vnp_TmnCode = ConfigVNPay.vnp_TmnCode;
+                String vnp_TmnCode = ConfigVNPay.vnp_TmnCode;
 
-            Map<String, String> vnp_Params = new HashMap<>();
-            vnp_Params.put("vnp_Version", vnp_Version);
-            vnp_Params.put("vnp_Command", vnp_Command);
-            vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-            vnp_Params.put("vnp_Amount", String.valueOf(totalAmountAfterDiscount.multiply(BigDecimal.valueOf(100))));
-            vnp_Params.put("vnp_CurrCode", "VND");
+                Map<String, String> vnp_Params = new HashMap<>();
+                vnp_Params.put("vnp_Version", vnp_Version);
+                vnp_Params.put("vnp_Command", vnp_Command);
+                vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+                vnp_Params.put("vnp_Amount", String.valueOf(totalAmountAfterDiscount.multiply(BigDecimal.valueOf(100))));
+                vnp_Params.put("vnp_CurrCode", "VND");
 
-            vnp_Params.put("vnp_BankCode", "");
-            vnp_Params.put("vnp_TxnRef", codeBill);
-            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + codeBill);
-            vnp_Params.put("vnp_OrderType", orderType);
+                vnp_Params.put("vnp_BankCode", "");
+                vnp_Params.put("vnp_TxnRef", codeBill);
+                vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + codeBill);
+                vnp_Params.put("vnp_OrderType", orderType);
 
-            vnp_Params.put("vnp_Locale", "vn");
-            vnp_Params.put("vnp_ReturnUrl", ConfigVNPay.vnp_ReturnUrl);
-            vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+                vnp_Params.put("vnp_Locale", "vn");
+                vnp_Params.put("vnp_ReturnUrl", ConfigVNPay.vnp_ReturnUrl);
+                vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 //            vnp_Params.put("vnp_orderData", encodedOrderDataString);
 
-            Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-            String vnp_CreateDate = formatter.format(cld.getTime());
-            vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+                Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+                String vnp_CreateDate = formatter.format(cld.getTime());
+                vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
 
-            cld.add(Calendar.MINUTE, 15);
-            String vnp_ExpireDate = formatter.format(cld.getTime());
-            vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+                cld.add(Calendar.MINUTE, 15);
+                String vnp_ExpireDate = formatter.format(cld.getTime());
+                vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
-            List fieldNames = new ArrayList(vnp_Params.keySet());
-            Collections.sort(fieldNames);
-            StringBuilder hashData = new StringBuilder();
-            StringBuilder query = new StringBuilder();
-            Iterator itr = fieldNames.iterator();
-            while (itr.hasNext()) {
-                String fieldName = (String) itr.next();
-                String fieldValue = (String) vnp_Params.get(fieldName);
-                if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                    //Build hash data
-                    hashData.append(fieldName);
-                    hashData.append('=');
-                    hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                    //Build query
-                    query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
-                    query.append('=');
-                    query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                    if (itr.hasNext()) {
-                        query.append('&');
-                        hashData.append('&');
+                List fieldNames = new ArrayList(vnp_Params.keySet());
+                Collections.sort(fieldNames);
+                StringBuilder hashData = new StringBuilder();
+                StringBuilder query = new StringBuilder();
+                Iterator itr = fieldNames.iterator();
+                while (itr.hasNext()) {
+                    String fieldName = (String) itr.next();
+                    String fieldValue = (String) vnp_Params.get(fieldName);
+                    if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                        //Build hash data
+                        hashData.append(fieldName);
+                        hashData.append('=');
+                        hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                        //Build query
+                        query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                        query.append('=');
+                        query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                        if (itr.hasNext()) {
+                            query.append('&');
+                            hashData.append('&');
+                        }
                     }
                 }
-            }
-            String queryUrl = query.toString();
-            String vnp_SecureHash = ConfigVNPay.hmacSHA512(ConfigVNPay.secretKey, hashData.toString());
+                String queryUrl = query.toString();
+                String vnp_SecureHash = ConfigVNPay.hmacSHA512(ConfigVNPay.secretKey, hashData.toString());
                 System.out.println("vnp_SecureHash");
-            System.out.println(vnp_SecureHash);
-            queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-            String paymentUrlVNPAY = ConfigVNPay.vnp_PayUrl + "?" + queryUrl;
+                System.out.println(vnp_SecureHash);
+                queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+                String paymentUrlVNPAY = ConfigVNPay.vnp_PayUrl + "?" + queryUrl;
 
-            Map<String, String> jsonResponse = new HashMap<>();
-            jsonResponse.put("rederect", paymentUrlVNPAY);
-
-            Gson gson = new Gson();
-            String json = gson.toJson(jsonResponse);
-            return ResponseEntity.ok(json);
-
-
-        }else if (namePayment.equals("MoMo")){
-
-
-            String orderInfo = "Thanh toán cho đơn hàng ";
-            String redirectUrl = "http://localhost:8080/api/ol/payment-momo/success";
-            String ipnUrl = "http://localhost:8080/api/ol/payment-momo/success";
-            Environment environment = Environment.selectEnv("dev");
-            try {
-                PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, codeBill, codeBill, (String.valueOf(totalAmountAfterDiscount)), orderInfo, redirectUrl, ipnUrl, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
                 Map<String, String> jsonResponse = new HashMap<>();
-                jsonResponse.put("rederect", captureWalletMoMoResponse.getPayUrl());
+                jsonResponse.put("redirect", paymentUrlVNPAY);
+
                 Gson gson = new Gson();
                 String json = gson.toJson(jsonResponse);
                 return ResponseEntity.ok(json);
-            } catch (Exception e) {
-                // Xử lý lỗi nếu có
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create order: " + e.getMessage());
+
+
+            }else if (namePayment.equals("MoMo")){
+                olBillUntility.scheduleBillDeletion(billData.getId());
+
+
+                String orderInfo = "Thanh toán cho đơn hàng ";
+                String redirectUrl = "http://localhost:8080/api/ol/payment-momo/success";
+                String ipnUrl = "http://localhost:8080/api/ol/payment-momo/success";
+                Environment environment = Environment.selectEnv("dev");
+                try {
+                    PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, codeBill, codeBill, (String.valueOf(totalAmountAfterDiscount)), orderInfo, redirectUrl, ipnUrl, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
+                    Map<String, String> jsonResponse = new HashMap<>();
+                    jsonResponse.put("redirect", captureWalletMoMoResponse.getPayUrl());
+                    Gson gson = new Gson();
+                    String json = gson.toJson(jsonResponse);
+                    return ResponseEntity.ok(json);
+                } catch (Exception e) {
+                    // Xử lý lỗi nếu có
+                    return ResponseEntity.ok(0);
+
+                }
             }
-        }
 //            else if (namePayment.equals("PayPal")){
 //
 //            System.out.println(codeBill);
@@ -293,23 +279,40 @@ public class BillRestController {
 //
 //        }
             else if (namePayment.equals("COD")){
-            olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
-            if (bill.getCustomerEntity() != null){
-                Cart cart = olCartService.findByCustomerId(bill.getCustomerEntity().getId());
+                billData.setStatus(1);
+                olBillService.save(billData);
 
-                if (cart != null) {
-                    olCartDetailService.deleteAllByCart_Id(cart.getId());
+                if (billData.getCustomerEntity() != null){
+                    Cart cart = olCartService.findByCustomerId(billData.getCustomerEntity().getId());
+
+                    if (cart != null) {
+                        olCartDetailService.deleteAllByCart_Id(cart.getId());
+                    }
+                }else {
+                    checkOutBill = true;
                 }
-            }else {
-                checkOutBill = true;
+                Map<String, String> jsonResponse = new HashMap<>();
+                jsonResponse.put("redirect", com.example.demo.config.Config.fe_liveServer_Success);
+                Gson gson = new Gson();
+                String json = gson.toJson(jsonResponse);
+                return ResponseEntity.ok(json);
             }
-            Map<String, String> jsonResponse = new HashMap<>();
-            jsonResponse.put("rederect", com.example.demo.config.Config.fe_liveServer_Success);
-            Gson gson = new Gson();
-            String json = gson.toJson(jsonResponse);
-            return ResponseEntity.ok(json);
+
+        } else if(body instanceof Integer){
+            int intValue = (int) body;
+            if (intValue == 2) {
+                return ResponseEntity.ok(2);
+            } else if(intValue == 3){
+                return ResponseEntity.ok(3);
+
+            }else {
+                return ResponseEntity.ok(0);
+            }
         }
-        return null;
+
+
+        return ResponseEntity.ok(0);
+
 
     }
 
@@ -329,17 +332,6 @@ public class BillRestController {
 
 
 // Tỷ giá USD so với VND
-    private final String EXCHANGE_RATE_API = "https://openexchangerates.org/api/latest.json?base=USD&symbols=VND&app_id=8bbe0880013e4460b9b81960a33980ed";
 
-    public BigDecimal getExchangeRate() {
-        RestTemplate restTemplate = new RestTemplate();
-        JsonNode response = restTemplate.getForObject(EXCHANGE_RATE_API, JsonNode.class);
-
-        // Lấy tỷ giá từ JSON response
-        JsonNode rates = response.get("rates");
-        BigDecimal exchangeRate = rates.get("VND").decimalValue();
-
-        return exchangeRate;
-    }
 
 }
