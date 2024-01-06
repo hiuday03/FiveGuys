@@ -93,31 +93,31 @@ app.config(function ($routeProvider) {
 
     // <!-- Hieu -->
 
-    .when("/account", {
+    .when("/admin/account/account", {
       templateUrl: "/Fe/Html-DATN2/ofView/admin/account.html",
       controller: "account-ctrl",
     })
-    .when("/address", {
+    .when("/admin/account/address", {
       templateUrl: "/Fe/Html-DATN2/ofView/admin/address.html",
       controller: "address-ctrl",
     })
-    .when("/customer", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/customer.htm",
+    .when("/admin/account/customer", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/customer.html",
       controller: "customer-ctrl",
     })
     .when("/admin/account/employee", {
       templateUrl: "/Fe/Html-DATN2/ofView/admin/employee_home.html",
       controller: "employee-ctrl",
     })
-    .when("/favorite", {
+    .when("/admin/account/favorite", {
       templateUrl: "/Fe/Html-DATN2/ofView/admin/favorite.html",
       controller: "favorite-ctrl",
     })
-    .when("/rating", {
+    .when("/admin/account/rating", {
       templateUrl: "/Fe/Html-DATN2/ofView/admin/rating.html",
       controller: "rating-ctrl",
     })
-    .when("/role", {
+    .when("/admin/account/role", {
       templateUrl: "/Fe/Html-DATN2/ofView/admin/role.html",
       controller: "role-ctrl",
     })
