@@ -10,19 +10,29 @@ import java.util.Date;
 import java.util.List;
 
 public interface StatisticalService {
-    BigDecimal GetAllSumTotalAmountAfterDiscount();
+    BigDecimal tongTienDay(Date date);
 
-    BigDecimal GetAllSumTotalAmountAfterDiscountTiLe();
+    BigDecimal tongTienMonth(Date date);
 
-    Integer listCodeDay();
+    BigDecimal tongTienYear(Date date);
 
-    Integer listCodeDayTiLe();
+    Integer sumBillDay(Date date);
+
+    Integer sumBillMonth(Date date);
+
+    Integer sumBillYear(Date date);
+
+    Integer listCodeDayTiLe(Date date);
 
     List<Bill> getAllList();
 
-    Integer listCustomerYear();
+    Integer sanPhamBanDuocNgay(Date date);
 
-    Integer listCustomerYearTile();
+    Integer sanPhamBanDuocThang(Date date);
+
+    Integer sanPhamBanDuocNam(Date date);
+//
+//    Integer listCustomerYearTile();
 
     Long listCustomerDay(Date ngayHienTai);
 
@@ -30,7 +40,16 @@ public interface StatisticalService {
 
     BigDecimal listDoanhThuDay(Date ngayHienTai);
 
-    List<Statistical> getThongKeSanPhamBanChay();
+    List<Statistical> getTop5SanPhamBanChayDay(Date date);
+
+    List<Statistical> getTop5SanPhamBanChayMonth(Date date);
+
+    List<Statistical> getTop5SanPhamBanChayYear(Date date);
+
     List<Statistical> getThongKeSanPhamBanChayDate(Date paymentDate);
+
+    List<Statistical> getThongKeSanPhamBanChayMonth(Date date);
+
+    List<Statistical> getThongKeSanPhamBanChayYear(Date date);
 
 }

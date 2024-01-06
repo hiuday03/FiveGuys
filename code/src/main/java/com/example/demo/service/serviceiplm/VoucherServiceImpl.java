@@ -1,5 +1,6 @@
 package com.example.demo.service.serviceiplm;
 
+import com.example.demo.entity.Employees;
 import com.example.demo.entity.Vouchers;
 import com.example.demo.repository.VoucherRepository;
 import com.example.demo.service.VoucherService;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class VoucherServiceImpl implements VoucherService {
@@ -76,9 +78,8 @@ public class VoucherServiceImpl implements VoucherService {
         long startdate = vouchers.getStartDate().getTime();
         long enddate = vouchers.getEndDate().getTime();
         long newDate = new Date().getTime();
-        long sl = vouchers.getQuantity().intValue();
-
-        vouchers.setCode(vouchers.getCode());
+        String randomCode = generateRandomCode(6);
+        vouchers.setCode(randomCode);
         vouchers.setName(vouchers.getName());
         vouchers.setValue(vouchers.getValue());
         vouchers.setMinimumTotalAmount(vouchers.getMinimumTotalAmount());
@@ -102,7 +103,19 @@ public class VoucherServiceImpl implements VoucherService {
 //        vouchers.setStatus(vouchers.getStatus());
         return voucherRepository.save(vouchers);
     }
+    private String generateRandomCode(int length) {
+        String uppercaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder randomCode = new StringBuilder();
 
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(uppercaseCharacters.length());
+            char randomChar = uppercaseCharacters.charAt(randomIndex);
+            randomCode.append(randomChar);
+        }
+
+        return randomCode.toString();
+    }
 
     @Override
     public void delete(Long id){
@@ -143,8 +156,6 @@ public class VoucherServiceImpl implements VoucherService {
                     vouchers1.setStatus(1);
                 }
             }
-
-
             return voucherRepository.save(vouchers1);
         }else {
             throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);

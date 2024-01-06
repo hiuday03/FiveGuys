@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Bill;
+import com.example.demo.entity.BillDetail;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.Statistical;
 import org.apache.commons.math3.stat.inference.OneWayAnova;
@@ -16,16 +17,29 @@ import java.util.List;
 @Repository
 public interface StatisticalRepository extends JpaRepository<Bill, Long> {
     //Tống số tiền trong 1 tháng
-    @Query("SELECT COALESCE(SUM(v.totalAmountAfterDiscount), 0) AS totalAmount FROM Bill v where MONTH(v.paymentDate) = :month And YEAR(v.paymentDate)  = :year")
-    BigDecimal GetAllSumTotalAmountAfterDiscount(Integer month, Integer year);
+    @Query("SELECT COALESCE(SUM(v.totalAmountAfterDiscount), 0) AS totalAmount FROM Bill v where v.paymentDate = :date and v.status = 3")
+    BigDecimal tongSoTienDay(Date date);
+    @Query("SELECT COALESCE(SUM(v.totalAmountAfterDiscount), 0) AS totalAmount FROM Bill v where DATEPART(MONTH, v.paymentDate) =  Month(:date) and DATEPART(YEAR, v.paymentDate) = YEAR(:date) and v.status=3")
+    BigDecimal tongSoTienMonth(Date date);
+    @Query("SELECT COALESCE(SUM(v.totalAmountAfterDiscount), 0) AS totalAmount FROM Bill v where DATEPART(YEAR, v.paymentDate) = YEAR(:date) and v.status=3")
+    BigDecimal tongSoTienYear(Date date);
 
-    //Tổng số dơn trong 1 ngày
-    @Query("select b from Bill b where Day(b.paymentDate)  = :day and Month(b.paymentDate)  = :mouth And YEAR(b.paymentDate)  = :year")
-    List<Bill> listCodeDay(Integer day, Integer mouth, Integer year);
+    //Tổng số dơn
+    @Query("select b from Bill b where b.paymentDate  = :day and b.status=3")
+    List<Bill> sumBillDay(Date day);
+    @Query("select b from Bill b where DATEPART(MONTH, b.paymentDate) =  Month(:date) and DATEPART(YEAR, b.paymentDate) = YEAR(:date) and b.status=3")
+    List<Bill> sumBillMonth(Date date);
+    @Query("select b from Bill b where DATEPART(YEAR, b.paymentDate) = YEAR(:date) and b.status=3")
+    List<Bill> sumBillYear(Date date);
 
     //Tổng số khách hàng trong 1 nam
-    @Query("SELECT b from CustomerEntity b where YEAR(b.createdAt)  = :year")
-    List<CustomerEntity> ListCustumerYear(Integer year);
+    @Query("SELECT COALESCE(SUM(hdct.quantity), 0) from BillDetail hdct where hdct.bill.paymentDate  = :date and hdct.bill.status=3")
+    Integer sanPhamBanDuocNgay(Date date);
+    @Query("SELECT COALESCE(SUM(hdct.quantity), 0) from BillDetail hdct where DATEPART(MONTH, hdct.bill.paymentDate) =  Month(:date) and DATEPART(YEAR, hdct.bill.paymentDate) = YEAR(:date) and hdct.bill.status=3")
+    Integer sanPhamBanDuocMonth(Date date);
+    @Query("SELECT COALESCE(SUM(hdct.quantity), 0) from BillDetail hdct where DATEPART(YEAR, hdct.bill.paymentDate) = YEAR(:date) and hdct.bill.status=3")
+    Integer sanPhamBanDuocNam(Date date);
+
 
     //Tổng số khách hàng trong 1 ngay
     @Query("SELECT COUNT(b.id) as hihi from CustomerEntity b where b.createdAt  = :day")
