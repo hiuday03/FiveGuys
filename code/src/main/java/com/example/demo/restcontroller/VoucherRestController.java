@@ -63,7 +63,7 @@ public class VoucherRestController {
     }
 
     // update voucher
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Vouchers> update(@PathVariable Long id, @RequestBody Vouchers vouchers) {
         voucherService.update(id, vouchers);
         if (vouchers != null) {

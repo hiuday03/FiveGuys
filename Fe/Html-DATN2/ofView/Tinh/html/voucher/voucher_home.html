@@ -1,39 +1,4 @@
-<section ng-controller="voucher-list-controller">
-  <div class="position-fixed end-0 me-3" style="z-index: 11">
-    <div
-      id="liveToast"
-      class="toast hide"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-    >
-      <div
-        class="align-items-center text-white bg-primary border-0"
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-      >
-        <div class="d-flex">
-          <div class="toast-body">{{toastMessage}}</div>
-          <button
-            type="button"
-            class="btn-close btn-close-white me-2 m-auto"
-            data-bs-dismiss="toast"
-            aria-label="Close"
-          ></button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="overlay" ng-show="loading">
-    <div
-      class="spinner-border"
-      role="status"
-      style="position: absolute; left: 50%; top: 50%"
-    >
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </div>
+<section>
   <h1>Khuyến Mại</h1>
   <nav>
     <ol class="breadcrumb">
@@ -251,11 +216,11 @@
           <div class="modal-body">
             <form
               name="addformVoucher"
-              ng-submit="addformVoucher.$valid  && submit()"
+              ng-submit="addformVoucher.$valid  && addVoucher()"
               style="font-size: 13px"
               ng-required="true"
             >
-              <div class="row mb-3">
+              <!-- <div class="row mb-3">
                 <label for="inputCode" class="col-sm-3 col-form-label"
                   >Mã
                   <span
@@ -272,7 +237,7 @@
                     type="text"
                     class="form-control"
                     style="width: 100%; height: 34px; font-size: 13px"
-                    placeholder="Enter Code"
+                    placeholder="Nhập mã"
                     ng-model="formInput.code"
                     ng-required="true"
                     ng-maxlength="10"
@@ -283,7 +248,7 @@
                     >Số từ phải nhỏ hơn 10</span
                   >
                 </div>
-              </div>
+              </div> -->
               <div class="row mb-3">
                 <label for="inputName" class="col-sm-3 col-form-label"
                   >Tên
@@ -301,7 +266,7 @@
                     type="text"
                     class="form-control"
                     style="width: 100%; height: 34px; font-size: 13px"
-                    placeholder="Enter Name"
+                    placeholder="nhập tên"
                     ng-model="formInput.name"
                     ng-required="true"
                   />
@@ -324,7 +289,7 @@
                     type="text"
                     class="form-control"
                     style="width: 100%; height: 34px; font-size: 13px"
-                    placeholder="Enter Value"
+                    placeholder="Nhập loại"
                     ng-model="formInput.value"
                     ng-required="true"
                   />
@@ -387,7 +352,7 @@
                     type="text"
                     class="form-control"
                     style="width: 100%; height: 34px; font-size: 13px"
-                    placeholder="Enter MinimumTotalAmount"
+                    placeholder="Nhập giá trị tối thiểu"
                     ng-model="formInput.minimumTotalAmount"
                     ng-required="true"
                   />
@@ -410,7 +375,7 @@
                     type="number"
                     style="width: 100%; height: 34px; font-size: 13px"
                     class="form-control"
-                    placeholder="Enter Quantity"
+                    placeholder="Nhập số lượng"
                     ng-model="formInput.quantity"
                     ng-required="true"
                     ng-min="0"
@@ -491,7 +456,7 @@
                     class="form-control"
                     rows="4"
                     cols="3"
-                    placeholder="Enter Describe"
+                    placeholder="Nhập mô tả"
                     style="font-size: 13px"
                     ng-model="formInput.describe"
                     ng-required="true"
@@ -530,7 +495,11 @@
                 >
                   Xoá form
                 </button>
-                <button type="submit" class="btn btn-primary">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                >
                   {{label1.update}}
                 </button>
               </div>
@@ -649,12 +618,14 @@
           <div class="modal-body">
             <div>
               <label>Chọn file Excel: </label>
-              <input
-                type="file"
-                onchange="angular.element(this).scope().insertExcelVoucher(this.files)"
-                placeholder="Thêm bằng Excel"
+              <input type="file" placeholder="Thêm bằng Excel" id="fileInput" />
+              <button
+                type="button"
                 data-bs-dismiss="modal"
-              />
+                ng-click="insertExcelVoucher()"
+              >
+                Thêm
+              </button>
             </div>
           </div>
         </div>
