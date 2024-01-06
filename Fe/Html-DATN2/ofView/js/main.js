@@ -949,9 +949,9 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
   //submit add and update
   $scope.submit = function () {
     if (($scope.formInput.id = true)) {
-      $scope.addVoucher();
-    } else if (($scope.formInput.id = false)) {
       $scope.updateVoucher();
+    } else if (($scope.formInput.id = false)) {
+      $scope.addVoucher();
     }
   };
 
