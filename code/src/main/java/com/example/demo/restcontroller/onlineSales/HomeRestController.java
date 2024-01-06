@@ -52,27 +52,6 @@ public class HomeRestController {
     @Autowired
     private OlImageService olImageService;
 
-//    @GetMapping("/products")
-//    public ResponseEntity<?> getAllOlProductsRespone(@RequestParam("page") Integer page) {
-//        Page<OlHomeProductResponse> products = olProductService.getAllOlProductsRespone(page);
-//
-//        if (products.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No products found");
-//        }
-//        return ResponseEntity.ok(products);
-//    }
-
-//    @GetMapping("/list")
-//    public ResponseEntity<?> getAllOlProductsRespone() {
-////        List<OlHomeProductRespone> products =  olProductService.getAllOlProductsRespone();
-////
-////        if (products.isEmpty()) {
-////            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No products found");
-////        }
-//
-//        return ResponseEntity.ok(roleRepository.findAll());
-//    }
-
 
     @GetMapping("/products/dataFill")
     public ResponseEntity<?> dataFill() {
@@ -90,7 +69,7 @@ public class HomeRestController {
         OlViewProductDetailRespone olViewProductDetailRespone = olProductService.getOlDetailProductResponeById(id);
 
         if (olViewProductDetailRespone == null) {
-            return ResponseEntity.notFound().build(); // Trả về mã HTTP 404 Not Found
+            return ResponseEntity.notFound().build();
         }
 
         List<Color> listOfColor = olProductDetailService.findDistinctColorsBySanPhamId(id);
@@ -121,23 +100,38 @@ public class HomeRestController {
 
         if (productDetailOptional.isPresent()) {
             ProductDetail productDetail = productDetailOptional.get();
-            return ResponseEntity.ok(productDetail);
+
+            // Kiểm tra số lượng ở đây và gửi cả thông tin số lượng về
+            if (productDetail.getQuantity() > 0) {
+                return ResponseEntity.ok(productDetail);
+            } else {
+                return ResponseEntity.ok(2);
+            }
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
 
-    @GetMapping("/products/images")
-    public ResponseEntity<?> getImagesByColorAndProduct(@RequestParam(value = "coloId", required = false) Long coloId,
-                                                        @RequestParam(value = "productId", required = false) Long productId) {
-        if (coloId != null  && productId != null) {
-            List<ProductDetail> productDetail = olProductDetailService.findByColorIdAndProductId(coloId, productId);
-            if (productDetail.get(0) != null){
-                return ResponseEntity.ok(olImageService.findByProductDetailId(productDetail.get(0).getId()));
 
+    @GetMapping("/products/images")
+    public ResponseEntity<?> getImagesByColorAndProduct(
+            @RequestParam(value = "coloId", required = false) Long coloId,
+            @RequestParam(value = "productId", required = false) Long productId) {
+
+        if (coloId != null && productId != null) {
+            List<ProductDetail> productDetails = olProductDetailService.findByColorIdAndProductId(coloId, productId);
+
+            for (ProductDetail productDetail : productDetails) {
+                if (productDetail != null) {
+                    List<Image> images = olImageService.findByProductDetailId(productDetail.getId());
+                    if (!images.isEmpty()) {
+                        return ResponseEntity.ok(images);
+                    }
+                }
             }
         }
+
         return ResponseEntity.badRequest().body("Missing required parameters: coloId, sizeId, productId");
     }
 
@@ -212,5 +206,21 @@ public class HomeRestController {
         List<OlHomeProductResponse> searchResults = olProductService.findProductsByCategoryId(productId);
         return ResponseEntity.ok(searchResults);
     }
+
+
+
+    // lấy số lượng productDetail validate
+    @GetMapping("/productDetail/quantity/{id}")
+    public ResponseEntity<?> getProductQuantity(@PathVariable("id") Long id) {
+        Optional<ProductDetail> productDetailOptional = olProductDetailService.findById(id);
+
+        if (productDetailOptional.isPresent()) {
+            ProductDetail productDetail = productDetailOptional.get();
+            return ResponseEntity.ok(productDetail.getQuantity());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }

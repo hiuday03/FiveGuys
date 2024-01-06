@@ -2,7 +2,9 @@ package com.example.demo.payment.vnpay.restcontroller;
 
 import com.example.demo.config.Config;
 import com.example.demo.entity.Bill;
+import com.example.demo.entity.BillDetail;
 import com.example.demo.entity.Cart;
+import com.example.demo.entity.ProductDetail;
 import com.example.demo.payment.vnpay.DTO.PaymentRestDTO;
 //import com.google.gson.Gson;
 //import com.google.gson.JsonObject;
@@ -15,9 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.example.demo.restcontroller.onlineSales.BillRestController;
+import com.example.demo.service.onlineSales.OLProductDetailService;
 import com.example.demo.service.onlineSales.OlBillService;
 import com.example.demo.service.onlineSales.OlCartDetailService;
 import com.example.demo.service.onlineSales.OlCartService;
+import com.example.demo.untility.OlBillUntility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.JsonObject;
@@ -49,7 +53,11 @@ public class VNPayRestController {
     @Autowired
     private OlCartDetailService olCartDetailService;
 
-    ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    private OLProductDetailService olProductDetailService;
+
+    @Autowired
+    private OlBillUntility olBillUntility;
 
 //    @GetMapping("/payment-vnpay")
 //    public ResponseEntity<?> getPay( HttpServletRequest req) throws UnsupportedEncodingException{
@@ -127,14 +135,31 @@ public class VNPayRestController {
 //
 //        return ResponseEntity.ok(json);
 //    }
+
+
+
+
+    private void restoreProductQuantity(List<BillDetail> billDetails) {
+        for (BillDetail detail : billDetails) {
+            Optional<ProductDetail> productDetail = olProductDetailService.findById(detail.getProductDetail().getId());
+            if (productDetail.isPresent()){
+                int quantityToAdd = detail.getQuantity();
+                int currentQuantity = productDetail.get().getQuantity();
+                productDetail.get().setQuantity(currentQuantity + quantityToAdd);
+                olProductDetailService.save(productDetail.get());
+            }
+        }
+    }
+
     @Transactional
     @GetMapping("/payment-vnpay/callback")
     public void paymentCallback(@RequestParam Map<String, String> queryParams, HttpServletResponse response,   HttpServletRequest  req) throws IOException {
+
+        Bill bill = olBillService.findById(olBillUntility.decodeId(queryParams.get("vnp_TxnRef")));
+
         String vnp_ResponseCode = queryParams.get("vnp_ResponseCode");
             if ("00".equals(vnp_ResponseCode)) {
-//                    System.out.println("Giao dịch thành công");
-                    olBillService.TaoHoaDonNguoiDungChuaDangNhap(billRestController.getBillData());
-                Bill bill = mapper.convertValue(billRestController.getBillData(), Bill.class);
+
 
                 if (bill.getCustomerEntity() != null){
                     Cart cart = olCartService.findByCustomerId(bill.getCustomerEntity().getId());
@@ -147,12 +172,24 @@ public class VNPayRestController {
 
                 }
 
+                bill.setStatus(1);
+                olBillService.save(bill);
+
                 response.sendRedirect(Config.fe_liveServer_Success);
             } else {
+
+                bill.setStatus(4);
+                restoreProductQuantity(bill.getBillDetail());
+                olBillService.save(bill);
                 response.sendRedirect(Config.fe_liveServer_Failed);
 
             }
     }
+
+
+
+
+
 
 
     @PostMapping("/querydr")

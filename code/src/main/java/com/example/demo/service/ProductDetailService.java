@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.entity.*;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public interface ProductDetailService {
 
     void delete(Long id);
 
-    Page<ProductDetail> getAllByPId(Long pid, Integer page);
+    List<ProductDetail> getAllByPId(Long pid);
 
     ProductDetail saveI(ProductDetail productDetail, List<Image> images);
 

@@ -52,5 +52,15 @@ public class OlCartDetailServiceImpl implements OlCartDetailService {
         olCartDetailRepository.deleteAllByCart_Id(idGioHang);
     }
 
+    @Override
+    public int getTotalQuantityInCart(Long cartId, Long productDetailId) {
+        return olCartDetailRepository.getTotalQuantityInCart(cartId, productDetailId);
+    }
+
+    @Override
+    public CartDetail findCartDetail(Long cartId, Long productDetailId) {
+        return olCartDetailRepository.findCartDetail(cartId, productDetailId);
+    }
+
 
 }

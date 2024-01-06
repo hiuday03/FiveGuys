@@ -22,8 +22,8 @@ public class PaymentMethod {
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "Path")
-    private String path;
+//    @Column(name = "Path")
+//    private String path;
 
     @Column(name = "CreatedAt")
     private Date createdAt;

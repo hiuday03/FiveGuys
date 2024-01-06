@@ -1,5 +1,36 @@
 // import generateInvoiceHTML from './invoice.js';
 
+
+var app = angular.module("myAppOfView", ["ngRoute", "angular-jwt", "ngSanitize"]);
+
+app.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('authInterceptor');
+});
+
+app.factory('authInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
+  return {
+    'request': function (config) {
+      // Lấy token từ localStorage
+      var token = localStorage.getItem('token');
+
+      // Nếu có token, thêm header 'Authorization'
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+      }
+
+      return config;
+    },
+    'responseError': function (response) {
+      // Xử lý các lỗi khi nhận response
+      return $q.reject(response);
+    }
+  };
+}]);
+
+
+app.config(['$compileProvider', function ($compileProvider) {
+  $compileProvider.debugInfoEnabled(false);
+}]);
 var app = angular.module("myAppOfView", ["ngRoute", "angular-jwt"]);
 
 app.config(function ($httpProvider) {
@@ -62,48 +93,48 @@ app.config(function ($routeProvider) {
 
     // <!-- Hieu -->
 
-    .when("/account", {
-      templateUrl: "admin/account.html",
+    .when("/admin/account/account", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/account.html",
       controller: "account-ctrl",
     })
-    .when("/address", {
-      templateUrl: "admin/address.html",
+    .when("/admin/account/address", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/address.html",
       controller: "address-ctrl",
     })
-    .when("/customer", {
-      templateUrl: "admin/customer.htm",
+    .when("/admin/account/customer", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/customer.html",
       controller: "customer-ctrl",
     })
     .when("/admin/account/employee", {
-      templateUrl: "admin/employee_home.html",
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/employee_home.html",
       controller: "employee-ctrl",
     })
-    .when("/favorite", {
-      templateUrl: "admin/favorite.html",
+    .when("/admin/account/favorite", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/favorite.html",
       controller: "favorite-ctrl",
     })
-    .when("/rating", {
-      templateUrl: "admin/rating.html",
+    .when("/admin/account/rating", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/rating.html",
       controller: "rating-ctrl",
     })
-    .when("/role", {
-      templateUrl: "admin/role.html",
+    .when("/admin/account/role", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/role.html",
       controller: "role-ctrl",
     })
     .when("/brand", {
-      templateUrl: "admin/brand.html",
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/brand.html",
       controller: "brand-ctrl",
     })
     .when("/category", {
-      templateUrl: "admin/category-list.html",
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/category-list.html",
       controller: "category-ctrl",
     })
     .when("/color", {
-      templateUrl: "admin/color-list.html",
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/color-list.html",
       controller: "color-ctrl",
     })
     .when("/material", {
-      templateUrl: "admin/material-list.html",
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/material-list.html",
       controller: "material-ctrl",
     })
     // tinh
@@ -121,707 +152,726 @@ app.config(function ($routeProvider) {
 
 // Hieu js
 //--------------------------------tinh thong kê-----------------------------
-app.controller(
-  "statistical-ctrl",
-  function ($scope, $http, $timeout, $document, $filter) {
-    const api = "http://localhost:8080/statistical";
-    $scope.customes = {
-      decrease: "decrease",
-    };
 
-    $scope.selectedOption = "1";
+app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document, $filter) {
+  $scope.customes = {
+    decrease: "decrease",
+  };
+  const api = "http://localhost:8080/statistical";
+  // tổng tiền trong  tháng
+  $scope.getSum = function () {
+    $http.get(api).then(function (rest) {
+      $scope.getsum = rest.data;
+    });
+  };
+  $scope.getSum();
+  // Tỉ lệ tổng tiền trong  tháng
+  $scope.getSum1 = function () {
+    $http.get(api + "/he").then(function (rest) {
+      $scope.getsum1 = rest.data;
+    });
+  };
+  $scope.getSum1();
+  // tổng hóa đơn trong  ngày
+  $scope.getCodeDay = function () {
+    $http.get(api + "/count-day").then(function (rest) {
+      $scope.getcodeday = rest.data;
+    });
+  };
+  $scope.getCodeDay();
+  $scope.selectedOption = "1";
 
-    $scope.he = function () {
-      if ($scope.selectedOption === "1") {
-        $scope.hi = "Hôm Nay";
-      } else if ($scope.selectedOption === "2") {
-        $scope.hi = "Tháng Này";
-      } else {
-        $scope.hi = "Năm Này";
-      }
-    };
-    $scope.he();
+  $scope.he = function () {
+    if ($scope.selectedOption === "1") {
+      $scope.hi = "Hôm Nay";
+    } else if ($scope.selectedOption === "2") {
+      $scope.hi = "Tháng Này";
+    } else {
+      $scope.hi = "Năm Này";
+    }
+  };
+  $scope.he();
 
+  var today = new Date();
+  today.setDate(today.getDate());
+  let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+
+  var yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  let yesterdayFormat = $filter("date")(yesterday, "yyyy-MM-dd");
+  var yesterday = new Date();
+  yesterday.setDate(today.getMonth() - 1);
+  let yestermonthFormat = $filter("date")(yesterday, "yyyy-MM-dd");
+  var yesterday = new Date();
+  yesterday.setDate(today.getFullYear() - 1);
+  let yesteryaerFormat = $filter("date")(yesterday, "yyyy-MM-dd");
+
+  // tổng tiền trong  tháng
+  $scope.tongTien = function () {
+    if ($scope.selectedOption === "1") {
+      $http
+        .get(api + "/tong-doanh-thu-ngay/" + `${todayfomat}`, todayfomat)
+        .then(function (rest) {
+          $scope.getsum = rest.data;
+        });
+      $http
+        .get(
+          api + "/tong-doanh-thu-ngay/" + `${yesterdayFormat}`,
+          yesterdayFormat
+        )
+        .then(function (rest) {
+          $scope.getsumtile = rest.data;
+        });
+      $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
+    } else if ($scope.selectedOption === "2") {
+      $http
+        .get(api + "/tong-doanh-thu-thang/" + `${todayfomat}`, todayfomat)
+        .then(function (rest) {
+          $scope.getsum = rest.data;
+        });
+      $http
+        .get(
+          api + "/tong-doanh-thu-thang/" + `${yestermonthFormat}`,
+          yestermonthFormat
+        )
+        .then(function (rest) {
+          $scope.getsumtile = rest.data;
+        });
+      $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
+    } else if ($scope.selectedOption === "3") {
+      $http
+        .get(api + "/tong-daonh-thu-nam/" + `${todayfomat}`, todayfomat)
+        .then(function (rest) {
+          $scope.getsum = rest.data;
+        });
+      $http
+        .get(
+          api + "/tong-doanh-thu-nam/" + `${yesteryaerFormat}`,
+          yesteryaerFormat
+        )
+        .then(function (rest) {
+          $scope.getsumtile = rest.data;
+        });
+      $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
+    }
+  };
+  $scope.tongTien();
+  // tổng hóa đơn trong  ngày
+  $scope.tongHoaDon = function () {
+    if ($scope.selectedOption === "1") {
+      $http
+        .get(api + "/tong-hoa-don-ngay/" + `${todayfomat}`, todayfomat)
+        .then(function (rest) {
+          $scope.getcodeday = rest.data;
+        });
+      $http
+        .get(
+          api + "/tong-hoa-don-ngay/" + `${yesterdayFormat}`,
+          yesterdayFormat
+        )
+        .then(function (rest) {
+          $scope.getcodedaytile = rest.data;
+        });
+      $scope.tiletonghoadon = $scope.getcodeday / $scope.getcodedaytile;
+    } else if ($scope.selectedOption === "2") {
+      $http
+        .get(api + "/tong-hoa-don-thang/" + `${todayfomat}`, todayfomat)
+        .then(function (rest) {
+          $scope.getcodeday = rest.data;
+        });
+      $http
+        .get(
+          api + "/tong-hoa-don-thang/" + `${yestermonthFormat}`,
+          yestermonthFormat
+        )
+        .then(function (rest) {
+          $scope.getcodedaytile = rest.data;
+        });
+      $scope.tiletonghoadon = $scope.getcodeday / $scope.getcodedaytile;
+    } else if ($scope.selectedOption === "1") {
+      $http
+        .get(api + "/tong-hoa-don-nam/" + `${todayfomat}`, todayfomat)
+        .then(function (rest) {
+          $scope.getcodeday = rest.data;
+        });
+      $http
+        .get(
+          api + "/tong-hoa-don-nam/" + `${yesteryaerFormat}`,
+          yesteryaerFormat
+        )
+        .then(function (rest) {
+          $scope.getcodedaytile = rest.data;
+        });
+      $scope.tiletonghoadon = $scope.getcodeday / $scope.getcodedaytile;
+    }
+  };
+  $scope.tongHoaDon();
+  //San phâm ban ra
+  $scope.tongKhachHang = function () {
+    if ($scope.selectedOption === "1") {
+      $http
+        .get(api + "/san-pham-ban-ra-ngay/" + `${todayfomat}`, todayfomat)
+        .then(function (getall) {
+          $scope.listcustomeryear = getall.data;
+        });
+      $http
+        .get(api + "/san-pham-ban-ra-ngay/" + `${yesterdayFormat}`, yesterday)
+        .then(function (getall) {
+          $scope.listcustomeryeartile = getall.data;
+        });
+      $scope.tiletongkhachhang =
+        $scope.listcustomeryear / $scope.listcustomeryeartile;
+    } else if ($scope.selectedOption === "2") {
+      $http
+        .get(api + "/san-pham-ban-ra-thang/" + `${todayfomat}`, todayfomat)
+        .then(function (getall) {
+          $scope.listcustomeryear = getall.data;
+        });
+      $http
+        .get(
+          api + "/san-pham-ban-ra-thang/" + `${yestermonthFormat}`,
+          yesterdayFormat
+        )
+        .then(function (getall) {
+          $scope.listcustomeryeartile = getall.data;
+        });
+      $scope.tiletongkhachhang =
+        $scope.listcustomeryear / $scope.listcustomeryeartile;
+    } else if ($scope.selectedOption === "3") {
+      $http
+        .get(api + "/san-pham-ban-ra-nam/" + `${todayfomat}`, todayfomat)
+        .then(function (getall) {
+          $scope.listcustomeryear = getall.data;
+        });
+      $http
+        .get(
+          api + "/san-pham-ban-ra-nam/" + `${yesteryaerFormat}`,
+          yesteryaerFormat
+        )
+        .then(function (getall) {
+          $scope.listcustomeryeartile = getall.data;
+        });
+      $scope.tiletongkhachhang =
+        $scope.listcustomeryear / $scope.listcustomeryeartile;
+    }
+  };
+  $scope.tongKhachHang();
+
+  // get all table bill
+  $scope.getAllBillList = function () {
+    $http.get(api + "/get-all-list").then(function (getall) {
+      $scope.getallbilllist = getall.data;
+    });
+  };
+  $scope.getAllBillList();
+
+  // top 5 Bán chạy
+  $scope.Top5BanChay = function () {
+    if ($scope.selectedOption === "1") {
+      var today = new Date();
+      today.setDate(today.getDate());
+      let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+      $http
+        .get(api + "/top5-ban-chay-day/" + `${todayfomat}`, todayfomat)
+        .then((data) => {
+          $scope.topbanchay = data.data;
+        });
+    } else if ($scope.selectedOption === "2") {
+      var today = new Date();
+      today.setDate(today.getDate());
+      let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+      $http
+        .get(api + "/top5-ban-chay-month/" + `${todayfomat}`, todayfomat)
+        .then((data) => {
+          $scope.topbanchay = data.data;
+        });
+    } else {
+      var today = new Date();
+      today.setDate(today.getDate());
+      let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+      $http
+        .get(api + "/top5-ban-chay-year/" + `${todayfomat}`, todayfomat)
+        .then((data) => {
+          $scope.topbanchay = data.data;
+        });
+    }
+  };
+  $scope.Top5BanChay($scope.topbanchay);
+
+  // top 5 Bán chạy theo ngay
+
+  $scope.TopBanChayDate = function () {
     var today = new Date();
     today.setDate(today.getDate());
     let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-
-    var yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
-    let yesterdayFormat = $filter("date")(yesterday, "yyyy-MM-dd");
-    var yesterday = new Date();
-    yesterday.setDate(today.getMonth() - 1);
-    let yestermonthFormat = $filter("date")(yesterday, "yyyy-MM-dd");
-    var yesterday = new Date();
-    yesterday.setDate(today.getFullYear() - 1);
-    let yesteryaerFormat = $filter("date")(yesterday, "yyyy-MM-dd");
-
-    // tổng tiền trong  tháng
-    $scope.tongTien = function () {
-      if ($scope.selectedOption === "1") {
-        $http
-          .get(api + "/tong-doanh-thu-ngay/" + `${todayfomat}`, todayfomat)
-          .then(function (rest) {
-            $scope.getsum = rest.data;
-          });
-        $http
-          .get(
-            api + "/tong-doanh-thu-ngay/" + `${yesterdayFormat}`,
-            yesterdayFormat
-          )
-          .then(function (rest) {
-            $scope.getsumtile = rest.data;
-          });
-        $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
-      } else if ($scope.selectedOption === "2") {
-        $http
-          .get(api + "/tong-doanh-thu-thang/" + `${todayfomat}`, todayfomat)
-          .then(function (rest) {
-            $scope.getsum = rest.data;
-          });
-        $http
-          .get(
-            api + "/tong-doanh-thu-thang/" + `${yestermonthFormat}`,
-            yestermonthFormat
-          )
-          .then(function (rest) {
-            $scope.getsumtile = rest.data;
-          });
-        $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
-      } else if ($scope.selectedOption === "3") {
-        $http
-          .get(api + "/tong-daonh-thu-nam/" + `${todayfomat}`, todayfomat)
-          .then(function (rest) {
-            $scope.getsum = rest.data;
-          });
-        $http
-          .get(
-            api + "/tong-doanh-thu-nam/" + `${yesteryaerFormat}`,
-            yesteryaerFormat
-          )
-          .then(function (rest) {
-            $scope.getsumtile = rest.data;
-          });
-        $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
-      }
-    };
-    $scope.tongTien();
-    // tổng hóa đơn trong  ngày
-    $scope.tongHoaDon = function () {
-      if ($scope.selectedOption === "1") {
-        $http
-          .get(api + "/tong-hoa-don-ngay/" + `${todayfomat}`, todayfomat)
-          .then(function (rest) {
-            $scope.getcodeday = rest.data;
-          });
-        $http
-          .get(
-            api + "/tong-hoa-don-ngay/" + `${yesterdayFormat}`,
-            yesterdayFormat
-          )
-          .then(function (rest) {
-            $scope.getcodedaytile = rest.data;
-          });
-        $scope.tiletonghoadon = $scope.getcodeday / $scope.getcodedaytile;
-      } else if ($scope.selectedOption === "2") {
-        $http
-          .get(api + "/tong-hoa-don-thang/" + `${todayfomat}`, todayfomat)
-          .then(function (rest) {
-            $scope.getcodeday = rest.data;
-          });
-        $http
-          .get(
-            api + "/tong-hoa-don-thang/" + `${yestermonthFormat}`,
-            yestermonthFormat
-          )
-          .then(function (rest) {
-            $scope.getcodedaytile = rest.data;
-          });
-        $scope.tiletonghoadon = $scope.getcodeday / $scope.getcodedaytile;
-      } else if ($scope.selectedOption === "1") {
-        $http
-          .get(api + "/tong-hoa-don-nam/" + `${todayfomat}`, todayfomat)
-          .then(function (rest) {
-            $scope.getcodeday = rest.data;
-          });
-        $http
-          .get(
-            api + "/tong-hoa-don-nam/" + `${yesteryaerFormat}`,
-            yesteryaerFormat
-          )
-          .then(function (rest) {
-            $scope.getcodedaytile = rest.data;
-          });
-        $scope.tiletonghoadon = $scope.getcodeday / $scope.getcodedaytile;
-      }
-    };
-    $scope.tongHoaDon();
-    //San phâm ban ra
-    $scope.tongKhachHang = function () {
-      if ($scope.selectedOption === "1") {
-        $http
-          .get(api + "/san-pham-ban-ra-ngay/" + `${todayfomat}`, todayfomat)
-          .then(function (getall) {
-            $scope.listcustomeryear = getall.data;
-          });
-        $http
-          .get(api + "/san-pham-ban-ra-ngay/" + `${yesterdayFormat}`, yesterday)
-          .then(function (getall) {
-            $scope.listcustomeryeartile = getall.data;
-          });
-        $scope.tiletongkhachhang =
-          $scope.listcustomeryear / $scope.listcustomeryeartile;
-      } else if ($scope.selectedOption === "2") {
-        $http
-          .get(api + "/san-pham-ban-ra-thang/" + `${todayfomat}`, todayfomat)
-          .then(function (getall) {
-            $scope.listcustomeryear = getall.data;
-          });
-        $http
-          .get(
-            api + "/san-pham-ban-ra-thang/" + `${yestermonthFormat}`,
-            yesterdayFormat
-          )
-          .then(function (getall) {
-            $scope.listcustomeryeartile = getall.data;
-          });
-        $scope.tiletongkhachhang =
-          $scope.listcustomeryear / $scope.listcustomeryeartile;
-      } else if ($scope.selectedOption === "3") {
-        $http
-          .get(api + "/san-pham-ban-ra-nam/" + `${todayfomat}`, todayfomat)
-          .then(function (getall) {
-            $scope.listcustomeryear = getall.data;
-          });
-        $http
-          .get(
-            api + "/san-pham-ban-ra-nam/" + `${yesteryaerFormat}`,
-            yesteryaerFormat
-          )
-          .then(function (getall) {
-            $scope.listcustomeryeartile = getall.data;
-          });
-        $scope.tiletongkhachhang =
-          $scope.listcustomeryear / $scope.listcustomeryeartile;
-      }
-    };
-    $scope.tongKhachHang();
-
-    // get all table bill
-    $scope.getAllBillList = function () {
-      $http.get(api + "/get-all-list").then(function (getall) {
-        $scope.getallbilllist = getall.data;
+    $http
+      .get(api + "/top-ban-chay-date/" + `${todayfomat}`, todayfomat)
+      .then((data) => {
+        $scope.topbanchaydate = data.data;
+        $scope.trafficChart($scope.topbanchaydate);
       });
-    };
-    $scope.getAllBillList();
+  };
+  $scope.TopBanChayDate();
+  $scope.TopBanChayMonth = function () {
+    var today = new Date();
+    today.setDate(today.getDate());
+    let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+    $http
+      .get(api + "/top-ban-chay-month/" + `${todayfomat}`, todayfomat)
+      .then((data) => {
+        $scope.topbanchaymonth = data.data;
+        $scope.trafficChart($scope.topbanchaymonth);
+      });
+  };
+  $scope.TopBanChayMonth();
+  $scope.TopBanChayYear = function () {
+    var today = new Date();
+    today.setDate(today.getDate());
+    let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+    $http
+      .get(api + "/top-ban-chay-year/" + `${todayfomat}`, todayfomat)
+      .then((data) => {
+        $scope.topbanchayyear = data.data;
+        $scope.trafficChart($scope.topbanchayyear);
+      });
+  };
+  $scope.TopBanChayYear();
 
-    // top 5 Bán chạy
-    $scope.Top5BanChay = function () {
-      if ($scope.selectedOption === "1") {
-        var today = new Date();
-        today.setDate(today.getDate());
-        let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-        $http
-          .get(api + "/top5-ban-chay-day/" + `${todayfomat}`, todayfomat)
-          .then((data) => {
-            $scope.topbanchay = data.data;
-          });
-      } else if ($scope.selectedOption === "2") {
-        var today = new Date();
-        today.setDate(today.getDate());
-        let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-        $http
-          .get(api + "/top5-ban-chay-month/" + `${todayfomat}`, todayfomat)
-          .then((data) => {
-            $scope.topbanchay = data.data;
-          });
-      } else {
-        var today = new Date();
-        today.setDate(today.getDate());
-        let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-        $http
-          .get(api + "/top5-ban-chay-year/" + `${todayfomat}`, todayfomat)
-          .then((data) => {
-            $scope.topbanchay = data.data;
-          });
-      }
-    };
-    $scope.Top5BanChay($scope.topbanchay);
+  //Sơ đồ thống kê ----------
+  //Tổng khách hàng trong 1 năm
+  $scope.listCustomerDay = function () {
+    var today = new Date();
+    today.setDate(today.getDate());
+    let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+    var today1 = new Date();
+    today1.setDate(today1.getDate() - 1);
+    let today1fomat = $filter("date")(today1, "yyyy-MM-dd");
+    var today2 = new Date();
+    today2.setDate(today2.getDate() - 2);
+    let today2fomat = $filter("date")(today2, "yyyy-MM-dd");
+    var today3 = new Date();
+    today3.setDate(today3.getDate() - 3);
+    let today3fomat = $filter("date")(today3, "yyyy-MM-dd");
+    var today4 = new Date();
+    today4.setDate(today4.getDate() - 4);
+    let today4fomat = $filter("date")(today4, "yyyy-MM-dd");
+    var today5 = new Date();
+    today5.setDate(today5.getDate() - 5);
+    let today5fomat = $filter("date")(today5, "yyyy-MM-dd");
+    var today6 = new Date();
+    today6.setDate(today6.getDate() - 6);
+    let today6fomat = $filter("date")(today6, "yyyy-MM-dd");
+    //list customes-------
+    $http
+      .get(api + "/list-customer-day/" + `${todayfomat}`, todayfomat)
+      .then(function (getall) {
+        $scope.listcustomerday = getall.data;
+      });
+    $http
+      .get(api + "/list-customer-day/" + `${today1fomat}`, today1fomat)
+      .then(function (getall1) {
+        $scope.listcustomerday1 = getall1.data;
+      });
+    $http
+      .get(api + "/list-customer-day/" + `${today2fomat}`, today2fomat)
+      .then(function (getall2) {
+        $scope.listcustomerday2 = getall2.data;
+      });
+    $http
+      .get(api + "/list-customer-day/" + `${today3fomat}`, today3fomat)
+      .then(function (getall3) {
+        $scope.listcustomerday3 = getall3.data;
+      });
+    $http
+      .get(api + "/list-customer-day/" + `${today4fomat}`, today4fomat)
+      .then(function (getall4) {
+        $scope.listcustomerday4 = getall4.data;
+      });
+    $http
+      .get(api + "/list-customer-day/" + `${today5fomat}`, today5fomat)
+      .then(function (getall5) {
+        $scope.listcustomerday5 = getall5.data;
+      });
+    $http
+      .get(api + "/list-customer-day/" + `${today6fomat}`, today6fomat)
+      .then(function (getall6) {
+        $scope.listcustomerday6 = getall6.data;
+      });
 
-    // top 5 Bán chạy theo ngay
+    //List bill---------
+    $http
+      .get(api + "/list-bill-day/" + `${todayfomat}`, todayfomat)
+      .then(function (getbill) {
+        $scope.listbillday = getbill.data;
+      });
+    $http
+      .get(api + "/list-bill-day/" + `${today1fomat}`, today1fomat)
+      .then(function (getbill1) {
+        $scope.listbillday1 = getbill1.data;
+      });
+    $http
+      .get(api + "/list-bill-day/" + `${today2fomat}`, today2fomat)
+      .then(function (getbill2) {
+        $scope.listbillday2 = getbill2.data;
+      });
+    $http
+      .get(api + "/list-bill-day/" + `${today3fomat}`, today3fomat)
+      .then(function (getbill3) {
+        $scope.listbillday3 = getbill3.data;
+      });
+    $http
+      .get(api + "/list-bill-day/" + `${today4fomat}`, today4fomat)
+      .then(function (getbill4) {
+        $scope.listbillday4 = getbill4.data;
+      });
+    $http
+      .get(api + "/list-bill-day/" + `${today5fomat}`, today5fomat)
+      .then(function (getbill5) {
+        $scope.listbillday5 = getbill5.data;
+      });
+    $http
+      .get(api + "/list-bill-day/" + `${today6fomat}`, today6fomat)
+      .then(function (getbill6) {
+        $scope.listbillday6 = getbill6.data;
+      });
+    //List Doanh thu-------
+    $http
+      .get(api + "/list-doanhthu-day/" + `${todayfomat}`, todayfomat)
+      .then(function (getbill) {
+        $scope.listdoanhthuday = getbill.data;
+      });
+    $http
+      .get(api + "/list-doanhthu-day/" + `${today1fomat}`, today1fomat)
+      .then(function (getbill1) {
+        $scope.listdoanhthuday1 = getbill1.data;
+      });
+    $http
+      .get(api + "/list-doanhthu-day/" + `${today2fomat}`, today2fomat)
+      .then(function (getbill2) {
+        $scope.listdoanhthuday2 = getbill2.data;
+      });
+    $http
+      .get(api + "/list-doanhthu-day/" + `${today3fomat}`, today3fomat)
+      .then(function (getbill3) {
+        $scope.listdoanhthuday3 = getbill3.data;
+      });
+    $http
+      .get(api + "/list-doanhthu-day/" + `${today4fomat}`, today4fomat)
+      .then(function (getbill4) {
+        $scope.listdoanhthuday4 = getbill4.data;
+      });
+    $http
+      .get(api + "/list-doanhthu-day/" + `${today5fomat}`, today5fomat)
+      .then(function (getbill5) {
+        $scope.listdoanhthuday5 = getbill5.data;
+      });
+    $http
+      .get(api + "/list-doanhthu-day/" + `${today6fomat}`, today6fomat)
+      .then(function (getbill6) {
+        $scope.listdoanhthuday6 = getbill6.data;
+        renderChart();
+      });
+  };
 
-    $scope.TopBanChayDate = function () {
-      var today = new Date();
-      today.setDate(today.getDate());
-      let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-      $http
-        .get(api + "/top-ban-chay-date/" + `${todayfomat}`, todayfomat)
-        .then((data) => {
-          $scope.topbanchaydate = data.data;
-          $scope.trafficChart($scope.topbanchaydate);
-        });
-    };
-    $scope.TopBanChayDate();
-    $scope.TopBanChayMonth = function () {
-      var today = new Date();
-      today.setDate(today.getDate());
-      let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-      $http
-        .get(api + "/top-ban-chay-month/" + `${todayfomat}`, todayfomat)
-        .then((data) => {
-          $scope.topbanchaymonth = data.data;
-          $scope.trafficChart($scope.topbanchaymonth);
-        });
-    };
-    $scope.TopBanChayMonth();
-    $scope.TopBanChayYear = function () {
-      var today = new Date();
-      today.setDate(today.getDate());
-      let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-      $http
-        .get(api + "/top-ban-chay-year/" + `${todayfomat}`, todayfomat)
-        .then((data) => {
-          $scope.topbanchayyear = data.data;
-          $scope.trafficChart($scope.topbanchayyear);
-        });
-    };
-    $scope.TopBanChayYear();
-
-    //Sơ đồ thống kê ----------
-    //Tổng khách hàng trong 1 năm
-    $scope.listCustomerDay = function () {
-      var today = new Date();
-      today.setDate(today.getDate());
-      let todayfomat = $filter("date")(today, "yyyy-MM-dd");
-      var today1 = new Date();
-      today1.setDate(today1.getDate() - 1);
-      let today1fomat = $filter("date")(today1, "yyyy-MM-dd");
-      var today2 = new Date();
-      today2.setDate(today2.getDate() - 2);
-      let today2fomat = $filter("date")(today2, "yyyy-MM-dd");
-      var today3 = new Date();
-      today3.setDate(today3.getDate() - 3);
-      let today3fomat = $filter("date")(today3, "yyyy-MM-dd");
-      var today4 = new Date();
-      today4.setDate(today4.getDate() - 4);
-      let today4fomat = $filter("date")(today4, "yyyy-MM-dd");
-      var today5 = new Date();
-      today5.setDate(today5.getDate() - 5);
-      let today5fomat = $filter("date")(today5, "yyyy-MM-dd");
-      var today6 = new Date();
-      today6.setDate(today6.getDate() - 6);
-      let today6fomat = $filter("date")(today6, "yyyy-MM-dd");
-      //list customes-------
-      $http
-        .get(api + "/list-customer-day/" + `${todayfomat}`, todayfomat)
-        .then(function (getall) {
-          $scope.listcustomerday = getall.data;
-        });
-      $http
-        .get(api + "/list-customer-day/" + `${today1fomat}`, today1fomat)
-        .then(function (getall1) {
-          $scope.listcustomerday1 = getall1.data;
-        });
-      $http
-        .get(api + "/list-customer-day/" + `${today2fomat}`, today2fomat)
-        .then(function (getall2) {
-          $scope.listcustomerday2 = getall2.data;
-        });
-      $http
-        .get(api + "/list-customer-day/" + `${today3fomat}`, today3fomat)
-        .then(function (getall3) {
-          $scope.listcustomerday3 = getall3.data;
-        });
-      $http
-        .get(api + "/list-customer-day/" + `${today4fomat}`, today4fomat)
-        .then(function (getall4) {
-          $scope.listcustomerday4 = getall4.data;
-        });
-      $http
-        .get(api + "/list-customer-day/" + `${today5fomat}`, today5fomat)
-        .then(function (getall5) {
-          $scope.listcustomerday5 = getall5.data;
-        });
-      $http
-        .get(api + "/list-customer-day/" + `${today6fomat}`, today6fomat)
-        .then(function (getall6) {
-          $scope.listcustomerday6 = getall6.data;
-        });
-
-      //List bill---------
-      $http
-        .get(api + "/list-bill-day/" + `${todayfomat}`, todayfomat)
-        .then(function (getbill) {
-          $scope.listbillday = getbill.data;
-        });
-      $http
-        .get(api + "/list-bill-day/" + `${today1fomat}`, today1fomat)
-        .then(function (getbill1) {
-          $scope.listbillday1 = getbill1.data;
-        });
-      $http
-        .get(api + "/list-bill-day/" + `${today2fomat}`, today2fomat)
-        .then(function (getbill2) {
-          $scope.listbillday2 = getbill2.data;
-        });
-      $http
-        .get(api + "/list-bill-day/" + `${today3fomat}`, today3fomat)
-        .then(function (getbill3) {
-          $scope.listbillday3 = getbill3.data;
-        });
-      $http
-        .get(api + "/list-bill-day/" + `${today4fomat}`, today4fomat)
-        .then(function (getbill4) {
-          $scope.listbillday4 = getbill4.data;
-        });
-      $http
-        .get(api + "/list-bill-day/" + `${today5fomat}`, today5fomat)
-        .then(function (getbill5) {
-          $scope.listbillday5 = getbill5.data;
-        });
-      $http
-        .get(api + "/list-bill-day/" + `${today6fomat}`, today6fomat)
-        .then(function (getbill6) {
-          $scope.listbillday6 = getbill6.data;
-        });
-      //List Doanh thu-------
-      $http
-        .get(api + "/list-doanhthu-day/" + `${todayfomat}`, todayfomat)
-        .then(function (getbill) {
-          $scope.listdoanhthuday = getbill.data;
-        });
-      $http
-        .get(api + "/list-doanhthu-day/" + `${today1fomat}`, today1fomat)
-        .then(function (getbill1) {
-          $scope.listdoanhthuday1 = getbill1.data;
-        });
-      $http
-        .get(api + "/list-doanhthu-day/" + `${today2fomat}`, today2fomat)
-        .then(function (getbill2) {
-          $scope.listdoanhthuday2 = getbill2.data;
-        });
-      $http
-        .get(api + "/list-doanhthu-day/" + `${today3fomat}`, today3fomat)
-        .then(function (getbill3) {
-          $scope.listdoanhthuday3 = getbill3.data;
-        });
-      $http
-        .get(api + "/list-doanhthu-day/" + `${today4fomat}`, today4fomat)
-        .then(function (getbill4) {
-          $scope.listdoanhthuday4 = getbill4.data;
-        });
-      $http
-        .get(api + "/list-doanhthu-day/" + `${today5fomat}`, today5fomat)
-        .then(function (getbill5) {
-          $scope.listdoanhthuday5 = getbill5.data;
-        });
-      $http
-        .get(api + "/list-doanhthu-day/" + `${today6fomat}`, today6fomat)
-        .then(function (getbill6) {
-          $scope.listdoanhthuday6 = getbill6.data;
-          renderChart();
-        });
-    };
-
-    function renderChart() {
-      let tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      $scope.formattedDateTomorrow = $filter("date")(tomorrow, "yyyy-MM-dd");
-      let yesterday = new Date();
-      yesterday.setDate(yesterday.getDate());
-      $scope.formattedDate = $filter("date")(yesterday, "yyyy-MM-dd");
-      let yesterday1 = new Date();
-      yesterday1.setDate(yesterday1.getDate() - 1);
-      $scope.formattedDate1 = $filter("date")(yesterday1, "yyyy-MM-dd");
-      let yesterday2 = new Date();
-      yesterday2.setDate(yesterday2.getDate() - 2);
-      $scope.formattedDate2 = $filter("date")(yesterday2, "yyyy-MM-dd");
-      let yesterday3 = new Date();
-      yesterday3.setDate(yesterday3.getDate() - 3);
-      $scope.formattedDate3 = $filter("date")(yesterday3, "yyyy-MM-dd");
-      let yesterday4 = new Date();
-      yesterday4.setDate(yesterday4.getDate() - 4);
-      $scope.formattedDate4 = $filter("date")(yesterday4, "yyyy-MM-dd");
-      let yesterday5 = new Date();
-      yesterday5.setDate(yesterday5.getDate() - 5);
-      $scope.formattedDate5 = $filter("date")(yesterday5, "yyyy-MM-dd");
-      let yesterday6 = new Date();
-      yesterday6.setDate(yesterday6.getDate() - 6);
-      $scope.formattedDate6 = $filter("date")(yesterday6, "yyyy-MM-dd");
-      new ApexCharts(document.querySelector("#reportsChart"), {
-        series: [
-          {
-            name: "Sales",
-            data: [
-              $scope.listbillday6,
-              $scope.listbillday5,
-              $scope.listbillday4,
-              $scope.listbillday3,
-              $scope.listbillday2,
-              $scope.listbillday1,
-              $scope.listbillday,
-            ],
-          },
-          {
-            name: "Revenue",
-            data: [
-              $scope.listdoanhthuday6,
-              $scope.listdoanhthuday5,
-              $scope.listdoanhthuday4,
-              $scope.listdoanhthuday3,
-              $scope.listdoanhthuday2,
-              $scope.listdoanhthuday1,
-              $scope.listdoanhthuday,
-            ],
-          },
-          {
-            name: "Customers",
-            data: [
-              $scope.listcustomerday6,
-              $scope.listcustomerday5,
-              $scope.listcustomerday4,
-              $scope.listcustomerday3,
-              $scope.listcustomerday2,
-              $scope.listcustomerday1,
-              $scope.listcustomerday,
-            ],
-          },
-        ],
-        chart: {
-          height: 350,
-          type: "area",
-          toolbar: {
-            show: false,
-          },
-        },
-        markers: {
-          size: 4,
-        },
-        colors: ["#4154f1", "#2eca6a", "#ff771d"],
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100],
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: "smooth",
-          width: 2,
-        },
-        xaxis: {
-          type: "datetime",
-          categories: [
-            $scope.formattedDate6,
-            $scope.formattedDate5,
-            $scope.formattedDate4,
-            $scope.formattedDate3,
-            $scope.formattedDate2,
-            $scope.formattedDate1,
-            $scope.formattedDate,
-            $scope.formattedDateTomorrow,
+  function renderChart() {
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    $scope.formattedDateTomorrow = $filter("date")(tomorrow, "yyyy-MM-dd");
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate());
+    $scope.formattedDate = $filter("date")(yesterday, "yyyy-MM-dd");
+    let yesterday1 = new Date();
+    yesterday1.setDate(yesterday1.getDate() - 1);
+    $scope.formattedDate1 = $filter("date")(yesterday1, "yyyy-MM-dd");
+    let yesterday2 = new Date();
+    yesterday2.setDate(yesterday2.getDate() - 2);
+    $scope.formattedDate2 = $filter("date")(yesterday2, "yyyy-MM-dd");
+    let yesterday3 = new Date();
+    yesterday3.setDate(yesterday3.getDate() - 3);
+    $scope.formattedDate3 = $filter("date")(yesterday3, "yyyy-MM-dd");
+    let yesterday4 = new Date();
+    yesterday4.setDate(yesterday4.getDate() - 4);
+    $scope.formattedDate4 = $filter("date")(yesterday4, "yyyy-MM-dd");
+    let yesterday5 = new Date();
+    yesterday5.setDate(yesterday5.getDate() - 5);
+    $scope.formattedDate5 = $filter("date")(yesterday5, "yyyy-MM-dd");
+    let yesterday6 = new Date();
+    yesterday6.setDate(yesterday6.getDate() - 6);
+    $scope.formattedDate6 = $filter("date")(yesterday6, "yyyy-MM-dd");
+    new ApexCharts(document.querySelector("#reportsChart"), {
+      series: [
+        {
+          name: "Sales",
+          data: [
+            $scope.listbillday6,
+            $scope.listbillday5,
+            $scope.listbillday4,
+            $scope.listbillday3,
+            $scope.listbillday2,
+            $scope.listbillday1,
+            $scope.listbillday,
           ],
         },
-        tooltip: {
-          x: {
-            format: "dd/MM/yyyy",
-          },
+        {
+          name: "Revenue",
+          data: [
+            $scope.listdoanhthuday6,
+            $scope.listdoanhthuday5,
+            $scope.listdoanhthuday4,
+            $scope.listdoanhthuday3,
+            $scope.listdoanhthuday2,
+            $scope.listdoanhthuday1,
+            $scope.listdoanhthuday,
+          ],
         },
-      }).render();
-    }
-
-    angular.element(document).ready(function () {
-      $scope.listCustomerDay();
-    });
-
-    $scope.changePageSize = function () {
-      $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
-    };
-
-    //Thống kê sản phâm bán chạy
-    $scope.trafficChart = function () {
-      if ($scope.selectedOption === "1") {
-        if ($scope.topbanchaydate && $scope.topbanchaydate.length > 0) {
-          var chartData = [];
-          for (var i = 0; i < $scope.topbanchaydate.length; i++) {
-            var currentItem = $scope.topbanchaydate[i];
-
-            var itemData = {
-              name: currentItem.ten_sanpham,
-              value: currentItem.so_luong_ban,
-            };
-            chartData.push(itemData);
-          }
-
-          echarts.init(document.querySelector("#trafficChart")).setOption({
-            tooltip: {
-              trigger: "item",
-            },
-            legend: {
-              top: "5%",
-              left: "center",
-            },
-            series: [
-              {
-                name: "Access From",
-                type: "pie",
-                radius: ["40%", "70%"],
-                avoidLabelOverlap: false,
-                label: {
-                  show: false,
-                  position: "center",
-                },
-                emphasis: {
-                  label: {
-                    show: true,
-                    fontSize: "18",
-                    fontWeight: "bold",
-                  },
-                },
-                labelLine: {
-                  show: false,
-                },
-                data: chartData,
-              },
-            ],
-          });
-        }
-      } else if ($scope.selectedOption === "2") {
-        if ($scope.topbanchaymonth && $scope.topbanchaymonth.length > 0) {
-          var chartData = [];
-          for (var i = 0; i < $scope.topbanchaymonth.length; i++) {
-            var currentItem = $scope.topbanchaymonth[i];
-
-            var itemData = {
-              name: currentItem.ten_sanpham,
-              value: currentItem.so_luong_ban,
-            };
-            chartData.push(itemData);
-          }
-
-          echarts.init(document.querySelector("#trafficChart")).setOption({
-            tooltip: {
-              trigger: "item",
-            },
-            legend: {
-              top: "5%",
-              left: "center",
-            },
-            series: [
-              {
-                name: "Access From",
-                type: "pie",
-                radius: ["40%", "70%"],
-                avoidLabelOverlap: false,
-                label: {
-                  show: false,
-                  position: "center",
-                },
-                emphasis: {
-                  label: {
-                    show: true,
-                    fontSize: "18",
-                    fontWeight: "bold",
-                  },
-                },
-                labelLine: {
-                  show: false,
-                },
-                data: chartData,
-              },
-            ],
-          });
-        }
-      } else if ($scope.selectedOption === "3") {
-        if ($scope.topbanchayyear && $scope.topbanchayyear.length > 0) {
-          var chartData = [];
-          for (var i = 0; i < $scope.topbanchayyear.length; i++) {
-            var currentItem = $scope.topbanchayyear[i];
-
-            var itemData = {
-              name: currentItem.ten_sanpham,
-              value: currentItem.so_luong_ban,
-            };
-            chartData.push(itemData);
-          }
-
-          echarts.init(document.querySelector("#trafficChart")).setOption({
-            tooltip: {
-              trigger: "item",
-            },
-            legend: {
-              top: "5%",
-              left: "center",
-            },
-            series: [
-              {
-                name: "Access From",
-                type: "pie",
-                radius: ["40%", "70%"],
-                avoidLabelOverlap: false,
-                label: {
-                  show: false,
-                  position: "center",
-                },
-                emphasis: {
-                  label: {
-                    show: true,
-                    fontSize: "18",
-                    fontWeight: "bold",
-                  },
-                },
-                labelLine: {
-                  show: false,
-                },
-                data: chartData,
-              },
-            ],
-          });
-        }
-      }
-    };
-    $scope.trafficChart();
-
-    // Phan trang all bill
-    $scope.paper = {
-      page: 0,
-      size: 5,
-      get items() {
-        let start = this.page * this.size;
-        if ($scope.getallbilllist) {
-          return $scope.getallbilllist.slice(start, start + this.size);
-        }
+        {
+          name: "Customers",
+          data: [
+            $scope.listcustomerday6,
+            $scope.listcustomerday5,
+            $scope.listcustomerday4,
+            $scope.listcustomerday3,
+            $scope.listcustomerday2,
+            $scope.listcustomerday1,
+            $scope.listcustomerday,
+          ],
+        },
+      ],
+      chart: {
+        height: 350,
+        type: "area",
+        toolbar: {
+          show: false,
+        },
       },
-      get count() {
-        if ($scope.getallbilllist) {
-          return Math.ceil((1.0 * $scope.getallbilllist.length) / this.size);
-        }
+      markers: {
+        size: 4,
       },
-      first() {
-        this.page = 0;
+      colors: ["#4154f1", "#2eca6a", "#ff771d"],
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.3,
+          opacityTo: 0.4,
+          stops: [0, 90, 100],
+        },
       },
-      prev() {
-        this.page--;
-        if (this.page < 0) {
-          this.last();
-        }
+      dataLabels: {
+        enabled: false,
       },
-      next() {
-        this.page++;
-        if (this.page >= this.count) {
-          this.first();
-        }
+      stroke: {
+        curve: "smooth",
+        width: 2,
       },
-      last() {
-        this.page = this.count - 1;
+      xaxis: {
+        type: "datetime",
+        categories: [
+          $scope.formattedDate6,
+          $scope.formattedDate5,
+          $scope.formattedDate4,
+          $scope.formattedDate3,
+          $scope.formattedDate2,
+          $scope.formattedDate1,
+          $scope.formattedDate,
+          $scope.formattedDateTomorrow,
+        ],
       },
-    };
+      tooltip: {
+        x: {
+          format: "dd/MM/yyyy",
+        },
+      },
+    }).render();
   }
+
+  angular.element(document).ready(function () {
+    $scope.listCustomerDay();
+  });
+
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
+
+  //Thống kê sản phâm bán chạy
+  $scope.trafficChart = function () {
+    if ($scope.selectedOption === "1") {
+      if ($scope.topbanchaydate && $scope.topbanchaydate.length > 0) {
+        var chartData = [];
+        for (var i = 0; i < $scope.topbanchaydate.length; i++) {
+          var currentItem = $scope.topbanchaydate[i];
+
+          var itemData = {
+            name: currentItem.ten_sanpham,
+            value: currentItem.so_luong_ban,
+          };
+          chartData.push(itemData);
+        }
+
+        echarts.init(document.querySelector("#trafficChart")).setOption({
+          tooltip: {
+            trigger: "item",
+          },
+          legend: {
+            top: "5%",
+            left: "center",
+          },
+          series: [
+            {
+              name: "Access From",
+              type: "pie",
+              radius: ["40%", "70%"],
+              avoidLabelOverlap: false,
+              label: {
+                show: false,
+                position: "center",
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: "18",
+                  fontWeight: "bold",
+                },
+              },
+              labelLine: {
+                show: false,
+              },
+              data: chartData,
+            },
+          ],
+        });
+      }
+    } else if ($scope.selectedOption === "2") {
+      if ($scope.topbanchaymonth && $scope.topbanchaymonth.length > 0) {
+        var chartData = [];
+        for (var i = 0; i < $scope.topbanchaymonth.length; i++) {
+          var currentItem = $scope.topbanchaymonth[i];
+
+          var itemData = {
+            name: currentItem.ten_sanpham,
+            value: currentItem.so_luong_ban,
+          };
+          chartData.push(itemData);
+        }
+
+        echarts.init(document.querySelector("#trafficChart")).setOption({
+          tooltip: {
+            trigger: "item",
+          },
+          legend: {
+            top: "5%",
+            left: "center",
+          },
+          series: [
+            {
+              name: "Access From",
+              type: "pie",
+              radius: ["40%", "70%"],
+              avoidLabelOverlap: false,
+              label: {
+                show: false,
+                position: "center",
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: "18",
+                  fontWeight: "bold",
+                },
+              },
+              labelLine: {
+                show: false,
+              },
+              data: chartData,
+            },
+          ],
+        });
+      }
+    } else if ($scope.selectedOption === "3") {
+      if ($scope.topbanchayyear && $scope.topbanchayyear.length > 0) {
+        var chartData = [];
+        for (var i = 0; i < $scope.topbanchayyear.length; i++) {
+          var currentItem = $scope.topbanchayyear[i];
+
+          var itemData = {
+            name: currentItem.ten_sanpham,
+            value: currentItem.so_luong_ban,
+          };
+          chartData.push(itemData);
+        }
+
+        echarts.init(document.querySelector("#trafficChart")).setOption({
+          tooltip: {
+            trigger: "item",
+          },
+          legend: {
+            top: "5%",
+            left: "center",
+          },
+          series: [
+            {
+              name: "Access From",
+              type: "pie",
+              radius: ["40%", "70%"],
+              avoidLabelOverlap: false,
+              label: {
+                show: false,
+                position: "center",
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: "18",
+                  fontWeight: "bold",
+                },
+              },
+              labelLine: {
+                show: false,
+              },
+              data: chartData,
+            },
+          ],
+        });
+      }
+    }
+  };
+  $scope.trafficChart();
+
+  // Phan trang all bill
+  $scope.paper = {
+    page: 0,
+    size: 5,
+    get items() {
+      let start = this.page * this.size;
+      if ($scope.getallbilllist) {
+        return $scope.getallbilllist.slice(start, start + this.size);
+      }
+    },
+    get count() {
+      if ($scope.getallbilllist) {
+        return Math.ceil((1.0 * $scope.getallbilllist.length) / this.size);
+      }
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      this.page--;
+      if (this.page < 0) {
+        this.last();
+      }
+    },
+    next() {
+      this.page++;
+      if (this.page >= this.count) {
+        this.first();
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    },
+  };
+}
 );
 
 //---------------------------------Tịnh end thong kê---------------------------
@@ -1091,7 +1141,7 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
 });
 //---------------------------------Tịnh end Voucher---------------------------
 
-app_brand.controller("brand-ctrl", function ($scope, $http, $timeout) {
+app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   $scope.originalbrand = [];
   $scope.brand = [];
   $scope.formUpdate = {};
@@ -3120,7 +3170,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
       });
   };
   $scope.getRole = function () {
-    $http.get("/account").then(function (resp) {});
+    $http.get("/account").then(function (resp) { });
   };
   $scope.getRole();
   $scope.loadRoles = function () {
@@ -3370,14 +3420,1081 @@ app.controller(
     // $scope.callAdminEndpoint();
 
     console.log("myAppOfView-ctrl");
+
+  });
+app.controller("myAppOfView-ctrl2", function ($scope, $rootScope, $http, $routeParams, $location, jwtHelper) {
+  console.log("myAppOfView-ctrl2")
+  $httpProvider.useApplyAsync(1000); //true
+});
+
+
+app.config(function ($routeProvider) {
+  $routeProvider
+
+
+    // Tham khao
+    .when("/homeTest/123", {
+      templateUrl: "thamkhao/homeTest.html",
+      controller: "myAppOfView-ctrl"
+    })
+    .when("/productTest", {
+      templateUrl: "thamkhao/productTest.html",
+      controller: "myAppOfView-ctrl"
+    })
+    .when("/cartTest", {
+      templateUrl: "thamkhao/cartTest.html",
+      controller: "myAppOfView-ctrl2"
+    })
+    // Tham khao
+    // <!-- Thuong -->
+
+
+
+
+    // <!-- Hieu -->
+
+
+
+
+    // <!-- Nguyen -->
+
+    .when("/admin/product", {
+      templateUrl: "/ofView/Nguyen/product/product.html",
+      controller: "nguyen-product-ctrl"
+    })
+    .when("/admin/bill", {
+      templateUrl: "/ofView/Nguyen/bill/bill.html",
+      controller: "nguyen-bill-ctrl"
+    })
+
+
+
+    // <!-- Tinh -->
+
+
+    ;
+});
+
+app.controller("myAppOfView-ctrl", function ($scope, $rootScope, $http, $routeParams, $location, jwtHelper) {
+
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
   }
-);
-app.controller(
-  "myAppOfView-ctrl2",
-  function ($scope, $rootScope, $http, $routeParams, $location, jwtHelper) {
-    console.log("myAppOfView-ctrl2");
+
+  // $scope.callAdminEndpoint = function() {
+  //     $http.get('http://localhost:8080http://localhost:8080/api/admin') // Sử dụng 'text' làm kiểu dữ liệu trả về
+  //         .then(function(response) {
+  //             // In dữ liệu phản hồi từ endpoint '/api/admin'
+  //             console.log('Response from admin endpoint:');
+  //         })
+  //         .catch(function(error) {
+  //             // Xử lý lỗi khi gọi API
+  //             console.error('Error calling admin endpoint:', error);    
+  //         });
+  // };
+  // $scope.callAdminEndpoint();
+
+
+  console.log("myAppOfView-ctrl")
+
+});
+app.controller("myAppOfView-ctrl2", function ($scope, $rootScope, $http, $routeParams, $location, jwtHelper) {
+  console.log("myAppOfView-ctrl2")
+
+});
+
+
+
+app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalProduct = [];
+  $scope.formInput = {};
+  $scope.formUpdate = {};
+  $scope.stage = "";
+  $scope.formValidation = false;
+  // $scope.toggleJSONView = false;
+  // $scope.toggleFormErrorsView = false;
+  $scope.formParams = {};
+  $scope.load = function () {
+    $scope.loading = true
   }
-);
+  $scope.unload = function () {
+    $scope.loading = false
+  }
+
+  $scope.formUpdatePd = {
+    product: {
+      id: null
+    }
+  }
+
+  $scope.formInputImage = {
+    path: null,
+    name: null,
+    productDetail: {
+      id: null
+    }
+  }
+
+  $scope.formInputPd = {
+    product: {
+      id: null
+    }
+  }
+
+  $scope.showAlert = false;
+  $scope.getAlert = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  }
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  }
+
+
+
+
+
+  const apiUrlProduct = "http://localhost:8080/api/product"
+  const apiUrlCategory = "http://localhost:8080/api/category"
+  const apiUrlMaterial = "http://localhost:8080/api/material"
+  const apiUrlBrand = "http://localhost:8080/api/category/brands"
+
+  $scope.initialize = function () {
+    $http.get(apiUrlProduct).then(function (resp) {
+      $scope.originalProduct = resp.data;
+      $scope.products = angular.copy($scope.originalProduct);
+    });
+  }
+  $scope.initialize();
+
+  $scope.showToast = function (message) {
+    $scope.toastMessage = message
+    var toastElList = [].slice.call(document.querySelectorAll('#liveToast'))
+    var toastList = toastElList.map(function (toastEl) {
+      return new bootstrap.Toast(toastEl)
+    })
+    toastList.forEach(toast => toast.show())
+  }
+
+  $scope.showToastUpdate = function (message) {
+    $scope.toastMessage = message
+    var toastElList = [].slice.call(document.querySelectorAll('#liveToastUpdate'))
+    var toastList = toastElList.map(function (toastEl) {
+      return new bootstrap.Toast(toastEl)
+    })
+    toastList.forEach(toast => toast.show())
+  }
+
+
+  $scope.getSelectOption = function () {
+    $http.get(apiUrlCategory)
+      .then(function (response) {
+        console.log(response)
+        $scope.categories = response.data;
+      });
+    $http.get(apiUrlMaterial)
+      .then(function (response) {
+        console.log(response)
+        $scope.materials = response.data;
+      });
+    $http.get(apiUrlBrand)
+      .then(function (response) {
+        console.log(response)
+        $scope.brands = response.data;
+      });
+  }
+  $scope.getSelectOption();
+
+
+  //filter status
+  $scope.changeStatus = function (selectedItem) {
+    console.log(selectedItem)
+    if (selectedItem != "") {
+      $scope.products = $scope.originalProduct.filter(function (item) {
+        if (item && item.status) {
+          return (item.status == selectedItem);
+        }
+        return false;
+      });
+    } else {
+      $scope.products = angular.copy($scope.originalProduct);
+    }
+    $scope.changePageSize();
+  }
+
+  //create product
+  $scope.create = function () {
+    // console.log(editor1.getHTMLCode())
+    // $scope.formInput.describe = editor1.getHTMLCode();
+    if ($scope.checkTrungTenCreate == true) return;
+    let item = angular.copy($scope.formInput);
+    $scope.load();
+    $http.post(apiUrlProduct, item).then(resp => {
+      $('#modalAddProduct').modal('hide');
+      $scope.unload()
+      $scope.showToast("Thêm sản phẩm thành công!")
+      $scope.initialize();
+      $scope.resetFormInput();
+    }).catch(error => {
+      $scope.unload()
+      console.log("Error", error);
+    })
+  }
+
+  //check trùng tên sản phẩm
+  $scope.checkTrungTenCreate = false;
+  $scope.checkTrungTenSP = function (inputName) {
+    if (inputName == undefined) {
+      $scope.checkTrungTenCreate = false;
+      return;
+    }
+    for (let i = 0; i < $scope.products.length; i++) {
+      let data = $scope.products[i]
+      if (data.name == inputName.trim()) {
+        console.log("a");
+        $scope.checkTrungTenCreate = true;
+        return;
+      }
+      $scope.checkTrungTenCreate = false;
+    }
+  }
+
+  //reset form input product
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.checkTrungTenCreate = false;
+    $scope.formCreateProduct.$setPristine();
+    $scope.formCreateProduct.$setUntouched();
+  }
+
+  //show product
+  $scope.edit = function (product) {
+    $scope.formUpdate = angular.copy(product);
+    console.log($scope.formUpdate)
+    // editor2.setHTMLCode($scope.formUpdate.describe);
+
+    $http.get(apiUrlProduct + "/" + product.id + "/productDetail")
+      .then(function (response) {
+        console.log("proDetail" + response)
+        $scope.productDetails = response.data
+      });
+  }
+
+
+  $scope.showTab = function () {
+    var someListItemEl = document.querySelector('#tabhome')
+    var tab = new bootstrap.Tab(someListItemEl)
+    tab.show()
+  }
+
+  $scope.showButton = function (bool1) {
+    var x = document.getElementById("enableEdit");
+    var y = document.getElementById("cancelEdit");
+    var z = document.getElementById("submitEdit");
+
+    if (bool1 == true) {
+      x.style.display = "block";
+      y.style.display = "none";
+      z.style.display = "none";
+    } else {
+      x.style.display = "none";
+      y.style.display = "block";
+      z.style.display = "block";
+    }
+  }
+
+  $scope.enableEditForm = function (bool, bool1) {
+    document.getElementById("updateName").disabled = bool;
+    document.getElementById("updateCollar").disabled = bool;
+    document.getElementById("updateWrist").disabled = bool;
+    document.getElementById("updateCategory").disabled = bool;
+    document.getElementById("updateMaterial").disabled = bool;
+    document.getElementById("updateBrand").disabled = bool;
+    document.getElementById("updateDescribe").disabled = bool;
+    document.getElementById("updateStatus").disabled = bool;
+
+    $scope.showButton(bool1);
+  }
+  $scope.enableEditForm(true, true);
+
+
+  //check productDetail co trang thai 1 ko
+  $scope.checkStatusProductDetail = function (listProductDetail, statusProduct) {
+    $scope.statusHopLe = true;
+    if (statusProduct == 1) {
+      if (!listProductDetail.length > 0) {
+        $scope.statusHopLe = false;
+        return false;
+      }
+      var totalOfStatus1 = 0;
+      for (let i = 0; i <= listProductDetail; i++) {
+        let data = listProductDetail[i];
+        if (data.status == 1) {
+          totalOfStatus1++;
+        }
+      }
+      if (totalOfStatus1 >= 1) {
+        $scope.statusHopLe = true;
+        return true;
+      } else {
+        $scope.statusHopLe = false;
+        return false;
+      }
+    } else {
+      $scope.statusHopLe = true;
+      return;
+    }
+
+  }
+
+
+  $scope.update = function (productId) {
+    let item = angular.copy($scope.formUpdate);
+    // console.log("cc" + item.category)
+
+    if ($scope.checkStatusProductDetail($scope.productDetails, item.status) == false) return;
+
+    $scope.load()
+    $http.put(`${apiUrlProduct}/` + productId, item).then(resp => {
+      $scope.enableEditForm(true, true);
+      $scope.unload()
+      $scope.showToast("Cập nhật thành công!");
+      $scope.showToastUpdate("Cập nhật thành công!");
+      $scope.initialize();
+      $scope.resetFormUpdate();
+    }).catch(error => {
+      console.log("Error", error);
+    })
+  }
+
+  // $scope.updateStatus = 0;
+  $scope.updateStatusProduct = function (productId, statusUpdate) {
+    $scope.load()
+    $http.put(apiUrlProduct + "/status/" + productId, statusUpdate).then(resp => {
+      // alert("Update status product successfully!")
+      $scope.initialize();
+      $scope.unload();
+      $scope.showToast("Cập nhật thành công!");
+      var idModal = "updateStatusProduct-" + productId
+      var myModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(idModal));
+      myModal.hide();
+      $scope.resetFormInput();
+    }).catch(error => {
+      console.log("Error", error);
+    })
+  }
+
+  var editor1 = new RichTextEditor("#div_editor");
+  $scope.cc1 = function () {
+    $scope.getForm();
+    // console.log(editor1.getHTMLCode())
+    $scope.formInput.describe = editor1.getHTMLCode()
+  };
+
+  $scope.cancelEdit = function () {
+    $scope.enableEditForm(true, true);
+    $http.get(apiUrlProduct + "/" + $scope.formUpdate.id)
+      .then(function (response) {
+        console.log(response)
+        $scope.formUpdate = response.data;
+      });
+    // $scope.formUpdate = $scope.productEdit
+  }
+
+  var btnPd = document.getElementById("addProductDetail");
+  btnPd.style.display = "none";
+
+  $scope.showAddProductDetail = function (value) {
+    if (value == "pd") {
+      btnPd.style.display = "block";
+    } else {
+      btnPd.style.display = "none";
+    }
+  }
+
+  const apiUrlSize = "http://localhost:8080/api/size"
+  const apiUrlColor = "http://localhost:8080/api/color"
+
+  $scope.getSelectOptionPD = function () {
+    $http.get(apiUrlSize)
+      .then(function (response) {
+        console.log(response)
+        $scope.sizes = response.data;
+      });
+    $http.get(apiUrlColor)
+      .then(function (response) {
+        console.log(response)
+        $scope.colors = response.data;
+      });
+  }
+  $scope.getSelectOptionPD();
+
+
+  const apiUrlProductDetail = "http://localhost:8080/api/productDetail"
+  const apiImage = "http://localhost:8080/api/image"
+
+  $scope.showLoadImage = false;
+  $scope.loadImage = function () {
+    $scope.showLoadImage = true;
+  }
+  $scope.unLoadImage = function () {
+    $scope.showLoadImage = false;
+  }
+
+  //check so luong va status productDetail
+  $scope.checkSoLuongToiThieu = function (quantity, status) {
+    $scope.quantityStatusPD = false;
+    if (quantity <= 0 && status == 1) {
+      $scope.quantityStatusPD = true;
+      return true;
+    } else {
+      $scope.quantityStatusPD = false;
+      return false;
+    }
+  }
+
+  $scope.listImageCreate = [];
+
+  function layAnhTuCloud(textInput) {
+    const imageInput = document.getElementById(textInput);
+    imageInput.addEventListener("change", function () {
+      if (imageInput.files && imageInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          // imagePreview.src = e.target.result;
+
+          let data = new FormData();
+          data.append('file', imageInput.files[0]);
+          $scope.loadImage()
+          $http.post('http://localhost:8080/rest/upload', data, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+          }).then(resp => {
+            $scope.unLoadImage()
+            let objectImage = {
+              path: null,
+              name: null,
+              productDetail: {
+                id: null
+              }
+            }
+            objectImage.path = resp.data.name;
+            $scope.listImageCreate.push(objectImage)
+            console.log($scope.listImageCreate)
+          }).catch(error => {
+            $scope.unLoadImage()
+            console.log("Error", error);
+          })
+        };
+        reader.readAsDataURL(imageInput.files[0]);
+      }
+
+    });
+  }
+  layAnhTuCloud("imageCreate")
+
+  $scope.removeImage = function (image) {
+    var index = $scope.listImageCreate.indexOf(image);
+    $scope.listImageCreate.splice(index, 1);
+  }
+
+  //create product detail
+  $scope.submitProductDetail = function (listImage) {
+    $scope.checkTrungFK = false;
+    console.log($scope.formInputPd)
+    $scope.formInputPd.product = $scope.formUpdate
+    let itemcheck = angular.copy($scope.formInputPd);
+    $http.post(apiUrlProductDetail + "/checkFk", itemcheck).then(resp => {
+      if (resp.data == '') {
+        $scope.checkTrungFK = false;
+
+        $scope.formInputPd.product = $scope.formUpdate
+        let item = angular.copy($scope.formInputPd);
+        item.product.id = $scope.formUpdate.id
+        let productDetailRequest = { productDetail: item, imagesList: listImage };
+        console.log(productDetailRequest)
+        $scope.load();
+        if ($scope.checkTrungProductDetail() == true) return;
+        console.log(item)
+        if ($scope.checkSoLuongToiThieu(item.quantity, item.status) == true) return;
+
+        $http.post(apiUrlProductDetail, productDetailRequest).then(resp => {
+          $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
+            .then(function (response) {
+              console.log("pd" + response)
+              $scope.productDetails = response.data
+              $('#modalProductDetail').modal('hide');
+              $('#modalDetail').modal('show');
+              $scope.unload()
+              $scope.showToastUpdate("Thêm chi tiết sản phẩm thành công!")
+              $scope.showToast("Thêm chi tiết sản phẩm thành công!")
+              $scope.formInputPd = {
+                describe: ''
+              }
+              $scope.listImageUpdate = []
+            });
+        }).catch(error => {
+          console.log("Error", error);
+        })
+
+      } else {
+        $scope.quantityStatusPD = false;
+        $scope.checkTrungFK = true;
+      }
+    }).catch(error => {
+      console.log("Error", error);
+      return false;
+    })
+  }
+
+  $scope.checkTrungProductDetail = function () {
+    $scope.checkTrungFK = false;
+    console.log($scope.formInputPd)
+    $scope.formInputPd.product = $scope.formUpdate
+    let item = angular.copy($scope.formInputPd);
+    $http.post(apiUrlProductDetail + "/checkFk", item).then(resp => {
+      if (resp.data == '') {
+        console.log("cc1")
+        $scope.checkTrungFK = false;
+        // $('#modalProductDetail').modal('hide');
+        // $('#modalDetail').modal('show');
+        return false;
+      } else {
+        console.log("cc2")
+        $scope.checkTrungFK = true;
+        return true;
+      }
+    }).catch(error => {
+      console.log("Error", error);
+      return false;
+    })
+  }
+
+  $scope.cancelEditPd = function () {
+    $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
+      .then(function (response) {
+        console.log(response)
+        $scope.productDetails = response.data
+      });
+    $scope.resetValiAddPD()
+    // $scope.formInputPd = {}
+  }
+
+  $scope.resetValiAddPD = function () {
+    $scope.checkTrungFK = false;
+    $scope.formInputPd = {}
+    $scope.formCreateProductDetail.$setPristine();
+    $scope.formCreateProductDetail.$setUntouched();
+  }
+
+  $scope.formUpdateImage = {
+    path: null,
+    name: null,
+    productDetail: {
+      id: null
+    }
+  }
+
+  $scope.listImageUpdate = [];
+
+  $scope.getImageByPDid = function (id) {
+    $http.get(apiImage + "/pd/" + id)
+      .then(function (response) {
+        console.log(response.data)
+        $scope.listImageUpdate = response.data
+        return $scope.listImageUpdate;
+      });
+  }
+
+  function layAnhTuCloudUpdate(textInput) {
+    const imageInput = document.getElementById(textInput);
+    imageInput.addEventListener("change", function () {
+      if (imageInput.files && imageInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          // imagePreview.src = e.target.result;
+
+          let data = new FormData();
+          data.append('file', imageInput.files[0]);
+          $scope.loadImage()
+          $http.post('http://localhost:8080/rest/upload', data, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+          }).then(resp => {
+            $scope.unLoadImage()
+            let objectImage = {
+              path: null,
+              name: null,
+              productDetail: {
+                id: null
+              }
+            }
+            objectImage.path = resp.data.name;
+            $scope.listImageUpdate.push(objectImage)
+            console.log($scope.listImageUpdate)
+          }).catch(error => {
+            $scope.unLoadImage()
+            console.log("Error", error);
+          })
+        };
+        reader.readAsDataURL(imageInput.files[0]);
+      }
+
+    });
+  }
+  layAnhTuCloudUpdate("imageUpdate")
+
+  $scope.removeImageUpdate = function (image) {
+    var index = $scope.listImageUpdate.indexOf(image);
+    $scope.listImageUpdate.splice(index, 1);
+  }
+
+  $scope.editProductDetail = function (productDetail) {
+    $scope.formUpdatePd = angular.copy(productDetail);
+    let listimage = $scope.getImageByPDid($scope.formUpdatePd.id)
+    // console.log(listimage)
+    // console.log($scope.listImageUpdate)
+  }
+
+  $scope.updateProductDetail = function (listImage) {
+    $scope.formUpdatePd.product = $scope.formUpdate
+    let item = angular.copy($scope.formUpdatePd);
+    item.product.id = $scope.formUpdate.id
+    let productDetailRequest = { productDetail: item, imagesList: listImage };
+    console.log(productDetailRequest)
+    $scope.load();
+    $http.put(apiUrlProductDetail + "/" + $scope.formUpdatePd.id, productDetailRequest).then(resp => {
+      $http.get(apiUrlProduct + "/" + $scope.formUpdate.id + "/productDetail")
+        .then(function (response) {
+          console.log("pd" + response)
+          $scope.productDetails = response.data
+          $('#modalUpdateDetail').modal('hide');
+          $('#modalDetail').modal('show');
+          $scope.unload()
+          $scope.showToastUpdate("Cập nhật thành công!")
+          $scope.showToast("Cập nhật thành công!")
+          $scope.formUpdatePd = {}
+          $scope.listImageUpdate = [];
+        });
+    }).catch(error => {
+      console.log("Error", error);
+    })
+  }
+
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== '') {
+      $scope.products = $scope.originalProduct.filter(function (item) {
+        if (item && item.code) {
+          return item.code.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBill
+      $scope.products = angular.copy($scope.originalProduct);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
+
+  $scope.paper = {
+    page: 0,
+    size: 5, // Kích thước mặc định ban đầu
+    get items() {
+      let start = this.page * this.size;
+      return $scope.products.slice(start, start + this.size);
+    },
+    get count() {
+      return Math.ceil(1.0 * $scope.products.length / this.size);
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      if (this.page > 0) {
+        this.page--;
+      }
+    },
+    next() {
+      if (this.page < this.count - 1) {
+        this.page++;
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    }
+  };
+
+});
+
+app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalBill = [];
+  $scope.bill = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+
+  // $scope.typeBill = ""
+  // $scope.billStatus = ""
+  // $scope.fromDate = null
+  // $scope.toDate = null
+
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  }
+
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  }
+
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== '') {
+      $scope.bill = $scope.originalBill.filter(function (item) {
+        if (item && item.code) {
+          return item.code.toLowerCase().includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBill
+      $scope.bill = angular.copy($scope.originalBill);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+
+  $scope.filter = function (fromDate, toDate, filterTypeBill, filterStatus) {
+    // $scope.bill = $scope.originalBill.filter(function (item) {
+    //     if (item && item.createdAt) {
+    //         return (new Date(item.createdAt).getTime() >= new Date(fromDate).getTime())
+    //     }
+    //     return false;
+    // });
+    console.log(fromDate)
+    console.log(toDate)
+    console.log(filterTypeBill)
+    console.log(filterStatus)
+    if (fromDate == null) {
+      fromDate = undefined
+    }
+    if (toDate == null) {
+      toDate = undefined
+    }
+    if (filterTypeBill == "" || filterTypeBill == null) {
+      filterTypeBill = undefined
+    }
+    console.log(filterStatus)
+    if (filterStatus == "" || filterStatus == null) {
+      filterStatus = undefined
+    }
+
+
+    console.log(fromDate)
+    console.log(toDate)
+    console.log(filterTypeBill)
+    console.log(filterStatus)
+
+    if (filterStatus == undefined && filterTypeBill == undefined
+      && fromDate == undefined && toDate == undefined) {
+      $scope.bill = angular.copy($scope.originalBill);
+      return;
+    }
+
+    $scope.bill = $scope.originalBill.filter(function (item) {
+
+      //nếu thời gian null
+      if (fromDate == undefined && toDate == undefined) {
+        if (filterStatus != undefined && filterTypeBill != undefined) {
+          if (item && item.status && item.typeBill) {
+            return (item.status == filterStatus && item.typeBill == filterTypeBill)
+          }
+        }
+        if (filterStatus != undefined && filterTypeBill == undefined) {
+          if (item && item.status) {
+            return (item.status == filterStatus)
+          }
+        }
+        if (filterStatus == undefined && filterTypeBill != undefined) {
+          if (item && item.typeBill) {
+            return (item.typeBill == filterTypeBill)
+          }
+        }
+      }
+
+      //nếu status va typebill null
+      if (filterStatus == undefined && filterTypeBill == undefined) {
+        if (fromDate != undefined && toDate == undefined) {
+          if (item && item.createdAt) {
+            return (new Date(item.createdAt).getDate() >= new Date(fromDate).getDate())
+          }
+        }
+        if (fromDate == undefined && toDate != undefined) {
+          if (item && item.createdAt) {
+            return (new Date(item.createdAt).getDate() <= new Date(toDate).getDate())
+          }
+        }
+        if (fromDate != undefined && toDate != undefined) {
+          if (item && item.createdAt) {
+            return ((new Date(item.createdAt).getDate() >= new Date(fromDate).getDate())
+              && (new Date(item.createdAt).getDate() <= new Date(toDate).getDate()))
+          }
+        }
+      }
+
+      //có hoặc ko có cái nào null
+      if (filterStatus != undefined || filterTypeBill != undefined
+        || fromDate != undefined || toDate != undefined) {
+
+        //tất cả khác null
+        if (filterStatus != undefined && filterTypeBill != undefined
+          && fromDate != undefined && toDate != undefined) {
+          if (item && item.typeBill && item.status && item.createdAt) {
+            return ((new Date(item.createdAt).getTime() >= new Date(fromDate).getTime())
+              && (new Date(item.createdAt).getTime() <= new Date(toDate).getTime()))
+              && (item.status == filterStatus && item.typeBill == filterTypeBill)
+          }
+        }
+      }
+      return false;
+    });
+    $scope.changePageSize();
+  };
+
+  $scope.resetFilter = function () {
+    $scope.bill = angular.copy($scope.originalBill);
+    $scope.typeBill = ""
+    $scope.billStatus = ""
+    $scope.fromDate = null
+    $scope.toDate = null
+    $scope.changePageSize();
+  }
+
+  $scope.initialize = function () {
+    $http.get("http://localhost:8080/bills").then(function (resp) {
+      $scope.originalBill = resp.data;
+      $scope.bill = angular.copy($scope.originalBill);
+    });
+  }
+  $scope.initialize();
+
+  $scope.loadCustomers = function () {
+    $http.get("http://localhost:8080/customer") // Thay đổi đường dẫn API tương ứng
+      .then(function (resp) {
+        $scope.customerEntitys = resp.data;
+      })
+      .catch(function (error) {
+        console.log("Error loading customers", error);
+      });
+  }
+
+  $scope.loadCustomers();
+
+  $scope.loadEmployees = function () {
+    $http.get("http://localhost:8080/employee") // Thay đổi đường dẫn API tương ứng
+      .then(function (resp) {
+        $scope.employees = resp.data;
+      })
+      .catch(function (error) {
+        console.log("Error loading employees", error);
+      });
+  }
+  $scope.loadEmployees();
+
+  $scope.loadVoucher = function () {
+    $http.get("http://localhost:8080/api/voucher") // Thay đổi đường dẫn API tương ứng
+      .then(function (resp) {
+        $scope.vouchers = resp.data;
+      })
+      .catch(function (error) {
+        console.log("Error loading vuchers", error);
+      });
+  }
+  $scope.loadVoucher();
+
+  $scope.loadBillDetail = function (id) {
+    $http.get("http://localhost:8080/bills/" + id + "/billDetail") // Thay đổi đường dẫn API tương ứng
+      .then(function (resp) {
+        $scope.billDetails = resp.data;
+        var arr = resp.data;
+        $scope.tongSoSanPham = 0;
+        if (arr.length > 0) {
+          for (let i = 0; i < arr.length; i++) {
+            $scope.tongSoSanPham += arr[i].quantity;
+          }
+        }
+        // console.log($scope.tongSoSanPham)
+      })
+      .catch(function (error) {
+        console.log("Error loading billDetails", error);
+      });
+  }
+
+  $scope.edit = function (bill) {
+    $scope.showTab()
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(bill);
+    } else {
+      $scope.formUpdate = angular.copy(bill);
+      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+    }
+    $scope.loadBillDetail(bill.id)
+    $scope.getInfoBill(bill)
+    console.log(bill)
+  }
+
+
+  $scope.getInfoBill = function (bill) {
+    $scope.tongTien = bill.totalAmount;
+    $scope.giamGia = bill.totalAmount - bill.totalAmountAfterDiscount;
+    $scope.khachPhaiTra = bill.totalAmountAfterDiscount;
+    $scope.khachDaTra = 0
+
+    // console.log(bill.typeBill)
+    // console.log(bill.paymentMethod.id)
+    if (bill.typeBill === 1 && bill.paymentMethod.id === 3) {
+      $scope.khachDaTra = $scope.khachPhaiTra;
+    } else if (bill.typeBill === 1 && bill.paymentMethod.id != 3) {
+      $scope.khachDaTra = 0;
+    } else if (bill.typeBill == 2 &&
+      (bill.paymentMethod.id === 1 || bill.paymentMethod.id === 2 || bill.paymentMethod.id === 3)) {
+      $scope.khachDaTra = $scope.khachPhaiTra;
+    } else if (bill.typeBill == 3 &&
+      (bill.paymentMethod.id === 1 || bill.paymentMethod.id === 2 || bill.paymentMethod.id === 3)) {
+      $scope.khachDaTra = $scope.khachPhaiTra;
+    } else if (bill.typeBill === 3 && bill.paymentMethod.id === 4) {
+      $scope.khachDaTra = 0
+    }
+  }
+
+  //change tab
+  $scope.showTab = function () {
+    var someListItemEl = document.querySelector('#tabhome')
+    var tab = new bootstrap.Tab(someListItemEl)
+    tab.show()
+  }
+
+  // $scope.edit = function (bill) {
+  //     $scope.formUpdate = angular.copy(bill);
+  // }
+
+
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    $http.post("http://localhost:8080/bills", item).then(function (resp) {
+      $scope.showSuccessMessage("Create bill successfully");
+      $scope.resetFormInput();
+      $scope.initialize();
+      $('#modalAdd').modal('hide');
+    }).catch(function (error) {
+      console.log("Error", error);
+    });
+  }
+
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item)
+    $http.put(`http://localhost:8080/bills/${item.id}`, item).then(function (resp) {
+
+      $scope.showSuccessMessage("Update bill successfully");
+      $scope.resetFormUpdate();
+      $scope.initialize();
+      $('#modalUpdate').modal('hide');
+    }).catch(function (error) {
+      console.log("Error", error);
+    });
+  }
+
+  $scope.updateStatus = function (status, item) {
+    console.log("c")
+    console.log(status)
+    console.log(item)
+    $http.put(`http://localhost:8080/bills/status/${item.id}`, status).then(function (resp) {
+
+      $scope.showSuccessMessage("Cập nhật hóa đơn thành công");
+      $scope.resetFormUpdate();
+      $scope.initialize();
+      $('#modalUpdate').modal('hide');
+    }).catch(function (error) {
+      console.log("Error", error);
+    });
+  }
+
+
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateBill.$setPristine();
+    $scope.formUpdateBill.$setUntouched();
+  }
+
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formCreateBill.$setPristine();
+    $scope.formCreateBill.$setUntouched();
+  }
+
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
+
+  $scope.paper = {
+    page: 0,
+    size: 5, // Kích thước mặc định ban đầu
+    get items() {
+      let start = this.page * this.size;
+      return $scope.bill.slice(start, start + this.size);
+    },
+    get count() {
+      return Math.ceil(1.0 * $scope.bill.length / this.size);
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      if (this.page > 0) {
+        this.page--;
+      }
+    },
+    next() {
+      if (this.page < this.count - 1) {
+        this.page++;
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    }
+  };
+});
+
+
 
 // Tạo cái mới đừng dùng những cái có sẵn chỉ để tham khảo
 // Các phím tắt khi sử dụng visual

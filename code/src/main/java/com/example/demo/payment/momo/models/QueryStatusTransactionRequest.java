@@ -2,9 +2,7 @@ package com.example.demo.payment.momo.models;
 
 import com.example.demo.payment.momo.enums.Language;
 
-/**
- * Created by Hai.Nguyen Date: 19-01-2018
- */
+
 public class QueryStatusTransactionRequest extends Request {
     private String signature;
 

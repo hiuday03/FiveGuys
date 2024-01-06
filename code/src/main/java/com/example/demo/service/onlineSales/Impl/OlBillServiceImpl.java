@@ -5,6 +5,10 @@ import com.example.demo.entity.BillDetail;
 import com.example.demo.entity.ProductDetail;
 import com.example.demo.entity.Vouchers;
 import com.example.demo.model.response.onlineSales.OlBillResponse;
+import com.example.demo.payment.momo.config.Environment;
+import com.example.demo.payment.momo.models.QueryStatusTransactionResponse;
+import com.example.demo.payment.momo.processor.QueryTransactionStatus;
+import com.example.demo.payment.vnpay.config.ConfigVNPay;
 import com.example.demo.repository.onlineSales.OLBillDetailRepository;
 import com.example.demo.repository.onlineSales.OLBillRepository;
 import com.example.demo.repository.onlineSales.OLProductDetailRepository;
@@ -17,12 +21,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 public class OlBillServiceImpl implements OlBillService {
@@ -46,6 +51,8 @@ public class OlBillServiceImpl implements OlBillService {
     private OLBillRepository olBillRepository;
 
 
+
+
     private void updateProductQuantity(BillDetail billDetail) {
         Optional<ProductDetail> productDetail = olProductDetailService.findById(billDetail.getProductDetail().getId());
         if (productDetail.isPresent()){
@@ -65,10 +72,11 @@ public class OlBillServiceImpl implements OlBillService {
         return currentQuantity >= quantityToRemove;
     }
 
+
     @Override
-    public Bill TaoHoaDonNguoiDungChuaDangNhap(JsonNode orderData) {
+    public ResponseEntity<?> TaoHoaDonNguoiDungChuaDangNhap(JsonNode orderData) {
         if (orderData == null) {
-            throw new IllegalArgumentException("orderData cannot be null");
+            return ResponseEntity.ok(0);
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -84,21 +92,24 @@ public class OlBillServiceImpl implements OlBillService {
                 existingVoucher.setQuantity(existingVoucher.getQuantity() - 1);
                 olVouchersRepository.save(existingVoucher);
             } else {
-                throw new IllegalStateException("Voucher is not available");
+                return ResponseEntity.ok(3);
             }
         }
 
         // Kiểm tra và xử lý số lượng sản phẩm trước khi thanh toán
         List<BillDetail> billDetails = mapper.convertValue(orderData.get("billDetail"), new TypeReference<List<BillDetail>>() {});
         for (BillDetail detail : billDetails) {
-            updateProductQuantity(detail);
-            detail.setBill(bill);
+            try {
+                updateProductQuantity(detail);
+                detail.setBill(bill);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.ok(2);
+            }
         }
         // Lưu thông tin hóa đơn và chi tiết hóa đơn vào cơ sở dữ liệu
-        bill.setStatus(1);
         Bill savedBill = olProductDetailRepository.save(bill);
         olBillDetailRepository.saveAll(billDetails);
-        return savedBill;
+        return ResponseEntity.ok(savedBill);
     }
 
 
@@ -153,6 +164,23 @@ public class OlBillServiceImpl implements OlBillService {
         }
         return null;
     }
+
+    @Override
+    public Bill save(Bill bill) {
+        return olBillRepository.save(bill);
+    }
+
+    @Override
+    public Bill findById(Long id) {
+        Optional<Bill> bill = olBillRepository.findById(id);
+        if (bill.isPresent()){
+            return bill.get();
+        }
+        return null;
+    }
+
+
+
 
 
 }

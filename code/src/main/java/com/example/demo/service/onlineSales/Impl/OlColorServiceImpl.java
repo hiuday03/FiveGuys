@@ -19,6 +19,6 @@ public class OlColorServiceImpl implements OlColorService {
 
     @Override
     public List<Color> findAll() {
-        return repository.findAll();
+        return repository.findAllByStatusEqualsOne();
     }
 }

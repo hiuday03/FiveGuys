@@ -1,6 +1,7 @@
 package com.example.demo.service.serviceiplm;
 
 import com.example.demo.entity.AccountEntity;
+import com.example.demo.entity.Brands;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.security.Request.UserRequestDTO;
 import com.example.demo.security.service.AccountEmailSender;
@@ -61,7 +62,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountEntity createAccount(AccountEntity accountEntity) {
-        AccountEntity account = accountRepository.save(accountEntity);
+        String email = accountEntity.getEmail();
+        String account = accountEntity.getAccount();
+        // Kiểm tra xem tên thương hiệu đã tồn tại trong cơ sở dữ liệu chưa
+        Optional<AccountEntity> existingEmail = accountRepository.findByEmail(email);
+        Optional<AccountEntity> existingAccount = accountRepository.findByAccount(account);
+        if (existingEmail != null) {
+            throw new IllegalArgumentException("Email đã tồn tại");
+        }
+        if (existingAccount != null) {
+            throw new IllegalArgumentException("Account đã tồn tại");
+        }
         // Gửi email thông báo khi tạo mới tài khoản
 //        accountEmailSender.sendAccountCreationEmail(
 //                account.getEmail(),
@@ -70,11 +81,22 @@ public class AccountServiceImpl implements AccountService {
 //                account.getConfirmationCode()
 //        );
 
-        return account;
+        return accountRepository.save(accountEntity);
     }
 
     @Override
     public AccountEntity save(AccountEntity accountEntity) {
+        String email = accountEntity.getEmail();
+        String account = accountEntity.getAccount();
+        // Kiểm tra xem tên thương hiệu đã tồn tại trong cơ sở dữ liệu chưa
+        Optional<AccountEntity> existingEmail = accountRepository.findByEmail(email);
+        Optional<AccountEntity> existingAccount = accountRepository.findByAccount(account);
+        if (existingEmail != null) {
+            throw new IllegalArgumentException("Email đã tồn tại");
+        }
+        if (existingAccount != null) {
+            throw new IllegalArgumentException("Account đã tồn tại");
+        }
         return accountRepository.save(accountEntity);
     }
 //    @Override

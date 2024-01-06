@@ -68,9 +68,8 @@ public class ProductRestController {
     }
 
     @GetMapping("/{id}/productDetail")
-    public ResponseEntity<?> getProductDetail(@PathVariable("id") Long id,
-                                              @RequestParam(value = "page", defaultValue = "0") Integer page){
-        Page<ProductDetail> productDetails = productDetailService.getAllByPId(id, page);
+    public ResponseEntity<?> getProductDetail(@PathVariable("id") Long id){
+        List<ProductDetail> productDetails = productDetailService.getAllByPId(id);
         return ResponseEntity.ok(productDetails);
     }
 

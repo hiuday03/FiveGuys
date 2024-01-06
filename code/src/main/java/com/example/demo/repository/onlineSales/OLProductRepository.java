@@ -106,9 +106,9 @@ public interface OLProductRepository extends JpaRepository<Product, Long> {
             "WHERE p.status = 1 AND (" +
             "   p.code LIKE %:keyword% OR " +
             "   p.name LIKE %:keyword% OR " +
-            "   p.collar LIKE %:keyword% OR " +
-            "   p.wrist LIKE %:keyword% OR " +
-            "   p.describe LIKE %:keyword% OR " +
+//            "   p.collar LIKE %:keyword% OR " +
+//            "   p.wrist LIKE %:keyword% OR " +
+//            "   p.describe LIKE %:keyword% OR " +
             "   c.name LIKE %:keyword% OR " +
             "   m.name LIKE %:keyword%)")
     List<Product> findByKeyword(String keyword);

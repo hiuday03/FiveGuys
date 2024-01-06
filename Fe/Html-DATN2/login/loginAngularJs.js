@@ -136,7 +136,7 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
                 console.log('Đăng nhập thành công:', response.data.token);
                 alert('Đăng nhập thành công');
 
-                window.location.href = 'http://127.0.0.1:5500/index.html#!/home';
+                window.location.href = 'http://127.0.0.1:5502/olView/index.html#!/home';
             })
             .catch(function (error) {
                 if (error.status === 404) {
@@ -156,8 +156,9 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
 
         return emailPattern.test(email);
     };
+    
     $scope.registerUser = function () {
-
+        // Kiểm tra xem các trường thông tin đăng ký đã được điền đầy đủ hay không
         if (!$scope.user.lastName || !$scope.user.firstName || !$scope.user.email || !$scope.user.account || !$scope.user.password || !$scope.user.confirmPassword) {
             alert('Vui lòng điền đầy đủ thông tin.');
             return true;
@@ -168,21 +169,47 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
             alert('Mật khẩu xác nhận không khớp');
             return true;
         }
-
-        // Gọi API đăng ký
-        $http.post('http://localhost:8080/auth/register', $scope.user)
-            .then(function (response) {
-                console.log('Kết quả từ API:', response.data);
-                alert('Đăng ký thành công');
-
-                // Xử lý kết quả từ API
+    
+        // Gọi API để kiểm tra email đã được sử dụng trước đó hay chưa
+        $http.post('http://localhost:8080/account/check-email', { email: $scope.user.email })
+            .then(function (emailResponse) {
+                if (emailResponse.data.exists) {
+                    alert('Email đã được sử dụng. Vui lòng chọn email khác.');
+                    return;
+                } else {
+                    // Nếu email chưa được sử dụng, tiến hành kiểm tra account
+                    $http.post('http://localhost:8080/account/check-account', { account: $scope.user.account })
+                        .then(function (accountResponse) {
+                            if (accountResponse.data.exists) {
+                                alert('Tài khoản đã tồn tại. Vui lòng chọn tài khoản khác.');
+                                return;
+                            } else {
+                                // Nếu cả email và account đều chưa được sử dụng, thực hiện đăng ký
+                                $http.post('http://localhost:8080/auth/register', $scope.user)
+                                    .then(function (registerResponse) {
+                                        console.log('Kết quả từ API:', registerResponse.data);
+                                        alert('Đăng ký thành công');
+    
+                                        // Xử lý kết quả từ API khi đăng ký thành công
+                                    })
+                                    .catch(function (registerError) {
+                                        alert('Đăng kí thất bại');
+                                        console.error('Lỗi khi gọi API:', registerError);
+                                    });
+                            }
+                        })
+                        .catch(function (accountError) {
+                            alert('Lỗi khi kiểm tra account:', accountError);
+                            console.error('Lỗi khi kiểm tra account:', accountError);
+                        });
+                }
             })
-            .catch(function (error) {
-                alert('Đăng kí thất bại');
-
-                console.error('Lỗi khi gọi API:', error);
+            .catch(function (emailError) {
+                alert('Lỗi khi kiểm tra email:', emailError);
+                console.error('Lỗi khi kiểm tra email:', emailError);
             });
     };
+    
 
 
     $scope.logout = function () {
@@ -190,7 +217,7 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
         localStorage.removeItem('token');
         alert('Đăng xuất thành công');
 
-        window.location.href = 'http://127.0.0.1:5500/index.html#!/home';
+        window.location.href = 'http://127.0.0.1:5502/olView/index.html#!/home';
 
         // Reset trạng thái của ứng dụng
         // $scope.isCustomerLoggedIn = false;

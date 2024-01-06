@@ -37,7 +37,7 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
 
     @Override
     public ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId) {
-        return olProductDetailRepository.findByColorIdAndSizeIdAndProductId(colorId,sizeId,productId);
+        return olProductDetailRepository.findByColorIdAndSizeIdAndProductIdAndStatus(colorId,sizeId,productId,1);
     }
 
     @Override
