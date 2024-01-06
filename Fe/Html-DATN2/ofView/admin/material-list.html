@@ -19,6 +19,21 @@
                     <li class="breadcrumb-item active">Chất Liệu</li>
                 </ol>
             </nav>
+            <div class="row">
+                <div class="col-md-1">
+                    <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+                    <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
+                        <option value="selected">0</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div class="col-md-11">
+                </div>
+            </div>
         </div>
         <!--  Begin code  -->
         <section class="section">

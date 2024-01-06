@@ -1181,7 +1181,7 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.initialize = function () {
-    $http.get("/brand").then(function (resp) {
+    $http.get("http://localhost:8080/brand").then(function (resp) {
       $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
       $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
     });
@@ -1201,7 +1201,7 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   // $scope.create = function () {
   //     let item = angular.copy($scope.formInput);
   //     item.createdAt = $scope.currentDate;
-  //     $http.post("/brand", item).then(function (resp) {
+  //     $http.post("http://localhost:8080/brand", item).then(function (resp) {
   //         $scope.showSuccessMessage("Create brand successfully");
   //         $scope.resetFormInput();
   //         $scope.initialize();
@@ -1214,7 +1214,7 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
     let item = angular.copy($scope.formInput);
     item.createdAt = $scope.currentDate;
     $http
-      .post("/brand", item)
+      .post("http://localhost:8080/brand", item)
       .then(function (resp) {
         $scope.showSuccessMessage("Create brand successfully");
         $scope.resetFormInput();
@@ -1235,7 +1235,7 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
     console.log(item);
     item.updatedAt = $scope.currentDate;
     $http
-      .put(`/brand/${item.id}`, item)
+      .put(`http://localhost:8080/brand/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Update Brand successfully");
         $scope.resetFormUpdate();
@@ -1253,7 +1253,7 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/brand/${item.id}`)
+      .delete(`http://localhost:8080/brand/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete Brand successfully");
         $scope.initialize();
@@ -1809,7 +1809,7 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.initialize = function () {
-    $http.get("/favorite").then(function (resp) {
+    $http.get("http://localhost:8080/favorite").then(function (resp) {
       $scope.originalFavorite = resp.data;
       $scope.favorite = angular.copy($scope.originalFavorite);
     });
@@ -1819,7 +1819,7 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadCustomers = function () {
     $http
-      .get("/customer") // Thay đổi đường dẫn API tương ứng
+      .get("http://localhost:8080/customer") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
         $scope.customers = resp.data;
       })
@@ -1832,7 +1832,7 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadProductDetails = function () {
     $http
-      .get("/api/productDetail") // Thay đổi đường dẫn API tương ứng
+      .get("http://localhost:8080/api/productDetail") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
         $scope.productDetails = resp.data;
       })
@@ -1857,7 +1857,7 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     item.createdAt = $scope.currentDate;
     item.createdAt = $scope.currentDate;
     $http
-      .post("/favorite", item)
+      .post("http://localhost:8080/favorite", item)
       .then(function (resp) {
         $scope.showSuccessMessage("Create favorite successfully");
         $scope.resetFormInput();
@@ -1875,7 +1875,7 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     item.updatedAt = $scope.currentDate;
 
     $http
-      .put(`/favorite/${item.id}`, item)
+      .put(`http://localhost:8080/favorite/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Update Favorite successfully");
         $scope.resetFormUpdate();
@@ -1889,7 +1889,7 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/favorite/${item.id}`)
+      .delete(`http://localhost:8080/favorite/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete Favorite successfully");
         $scope.initialize();
@@ -1983,7 +1983,7 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.initialize = function () {
-    $http.get("/rating").then(function (resp) {
+    $http.get("http://localhost:8080/rating").then(function (resp) {
       $scope.originalRating = resp.data;
       $scope.rating = angular.copy($scope.originalRating);
     });
@@ -1993,7 +1993,7 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadCustomers = function () {
     $http
-      .get("/customer") // Thay đổi đường dẫn API tương ứng
+      .get("http://localhost:8080/customer") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
         $scope.customers = resp.data;
       })
@@ -2006,7 +2006,7 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadProductDetails = function () {
     $http
-      .get("/api/productDetail") // Thay đổi đường dẫn API tương ứng
+      .get("http://localhost:8080/api/productDetail") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
         $scope.productDetails = resp.data;
       })
@@ -2030,7 +2030,7 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
     let item = angular.copy($scope.formInput);
     item.createdAt = $scope.currentDate;
     $http
-      .post("/rating", item)
+      .post("http://localhost:8080/rating", item)
       .then(function (resp) {
         $scope.showSuccessMessage("Create rating successfully");
         $scope.resetFormInput();
@@ -2047,7 +2047,7 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
     console.log(item);
     item.updatedAt = $scope.currentDate;
     $http
-      .put(`/rating/${item.id}`, item)
+      .put(`http://localhost:8080/rating/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Update rating successfully");
         $scope.resetFormUpdate();
@@ -2061,7 +2061,7 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/rating/${item.id}`)
+      .delete(`http://localhost:8080/rating/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete rating successfully");
         $scope.initialize();
@@ -2155,7 +2155,7 @@ app.controller("role-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.initialize = function () {
-    $http.get("/role").then(function (resp) {
+    $http.get("http://localhost:8080/role").then(function (resp) {
       $scope.originalRole = resp.data; // Lưu dữ liệu gốc
       $scope.role = angular.copy($scope.originalRole); // Sao chép dữ liệu gốc sang mảng hiển thị
     });
@@ -2176,7 +2176,7 @@ app.controller("role-ctrl", function ($scope, $http, $timeout) {
     let item = angular.copy($scope.formInput);
     item.createdAt = $scope.currentDate;
     $http
-      .post("/role", item)
+      .post("http://localhost:8080/role", item)
       .then(function (resp) {
         $scope.showSuccessMessage("Create role successfully");
         $scope.resetFormInput();
@@ -2193,7 +2193,7 @@ app.controller("role-ctrl", function ($scope, $http, $timeout) {
     console.log(item);
     item.updatedAt = $scope.currentDate;
     $http
-      .put(`/role/${item.id}`, item)
+      .put(`http://localhost:8080/role/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Update Role successfully");
         $scope.resetFormUpdate();
@@ -2207,7 +2207,7 @@ app.controller("role-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/role/${item.id}`)
+      .delete(`http://localhost:8080/role/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete Role successfully");
         $scope.initialize();
@@ -2299,7 +2299,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
     $scope.changePageSize();
   };
   $scope.initialize = function () {
-    $http.get("/address").then(function (resp) {
+    $http.get("http://localhost:8080/address").then(function (resp) {
       $scope.originalAddress = resp.data;
       $scope.address = angular.copy($scope.originalAddress);
     });
@@ -2311,7 +2311,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadCustomers = function () {
     $http
-      .get("/customer") // Thay đổi đường dẫn API tương ứng
+      .get("http://localhost:8080/customer") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
         $scope.customers = resp.data;
       })
@@ -2340,7 +2340,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
     item.address = getResult1();
 
     $http
-      .post("/address", item)
+      .post("http://localhost:8080/address", item)
       .then(function (resp) {
         $scope.showSuccessMessage("Create address successfully");
         $scope.resetFormInput();
@@ -2369,7 +2369,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
     item.address = getResult2();
 
     $http
-      .put(`/address/${item.id}`, item)
+      .put(`http://localhost:8080/address/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Update address successfully");
         $scope.resetFormUpdate();
@@ -2393,7 +2393,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/address/${item.id}`)
+      .delete(`http://localhost:8080/address/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete address successfully");
         $scope.initialize();
@@ -2605,7 +2605,7 @@ app.controller("account-ctrl", function ($scope, $http, $timeout) {
     $scope.changePageSize();
   };
   $scope.initialize = function () {
-    $http.get("/account").then(function (resp) {
+    $http.get("http://localhost:8080/account").then(function (resp) {
       $scope.originalAccount = resp.data;
       $scope.account = angular.copy($scope.originalAccount);
     });
@@ -2615,7 +2615,7 @@ app.controller("account-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadRoles = function () {
     $http
-      .get("/role")
+      .get("http://localhost:8080/role")
       .then(function (resp) {
         $scope.roles = resp.data;
       })
@@ -2644,7 +2644,7 @@ app.controller("account-ctrl", function ($scope, $http, $timeout) {
     item.password = "fiveguys123";
     item.status = 1;
     $http
-      .post("/account/save", item)
+      .post("http://localhost:8080/account/save", item)
       .then(function (resp) {
         $scope.showSuccessMessage("Thêm tài khoản thành công");
         $scope.resetFormInput();
@@ -2660,7 +2660,7 @@ app.controller("account-ctrl", function ($scope, $http, $timeout) {
     let item = angular.copy($scope.formUpdate);
     console.log(item);
     $http
-      .put(`/account/${item.id}`, item)
+      .put(`http://localhost:8080/account/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Sửa tài khoản thành công");
         $scope.resetFormUpdate();
@@ -2674,7 +2674,7 @@ app.controller("account-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/account/${item.id}`)
+      .delete(`http://localhost:8080/account/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Xoá thành công");
         $scope.initialize();
@@ -2797,7 +2797,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.initialize = function () {
-    $http.get("/customer").then(function (resp) {
+    $http.get("http://localhost:8080/customer").then(function (resp) {
       $scope.originalCustomer = resp.data;
       $scope.customer = angular.copy($scope.originalCustomer);
     });
@@ -2807,7 +2807,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadAccounts = function () {
     $http
-      .get("/account/not-in-customer-employee") // Thay đổi đường dẫn API tương ứng
+      .get("http://localhost:8080/account/not-in-customer-employee") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
         $scope.accounts = resp.data;
       })
@@ -2847,7 +2847,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
       data.append("file", fileInput.files[0]);
       $scope.load();
       $http
-        .post("/rest/upload", data, {
+        .post("http://localhost:8080/rest/upload", data, {
           transformRequest: angular.identity,
           headers: { "Content-Type": undefined },
         })
@@ -2856,7 +2856,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
           let item = angular.copy($scope.formInput);
           item.createdAt = $scope.currentDate;
           $http
-            .post(`/customer`, item)
+            .post(`http://localhost:8080/customer`, item)
             .then((resp) => {
               $scope.showSuccessMessage("Create Custoemr successfully!");
               $scope.initialize();
@@ -2893,7 +2893,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   $scope.apiUpdate = function () {
     let item = angular.copy($scope.formUpdate);
     $http
-      .put(`/customer/${item.id}`, item)
+      .put(`http://localhost:8080/customer/${item.id}`, item)
       .then((resp) => {
         $scope.showSuccessMessage("Update Customer successfully!");
         $scope.resetFormUpdate();
@@ -2916,7 +2916,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
       data.append("file", fileInput.files[0]);
       $scope.load();
       $http
-        .post("/rest/upload", data, {
+        .post("http://localhost:8080/rest/upload", data, {
           transformRequest: angular.identity,
           headers: { "Content-Type": undefined },
         })
@@ -2943,7 +2943,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/customer/${item.id}`)
+      .delete(`http://localhost:8080/customer/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete Customer successfully");
         $scope.initialize();
@@ -3008,7 +3008,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.xuatFile = function () {
-    $http.get("/customer/excel").then(function (response) {
+    $http.get("http://localhost:8080/customer/excel").then(function (response) {
       alert("Xuất File Thành Công");
       // $scope.pageEm = response.data.content;
       // $scope.totalPages = response.data.totalPages
@@ -3085,7 +3085,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
     $scope.changePageSize();
   };
   $scope.initialize = function () {
-    $http.get("/employee").then(function (resp) {
+    $http.get("http://localhost:8080/employee").then(function (resp) {
       $scope.originalEmployee = resp.data;
       $scope.employee = angular.copy($scope.originalEmployee);
     });
@@ -3095,7 +3095,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadAccounts = function () {
     $http
-      .get("/account/not-in-customer-employee")
+      .get("http://localhost:8080/account/not-in-customer-employee")
       .then(function (resp) {
         $scope.accounts = resp.data;
       })
@@ -3124,7 +3124,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
       data.append("file", fileInput.files[0]);
       $scope.load();
       $http
-        .post("/rest/upload", data, {
+        .post("http://localhost:8080/rest/upload", data, {
           transformRequest: angular.identity,
           headers: { "Content-Type": undefined },
         })
@@ -3133,7 +3133,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
           let item = angular.copy($scope.formInput);
           item.createdAt = $scope.currentDate;
           $http
-            .post(`/employee`, item)
+            .post(`http://localhost:8080/employee`, item)
             .then((resp) => {
               $scope.showSuccessMessage("Create Custoemr successfully!");
               $scope.initialize();
@@ -3159,7 +3159,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
     item.createdAt = $scope.currentDate;
     item.active = true;
     $http
-      .post("/account/save", item)
+      .post("http://localhost:8080/account/save", item)
       .then(function (resp) {
         $scope.getRole();
         $scope.resetFormInput();
@@ -3170,12 +3170,12 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
       });
   };
   $scope.getRole = function () {
-    $http.get("/account").then(function (resp) { });
+    $http.get("http://localhost:8080/account").then(function (resp) { });
   };
   $scope.getRole();
   $scope.loadRoles = function () {
     $http
-      .get("/role")
+      .get("http://localhost:8080/role")
       .then(function (resp) {
         $scope.roles = resp.data;
       })
@@ -3207,7 +3207,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
             gender: Gender,
             address: row.getCell(4).value,
           };
-          $http.post("/employee", employee).then((resp) => {
+          $http.post("http://localhost:8080/employee", employee).then((resp) => {
             alert("Add Employee successfully");
             $scope.initialize();
             console.log("success", resp.data);
@@ -3221,7 +3221,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
   $scope.apiUpdate = function () {
     let item = angular.copy($scope.formUpdate);
     $http
-      .put(`/employee/${item.id}`, item)
+      .put(`http://localhost:8080/employee/${item.id}`, item)
       .then((resp) => {
         $scope.showSuccessMessage("Update employee successfully!");
         $scope.resetFormUpdate();
@@ -3244,7 +3244,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
       data.append("file", fileInput.files[0]);
       $scope.load();
       $http
-        .post("/rest/upload", data, {
+        .post("http://localhost:8080/rest/upload", data, {
           transformRequest: angular.identity,
           headers: { "Content-Type": undefined },
         })
@@ -3271,7 +3271,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/employee/${item.id}`)
+      .delete(`http://localhost:8080/employee/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete employee successfully");
         $scope.initialize();
@@ -3304,7 +3304,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.getById = function (item) {
-    $http.get(`/api/employee/${item.id}`).then(function (response) {
+    $http.get(`http://localhost:8080/api/employee/${item.id}`).then(function (response) {
       $scope.listEm = response.data;
       console.log(item.id);
     });
@@ -3313,7 +3313,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
   // search code employee
   $scope.getByMa = function (item) {
     // console.log(item.id);
-    $http.get(`/api/employee/search/${item.id}`).then(function (response) {
+    $http.get(`http://localhost:8080/api/employee/search/${item.id}`).then(function (response) {
       console.log(item.code);
       $scope.listEm = response.data;
       // console.log(item.code);
@@ -3335,7 +3335,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
   //delete or update status Employee
   $scope.updateStatusEmployee = function (item) {
     console.log(item);
-    $http.put(`/api/employee/delete/${item.id}`, item).then(function (resp) {
+    $http.put(`http://localhost:8080/api/employee/delete/${item.id}`, item).then(function (resp) {
       // $scope.getAll();
       $scope.getAllStatusDangLam();
       console.log(item.id);
@@ -3344,7 +3344,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
 
   // xuát file danh sách excel Employee
   $scope.xuatFile = function () {
-    $http.get("/employee/excel").then(function (response) {
+    $http.get("http://localhost:8080/employee/excel").then(function (response) {
       alert("Xuất File Thành Công");
       // $scope.pageEm = response.data.content;
       // $scope.totalPages = response.data.totalPages
