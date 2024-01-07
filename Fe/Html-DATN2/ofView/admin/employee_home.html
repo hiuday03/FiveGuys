@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
-    layout:decorate="~{admin/index}">
 
-<head>
-    <meta charset="utf-8">
-    <title>Dashboard - FiveGuys</title>
-</head>
 <link rel="stylesheet" href="@{/assets/js/employee/Employee.js}">
 
-<body ng-app="employee" ng-controller="employee-ctrl">
-    <main id="main" class="main" layout:fragment="content">
         <div class="overlay" ng-show="loading">
             <div class="spinner-border" role="status" style="position: absolute;left: 50%;top: 50%;">
                 <span class="visually-hidden">Loading...</span>
@@ -522,7 +513,3 @@
         <!-- End Modal addexxcel -->
 
         <!--  End Code  -->
-    </main>
-</body>
-
-</html>

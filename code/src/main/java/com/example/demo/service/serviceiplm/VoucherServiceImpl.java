@@ -64,7 +64,11 @@ public class VoucherServiceImpl implements VoucherService {
         return listReturn;
     }
 
-
+    @Override
+    public List<Vouchers> getVoucherStatus(Integer status){
+        List<Vouchers> vc = voucherRepository.getVoucherStatus(status);
+        return vc;
+    }
 
     @Override
     public List<Vouchers> getDataByCurrentDate(){
