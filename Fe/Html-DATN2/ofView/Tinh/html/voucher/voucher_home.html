@@ -37,13 +37,30 @@
             <option value="100">100</option>
           </select>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-2">
+          <select
+            name=""
+            id="formtimkiem"
+            class="form-control"
+            aria-label="Default select example"
+            ng-model="formtimkiem.status"
+            ng-change="timkiemStatus(formtimkiem.status)"
+          >
+            <option selected>Chọn trạng thái</option>
+            <option value="0">Chưa hoạt động</option>
+            <option value="1">Đang hoạt động</option>
+            <option value="2">Hết khuyến mại</option>
+            <option value="3">Hết hạn</option>
+            <option value="4">Đã xóa</option>
+          </select>
+        </div>
+        <div class="col-md-9">
           <input
             type="text"
             class="form-control"
             name="fullName"
             ng-model="searchVoucher"
-            placeholder="Search"
+            placeholder="Tìm kiếm theo mã hoặc tên"
           />
         </div>
       </div>
@@ -72,11 +89,11 @@
             <td class="col-2">{{l.minimumTotalAmount}}</td>
             <td class="col-1">{{l.quantity}}</td>
             <td class="col-2" ng-switch="l.status">
-              <span ng-switch-when="0">CHUA_HOAT_DONG</span>
-              <span ng-switch-when="1">DANG_HOAT_DONG</span>
-              <span ng-switch-when="2">HET_KHUYEN_MAI</span>
-              <span ng-switch-when="3">HET_HAN</span>
-              <span ng-switch-default>DA_XOA</span>
+              <span ng-switch-when="0">Chưa hoạt động</span>
+              <span ng-switch-when="1">Đang hoạt động</span>
+              <span ng-switch-when="2">Hết khuyến mại</span>
+              <span ng-switch-when="3">Hết hạn</span>
+              <span ng-switch-default>Đá xóa</span>
             </td>
 
             <td class="col-2">

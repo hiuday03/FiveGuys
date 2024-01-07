@@ -24,5 +24,6 @@ public interface VoucherService {
 
     List<Vouchers> getDataByCurrentDate();
 
+    List<Vouchers> getVoucherStatus(Integer status);
 }
 

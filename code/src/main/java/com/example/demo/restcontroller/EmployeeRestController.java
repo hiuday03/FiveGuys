@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -22,6 +23,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -116,7 +120,8 @@ public class EmployeeRestController {
 
             XSSFRow row = null;
             Cell cell = null;
-
+            LocalDateTime date = LocalDateTime.now();
+            DateTimeFormatter getDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             row = sheet.createRow(0);
             cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue("STT");
@@ -182,7 +187,7 @@ public class EmployeeRestController {
 //                    cell.setCellStyle(cellStyleFormatNumber);
 
                 }
-                File e = new File("E:\\FileEmployee.xlsx");
+                File e = new File("E:\\"+"FileEmployee"+date.format(getDate)+".xlsx");
                 try {
                     FileOutputStream fis = new FileOutputStream(e);
                     worbook.write(fis);
