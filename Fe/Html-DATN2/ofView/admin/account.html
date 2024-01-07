@@ -10,82 +10,49 @@
       <li class="breadcrumb-item active">Tài Khoản</li>
     </ol>
   </nav>
-  <input
-    type="text"
-    ng-model="searchKeyword"
-    ng-change="search()"
-    placeholder="Search ..."
-    class="form-control"
-  />
+  <div class="col-md-1">
+    <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+    <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
+      <option value="0">0</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+  </div>
+  <div class="col-md-11">
+    <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search ..." class="form-control" />
+  </div>
 </div>
 <!--  Begin code  -->
 <section class="section">
-  <button
-    type="button"
-    class="btn btn-outline-success mb-2"
-    data-bs-toggle="modal"
-    data-bs-target="#modalAdd"
-  >
+  <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal" data-bs-target="#modalAdd">
     Thêm Tài Khoản
   </button>
-  <div
-    class="alert border-success alert-dismissible fade show"
-    role="alert"
-    ng-show="showAlert"
-  >
+  <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
     {{alertMessage}}
-    <button
-      type="button"
-      class="btn-close"
-      ng-click="closeAlert()"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
   </div>
   <!-- Modal Add -->
-  <div
-    class="modal fade"
-    id="modalAdd"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Thêm Tài Khoản</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form
-            name="formCreateAccount"
-            ng-submit="formCreateAccount.$valid && create()"
-            novalidate
-          >
+          <form name="formCreateAccount" ng-submit="formCreateAccount.$valid && create()" novalidate>
             <div class="row mb-3">
-              <label for="inputAccount" class="col-sm-3 col-form-label"
-                >Tài Khoản</label
-              >
+              <label for="inputAccount" class="col-sm-3 col-form-label">Tài Khoản</label>
               <div class="col-sm-9">
                 <!-- <input name="account" id="inputAccount" type="text" class="form-control"
                                             ng-model="formInput.account" required> -->
-                <input
-                  name="account"
-                  id="inputAccount"
-                  type="text"
-                  class="form-control"
-                  ng-model="formInput.account"
-                  required
-                />
+                <input name="account" id="inputAccount" type="text" class="form-control" ng-model="formInput.account"
+                  required />
                 <span ng-show="formCreateAccount.$submitted">
-                  <div
-                    ng-show="formCreateAccount.account.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateAccount.account.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -109,79 +76,45 @@
                                     </div>
                                 </div> -->
             <div class="row mb-3">
-              <label for="inputPhoneNumber" class="col-sm-3 col-form-label"
-                >Số Điện Thoại</label
-              >
+              <label for="inputPhoneNumber" class="col-sm-3 col-form-label">Số Điện Thoại</label>
               <div class="col-sm-9">
-                <input
-                  name="phoneNumber"
-                  id="inputPhoneNumber"
-                  type="text"
-                  class="form-control"
-                  ng-model="formInput.phoneNumber"
-                  ng-pattern="/^[0-9]{10}$/"
-                  required
-                />
+                <input name="phoneNumber" id="inputPhoneNumber" type="text" class="form-control"
+                  ng-model="formInput.phoneNumber" ng-pattern="/^[0-9]{10}$/" required />
                 <span ng-show="formCreateAccount.$submitted">
-                  <div
-                    ng-show="formCreateAccount.phoneNumber.$error.required"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateAccount.phoneNumber.$error.required"
+                    class="error-message text-danger form-text">
                     Không được để trống
                   </div>
-                  <div
-                    ng-show="formCreateAccount.phoneNumber.$error.pattern"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateAccount.phoneNumber.$error.pattern"
+                    class="error-message text-danger form-text">
                     Vui lòng nhập số điện thoại hợp lệ gồm 10 chữ số
                   </div>
                 </span>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputEmail" class="col-sm-3 col-form-label"
-                >Email</label
-              >
+              <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
               <div class="col-sm-9">
-                <input
-                  name="email"
-                  id="inputEmail"
-                  type="email"
-                  class="form-control"
-                  ng-model="formInput.email"
-                  required
-                />
+                <input name="email" id="inputEmail" type="email" class="form-control" ng-model="formInput.email"
+                  required />
                 <span ng-show="formCreateAccount.$submitted">
-                  <div
-                    ng-show="formCreateAccount.email.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateAccount.email.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputRole" class="col-sm-3 col-form-label"
-                >Vai Trò</label
-              >
+              <label for="inputRole" class="col-sm-3 col-form-label">Vai Trò</label>
               <div class="col-sm-9">
-                <select
-                  name="role"
-                  class="form-select form-select-sm"
-                  aria-label="Small select example"
-                  ng-model="formInput.role.id"
-                  ng-required="true"
-                >
+                <select name="role" class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formInput.role.id" ng-required="true">
                   <option ng-repeat="role in roles" ng-value="role.id">
                     {{role.fullName}}
                   </option>
                 </select>
                 <span ng-show="formCreateAccount.$submitted">
-                  <div
-                    ng-show="formCreateAccount.role.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateAccount.role.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -204,18 +137,10 @@
                                 </div> -->
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Thên</button>
-              <button
-                ng-click="resetFormInput()"
-                type="button"
-                class="btn btn-warning"
-              >
+              <button ng-click="resetFormInput()" type="button" class="btn btn-warning">
                 Xoá form
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Đóng
               </button>
             </div>
@@ -226,48 +151,23 @@
   </div>
   <!-- End Modal Add -->
   <!-- Begin Modal Update -->
-  <div
-    class="modal fade"
-    id="modalUpdate"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Update Account</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form
-            name="formUpdateAccount"
-            ng-submit="formUpdateAccount.$valid && update()"
-            novalidate
-          >
+          <form name="formUpdateAccount" ng-submit="formUpdateAccount.$valid && update()" novalidate>
             <div class="row mb-3">
-              <label for="inputAccount" class="col-sm-3 col-form-label"
-                >Tài Khoản</label
-              >
+              <label for="inputAccount" class="col-sm-3 col-form-label">Tài Khoản</label>
               <div class="col-sm-9">
                 <!-- <input name="account" id="inputAccount" type="text" class="form-control"
                                             ng-model="formUpdate.account" readonly> -->
-                <input
-                  name="account"
-                  class="form-control readonly"
-                  ng-model="formUpdate.account"
-                  readonly
-                />
+                <input name="account" class="form-control readonly" ng-model="formUpdate.account" readonly />
                 <span ng-show="formUpdateAccount.$submitted">
-                  <div
-                    ng-show="formUpdateAccount.account.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateAccount.account.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -320,49 +220,31 @@
                                     </div>
                                 </div> -->
             <div class="row mb-3">
-              <label for="inputRole" class="col-sm-3 col-form-label"
-                >Vai Trò</label
-              >
+              <label for="inputRole" class="col-sm-3 col-form-label">Vai Trò</label>
               <div class="col-sm-9">
-                <select
-                  name="role"
-                  class="form-select form-select-sm"
-                  aria-label="Small select example"
-                  ng-model="formUpdate.role.id"
-                >
+                <select name="role" class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formUpdate.role.id">
                   <option ng-repeat="role in roles" ng-value="role.id">
                     {{role.fullName}}
                   </option>
                 </select>
                 <span ng-show="formUpdateAccount.$submitted">
-                  <div
-                    ng-show="formUpdateAccount.role.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateAccount.role.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputStatus" class="col-sm-3 col-form-label"
-                >Trạng Thái</label
-              >
+              <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
               <div class="col-sm-9">
-                <select
-                  name="status"
-                  class="form-select form-select-sm"
-                  aria-label="Small select example"
-                  ng-model="formUpdate.status"
-                >
+                <select name="status" class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formUpdate.status">
                   <option ng-value="1">Đang hoạt động</option>
                   <option ng-value="2">Ngừng hoạt động</option>
                 </select>
                 <span ng-show="formUpdateAccount.$submitted">
-                  <div
-                    ng-show="formUpdateAccount.status.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateAccount.status.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -370,18 +252,10 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Update</button>
-              <button
-                ng-click="resetFormUpdate()"
-                type="button"
-                class="btn btn-warning"
-              >
+              <button ng-click="resetFormUpdate()" type="button" class="btn btn-warning">
                 Xoá form
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Đóng
               </button>
             </div>
@@ -416,30 +290,16 @@
               {{account.status == 1 ?'Đang hoạt động' : 'Ngừng hoạt động'}}
             </td>
             <td>
-              <button
-                ng-click="edit(account)"
-                type="button"
-                class="btn btn-info"
-                data-bs-toggle="modal"
-                data-bs-target="#modalUpdate"
-              >
+              <button ng-click="edit(account)" type="button" class="btn btn-info" data-bs-toggle="modal"
+                data-bs-target="#modalUpdate">
                 <i class="fa-regular fa-pen-to-square"></i>
               </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal-{{account.id}}"
-              >
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#deleteModal-{{account.id}}">
                 <i class="ri-delete-bin-fill"></i>
               </button>
-              <div
-                class="modal fade"
-                id="deleteModal-{{account.id}}"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
+              <div class="modal fade" id="deleteModal-{{account.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -448,19 +308,10 @@
                       </h5>
                     </div>
                     <div class="modal-footer">
-                      <button
-                        ng-click="delete(account)"
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button ng-click="delete(account)" type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         Xoá
                       </button>
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Đóng
                       </button>
                     </div>
@@ -472,46 +323,29 @@
         </tbody>
       </table>
       <div class="row align-items-center">
-        <div class="col-md-1">
-          <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-          <select
-            class="form-control"
-            ng-model="paper.size"
-            ng-change="changePageSize()"
-          >
-            <option value="selected">Xem mục</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-        </div>
-        <div class="col-md-11">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-end">
-              <li class="page-item">
-                <button ng-click="paper.first()" class="page-link">
-                  First
-                </button>
-              </li>
-              <li class="page-item">
-                <button ng-click="paper.prev()" class="page-link">
-                  Previous
-                </button>
-              </li>
-              <li class="page-item">
-                <a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
-              </li>
-              <li class="page-item">
-                <button ng-click="paper.next()" class="page-link">Next</button>
-              </li>
-              <li class="page-item">
-                <button ng-click="paper.last()" class="page-link">Last</button>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end">
+            <li class="page-item">
+              <button ng-click="paper.first()" class="page-link">
+                First
+              </button>
+            </li>
+            <li class="page-item">
+              <button ng-click="paper.prev()" class="page-link">
+                Previous
+              </button>
+            </li>
+            <li class="page-item">
+              <a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
+            </li>
+            <li class="page-item">
+              <button ng-click="paper.next()" class="page-link">Next</button>
+            </li>
+            <li class="page-item">
+              <button ng-click="paper.last()" class="page-link">Last</button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
