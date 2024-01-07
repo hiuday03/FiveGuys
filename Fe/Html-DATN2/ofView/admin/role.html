@@ -8,20 +8,22 @@
       <li class="breadcrumb-item active">Vai Trò</li>
     </ol>
   </nav>
-  <div class="col-md-1">
-    <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-    <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
-      <option value="0">0</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="20">20</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-    </select>
-  </div>
-  <div class="col-md-11">
-    <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search roles..."
-      class="form-control" />
+  <div class="row align-items-center">
+    <div class="col-md-1">
+      <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+      <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
+        <option value="0">0</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </div>
+    <div class="col-md-11">
+      <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search roles..."
+        class="form-control" />
+    </div>
   </div>
 </div>
 <!--  Begin code  -->
