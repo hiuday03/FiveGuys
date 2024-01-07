@@ -504,52 +504,6 @@
             <!-- <td>{{rating.productDetail.image.name}}</td> -->
             <!-- <td>{{rating.createdAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{rating.updatedAt | date:'yyyy-MM-dd'}}</td> -->
-<<<<<<< HEAD
-                                <td>{{rating.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}</td>
-                                <td>
-                                    <button ng-click="edit(rating)" type="button" class="btn btn-info"
-                                        data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
-                                            class="ri-refresh-line"></i></button>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal-{{rating.id}}"><i
-                                            class="ri-delete-bin-fill"></i></button>
-                                    <div class="modal fade" id="deleteModal-{{rating.id}}" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa
-                                                        không?</h5>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button ng-click="delete(rating)" type="button"
-                                                        class="btn btn-primary" data-bs-dismiss="modal">Xoá</button>
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="row align-items-center">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-end">
-                                <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button>
-                                </li>
-                                <li class="page-item"><button ng-click="paper.prev()"
-                                        class="page-link">Previous</button></li>
-                                <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
-                                </li>
-                                <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button>
-                                </li>
-                                <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button>
-                                </li>
-                            </ul>
-                        </nav>
-=======
             <td>
               {{rating.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}
             </td>
@@ -584,7 +538,6 @@
                       <h5 class="modal-title" id="exampleModalLabel">
                         Bạn có chắc muốn xóa không?
                       </h5>
->>>>>>> origin/tinh
                     </div>
                     <div class="modal-footer">
                       <button
