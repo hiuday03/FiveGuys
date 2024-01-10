@@ -130,4 +130,9 @@ public class StatisticalRestController {
     public ResponseEntity<?> topbanchayYear(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date sl){
         return ResponseEntity.ok().body(statisticalService.getThongKeSanPhamBanChayYear(sl));
     }
+
+    @GetMapping("/search-status-bill/{status}")
+    public ResponseEntity<?> searchStatusBill(@PathVariable Integer status){
+        return  ResponseEntity.ok(statisticalService.searchStatusBill(status));
+    }
 }

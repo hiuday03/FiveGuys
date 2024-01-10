@@ -127,6 +127,66 @@ app.config(function ($routeProvider) {
 
     // <!-- Tinh -->
 
+<<<<<<< HEAD
+=======
+    .when("/admin/account/account", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/account.html",
+      controller: "account-ctrl",
+    })
+    .when("/admin/account/address", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/address.html",
+      controller: "address-ctrl",
+    })
+    .when("/admin/account/customer", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/customer.html",
+      controller: "customer-ctrl",
+    })
+    .when("/admin/account/employee", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/employee_home.html",
+      controller: "employee-ctrl",
+    })
+    .when("/admin/account/favorite", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/favorite.html",
+      controller: "favorite-ctrl",
+    })
+    .when("/admin/account/rating", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/rating.html",
+      controller: "rating-ctrl",
+    })
+    .when("/admin/account/role", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/role.html",
+      controller: "role-ctrl",
+    })
+    .when("/admin/brand", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/brand.html",
+      controller: "brand-ctrl",
+    })
+    .when("/admin/category", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/category-list.html",
+      controller: "category-ctrl",
+    })
+    .when("/admin/color", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/color-list.html",
+      controller: "color-ctrl",
+    })
+    .when("/admin/size", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/size-list.html",
+      controller: "size-ctrl",
+    })
+    .when("/admin/material", {
+      templateUrl: "/Fe/Html-DATN2/ofView/admin/material-list.html",
+      controller: "material-ctrl",
+    })
+    // tinh
+    .when("/admin/voucher", {
+      templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/voucher/voucher_home.html",
+      controller: "voucher-list-controller",
+    })
+    .when("/admin/index", {
+      templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/thongKe/thongKe.html",
+      controller: "statistical-ctrl",
+    });
+>>>>>>> origin/tinh
 
 });
 
@@ -136,6 +196,7 @@ app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document,
     $scope.customes = {
         decrease: "decrease",
     };
+    $scope.searchStatus = "1";
     const api = "http://localhost:8080/statistical";
     // tổng tiền trong  tháng
     $scope.getSum = function () {
@@ -145,12 +206,16 @@ app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document,
     };
     $scope.getSum();
     // Tỉ lệ tổng tiền trong  tháng
+<<<<<<< HEAD
     $scope.getSum1 = function () {
         $http.get(api + "/he").then(function (rest) {
             $scope.getsum1 = rest.data;
         });
     };
     $scope.getSum1();
+=======
+
+>>>>>>> origin/tinh
     // tổng hóa đơn trong  ngày
     $scope.getCodeDay = function () {
         $http.get(api + "/count-day").then(function (rest) {
@@ -159,6 +224,7 @@ app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document,
     };
     $scope.getCodeDay();
 
+<<<<<<< HEAD
     // Tỉ lệ tổng hóa đơn trong  ngày
     $scope.getCodeDayTiLe = function () {
         $http.get(api + "/tile-day").then(function (rest) {
@@ -197,11 +263,256 @@ app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document,
     // }
     // $scope.ValidateCustomes();
 
+=======
+    $scope.he = function () {
+      if ($scope.selectedOption === "1") {
+        $scope.hi = "Hôm Nay";
+      } else if ($scope.selectedOption === "2") {
+        $scope.hi = "Tháng Này";
+      } else {
+        $scope.hi = "Năm Này";
+      }
+    };
+    $scope.he();
+
+    //search status Bill
+    $scope.searchStatusBill = function () {
+      var status = 3;
+      if ($scope.searchStatus === "1") {
+        status = 1;
+      } else if ($scope.searchStatus === "2") {
+        status = 2;
+        console.log(status);
+      } else if ($scope.searchStatus === "3") {
+        status = 3;
+      } else if ($scope.searchStatus === "4") {
+        status = 4;
+      } else if ($scope.searchStatus === "5") {
+        status = 5;
+      } else if ($scope.searchStatus === "6") {
+        status = 6;
+      } else if ($scope.searchStatus === "7") {
+        status = 7;
+      } else if ($scope.searchStatus === "8") {
+        status = 8;
+      } else if ($scope.searchStatus === "9") {
+        status = 9;
+      }
+      $http
+        .get(api + "/search-status-bill/" + `${status}`, status)
+        .then(function (response) {
+          $scope.getallbilllist = response.data;
+          console.log(response.data);
+        });
+    };
+    $scope.searchStatusBill;
+    // get all table bill
+    $scope.getAllBillList = function () {
+      $http.get(api + "/get-all-list").then(function (getall) {
+        $scope.getallbilllist = getall.data;
+      });
+    };
+    $scope.getAllBillList();
+
+    var today = new Date();
+    today.setDate(today.getDate());
+    let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let yesterdayFormat = $filter("date")(yesterday, "yyyy-MM-dd");
+    var yesterdaymonth = new Date();
+    yesterdaymonth.setDate(yesterdaymonth.getMonth() - 1);
+    let yestermonthFormat = $filter("date")(yesterdaymonth, "yyyy-MM-dd");
+    var yesterdayyear = new Date();
+    yesterdayyear.setDate(yesterdayyear.getFullYear());
+    let yesteryaerFormat = $filter("date")(yesterdayyear, "yyyy-MM-dd");
+
+    // tổng tiền trong  tháng
+    $scope.tongTien = function () {
+      if ($scope.selectedOption === "1") {
+        $http
+          .get(api + "/tong-doanh-thu-ngay/" + `${todayfomat}`, todayfomat)
+          .then(function (rest) {
+            $scope.getsum = rest.data;
+          });
+        $http
+          .get(
+            api + "/tong-doanh-thu-ngay/" + `${yesterdayFormat}`,
+            yesterdayFormat
+          )
+          .then(function (rest) {
+            $scope.getsumtile = rest.data;
+          });
+        $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
+      } else if ($scope.selectedOption === "2") {
+        $http
+          .get(api + "/tong-doanh-thu-thang/" + `${todayfomat}`, todayfomat)
+          .then(function (rest) {
+            $scope.getsum = rest.data;
+          });
+        $http
+          .get(
+            api + "/tong-doanh-thu-thang/" + `${yestermonthFormat}`,
+            yestermonthFormat
+          )
+          .then(function (rest) {
+            $scope.getsumtile = rest.data;
+          });
+        $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
+      } else if ($scope.selectedOption === "3") {
+        $http
+          .get(api + "/tong-doanh-thu-nam/" + `${todayfomat}`, todayfomat)
+          .then(function (rest) {
+            $scope.getsum = rest.data;
+          });
+        $http
+          .get(
+            api + "/tong-doanh-thu-nam/" + `${yesteryaerFormat}`,
+            yesteryaerFormat
+          )
+          .then(function (rest) {
+            $scope.getsumtile = rest.data;
+          });
+        $scope.tiletongtien = $scope.getsum / $scope.getsumtile;
+      }
+    };
+    $scope.tongTien();
+    // tổng hóa đơn trong  ngày
+    $scope.tongHoaDon = function () {
+      if ($scope.selectedOption === "1") {
+        $http
+          .get(api + "/tong-hoa-don-ngay/" + `${todayfomat}`, todayfomat)
+          .then(function (rest) {
+            $scope.getcodeday = rest.data;
+          });
+      } else if ($scope.selectedOption === "2") {
+        $http
+          .get(api + "/tong-hoa-don-thang/" + `${todayfomat}`, todayfomat)
+          .then(function (rest) {
+            $scope.getcodeday = rest.data;
+          });
+      } else if ($scope.selectedOption === "3") {
+        $http
+          .get(api + "/tong-hoa-don-nam/" + `${todayfomat}`, todayfomat)
+          .then(function (rest) {
+            $scope.getcodeday = rest.data;
+          });
+      }
+    };
+    $scope.tongHoaDon();
+    $scope.tongHoaDontile = function () {
+      if ($scope.selectedOption === "1") {
+        $http
+          .get(
+            api + "/tong-hoa-don-ngay/" + `${yesterdayFormat}`,
+            yesterdayFormat
+          )
+          .then(function (rest) {
+            $scope.getcodedaytile = rest.data;
+          });
+      } else if ($scope.selectedOption === "2") {
+        $http
+          .get(
+            api + "/tong-hoa-don-thang/" + `${yestermonthFormat}`,
+            yestermonthFormat
+          )
+          .then(function (rest) {
+            $scope.getcodedaytile = rest.data;
+            console.log("hihi");
+          });
+      } else if ($scope.selectedOption === "3") {
+        $http
+          .get(
+            api + "/tong-hoa-don-nam/" + `${yesteryaerFormat}`,
+            yesteryaerFormat
+          )
+          .then(function (rest) {
+            $scope.getcodedaytile = rest.data;
+          });
+      }
+    };
+    $scope.tongHoaDontile();
+    //San phâm ban ra
+    $scope.tongKhachHang = function () {
+      if ($scope.selectedOption === "1") {
+        $http
+          .get(api + "/san-pham-ban-ra-ngay/" + `${todayfomat}`, todayfomat)
+          .then(function (getall) {
+            $scope.listcustomeryear = getall.data;
+          });
+        $http
+          .get(api + "/san-pham-ban-ra-ngay/" + `${yesterdayFormat}`, yesterday)
+          .then(function (getall) {
+            $scope.listcustomeryeartile = getall.data;
+          });
+        $scope.tiletongkhachhang =
+          $scope.listcustomeryear / $scope.listcustomeryeartile;
+      } else if ($scope.selectedOption === "2") {
+        $http
+          .get(api + "/san-pham-ban-ra-thang/" + `${todayfomat}`, todayfomat)
+          .then(function (getall) {
+            $scope.listcustomeryear = getall.data;
+          });
+        $http
+          .get(
+            api + "/san-pham-ban-ra-thang/" + `${yestermonthFormat}`,
+            yesterdayFormat
+          )
+          .then(function (getall) {
+            $scope.listcustomeryeartile = getall.data;
+          });
+        $scope.tiletongkhachhang =
+          $scope.listcustomeryear / $scope.listcustomeryeartile;
+      } else if ($scope.selectedOption === "3") {
+        $http
+          .get(api + "/san-pham-ban-ra-nam/" + `${todayfomat}`, todayfomat)
+          .then(function (getall) {
+            $scope.listcustomeryear = getall.data;
+          });
+        $http
+          .get(
+            api + "/san-pham-ban-ra-nam/" + `${yesteryaerFormat}`,
+            yesteryaerFormat
+          )
+          .then(function (getall) {
+            $scope.listcustomeryeartile = getall.data;
+          });
+        $scope.tiletongkhachhang =
+          $scope.listcustomeryear / $scope.listcustomeryeartile;
+      }
+    };
+    $scope.tongKhachHang();
+
+>>>>>>> origin/tinh
     // top 5 Bán chạy
     $scope.TopBanChay = function () {
         $http.get(api + "/top5-ban-chay").then((data) => {
             $scope.topbanchay = data.data;
+<<<<<<< HEAD
         });
+=======
+          });
+      } else if ($scope.selectedOption === "2") {
+        var today = new Date();
+        today.setDate(today.getDate());
+        let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+        $http
+          .get(api + "/top5-ban-chay-month/" + `${todayfomat}`, todayfomat)
+          .then((data) => {
+            $scope.topbanchay = data.data;
+          });
+      } else if ($scope.selectedOption === "3") {
+        var today = new Date();
+        today.setDate(today.getDate());
+        let todayfomat = $filter("date")(today, "yyyy-MM-dd");
+        $http
+          .get(api + "/top5-ban-chay-year/" + `${todayfomat}`, todayfomat)
+          .then((data) => {
+            $scope.topbanchay = data.data;
+          });
+      }
+>>>>>>> origin/tinh
     };
     $scope.TopBanChay();
 
@@ -591,7 +902,10 @@ app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document,
         });
     };
     $scope.trafficChart();
-
+    $scope.availablePageSizes = [5, 10, 20, 50, 100];
+    $scope.changePageSize = function () {
+      $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+    };
     // Phan trang all bill
     $scope.paper = {
         page: 0,
@@ -630,11 +944,162 @@ app.controller("statistical-ctrl", function ($scope, $http, $timeout, $document,
 );
 
 app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
+<<<<<<< HEAD
     const apiUrlVoucher = "http://localhost:8080/api/voucher";
     const apiUrlAccount = "http://localhost:8080/account";
     $scope.voucher = [];
     $scope.formUpdate = {};
     $scope.formShow = {};
+=======
+  const apiUrlVoucher = "http://localhost:8080/api/voucher";
+  const apiUrlAccount = "http://localhost:8080/account";
+  $scope.voucher = [];
+  $scope.formUpdate = {};
+  $scope.formShow = {};
+  $scope.formInput = {};
+  $scope.formtimkiem = "1";
+  $scope.showAlert = false;
+  $scope.hihi = {};
+
+  $scope.label1 = {
+    update: "Thêm",
+  };
+  $scope.button = {};
+  // Hàm hiển thị thông báo thành công
+  $scope.showSuccessNotification = function (message) {
+    toastr["success"](message);
+  };
+
+  // Hàm hiển thị thông báo lỗi
+  $scope.showErrorNotification = function (message) {
+    toastr["error"](message);
+  };
+
+  $scope.showWarningNotification = function (message) {
+    toastr["warning"](message);
+  };
+
+  $scope.getAll = function () {
+    $http.get(apiUrlVoucher).then(function (response) {
+      $scope.listVoucher = response.data;
+    });
+  };
+  $scope.getAll();
+
+  //tìm kiếm voucher theo status
+  $scope.timkiemStatus = function () {
+    if ($scope.formtimkiem === "5") {
+      $http.get(apiUrlVoucher + "/timkiem-status/1").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "2") {
+      $http.get(apiUrlVoucher + "/timkiem-status/2").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "0") {
+      $http.get(apiUrlVoucher + "/timkiem-status/0").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "3") {
+      $http.get(apiUrlVoucher + "/timkiem-status/3").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "4") {
+      $http.get(apiUrlVoucher + "/timkiem-status/4").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "1") {
+      $http.get(apiUrlVoucher).then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    }
+  };
+  $scope.timkiemStatus();
+  // getById Voucher
+  $scope.getById = function (item) {
+    $http.get(`/api/voucher/${item.id}`).then(function (response) {
+      $scope.listVoucher = response.data;
+      console.log(item.id);
+    });
+  };
+
+  //Khai báo status voucher
+  $scope.statusOptions = [
+    { value: 0, label: "Chưa hoạt động" },
+    { value: 1, label: "Đang hoạt động" },
+    { value: 2, label: "Hết khuyến mại" },
+    { value: 3, label: "Hết hạn" },
+    { value: 4, label: "Đá xóa" },
+  ];
+
+  //detail Voucher
+  $scope.edit = function (voucher) {
+    $scope.formInput = angular.copy(voucher);
+    $scope.formInput.valid_form = new Date(voucher.valid_form);
+    $scope.formInput.valid_until = new Date(voucher.valid_until); // Hoặc là giá trị ngày mặc định của bạn
+    $scope.formInput.startDate = new Date(voucher.startDate);
+    $scope.formInput.endDate = new Date(voucher.endDate);
+    $scope.label1.update = "Sửa";
+    document.getElementById("myButton").style.display = "none";
+  };
+
+  //detail voucher chi tiết
+  $scope.show = function (employee) {
+    $scope.formShow = angular.copy(employee);
+    $scope.formShow.valid_form = new Date(employee.valid_form);
+    $scope.formShow.valid_until = new Date(employee.valid_until); // Hoặc là giá trị ngày mặc định của bạn
+  };
+  // var modal = document.getElementById("modalAdd");
+  // create Employee
+  $scope.addVoucher = function (newVoucher) {
+    let item = angular.copy($scope.formInput);
+    $http
+      .post(apiUrlVoucher, item)
+      .then(function (resp) {
+        $scope.showSuccessNotification("Cập nhật thông tin thành công");
+        $scope.resetFormInput();
+        $scope.getAll();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+  // update Voucher
+  $scope.updateVoucher = function () {
+    let item = angular.copy($scope.formInput);
+    $http
+      .put(apiUrlVoucher + "/update/" + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessNotification("Cập nhật thông tin thành công");
+        $scope.resetFormInput();
+        $scope.getAll();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  //delete update status Employee
+  $scope.updateStatusVoucher = function (item) {
+    $http
+      .put(apiUrlVoucher + "/delete/" + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.getAll();
+      });
+  };
+
+  //submit add and update
+  $scope.submit = function () {
+    if (($scope.formInput.id = true)) {
+      $scope.updateVoucher();
+    } else if (($scope.formInput.id = false)) {
+      $scope.addVoucher();
+    }
+  };
+
+  //rest form
+  $scope.resetFormInput = function () {
+>>>>>>> origin/tinh
     $scope.formInput = {};
     $scope.showAlert = false;
     $scope.hihi = {};
@@ -663,6 +1128,7 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
     };
     $scope.getAll();
 
+<<<<<<< HEAD
     // getById Voucher
     $scope.getById = function (item) {
         $http.get(`/api/voucher/${item.id}`).then(function (response) {
@@ -862,11 +1328,190 @@ app.controller("voucher-list-controller", function ($scope, $http, $timeout) {
             this.page = this.count - 1;
         },
     };
+=======
+  toastr.options = {
+    closeButton: false,
+    debug: false,
+    newestOnTop: true,
+    progressBar: false,
+    positionClass: "toast-top-right",
+    preventDuplicates: false,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  };
+  $scope.availablePageSizes = [5, 10, 20, 50, 100];
+  // Phan trang
+  $scope.paper = {
+    page: 0,
+    size: 7,
+    get items() {
+      let start = this.page * this.size;
+      if ($scope.listVoucher) {
+        return $scope.listVoucher.slice(start, start + this.size);
+      }
+    },
+    get count() {
+      if ($scope.listVoucher) {
+        return Math.ceil((1.0 * $scope.listVoucher.length) / this.size);
+      }
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      this.page--;
+      if (this.page < 0) {
+        this.last();
+      }
+    },
+    next() {
+      this.page++;
+      if (this.page >= this.count) {
+        this.first();
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    },
+  };
+>>>>>>> origin/tinh
 });
 
 app.controller("brand-ctrl", function ($scope, $http, $timeout) {
+<<<<<<< HEAD
     $scope.originalbrand = [];
     $scope.brand = [];
+=======
+  $scope.originalbrand = [];
+  $scope.brand = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+  const apiBrand = "http://localhost:8080/brand";
+
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.brand = $scope.originalBrand.filter(function (item) {
+        if (item && item.name) {
+          return item.name
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBrand
+      $scope.brand = angular.copy($scope.originalBrand);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+
+  $scope.initialize = function () {
+    $http.get(apiBrand).then(function (resp) {
+      $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
+      $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
+    });
+  };
+
+  $scope.initialize();
+
+  $scope.edit = function (brand) {
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(brand);
+    } else {
+      $scope.formUpdate = angular.copy(brand);
+      $scope.formUpdate.updatedAt = new Date();
+    }
+  };
+
+  // $scope.create = function () {
+  //     let item = angular.copy($scope.formInput);
+  //     item.createdAt = $scope.currentDate;
+  //     $http.post("/brand", item).then(function (resp) {
+  //         $scope.showSuccessMessage("Create brand successfully");
+  //         $scope.resetFormInput();
+  //         $scope.initialize();
+  //         $('#modalAdd').modal('hide');
+  //     }).catch(function (error) {
+  //         console.log("Error", error);
+  //     });
+  // }
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    $http
+      .post(apiBrand, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Create brand successfully");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
+
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item);
+    item.updatedAt = $scope.currentDate;
+    $http
+      .put(apiBrand + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Update Brand successfully");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
+
+  $scope.delete = function (item) {
+    $http
+      .delete(`/brand/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Delete Brand successfully");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  $scope.resetFormUpdate = function () {
+>>>>>>> origin/tinh
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
@@ -2201,8 +2846,131 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
     printResult();
 });
 app.controller("account-ctrl", function ($scope, $http, $timeout) {
+<<<<<<< HEAD
     $scope.originalAccount = [];
     $scope.account = [];
+=======
+  $scope.originalAccount = [];
+  $scope.account = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+  const apiUrlAccount = "http://localhost:8080/account";
+  const apiUrlRole = "http://localhost:8080/role";
+
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.account = $scope.originalAccount.filter(function (item) {
+        if (item && item.account) {
+          return item.account
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAccount
+      $scope.account = angular.copy($scope.originalAccount);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+  $scope.initialize = function () {
+    $http.get(apiUrlAccount).then(function (resp) {
+      $scope.originalAccount = resp.data;
+      $scope.account = angular.copy($scope.originalAccount);
+    });
+  };
+
+  $scope.initialize();
+
+  $scope.loadRoles = function () {
+    $http
+      .get(apiUrlRole)
+      .then(function (resp) {
+        $scope.roles = resp.data;
+      })
+      .catch(function (error) {
+        console.log("Error loading customers", error);
+      });
+  };
+
+  $scope.loadRoles();
+
+  $scope.edit = function (account) {
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(account);
+    } else {
+      $scope.formUpdate = angular.copy(account);
+      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+    }
+  };
+  // $scope.edit = function (account) {
+  //     $scope.formUpdate = angular.copy(account);
+  // }
+
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    item.password = "fiveguys123";
+    item.status = 1;
+    $http
+      .post(apiUrlAccount + "/save", item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Thêm tài khoản thành công");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item);
+    $http
+      .put(apiUrlAccount + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Sửa tài khoản thành công");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  $scope.delete = function (item) {
+    $http
+      .delete(`/account/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Xoá thành công");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  $scope.resetFormUpdate = function () {
+>>>>>>> origin/tinh
     $scope.formUpdate = {};
     $scope.formInput = {};
     $scope.showAlert = false;
@@ -2620,6 +3388,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
 });
 app.controller("employee-ctrl", function ($scope, $http, $timeout) {
+<<<<<<< HEAD
     $scope.originalEmployee = [];
     $scope.employee = [];
     $scope.formUpdate = {};
@@ -2646,10 +3415,79 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
                 reader.readAsDataURL(imageInput.files[0]);
             }
         });
+=======
+  $scope.originalEmployee = [];
+  $scope.employee = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+  $scope.showAlert = false;
+  $scope.showError = false;
+  $scope.load = function () {
+    $scope.loading = true;
+  };
+  $scope.unload = function () {
+    $scope.loading = false;
+  };
+  const apiEmployee = "http://localhost:8080/employee";
+
+  imgShow("image", "image-preview");
+  imgShow("image-update", "image-preview-update");
+  // Hàm hiển thị thông báo thành công
+  $scope.showSuccessNotification = function (message) {
+    toastr["success"](message);
+  };
+
+  // Hàm hiển thị thông báo lỗi
+  $scope.showErrorNotification = function (message) {
+    toastr["error"](message);
+  };
+
+  $scope.showWarningNotification = function (message) {
+    toastr["warning"](message);
+  };
+
+  function imgShow(textInput, textPreview) {
+    const imageInput = document.getElementById(textInput);
+    const imagePreview = document.getElementById(textPreview);
+    imageInput.addEventListener("change", function () {
+      if (imageInput.files && imageInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(imageInput.files[0]);
+      }
+    });
+  }
+
+  let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+  $scope.showErrorImg = function (message) {
+    $scope.alertErrorImg = message;
+    $scope.showError = true;
+  };
+
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.employee = $scope.originalEmployee.filter(function (item) {
+        if (item && item.code) {
+          return item.code
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalEmployee
+      $scope.employee = angular.copy($scope.originalEmployee);
+>>>>>>> origin/tinh
     }
 
     let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
     $scope.showErrorImg = function (message) {
+<<<<<<< HEAD
         $scope.alertErrorImg = message;
         $scope.showError = true;
     }
@@ -2686,6 +3524,160 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
         $http.get("/employee").then(function (resp) {
             $scope.originalEmployee = resp.data;
             $scope.employee = angular.copy($scope.originalEmployee);
+=======
+      $scope.alertErrorImg = message;
+      $scope.showError = true;
+    };
+    if (!allowedExtensions.exec(fileInput.value)) {
+      $scope.showErrorImg(
+        "Please upload file having extensions .jpeg/.jpg/.png/.gif only"
+      );
+      return;
+    } else if (fileInput.files.length > 0) {
+      let data = new FormData();
+      data.append("file", fileInput.files[0]);
+      $scope.load();
+      $http
+        .post("/rest/upload", data, {
+          transformRequest: angular.identity,
+          headers: { "Content-Type": undefined },
+        })
+        .then((resp) => {
+          $scope.formInput.avatar = resp.data.name;
+          let item = angular.copy($scope.formInput);
+          item.createdAt = $scope.currentDate;
+          $http
+            .post(apiEmployee, item)
+            .then((resp) => {
+              $scope.showSuccessNotification("Cập nhật thông tin thành công");
+              $scope.initialize();
+              $scope.resetFormInput();
+              $("#modalAdd").modal("hide");
+              $scope.showError = false;
+              $scope.unload();
+            })
+            .catch((error) => {
+              console.log("Error", error);
+              $scope.unload();
+              return;
+            });
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+    }
+  };
+  // create account
+  $scope.createAccount = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    item.active = true;
+    $http
+      .post("/account/save", item)
+      .then(function (resp) {
+        $scope.getRole();
+        $scope.resetFormInput();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+  $scope.getRole = function () {
+    $http.get("/account").then(function (resp) {});
+  };
+  $scope.getRole();
+  $scope.loadRoles = function () {
+    $http
+      .get("/role")
+      .then(function (resp) {
+        $scope.roles = resp.data;
+      })
+      .catch(function (error) {
+        console.log("Error loading customers", error);
+      });
+  };
+  $scope.loadRoles();
+
+  //Add employee Bằng file excel
+  $scope.insertExcelEmployee = function () {
+    var inputElement = $("#fileInput")[0];
+
+    if (inputElement && inputElement.files && inputElement.files.length > 0) {
+      var files = inputElement.files;
+      var reader = new FileReader();
+      reader.onloadend = async () => {
+        var workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(reader.result);
+        const worksheet = workbook.getWorksheet("Sheet1");
+        worksheet.eachRow((row, index) => {
+          if (index > 1) {
+            //import bigdecimel
+            // var bigDecimalValue = new Big(row.getCell(3).value);
+            // var bigDecimalMinimumTotalAmount = new Big(row.getCell(5).value);
+            //import date
+            var BirthDate = new Date(row.getCell(2).value);
+            var Gender = new Boolean(row.getCell(3).value);
+            let employee = {
+              // code: row.getCell(1).value,
+              fullName: row.getCell(1).value,
+              birthDate: BirthDate,
+              gender: Gender,
+              address: row.getCell(4).value,
+            };
+            $http.post(apiEmployee, employee).then((resp) => {
+              $scope.showSuccessNotification("Cập nhật thông tin thành công");
+              $scope.initialize();
+              console.log("success", resp.data);
+            });
+          }
+        });
+      };
+      reader.readAsArrayBuffer(files[0]);
+    } else {
+      console.error("No files selected.");
+    }
+  };
+
+  $scope.apiUpdate = function () {
+    let item = angular.copy($scope.formUpdate);
+    $http
+      .put(`/employee/${item.id}`, item)
+      .then((resp) => {
+        $scope.showSuccessNotification("Cập nhật thông tin thành công");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+        $scope.showError = false;
+        $scope.unload();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+        return;
+      });
+  };
+  $scope.update = function () {
+    let fileInput = document.getElementById("image-update");
+    if ($scope.formUpdate.avatar.length > 0 && !fileInput.files.length > 0) {
+      $scope.apiUpdate();
+    } else {
+      let data = new FormData();
+      data.append("file", fileInput.files[0]);
+      $scope.load();
+      $http
+        .post("/rest/upload", data, {
+          transformRequest: angular.identity,
+          headers: { "Content-Type": undefined },
+        })
+        .then((resp) => {
+          $scope.formUpdate.avatar = resp.data.name;
+          $scope.apiUpdate();
+          $scope.unload();
+        })
+        .catch((error) => {
+          console.log("Error", error);
+          $scope.unload();
+>>>>>>> origin/tinh
         });
     }
 
@@ -2702,7 +3694,21 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
             });
     }
 
+<<<<<<< HEAD
     $scope.loadAccounts();
+=======
+  $scope.delete = function (item) {
+    $http
+      .delete(`/employee/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessNotification("Cập nhật thông tin thành công");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+>>>>>>> origin/tinh
 
     // create employee
     $scope.create = function () {
@@ -2870,6 +3876,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
         $scope.formUpdateEmployee.$setUntouched();
     }
 
+<<<<<<< HEAD
     $scope.resetFormInput = function () {
         $scope.formInput = {};
         let fileInput = document.getElementById("image");
@@ -2880,6 +3887,21 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
         $scope.formCreateEmployee.$setPristine();
         $scope.formCreateEmployee.$setUntouched();
     }
+=======
+  // xuát file danh sách excel Employee
+  $scope.xuatFile = function () {
+    $http
+      .get(apiEmployee + "/excel")
+      .then(function (response) {
+        alert("Xuất File Thành Công");
+        // $scope.pageEm = response.data.content;
+        // $scope.totalPages = response.data.totalPages
+      })
+      .catch((error) => {
+        alert("hihi");
+      });
+  };
+>>>>>>> origin/tinh
 
     $scope.getById = function (item) {
         $http.get(`/api/employee/${item.id}`).then(function (response) {

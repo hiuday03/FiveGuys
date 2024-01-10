@@ -5,7 +5,7 @@
       aria-label="Default select example"
       id="selectduliet"
       ng-model="selectedOption"
-      ng-change="trafficChart();Top5BanChay();tongKhachHang(); tongHoaDon(); tongTien(); he();listCustomerDay();"
+      ng-change="trafficChart();Top5BanChay();tongKhachHang(); tongHoaDon(); tongTien(); he();listCustomerDay();tongHoaDontile();"
     >
       <option selected value="1">Theo ngày</option>
       <option value="2">Theo tháng</option>
@@ -32,7 +32,7 @@
                 <div class="ps-3">
                   <h6>{{getcodeday}}</h6>
                   <span class="text-success small pt-1 fw-bold"
-                    >{{tiletongtien}}%</span
+                    >{{getcodeday/getcodedaytile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
                     >{{getcodeday >= getcodedaytile ? 'increase':
@@ -88,7 +88,7 @@
                 <div class="ps-3">
                   <h6>{{getsum}}</h6>
                   <span class="text-success small pt-1 fw-bold"
-                    >{{tiletonghoadon}}%</span
+                    >{{getsum/getsumtile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
                     >{{getsum >= getsumtile ? 'increase': 'decrease'}}</span
@@ -122,20 +122,33 @@
                 <div class="col-md-2">
                   <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
                   <select
-                    class="form-control"
+                    class="form-select"
                     ng-model="paper.size"
                     ng-change="changePageSize()"
-                    style="width: 70px"
+                    ng-options="size for size in [5, 10, 20, 50, 100]"
+                    style="width: 80px"
+                  ></select>
+                </div>
+                <div class="col-4">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    id=""
+                    ng-model="searchstatus"
+                    ng-change="searchStatusBill()"
                   >
-                    <option value="selected">0</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                    <option selected value="1">Đá hủy</option>
+                    <option value="2">Chờ thánh toán</option>
+                    <option value="3">Yêu cầu xác nhận</option>
+                    <option value="4">Hoàn thành</option>
+                    <option value="5">Đang chuẩn bị hàng</option>
+                    <option value="6">Giao cho đơn vị vận chuyển</option>
+                    <option value="7">Đã giao cho đơn vị vận chuyển</option>
+                    <option value="8">Yêu cầu đổi trả</option>
+                    <option value="9">Xác nhận đổi trả</option>
                   </select>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-6">
                   <input
                     type="text"
                     class="form-control"
@@ -144,10 +157,10 @@
                     +
                     ng-model="searchVoucher"
                     placeholder="Search"
-                    style="width: 250px; margin-left: 320px"
                   />
                 </div>
               </div>
+              <br />
               <table class="table table-borderless">
                 <thead>
                   <tr>
@@ -169,17 +182,17 @@
                     </td>
                     <td>{{get.totalAmountAfterDiscount}}</td>
                     <td ng-switch="get.status">
-                      <span ng-switch-when="0">DA_HUY</span>
-                      <span ng-switch-when="1">CHO_THANH_TOAN</span>
-                      <span ng-switch-when="2">YEU_CAU_XAC_NHAN</span>
-                      <span ng-switch-when="3">HOAN_THANH</span>
-                      <span ng-switch-when="4">DANG_CHUAN_BI_HANG</span>
-                      <span ng-switch-when="5">GIAO_CHO_DON_VI_VAN_CHUYEN</span>
+                      <span ng-switch-when="0">Đá hủy</span>
+                      <span ng-switch-when="1">Chờ thánh toán</span>
+                      <span ng-switch-when="2">Yêu cầu xác nhận</span>
+                      <span ng-switch-when="3">Hoàn thành</span>
+                      <span ng-switch-when="4">Đang chuẩn bị hàng</span>
+                      <span ng-switch-when="5">Giao cho đơn vị vận chuyển</span>
                       <span ng-switch-when="6"
-                        >DA_GIAO_CHO_DON_VI_VAN_CHUYEN</span
+                        >Đã giao cho đơn vị vận chuyển</span
                       >
-                      <span ng-switch-when="7">YEU_CAU_DOI_TRA</span>
-                      <span ng-switch-when="8">XAC_NHAN_DOI_TRA</span>
+                      <span ng-switch-when="7">Yêu cầu đổi trả</span>
+                      <span ng-switch-when="8">Xác nhận đổi trả</span>
                     </td>
                   </tr>
                 </tbody>

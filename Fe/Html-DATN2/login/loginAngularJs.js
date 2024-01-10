@@ -407,4 +407,3 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
 
 });
 
-
