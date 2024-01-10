@@ -50,7 +50,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (existingFavorite.isPresent()) {
             FavoriteEntity favorite = existingFavorite.get();
             favorite.setCustomer(favoriteEntity.getCustomer());
-            favorite.setProductDetail(favoriteEntity.getProductDetail());
+            favorite.setProduct(favoriteEntity.getProduct());
             favorite.setCreatedAt(favoriteEntity.getCreatedAt());
             favorite.setUpdatedAt(favoriteEntity.getUpdatedAt());
             favorite.setStatus(favoriteEntity.getStatus());

@@ -3,16 +3,18 @@ package com.example.demo.restcontroller.onlineSales.olAccountManage;
 import com.example.demo.entity.FavoriteEntity;
 import com.example.demo.entity.RatingEntity;
 import com.example.demo.model.response.onlineSales.OlFavoritesResponse;
+import com.example.demo.model.response.onlineSales.OlRatingResponse;
 import com.example.demo.security.service.impl.UserService;
 import com.example.demo.service.onlineSales.OlRatingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/ol")
+@RequestMapping("/api/ol/authenticated")
 public class OlRatingRestController {
 
     @Autowired
@@ -36,9 +38,15 @@ public class OlRatingRestController {
 
 
     @PostMapping("/addRate")
-    public boolean addRate(@RequestBody RatingEntity ratingEntity) {
+    public boolean addRate(@RequestBody OlRatingResponse ratingEntity) {
+
         return olRatingService.addRating(ratingEntity);
     }
 
+
+    @GetMapping("/listRate/{productId}")
+    public ResponseEntity<?> getRatingsByProductId(@PathVariable Long productId) {
+        return ResponseEntity.ok(olRatingService.findByProductId(productId));
+    }
 
 }

@@ -91,8 +91,10 @@ public class OlAddressServiceImpl implements OlAddressService {
     }
 
     @Override
-    public AddressEntity findByDefaultAddressTrue() {
-        return repository.findByDefaultAddressTrue().get(0);
+    public AddressEntity findByDefaultAddressTrue(String username) {
+
+        return repository.findByDefaultAddressTrueAndCustomer_FullName(username).get(0);
+
     }
 
     @Override

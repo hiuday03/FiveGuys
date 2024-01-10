@@ -51,32 +51,32 @@
       
                 <div ng-repeat="favorite in favoritesList" class="col-lg-3 col-md-6 col-sm-6">
                   <div class="card  border shadow-0 mb-4 ">
-                    <a href="#!product-detail/{{favorite.productDetail.product.id}}">
+                    <a href="#!product-detail/{{favorite.product.id}}">
                         <img style="position: relative;" class="card-img-top" width="100%" height="100%" class="rounded-2" loading="lazy"
                           ng-src="{{ favorite.path }}" />
                       </a>
                     <div class="card-body d-flex flex-column pt-3 border-top">
                         <p href="#" class="nav-link">
-                            {{ favorite.productDetail.product.name }} {{
-                            favorite.productDetail.product.category.name }} {{
-                                favorite.productDetail.product.material.name }} {{
-                                    favorite.productDetail.product.code }}
+                            {{ favorite.product.name }} {{
+                            favorite.product.category.name }} {{
+                                favorite.product.material.name }} {{
+                                    favorite.product.code }}
                           </p>
-                          <div class="title-detail" style="display: flex">
+                          <!-- <div class="title-detail" style="display: flex">
                             <p style="margin-right: 8px">
                               Màu sắc: 
-                              {{favorite.productDetail.color.name}}
+                              {{favorite.color.name}}
                             </p> 
                             <p>
                               Kích cỡ: 
-                              {{favorite.productDetail.size.name}}
+                              {{favorite.size.name}}
                             </p>
-                          </div>
+                          </div> -->
                       <div class="price-wrap mb-2">
-                        <strong class="">{{ favorite.productDetail.price | number }} đ</strong>
+                        <strong class="">{{ favorite.price | number }} đ</strong>
                       </div>
                       <div class="card-footer d-flex align-items-end justify-content-between pt-3 px-0 pb-0 mt-auto">
-                        <a href="#!product-detail/{{favorite.productDetail.product.id}}" class="btn btn-outline-primary w-60">Xem chi tiết</a>
+                        <a href="#!product-detail/{{favorite.product.id}}" class="btn btn-outline-primary w-60">Xem chi tiết</a>
                         <button ng-click="deleteDataFavorite(favorite.id)"  class="btn btn-outline-primary w-30">Xóa</button>
                       </div>
                     </div>

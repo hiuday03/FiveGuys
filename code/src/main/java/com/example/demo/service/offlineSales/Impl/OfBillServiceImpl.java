@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,11 @@ public class OfBillServiceImpl implements OfBillService {
     @Autowired
     private OfVoucherService ofVoucherService;
 
+    private boolean isQuantityAvailable(ProductDetail productDetail, int quantityToRemove) {
+        int currentQuantity = productDetail.getQuantity();
+        return currentQuantity >= quantityToRemove;
+    }
+
     @Override
     public Bill create(JsonNode data) {
         if (data == null) {
@@ -39,14 +45,16 @@ public class OfBillServiceImpl implements OfBillService {
         }
         ObjectMapper mapper = new ObjectMapper();
         Bill bill = mapper.convertValue(data, Bill.class);
-        bill.setTypeBill(1);
+        if (bill.getVoucher() != null && ofVoucherService.getOne(bill.getVoucher().getId()).getStatus() != 1) {
+            return null;
+        }
+        JsonNode billDetailNode = data.get("billDetail");
         bill.setStatus(3);
         bill.setPaymentDate(new Date());
         Bill saveBill = billRepository.save(bill);
         if (saveBill.getVoucher() != null) {
             ofVoucherService.update(saveBill.getVoucher().getId(), saveBill.getVoucher());
         }
-        JsonNode billDetailNode = data.get("billDetail");
         if (billDetailNode != null && billDetailNode.isArray()) {
             TypeReference<List<BillDetail>> type = new TypeReference<>() {};
             List<BillDetail> billDetails = mapper.convertValue(billDetailNode, type)

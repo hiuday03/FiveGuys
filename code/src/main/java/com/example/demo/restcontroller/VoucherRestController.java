@@ -45,6 +45,10 @@ public class VoucherRestController {
     public ResponseEntity<List<Vouchers>> getAllCurrentDate() {
         return ResponseEntity.ok(voucherService.getDataByCurrentDate());
     }
+    @GetMapping("/timkiem-status/{st}")
+    public ResponseEntity<?> getVoucherStatus(@PathVariable Integer st){
+        return ResponseEntity.ok(voucherService.getVoucherStatus(st));
+    }
 
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody Vouchers vouchers) {

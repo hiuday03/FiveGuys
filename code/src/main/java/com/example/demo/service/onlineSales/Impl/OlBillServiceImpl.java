@@ -179,8 +179,16 @@ public class OlBillServiceImpl implements OlBillService {
         return null;
     }
 
+    @Override
+    public List<Bill> findByPhoneNumber(String pn) {
 
+        List<Bill> bill = olBillRepository.findByPhoneNumber(pn);
+        if (bill.size() > 0){
+            return bill;
+        }
 
+        return Collections.emptyList();
+    }
 
 
 }

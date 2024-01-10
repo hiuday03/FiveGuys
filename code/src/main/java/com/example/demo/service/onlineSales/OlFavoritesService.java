@@ -3,6 +3,7 @@ package com.example.demo.service.onlineSales;
 
 import com.example.demo.entity.AddressEntity;
 import com.example.demo.entity.FavoriteEntity;
+import com.example.demo.model.response.onlineSales.OlFavoritesAddResponse;
 import com.example.demo.model.response.onlineSales.OlFavoritesResponse;
 
 import java.util.List;
@@ -13,6 +14,6 @@ public interface OlFavoritesService {
 
    void deleteFavorite(Long id);
 
-    boolean addFavorite(FavoriteEntity addressRequest);
+    Integer addFavorite(OlFavoritesAddResponse addressRequest);
 
 }

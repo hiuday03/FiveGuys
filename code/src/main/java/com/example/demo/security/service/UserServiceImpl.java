@@ -1,21 +1,33 @@
 package com.example.demo.security.service;
 
-import com.example.demo.entity.AccountEntity;
-import com.example.demo.entity.CustomerEntity;
-import com.example.demo.entity.Roles;
+import com.example.demo.entity.*;
+import com.example.demo.model.request.TokenResponse;
 import com.example.demo.security.Request.UserRequestDTO;
+import com.example.demo.security.jwt.JwtTokenUtil;
+import com.example.demo.security.jwt.JwtUserDetailsService;
+import com.example.demo.security.jwt_model.JwtRequest;
 import com.example.demo.security.service.impl.UserService;
 import com.example.demo.security.util.Helper;
 import com.example.demo.senderMail.Respone.ResponseObject;
 import com.example.demo.service.AccountService;
 import com.example.demo.service.CustomerService;
+import com.example.demo.service.RefreshTokenService;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.onlineSales.OlAccountService;
+import com.example.demo.service.onlineSales.OlCustomerService;
+import com.example.demo.service.onlineSales.OlEmployeeService;
 import com.example.demo.service.serviceiplm.AccountServiceImpl;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +38,14 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 //    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private  JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -35,6 +55,18 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private OlAccountService olAccountService;
+
+    @Autowired
+    private OlEmployeeService olEmployeeService;
+
+    @Autowired
+    private OlCustomerService olCustomerService;
+
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
     @Autowired
     private RoleService roleService;
@@ -128,6 +160,67 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            System.out.println("User is disabled: " + e.getMessage());
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            System.out.println("Invalid credentials: " + e.getMessage());
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public TokenResponse login(JwtRequest authenticationRequest) throws Exception {
+
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authenticationRequest.getUsername());
+        final String token = jwtTokenUtil.generateToken(userDetails);
+
+
+
+        Optional<AccountEntity> account = olAccountService.findByAccount(authenticationRequest.getUsername());
+        TokenResponse tokenResponse = new TokenResponse();
+        if (account.isPresent()) {
+            Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
+            Optional<Employees> employeeEntity = Optional.ofNullable(olEmployeeService.findByAccount_Id(account.get().getId()));
+            refreshTokenService.deleteByAccount(account.get());
+            if (customerEntity.isPresent()) {
+                RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails,account.get());
+
+                tokenResponse.setAccessToken(token);
+                tokenResponse.setRefreshToken(refreshToken.getToken());
+                return tokenResponse;
+
+            } else if (employeeEntity.isPresent()) {
+                RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails,account.get());
+                tokenResponse.setAccessToken(token);
+                tokenResponse.setRefreshToken(refreshToken.getToken());
+                return tokenResponse;
+
+            }
+        }
+
+        return tokenResponse;
+    }
+
+//    @Override// TODO kiểm tra xem token hết hạn chưa
+//    public RefreshToken verifyExpiration(RefreshToken token) {
+//        // trả về thời gian hết hạn của token < Thời gian hiện tại tức token hết hạn
+//        if (token.getExpiryDate().compareTo(ChronoLocalDate.from(Instant.now())) < 0) {
+//            refreshTokenervice.delete(token); // Xóa token
+//            throw new RuntimeException(token.getToken() +
+//                    " Refresh token was expired. Please make a new signin request");
+//        }
+//        return token;
+//    }
+
+
 //    @Override
 //    public ResponseObject active(UserRequestDTO userDTO) {
 //        try {
@@ -171,17 +264,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseObject forgotPassword(String email) {
-        Optional<AccountEntity>  user = accountService.findByEmail(email);
-        if (user.get() != null && user.isPresent()) {
-            String new_otp = helper.generateOTP();
-            user.get().setConfirmationCode(new_otp);
+        Optional<AccountEntity> user = accountService.findByEmail(email);
+        if (user.isPresent() && user.get() != null) {
+            String newOTP = helper.generateOTP();
+            user.get().setConfirmationCode(newOTP);
             accountService.save(user.get());
-            sendSimpleEmail(email, "Mã xác nhận của bạn là  " + new_otp + ">Reset your password now!</a>", "Someone just request to reset your password, if you do this, please follow these steps");
-            return new ResponseObject("200", "Forgot password request accepted, please go to your email and reset your password", null);
+            // Thêm email vào query parameter của URL
+            String resetPasswordLink = "http://127.0.0.1:5555/login/resetPass.html?email=" + email;
+
+            sendSimpleEmail(email, "Đây là mã xác minh của bạn: " + newOTP + "<a href='" + resetPasswordLink + "'>Đặt lại mật khẩu của bạn ngay!</a>", "[FiveGuys] Mã xác minh");
+            return new ResponseObject("200", "Yêu cầu quên mật khẩu được chấp nhận, vui lòng kiểm tra email và đặt lại mật khẩu của bạn", null);
         } else {
-            return new ResponseObject("400", "User not found", null);
+            return new ResponseObject("400", "Người dùng không tồn tại", null);
         }
     }
+
 
     @Override
     public Boolean confirmOTP(String userEmail, String enteredOTP) {

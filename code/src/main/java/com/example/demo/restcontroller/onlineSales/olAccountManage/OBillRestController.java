@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/ol")
+@RequestMapping("/api/ol/authenticated")
 public class OBillRestController {
 
     @Autowired
@@ -57,18 +57,18 @@ public class OBillRestController {
 
 
 
-    @PutMapping("/updatePaymentStatus/{billId}")
-    public ResponseEntity<String> updatePaymentStatus(
-            @PathVariable Long billId,
-            @RequestParam(name = "paymentStatus") int paymentStatus
-    ) {
-        boolean updated = olBillService.updatePaymentStatus(billId, paymentStatus);
-        if (updated) {
-            return ResponseEntity.ok("Payment status updated successfully.");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update payment status.");
-        }
-    }
+//    @PutMapping("/updatePaymentStatus/{billId}")
+//    public ResponseEntity<String> updatePaymentStatus(
+//            @PathVariable Long billId,
+//            @RequestParam(name = "paymentStatus") int paymentStatus
+//    ) {
+//        boolean updated = olBillService.updatePaymentStatus(billId, paymentStatus);
+//        if (updated) {
+//            return ResponseEntity.ok("Payment status updated successfully.");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update payment status.");
+//        }
+//    }
 
     @GetMapping("/bills/{id}")
     public ResponseEntity<?> getBillById(@PathVariable Long id) {

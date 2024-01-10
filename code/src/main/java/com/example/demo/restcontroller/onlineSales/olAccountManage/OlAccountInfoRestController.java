@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/ol")
+@RequestMapping("/api/ol/authenticated")
 public class OlAccountInfoRestController {
 
     @Autowired

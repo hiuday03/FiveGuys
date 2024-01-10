@@ -1,5 +1,5 @@
 <!-- cart + summary -->
-<section style="    margin-top: 82px;"  class="bg-light " ng-init="getAddressList(); getDefaultAddress()">
+<section style="    margin-top: 82px;"  class="bg-light " ng-init="getAddressList(); getDefaultAddress();reloadPaymentMethod()">
   <div class="container-fluid">
     <div style="padding: 46px;;" class="row">
       <!-- cart -->
@@ -299,6 +299,7 @@
                       <input  type="radio" name="paymentMethod" value="payOnDelivery" id="{{ 'paymentMethod_' + $index }}" ng-checked="selectedPayment === paymentMethod" style="border-radius: 3px;">
                       <img style="position: relative;" class="card-img-top" class="rounded-2" loading="lazy"
                       ng-src="{{ paymentMethod.path }}" />
+                    
                       <label class="form-check-label">
                           <span>Thanh toán {{paymentMethod.name}}</span>
                       </label>

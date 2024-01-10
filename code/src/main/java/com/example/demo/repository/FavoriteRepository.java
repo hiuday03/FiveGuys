@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FavoriteRepository extends JpaRepository<FavoriteEntity, Long> {
-    @Query("SELECT f FROM FavoriteEntity f WHERE f.customer.id = :customerId AND f.productDetail.id = :productDetailId")
+    @Query("SELECT f FROM FavoriteEntity f WHERE f.customer.id = :customerId AND f.product.id = :product")
     List<FavoriteEntity> findByCustomerAndProductDetail(
             @Param("customerId") Long customerId,
-            @Param("productDetailId") Long productDetailId
+            @Param("product") Long product
     );
 }
