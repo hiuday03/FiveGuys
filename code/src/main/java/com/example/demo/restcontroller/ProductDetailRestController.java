@@ -81,4 +81,9 @@ public class ProductDetailRestController {
                 productDetailReq.getProduct(), productDetailReq.getColor(), productDetailReq.getSize());
     }
 
+    @GetMapping("/getAllPdExportExcel")
+    public ResponseEntity<?> getAllExportExcel(){
+        return ResponseEntity.ok(productDetailService.getAllPdExportExcel());
+    }
+
 }

@@ -23,4 +23,6 @@ public interface ProductService {
     Product updateStatus(Integer status, Long id);
 
     Page<Product> searchByStatus(Integer status, Integer page);
+
+    List<Product> getAllExportExcel();
 }

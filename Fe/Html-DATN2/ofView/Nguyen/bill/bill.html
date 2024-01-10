@@ -1,6 +1,6 @@
 <section>
     <div class="pagetitle">
-        <h1>Bill</h1>
+        <h1>Hóa đơn</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/admin/index}">Trang chủ</a></li>
@@ -15,11 +15,11 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
-                            type="button" role="tab" aria-controls="home" aria-selected="true">Tìm theo mã</button>
+                            type="button" role="tab" aria-controls="home" aria-selected="true" ng-click="resetFilter()">Tìm theo mã</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" t
-                            ype="button" role="tab" aria-controls="profile" aria-selected="false">Tìm kiếm
+                            ype="button" role="tab" aria-controls="profile" aria-selected="false" ng-click="resetFilter()">Tìm kiếm
                             nâng cao</button>
                     </li>
                 </ul>
@@ -31,7 +31,7 @@
                 </button>
             </div>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade show active col-md-3" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Nhập mã hóa đơn..."
                         class="form-control mt-2">
                 </div>
@@ -63,7 +63,7 @@
                             </select>
                         </div>
                         <div class="col-md-1"></div>
-                        <div class="col-md-2">
+                        <div class="col-md-2  mt-4">
                             <button type="button" class="btn btn-outline-primary mb-2 form-control"
                                 ng-click="filter(fromDate, toDate, typeBill, billStatus)">Tìm kiếm
                             </button>
@@ -118,7 +118,8 @@
                                         </div>
                                         <div ng-if="formUpdate.customerEntity == null">
                                             <input name="fullName" type="text" class="form-control bg-secondary-light"
-                                                placeholder="Tên khách hàng" disabled ng-required="true" value="Khách lẻ">
+                                                placeholder="Tên khách hàng" disabled ng-required="true"
+                                                value="Khách lẻ">
                                         </div>
                                     </div>
                                 </div>
@@ -126,7 +127,7 @@
                                     <label class="col-sm-2">Ngày đặt hàng</label>
                                     <div class="col-sm-4">
                                         <input name="createdAt" type="text" class="form-control bg-secondary-light"
-                                        disabled ng-model="formUpdate.createdAt | date: 'dd-MM-yyyy HH:mm'"
+                                            disabled ng-model="formUpdate.createdAt | date: 'dd-MM-yyyy HH:mm'"
                                             ng-required="true">
                                     </div>
                                     <label class="col-sm-2">Hình thức thanh toán</label>
@@ -152,15 +153,42 @@
                                     </div>
                                     <label class="col-sm-2">Trạng thái</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select" aria-label="Small select example"
-                                            ng-model="formUpdate.status">
-                                            <option ng-value="1">Chờ xử lý</option>
-                                            <option ng-value="2">Đang giao hàng</option>
-                                            <option ng-value="3">Giao hàng thành công</option>
-                                            <option ng-value="4">Đã hủy</option>
-                                        </select>
+                                        <div ng-if="currentStatus == 1 || currentStatus == 2">
+                                            <select class="form-select" aria-label="Small select example"
+                                                ng-change="showNote(formUpdate.status)" ng-model="formUpdate.status">
+                                                <option ng-value="1">Chờ xử lý</option>
+                                                <option ng-value="2">Đang giao hàng</option>
+                                                <option ng-value="3">Giao hàng thành công</option>
+                                                <option ng-value="4">Đã hủy</option>
+                                            </select>
+                                        </div>
+
+                                        <div ng-if="currentStatus == 3 || currentStatus == 4">
+                                            <div ng-if="formUpdate.status == 3 && formUpdate.typeBill == 1">
+                                                <input name="status4" type="text"
+                                                    class="form-control bg-secondary-light" value="Thành công" disabled>
+                                            </div>
+                                            <div ng-if="formUpdate.status == 3 && formUpdate.typeBill != 1">
+                                                <input name="status4" type="text"
+                                                    class="form-control bg-secondary-light" value="Giao hàng thành công"
+                                                    disabled>
+                                            </div>
+                                            <div ng-if="formUpdate.status == 4">
+                                                <input name="status4" type="text"
+                                                    class="form-control bg-secondary-light" value="Đã hủy" disabled>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- <div class="row mt-2">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4"></div>
+                                    <label id="labelNote" class="col-sm-2">Lý do hủy</label>
+                                    <div class="col-sm-4">
+                                        <textarea id="areaNote" class="form-control" rows="2"
+                                            ng-model="formUpdate.note"></textarea>
+                                    </div>
+                                </div> -->
                                 <br>
                                 <div class="accordion accordion-flush" id="accordionFlushExample"
                                     ng-if="formUpdate.typeBill != 1">
@@ -213,7 +241,8 @@
                                                     <div class="row mt-2">
                                                         <label class="col-sm-2">Địa chỉ</label>
                                                         <div class="col-sm-10">
-                                                            <textarea id="address" type="text" placeholder="Địa chỉ giao hàng"
+                                                            <textarea id="address" type="text"
+                                                                placeholder="Địa chỉ giao hàng"
                                                                 class="form-control bg-secondary-light" disabled
                                                                 ng-model="formUpdate.address"
                                                                 ng-required="true">{{formUpdate.address}}</textarea>
@@ -224,7 +253,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <hr>
                                 <div class="row">
                                     <div class="col-7">
@@ -249,111 +277,21 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="modal-footer">
-                                    <button ng-if="formUpdate.typeBill == 3" class="btn btn-primary" id="update"> Cập
-                                        nhật
-                                    </button>
-                                    <button class="btn btn-success" id="save"
-                                        ng-click="updateStatus( formUpdate.status ,formUpdate)">Lưu
-                                    </button>
-                                    <button class="btn btn-primary" id="submitEdit" ng-click="update()">Xuất hóa
-                                        đơn
+                                    <div ng-if="currentStatus == 1 || currentStatus == 2">
+                                        <button ng-if="formUpdate.typeBill == 3" class="btn btn-primary" id="update">
+                                            Cập nhật
+                                        </button>
+                                        <button class="btn btn-success" id="save"
+                                            ng-click="updateStatus(formUpdate.status ,formUpdate)">Lưu
+                                        </button>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="submitEdit" ng-click="exportBill()">Xuất hóa đơn
                                     </button>
                                     <button class="btn btn-secondary" id="cancelEdit" data-bs-target="#modalDetail"
                                         data-bs-dismiss="modal">Đóng
                                     </button>
-
                                 </div>
-                            </div>
-
-                            <div id="home2" class="container tab-pane active">
-                                <!--                                <div class="row">-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="updateCode" class="">Mã hóa đơn</label>-->
-                                <!--                                        <input name="code" id="updateCode" type="text"-->
-                                <!--                                               class="form-control bg-secondary-light"-->
-                                <!--                                               placeholder="Mã hóa đơn"-->
-                                <!--                                               ng-model="formUpdate.code" readonly ng-required="true">-->
-                                <!--                                    </div>-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="customer" class="">Tên khách hàng</label>-->
-                                <!--                                        <input name="createdAt" id="customer" type="text"-->
-                                <!--                                               class="form-control bg-secondary-light"-->
-                                <!--                                               placeholder="Tên khách hàng" readonly-->
-                                <!--                                               ng-model="formUpdate.customerEntity.fullName" ng-required="true">-->
-                                <!--                                    </div>-->
-                                <!--                                </div>-->
-                                <!--                                <div class="row mt-2">-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="phoneNumber" class="">Số điện thoại</label>-->
-                                <!--                                        <input name="code" id="phoneNumber" type="text"-->
-                                <!--                                               class="form-control bg-secondary-light"-->
-                                <!--                                               placeholder="Enter code"-->
-                                <!--                                               ng-model="formUpdate.phoneNumber" readonly ng-required="true">-->
-                                <!--                                    </div>-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="createdAt" class="">Ngày đặt hàng</label>-->
-                                <!--                                        <input name="createdAt" id="createdAt" type="text"-->
-                                <!--                                               class="form-control bg-secondary-light"-->
-                                <!--                                               placeholder="Enter createdAt" date="yyyy-MM-dd" readonly-->
-                                <!--                                               ng-model="formUpdate.createdAt | date: 'dd-MM-yyyy HH:mm'"-->
-                                <!--                                               ng-required="true">-->
-                                <!--                                    </div>-->
-                                <!--                                </div>-->
-                                <!--                                <div class="row mt-2">-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="paymentMethod" class="">Hình thức thanh toán</label>-->
-                                <!--                                        <input name="code" id="paymentMethod" type="text"-->
-                                <!--                                               class="form-control bg-secondary-light"-->
-                                <!--                                               placeholder="Enter code"-->
-                                <!--                                               ng-model="formUpdate.paymentMethod.name" readonly ng-required="true">-->
-                                <!--                                    </div>-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="createdAt" class="">CreatedAt</label>-->
-                                <!--                                        <input name="createdAt" id="" type="text"-->
-                                <!--                                               class="form-control bg-secondary-light"-->
-                                <!--                                               placeholder="Enter createdAt" readonly-->
-                                <!--                                               ng-model="formUpdate.createdAt" ng-required="true">-->
-                                <!--                                    </div>-->
-                                <!--                                </div>-->
-                                <!--                                <div class="row mt-2">-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="paymentMethod" class="">Hình thức thanh toán</label>-->
-                                <!--                                        <input name="code" id="a" type="text" class="form-control bg-secondary-light"-->
-                                <!--                                               placeholder="Enter code"-->
-                                <!--                                               ng-model="formUpdate.paymentMethod.name" readonly ng-required="true">-->
-                                <!--                                    </div>-->
-                                <!--                                    <div class="col-sm-6">-->
-                                <!--                                        <label for="" class="">Trạng thái</label>-->
-                                <!--                                        <select class="form-select" aria-label="Small select example"-->
-                                <!--                                                ng-model="formUpdate.status">-->
-                                <!--                                            <option ng-value="0">Chờ xử lý</option>-->
-                                <!--                                            <option ng-value="1">Đang giao hàng</option>-->
-                                <!--                                            <option ng-value="2">Giao hàng thành công</option>-->
-                                <!--                                            <option ng-value="3">Đã hủy</option>-->
-                                <!--                                        </select>-->
-                                <!--                                    </div>-->
-                                <!--                                </div>-->
-                                <!--                                <div class="row mb-3 mt-2">-->
-                                <!--                                    <div class="col-sm-12">-->
-                                <!--                                        <label for="status" class="">Ghi chú</label>-->
-                                <!--                                        <textarea name="note" id="note" type="text"-->
-                                <!--                                                  class="form-control bg-secondary-light" readonly-->
-                                <!--                                                  ng-model="formUpdate.note"-->
-                                <!--                                                  ng-required="true">{{formUpdate.note}}</textarea>-->
-                                <!--                                    </div>-->
-                                <!--                                </div>-->
-                                <!--                                <div class="modal-footer">-->
-                                <!--                                    <button class="btn btn-primary" id="enableEdit"-->
-                                <!--                                            ng-click="enableEditForm(false, false)">-->
-                                <!--                                        Edit-->
-                                <!--                                    </button>-->
-                                <!--                                    <button class="btn btn-secondary" id="cancelEdit" ng-click="cancelEdit()">Cancel-->
-                                <!--                                    </button>-->
-                                <!--                                    <button class="btn btn-primary" id="submitEdit" ng-click="update()">Save change-->
-                                <!--                                    </button>-->
-                                <!--                                </div>-->
                             </div>
                             <div id="menu2" class="container tab-pane fade">
                                 <table class="table">
@@ -411,11 +349,15 @@
                                 </div>
                             </div>
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
         </div>
-        
+        </div>
+
         <!-- Begin Modal Update -->
         <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -441,7 +383,7 @@
         <!-- End Modal Update -->
         <div class="row">
             <div class="col-lg-12">
-                <table class="table">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Mã</th>
