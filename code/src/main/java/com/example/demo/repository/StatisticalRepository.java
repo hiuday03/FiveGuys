@@ -53,6 +53,10 @@ public interface StatisticalRepository extends JpaRepository<Bill, Long> {
     @Query("SELECT COALESCE(SUM(b.totalAmountAfterDiscount), 0) as hihi from Bill b where b.paymentDate  = :day")
     BigDecimal ListDoanhThuDay(Date day);
 
+    // search trang thai bill
+    @Query("SELECT b From Bill b where b.status =:status")
+    List<Bill> searchStatusBill(Integer status);
+
 //    @Query(
 //            "SELECT TOP 5 " +
 //                    "    spct.Id AS sanpham_id, " +

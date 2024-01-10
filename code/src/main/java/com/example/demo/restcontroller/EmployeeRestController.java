@@ -121,7 +121,7 @@ public class EmployeeRestController {
             XSSFRow row = null;
             Cell cell = null;
             LocalDateTime date = LocalDateTime.now();
-            DateTimeFormatter getDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter getDate = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
             row = sheet.createRow(0);
             cell = row.createCell(0, CellType.NUMERIC);
             cell.setCellValue("STT");
