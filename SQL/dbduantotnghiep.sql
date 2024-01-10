@@ -273,6 +273,7 @@ create table Ratings
 	Rate		int,
 	IdCustomer	bigint references Customers(Id),
 	IdProductDetail	bigint references ProductDetails(Id),
+	Rated		bit,
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	Status		int
