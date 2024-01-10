@@ -260,7 +260,7 @@ create table Favorites
 (
 	Id			bigint identity(1,1) primary key,
 	IdCustomer	bigint references Customers(Id),
-	IdProductDetail	bigint references ProductDetails(Id),
+	IdProducts	bigint references Products(Id),
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	Status		int
@@ -272,9 +272,17 @@ create table Ratings
 	Content		nvarchar(MAX),
 	Rate		int,
 	IdCustomer	bigint references Customers(Id),
-	IdProductDetail	bigint references ProductDetails(Id),
+	IdBillDetails	bigint references BillDetails(Id),
 	Rated		bit,
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
 	Status		int
+)
+create table RefreshToken
+(
+	Id			bigint identity(1,1) primary key,
+	Token		nchar(100),
+	ExpiryDate		int,
+	IdAccount	bigint, 
+	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id),
 )
