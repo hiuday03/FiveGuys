@@ -2,10 +2,7 @@ package com.example.demo.restcontroller.onlineSales;
 
 
 import com.example.demo.entity.*;
-import com.example.demo.model.response.onlineSales.OlHomeDataFillRespone;
-import com.example.demo.model.response.onlineSales.OlViewProductDetailRespone;
-import com.example.demo.model.response.onlineSales.OlHomeProductResponse;
-import com.example.demo.model.response.onlineSales.OlProductDetailInfo;
+import com.example.demo.model.response.onlineSales.*;
 import com.example.demo.repository.onlineSales.OLProductRepository;
 import com.example.demo.service.onlineSales.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +35,8 @@ public class HomeRestController {
     @Autowired
     private OlMaterialService olMaterialService;
 
-
+    @Autowired
+    private OlBillService olBillService;
 
     @Autowired
     private OLProductService olProductService;
@@ -213,7 +211,6 @@ public class HomeRestController {
     @GetMapping("/productDetail/quantity/{id}")
     public ResponseEntity<?> getProductQuantity(@PathVariable("id") Long id) {
         Optional<ProductDetail> productDetailOptional = olProductDetailService.findById(id);
-
         if (productDetailOptional.isPresent()) {
             ProductDetail productDetail = productDetailOptional.get();
             return ResponseEntity.ok(productDetail.getQuantity());
@@ -222,5 +219,24 @@ public class HomeRestController {
         }
     }
 
+    @GetMapping("/checkOrder/{phoneNumber}")
+    public ResponseEntity<?> getBillById(@PathVariable String phoneNumber) {
+        List<Bill> bill = olBillService.findByPhoneNumber(phoneNumber);
+        if (bill.size() > 0){
+            return ResponseEntity.ok(bill);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/bills/{id}")
+    public ResponseEntity<?> getBillById(@PathVariable Long id) {
+        OlBillResponse bill = olBillService.findBYId(id);
+        if (bill != null) {
+            return ResponseEntity.ok(bill);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

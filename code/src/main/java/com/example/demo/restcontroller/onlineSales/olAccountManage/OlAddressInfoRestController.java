@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/ol")
+@RequestMapping("/api/ol/authenticated")
 public class OlAddressInfoRestController {
 
     @Autowired
@@ -25,14 +25,14 @@ public class OlAddressInfoRestController {
         return olAddressService.getAddressListByUsername(username);
     }
 
-    @GetMapping("/address/{id}")
-    public AddressEntity getAddress(@PathVariable Long id) {
-        return olAddressService.findById(id).get();
-    }
+//    @GetMapping("/address/{id}")
+//    public AddressEntity getAddress(@PathVariable Long id) {
+//        return olAddressService.findById(id).get();
+//    }
 
     @GetMapping("/addressDefault")
-    public AddressEntity getAddressDefault() {
-        return olAddressService.findByDefaultAddressTrue();
+    public AddressEntity getAddressDefault(@RequestParam("username") String username) {
+        return olAddressService.findByDefaultAddressTrue(username);
     }
 
     // Trong controller của bạn

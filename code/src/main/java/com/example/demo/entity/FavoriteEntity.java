@@ -29,8 +29,8 @@ public class FavoriteEntity {
     private CustomerEntity customer;
 
     @ManyToOne
-    @JoinColumn(name = "IdProductDetail")
-    private ProductDetail productDetail;
+    @JoinColumn(name = "IdProduct")
+    private Product product;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CreatedAt")

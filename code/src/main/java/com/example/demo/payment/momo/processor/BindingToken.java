@@ -24,7 +24,6 @@ public class BindingToken extends AbstractProcess<BindingTokenRequest, BindingTo
 
             return bindingTokenResponse;
         } catch (Exception exception) {
-            System.out.println("[BindingTokenProcess] "+ exception);
         }
         return null;
     }
@@ -41,7 +40,6 @@ public class BindingToken extends AbstractProcess<BindingTokenRequest, BindingTo
                 throw new MoMoException("[BindingTokenResponse] [" + request.getOrderId() + "] -> Error API");
             }
 
-            System.out.println("uweryei7rye8wyreow8: "+ response.getData());
 
             BindingTokenResponse BindingTokenResponse = getGson().fromJson(response.getData(), BindingTokenResponse.class);
             String responserawData = Parameter.REQUEST_ID + "=" + BindingTokenResponse.getRequestId() +
@@ -49,7 +47,6 @@ public class BindingToken extends AbstractProcess<BindingTokenRequest, BindingTo
                     "&" + Parameter.MESSAGE + "=" + BindingTokenResponse.getMessage() +
                     "&" + Parameter.RESULT_CODE + "=" + BindingTokenResponse.getResultCode();
 
-            System.out.println("[BindingTokenResponse] rawData: " + responserawData);
 
             return BindingTokenResponse;
 

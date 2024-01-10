@@ -38,6 +38,8 @@ public class OlViewProductDetailRespone {
 
     private Float rate;
 
+    private Integer totalRate;
+
     private Integer totalQuantity;
 
 

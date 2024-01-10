@@ -2,10 +2,8 @@ package com.example.demo.model.response.onlineSales;
 
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.Product;
-import com.example.demo.entity.ProductDetail;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -14,7 +12,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class OlFavoritesResponse {
+public class OlFavoritesAddResponse {
 
 
     private Long id;
@@ -23,17 +21,11 @@ public class OlFavoritesResponse {
     private CustomerEntity customer;
 
 
-    private Product product;
+    private Long idProduct;
 
-
-    private Date createdAt;
-
-    private BigDecimal price;
-
-    private Date updatedAt;
 
     private int status;
 
-    private String path;
+
 
 }

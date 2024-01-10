@@ -16,7 +16,7 @@ public interface OlAddressService {
 
     boolean addAddress(AddressEntity addressRequest);
 
-    AddressEntity findByDefaultAddressTrue();
+    AddressEntity findByDefaultAddressTrue(String username);
 
     Optional<AddressEntity> findById(Long id);
 }

@@ -1,16 +1,25 @@
 package com.example.demo.security.jwt;
 
+import com.example.demo.entity.AccountEntity;
+import com.example.demo.entity.CustomerEntity;
+import com.example.demo.entity.Employees;
+import com.example.demo.entity.RefreshToken;
+import com.example.demo.model.request.TokenResponse;
+import com.example.demo.service.AccountService;
+import com.example.demo.service.CustomerService;
+import com.example.demo.service.RefreshTokenService;
+import com.example.demo.service.onlineSales.OlAccountService;
+import com.example.demo.service.onlineSales.OlEmployeeService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
@@ -19,6 +28,8 @@ public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
 
     public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
+
+
 
     @Value("${jwt.secret}")
     private String secret;
@@ -53,6 +64,8 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", userDetails.getAuthorities());
+        claims.put("random", UUID.randomUUID().toString());
+
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -72,5 +85,17 @@ public class JwtTokenUtil implements Serializable {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+
+    //refreshToken
+    public String refreshToken(AccountEntity accountEntity) {
+
+          Map<String, Object> claims = new HashMap<>();
+        claims.put("random", UUID.randomUUID().toString());
+          claims.put("role", accountEntity.getRole());
+          return doGenerateToken(claims, accountEntity.getAccount());
+
+    }
+
 
 }

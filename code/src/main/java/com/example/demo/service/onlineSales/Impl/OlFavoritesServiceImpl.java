@@ -1,6 +1,7 @@
 package com.example.demo.service.onlineSales.Impl;
 
 import com.example.demo.entity.*;
+import com.example.demo.model.response.onlineSales.OlFavoritesAddResponse;
 import com.example.demo.model.response.onlineSales.OlFavoritesResponse;
 import com.example.demo.repository.onlineSales.OLAddressRepository;
 import com.example.demo.repository.onlineSales.OLFavoritesRepository;
@@ -8,6 +9,7 @@ import com.example.demo.service.onlineSales.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -29,7 +31,11 @@ public class OlFavoritesServiceImpl implements OlFavoritesService {
     @Autowired
     private OlImageService olImageService;
 
+    @Autowired
+    private OLProductService olProductService;
 
+    @Autowired
+    private OLProductDetailService olProductDetailService;
 
 //    @Override
 //    public List<AddressEntity> getAddressListByUsername(String username) {
@@ -103,15 +109,40 @@ public class OlFavoritesServiceImpl implements OlFavoritesService {
                     OlFavoritesResponse favoritesResponse = new OlFavoritesResponse();
                     favoritesResponse.setId(favoriteEntity.getId());
                     favoritesResponse.setCustomer(favoriteEntity.getCustomer());
-                    favoritesResponse.setProductDetail(favoriteEntity.getProductDetail());
+                    favoritesResponse.setProduct(favoriteEntity.getProduct());
                     favoritesResponse.setCreatedAt(favoriteEntity.getCreatedAt());
                     favoritesResponse.setUpdatedAt(favoriteEntity.getUpdatedAt());
                     favoritesResponse.setStatus(favoriteEntity.getStatus());
 
-                    Long idProductDetail = favoriteEntity.getProductDetail().getId();
-                    List<Image> images = olImageService.findByProductDetailId(idProductDetail);
-                    if (!images.isEmpty()) {
-                        favoritesResponse.setPath(images.get(0).getPath());
+                    List<ProductDetail> productDetailList = olProductDetailService.findByProduct(favoriteEntity.getProduct());
+                    String imagePath = null;
+                    for (ProductDetail productDetail : productDetailList) {
+                        List<Image> images = olImageService.findByProductDetailId(productDetail.getId());
+                        if (!images.isEmpty()) {
+                            String currentPath = images.get(0).getPath();
+                            if (currentPath != null) {
+                                imagePath = currentPath;
+                                break; // Kết thúc vòng lặp nếu đã tìm thấy ảnh không null
+                            }
+                        }
+                    }
+
+                    if (imagePath != null) {
+                        favoritesResponse.setPath(imagePath);
+                    }
+
+
+                    BigDecimal price = null;
+
+                    for (ProductDetail productDetail : productDetailList) {
+                        if (productDetail.getPrice() != null) {
+                            price = productDetail.getPrice();
+                            break; // Kết thúc vòng lặp nếu đã tìm thấy giá không null
+                        }
+                    }
+
+                    if (price != null) {
+                        favoritesResponse.setPrice(price);
                     }
 
                     favoritesResponses.add(favoritesResponse);
@@ -130,11 +161,35 @@ public class OlFavoritesServiceImpl implements OlFavoritesService {
 
 
     @Override
-    public boolean addFavorite(FavoriteEntity favoriteEntity) {
-        favoriteEntity.setCreatedAt(new Date());
-        olFavoritesRepository.save(favoriteEntity);
-        return true;
+    public Integer addFavorite(OlFavoritesAddResponse favoriteEntity) {
+        FavoriteEntity favoriteEntity1 = new FavoriteEntity();
+
+        Long idProduct = favoriteEntity.getIdProduct();
+
+        // Kiểm tra xem idProduct đã tồn tại trong cơ sở dữ liệu chưa
+        Optional<Product> product = olProductService.findById(idProduct);
+        if (product.isPresent()) {
+            // Kiểm tra xem sản phẩm đã tồn tại trong danh sách yêu thích của khách hàng chưa
+            CustomerEntity customer = favoriteEntity.getCustomer();
+            boolean isProductAlreadyInFavorites = olFavoritesRepository.existsByCustomerAndProduct(customer, product.get());
+
+            if (!isProductAlreadyInFavorites) {
+                favoriteEntity1.setProduct(product.get());
+                favoriteEntity1.setCustomer(customer);
+                favoriteEntity1.setCreatedAt(new Date());
+                favoriteEntity1.setStatus(favoriteEntity.getStatus());
+
+                olFavoritesRepository.save(favoriteEntity1);
+                return 1; // Trả về 1 nếu thành công
+            } else {
+                return 2; // Trả về 2 nếu sản phẩm đã tồn tại trong danh sách yêu thích của khách hàng
+            }
+        }
+        return 0; // Trả về 0 nếu idProduct không tồn tại trong cơ sở dữ liệu
     }
+
+
+
 
 
 }

@@ -67,12 +67,12 @@ public class AccountServiceImpl implements AccountService {
         // Kiểm tra xem tên thương hiệu đã tồn tại trong cơ sở dữ liệu chưa
         Optional<AccountEntity> existingEmail = accountRepository.findByEmail(email);
         Optional<AccountEntity> existingAccount = accountRepository.findByAccount(account);
-        if (existingEmail != null) {
-            throw new IllegalArgumentException("Email đã tồn tại");
-        }
-        if (existingAccount != null) {
-            throw new IllegalArgumentException("Account đã tồn tại");
-        }
+//        if (existingEmail != null) {
+//            throw new IllegalArgumentException("Email đã tồn tại");
+//        }
+//        if (existingAccount != null) {
+//            throw new IllegalArgumentException("Account đã tồn tại");
+//        }
         // Gửi email thông báo khi tạo mới tài khoản
 //        accountEmailSender.sendAccountCreationEmail(
 //                account.getEmail(),
@@ -89,14 +89,14 @@ public class AccountServiceImpl implements AccountService {
         String email = accountEntity.getEmail();
         String account = accountEntity.getAccount();
         // Kiểm tra xem tên thương hiệu đã tồn tại trong cơ sở dữ liệu chưa
-        Optional<AccountEntity> existingEmail = accountRepository.findByEmail(email);
-        Optional<AccountEntity> existingAccount = accountRepository.findByAccount(account);
-        if (existingEmail != null) {
-            throw new IllegalArgumentException("Email đã tồn tại");
-        }
-        if (existingAccount != null) {
-            throw new IllegalArgumentException("Account đã tồn tại");
-        }
+//        Optional<AccountEntity> existingEmail = accountRepository.findByEmail(email);
+//        Optional<AccountEntity> existingAccount = accountRepository.findByAccount(account);
+//        if (existingEmail != null) {
+//            throw new IllegalArgumentException("Email đã tồn tại");
+//        }
+//        if (existingAccount != null) {
+//            throw new IllegalArgumentException("Account đã tồn tại");
+//        }
         return accountRepository.save(accountEntity);
     }
 //    @Override
