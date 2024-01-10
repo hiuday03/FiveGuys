@@ -37,13 +37,16 @@ public class RatingEntity {
     @Column(name = "UpdatedAt")
     private Date updatedAt;
 
+    @Column(name = "Rated")
+    private boolean  rated;
+
     @ManyToOne
     @JoinColumn(name = "IdCustomer")
     private CustomerEntity customer;
 
     @ManyToOne
-    @JoinColumn(name = "IdProductDetail")
-    private ProductDetail productDetail;
+    @JoinColumn(name = "IdBillDetail")
+    private BillDetail billDetail;
 
     @Column(name = "Status")
     private int status;

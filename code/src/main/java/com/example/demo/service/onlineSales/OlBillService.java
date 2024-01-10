@@ -24,4 +24,6 @@ public interface OlBillService {
 
     Bill findById(Long id);
 
+    List<Bill> findByPhoneNumber(String pn);
+
 }

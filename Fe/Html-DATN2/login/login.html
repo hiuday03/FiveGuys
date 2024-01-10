@@ -8,9 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="login.css">
     <title>Login</title>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+    <!-- //toastr -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 
     <!-- angular-jwt -->
     <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
@@ -28,19 +31,34 @@
         <div class="form-container sign-up">
             <form>
                 <h1>Đăng Ký</h1>
-                <div class="social-icons">
-                    <!-- Các icon xã hội -->
-                </div>
                 <div class="input-row">
                     <input type="text" ng-model="user.lastName" placeholder="Họ" required>
+                    <p style="color: red;" class="error-message" ng-if="lastNameError">Họ không được để trống.</p>
+
                     <input type="text" ng-model="user.firstName" placeholder="Tên" required>
+                    <p style="color: red;" class="error-message" ng-if="firstNameError">Tên không được để trống.</p>
+
+                    <input type="text" ng-model="user.email" placeholder="Email" required>
+                    <p style="color: red;" class="error-message" ng-if="emailError">Email không hợp lệ.</p>
+
+                    <input type="text" ng-model="user.account" placeholder="Tên tài khoản" required>
+                    <p style="color: red;" class="error-message" ng-if="accountError">Tên tài khoản không hợp lệ.</p>
+
+                    <input type="password" ng-model="user.password" placeholder="Mật khẩu" required>
+                    <p style="color: red;" class="error-message" ng-if="passwordError">Mật khẩu có độ dài tối thiểu 10
+                        kí tự, viết Hoa, chứa kí tự số.</p>
+
+                    <input type="password" ng-model="user.confirmPassword" placeholder="Xác nhận mật khẩu" required>
+                    <p style="color: red;" class="error-message" ng-if="confirmPasswordError">Mật khẩu xác nhận không
+                        khớp.</p>
+
+                    <div style="    display: flex;
+                   justify-content: center;">
+                        <button ng-click="registerUser()">Đăng Ký</button>
+                    </div>
                 </div>
-                <input type="text" ng-model="user.email" placeholder="Email" required>
-                <input type="text" ng-model="user.account" placeholder="Tên tài khoản" required>
-                <input type="password" ng-model="user.password" placeholder="Mật khẩu" required>
-                <input type="password" ng-model="user.confirmPassword" placeholder="Xác nhận mật khẩu" required>
-                <button ng-click="registerUser()">Đăng Ký</button>
             </form>
+
 
 
         </div>
@@ -48,31 +66,31 @@
             <form>
                 <h1>Đăng Nhập</h1>
                 <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
+                    <!-- <a href="#" class="icon"><i class="fa fa-google-plus"></i></a>
                     <a href="#" class="icon"><i class="fa fa-facebook-f"></i></a>
                     <a href="#" class="icon"><i class="fa fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa fa-linkedin"></i></a>
+                    <a href="#" class="icon"><i class="fa fa-linkedin"></i></a> -->
                 </div>
                 <span>Nhập tài khoản với mật khẩu</span>
                 <div>
-                    <input type="text" placeholder="User name" ng-model="username" name="username" required>
+                    <input type="text" placeholder="Tài khoản" ng-model="username" name="username" required>
                     <span ng-show="loginForm.username.$dirty && loginForm.username.$error.required"
                         class="error-message">
                         Tên người dùng là trường bắt buộc.
                     </span>
                 </div>
                 <div>
-                    <input type="password" placeholder="Password" ng-model="password" name="password" required>
+                    <input type="password" placeholder="Mật khẩu" ng-model="password" name="password" required>
                     <span ng-show="loginForm.password.$dirty && loginForm.password.$error.required"
                         class="error-message">
                         Mật khẩu là trường bắt buộc.
                     </span>
                 </div>
-                <a href="/confirmOtp.html">Quên mật khẩu</a>
-                <div>
+                <a href="/login/confirmOtp.html">Quên mật khẩu</a>
+                <!-- <div>
                     <label for="remember">Nhớ tôi:</label>
                     <input type="checkbox" id="remember" name="remember" th:checked="${remember}">
-                </div>
+                </div> -->
                 <button type="submit" ng-disabled="loginForm.$invalid" ng-click="login()">Đăng Nhập</button>
             </form>
 
@@ -93,8 +111,11 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     <script src="login.js"></script>
     <script src="loginAngularJs.js"></script>
+
 </body>
 
 </html>

@@ -90,8 +90,8 @@ public PasswordEncoder passwordEncoder() {
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/templates/**", "/assets/**").permitAll()
 //                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF")
-//                        .requestMatchers("/api/admin").hasAuthority("ADMIN")
-                        .anyRequest().permitAll() // Các request còn lại cần xác thực
+//                        .requestMatchers("/api/ol/authenticated/**").authenticated()
+                        .anyRequest().permitAll()
         )
                 .cors().and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Thêm filter xác thực JWT vào trước filter xác thực UsernamePassword

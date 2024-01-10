@@ -148,7 +148,7 @@ public class BillRestController {
 //            }
 //        } else
             if (namePayment.equals("VNPAY")) {
-                olBillUntility.scheduleBillDeletion(billData.getId());
+                olBillUntility.scheduleBillDeletion(billData.getId(),req);
 
                 String vnp_Version = "2.1.0";
                 String vnp_Command = "pay";
@@ -210,8 +210,7 @@ public class BillRestController {
                 }
                 String queryUrl = query.toString();
                 String vnp_SecureHash = ConfigVNPay.hmacSHA512(ConfigVNPay.secretKey, hashData.toString());
-                System.out.println("vnp_SecureHash");
-                System.out.println(vnp_SecureHash);
+
                 queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
                 String paymentUrlVNPAY = ConfigVNPay.vnp_PayUrl + "?" + queryUrl;
 
@@ -224,7 +223,7 @@ public class BillRestController {
 
 
             }else if (namePayment.equals("MoMo")){
-                olBillUntility.scheduleBillDeletion(billData.getId());
+                olBillUntility.scheduleBillDeletion(billData.getId(),req);
 
 
                 String orderInfo = "Thanh toán cho đơn hàng ";

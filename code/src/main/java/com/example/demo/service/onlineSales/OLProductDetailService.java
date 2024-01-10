@@ -26,4 +26,6 @@ public interface OLProductDetailService {
 
     List<ProductDetail> findByColorIdAndProductId(Long colorId, Long productId);
 
+    List<ProductDetail> findByProduct_Id(Long productId);
+
 }

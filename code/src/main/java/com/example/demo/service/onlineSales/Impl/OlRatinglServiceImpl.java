@@ -2,16 +2,15 @@ package com.example.demo.service.onlineSales.Impl;
 
 import com.example.demo.entity.*;
 import com.example.demo.model.response.onlineSales.OlFavoritesResponse;
+import com.example.demo.model.response.onlineSales.OlRatingResponse;
 import com.example.demo.repository.onlineSales.OLBillDetailRepository;
 import com.example.demo.repository.onlineSales.OLRatingRepository;
-import com.example.demo.service.onlineSales.OlAccountService;
-import com.example.demo.service.onlineSales.OlBillDetailService;
-import com.example.demo.service.onlineSales.OlCustomerService;
-import com.example.demo.service.onlineSales.OlRatingService;
+import com.example.demo.service.onlineSales.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +27,18 @@ public class OlRatinglServiceImpl implements OlRatingService {
     @Autowired
     private OlAccountService olAccountService;
 
+    @Autowired
+    private OlBillDetailService olBillDetailService;
+
+    @Autowired
+    private OLProductDetailService olProductDetailService;
+
+    @Autowired
+    private OlBillDetailService billDetailService;
+
     @Override
-    public List<RatingEntity> findByProductDetail(ProductDetail productDetail) {
-        return olRatingRepository.findByProductDetailAndStatus(productDetail,1);
+    public List<RatingEntity> findByProduct(Product productDetail) {
+        return olRatingRepository.findByBillDetailAndStatus(productDetail,1);
     }
 
     @Override
@@ -55,8 +63,44 @@ public class OlRatinglServiceImpl implements OlRatingService {
     }
 
     @Override
-    public boolean addRating(RatingEntity ratingEntity) {
-        olRatingRepository.save(ratingEntity);
-        return true;
+    public boolean addRating(OlRatingResponse ratingEntity) {
+
+            Optional<BillDetail> billDetail =  olBillDetailService.findById(ratingEntity.getIdBillDetail());
+
+        Optional<CustomerEntity> customerEntity = (olCustomerService.findById(ratingEntity.getIdCustomer()));
+        if (billDetail.isPresent() && customerEntity.isPresent()) {
+        RatingEntity ratingEntity1 = new RatingEntity();
+            ratingEntity1.setBillDetail(billDetail.get());
+            ratingEntity1.setContent(ratingEntity.getContent());
+            ratingEntity1.setCustomer(customerEntity.get());
+            ratingEntity1.setCreatedAt(new Date());
+            ratingEntity1.setRate(ratingEntity.getRate());
+            ratingEntity1.setRated(true);
+            ratingEntity1.setStatus(2);
+            olRatingRepository.save(ratingEntity1);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<RatingEntity> findByProductId(Long productId) {
+        List<ProductDetail> productDetailList = olProductDetailService.findByProduct_Id(productId);
+        List<RatingEntity> list = new ArrayList<>();
+
+        for (ProductDetail productDetail : productDetailList) {
+            List<BillDetail> billDetails = billDetailService.findByProductDetailAndStatus(productDetail.getId(), 1);
+            for (BillDetail billDetail : billDetails) {
+                List<RatingEntity> ratingEntitiesForDetail = olRatingRepository.findByBillDetailAndStatus(billDetail,1);
+                        list.addAll(ratingEntitiesForDetail);
+            }
+        }
+        return list;
+    }
+
+
+    @Override
+    public List<RatingEntity> findByBillDetailAndStatus(BillDetail billDetail,int status) {
+        return olRatingRepository.findByBillDetailAndStatus(billDetail , status);
     }
 }

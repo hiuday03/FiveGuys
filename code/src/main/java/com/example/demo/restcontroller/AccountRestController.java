@@ -54,23 +54,23 @@ public class AccountRestController {
         }
     }
 
-    @PostMapping("/check-email")
-    public ResponseEntity<Object> checkEmailExists(@RequestBody CheckRequest checkRequest) {
-        boolean exists = accountRepository.existsByEmail(checkRequest.getEmail());
-        return ResponseEntity.ok().body(exists);
-    }
+//    @PostMapping("/check-email")
+//    public ResponseEntity<Object> checkEmailExists(@RequestBody CheckRequest checkRequest) {
+//        boolean exists = accountRepository.existsByEmail(checkRequest.getEmail());
+//        return ResponseEntity.ok().body(exists);
+//    }
 
-    @PostMapping("/check-account")
-    public ResponseEntity<Object> checkAccountExists(@RequestBody CheckRequest checkRequest) {
-        boolean exists = accountRepository.existsByAccount(checkRequest.getAccount());
-        return ResponseEntity.ok().body(exists);
-    }
-
-    @PostMapping("/check-phone-number")
-    public ResponseEntity<Object> checkPhoneNumberExists(@RequestBody CheckRequest checkRequest) {
-        boolean exists = accountRepository.existsByPhoneNumber(checkRequest.getPhoneNumber());
-        return ResponseEntity.ok().body(exists);
-    }
+//    @PostMapping("/check-account")
+//    public ResponseEntity<Object> checkAccountExists(@RequestBody CheckRequest checkRequest) {
+//        boolean exists = accountRepository.existsByAccount(checkRequest.getAccount());
+//        return ResponseEntity.ok().body(exists);
+//    }
+//
+//    @PostMapping("/check-phone-number")
+//    public ResponseEntity<Object> checkPhoneNumberExists(@RequestBody CheckRequest checkRequest) {
+//        boolean exists = accountRepository.existsByPhoneNumber(checkRequest.getPhoneNumber());
+//        return ResponseEntity.ok().body(exists);
+//    }
 
     @PostMapping("")
     public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity accountEntity) {

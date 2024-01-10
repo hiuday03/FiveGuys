@@ -59,7 +59,8 @@
                                             <td>Mã hóa đơn:</td>
                                             <td>{{ selectedBill.code }}</td>
                                             <td>Trạng thái thanh toán:</td>
-                                            <td>{{ selectedBill.status }}</td>
+                                            <td>{{getStatusText(selectedBill.status) }}</td>
+                                            <td>
                                         </tr>
                                         <tr>
                                             <td>Ngày thanh toán:</td>
@@ -127,16 +128,13 @@
                                                         <span class="fa fa-star" ng-click="toggleStars(4)"></span>
                                                     </div>
                                                     
-                                                    
-                                                    
                                                       
-                                                    <!-- Nội dung đánh giá -->
-                                                    <textarea rows="4" cols="50" placeholder="Nhập nội dung đánh giá..."></textarea>
+                                                    <textarea ng-model="rating.content" rows="4" cols="50" placeholder="Nhập nội dung đánh giá..."></textarea>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" ng-click="closeReview()">Đóng</button>
 
-                                                    <button type="button" class="btn btn-primary">Đánh giá</button>
+                                                    <button type="button" class="btn btn-primary" ng-click="addRating()">Đánh giá</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,17 +161,21 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Giảm giá hóa đơn:</strong></td>
+                                    <!-- <td class="text-right">{{ (selectedBill.totalAmountAfterDiscount)  }}</td> -->
+                                </tr>
+                                <tr>
+                                    <td><strong>Khách phải trả:</strong></td>
                                     <td class="text-right">{{ (selectedBill.totalAmountAfterDiscount)  }}</td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
-
+<!-- 
                 <div class="row">
                     <button class="btn btn-danger">Hủy</button>
                 </div>
-                
+                 -->
                 
             </div>
         </div>

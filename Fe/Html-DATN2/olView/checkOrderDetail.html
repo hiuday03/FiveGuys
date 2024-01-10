@@ -1,0 +1,145 @@
+<!-- cart + summary -->
+<section style="    margin-top: 82px;"  class="bg-light " ng-init="showCheckOrder()">
+    <div class="container-fluid">
+      <div style="padding: 46px;;" class="row">
+        <!-- cart -->
+        <div class="col-lg-12">
+          <div class="card border shadow-0">
+            <div class="m-4">
+              <div class="p-4">
+                <h5 class="card-title mb-3">Kiểm tra đơn hàng của bạn</h5>
+  
+                <hr />  
+                    <h6  class="card-title mb-3 border:none">Kiểm tra bằng số điện thoại</h6>
+                    <form class="form-edit-account form-control">
+                        <div class="input-group mb-3 ">
+                            <input type="text" ng-model="phoneNumberCheckOrder" class="form-control" placeholder="Nhập số điện thoại để kiểm tra" aria-label="Số điện thoại" aria-describedby="basic-addon2">
+                               <p style="color: red;" class="error-message" ng-if="isPhoneNumberCheckOrder">Số điện thoại không hợp lệ.</p>
+                            <div class="input-group-append">
+                                <button ng-click="checkOrder()" class="btn btn-primary" type="button">Kiểm tra</button>
+                            </div>
+                        </div>
+                 
+
+                    </form>
+             
+                
+             
+              
+              </div>
+              <div class="col-lg-12 col-md-6 col-sm-6 mb-4">
+                <div class="column-main">
+                    <div class="page-title-wrapper">
+                        <h1 class="page-title">
+                            <span class="base">Thông tin chi tiết</span>
+                        </h1>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <table class="table">
+                                            <tr>
+                                                <td>Mã hóa đơn:</td>
+                                                <td>{{ selectedBill2.code }}</td>
+                                                <td>Trạng thái thanh toán:</td>
+                                                <td>{{getStatusText(selectedBill2.status) }}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Ngày thanh toán:</td>
+                                                <td>{{ selectedBill2.paymentDate | date:'dd/MM/yyyy' }}</td>
+                                                <td>Địa chỉ:</td>
+                                                <td>{{ selectedBill2.address }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ngày giao hàng:</td>
+                                                <td>{{ selectedBill2.deliveryDate | date:'dd/MM/yyyy' }}</td>
+                                                <td>Số điện thoại:</td>
+                                                <td>{{ selectedBill2.phoneNumber }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phí vận chuyển:</td>
+                                                <td>{{ selectedBill2.shippingFee }}</td>
+                                                <td>Phương thức thanh toán:</td>
+                                                <td>{{ selectedBill2.paymentMethod.name }}</td>
+                                            </tr>
+                                            <!-- Thêm các trường thông tin khác -->
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã hàng</th>
+                                        <th>Tên hàng</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Giá bán</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="detail in selectedBill2.billDetail">
+                                        <td>{{ detail.productDetail.product.code }}</td>
+                                        <td>{{ detail.productDetail.product.name }}</td>
+                                        <td>{{ detail.quantity }}</td>
+                                        <td>{{ detail.productDetail.price }}</td>
+                                        <td>{{ detail.productDetail.price - detail.discount }}</td>
+                                        <td>{{ detail.quantity * (detail.productDetail.price - detail.discount) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                     
+                    </div>
+                    <div class="row" style="    display: flex;
+                    justify-content: flex-end;">
+                        <div class="col-md-4">
+                            <table class="table">
+                                <!-- Thêm một hàng mới hiển thị các thông tin tổng hợp -->
+                                <tfoot>
+                                    <tr>
+                                        <td><strong>Tổng số lượng:</strong></td>
+                                        <!-- <td >{{ (selectedBill.billDetail) }}</td> -->
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Tổng tiền hàng:</strong></td>
+                                        <td class="text-right">{{ (selectedBill2.totalAmount)  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Giảm giá hóa đơn:</strong></td>
+                                        <td class="text-right">{{ (selectedBill2.totalAmountAfterDiscount)  }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <button class="btn btn-danger">Hủy</button>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            
+            
+            </div>
+          </div>
+        </div>
+        <!-- cart -->
+        <!-- summary -->
+   
+      </div>
+    </div>
+  </section>
+  <!-- cart + summary -->
