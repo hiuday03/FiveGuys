@@ -1,7 +1,10 @@
 package com.example.demo.service.serviceiplm;
 
 import com.example.demo.entity.Product;
+import com.example.demo.entity.ProductDetail;
+import com.example.demo.repository.ProductDetailRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.service.ProductDetailService;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +22,23 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    ProductDetailRepository productDetailRepository;
+
     @Override
     public List<Product> getAll() {
+        for (Product product: productRepository.findAllByOrderByCreatedAtDesc()) {
+            int totalStatusPD1 = 0;
+            List<ProductDetail> productDetailList = productDetailRepository.findAllByProductIdOrderByCreatedAtDesc(product.getId());
+            for (ProductDetail pd : productDetailList) {
+                if(pd.getStatus() == 1){
+                    totalStatusPD1++;
+                }
+            }
+            if(totalStatusPD1 == 0){
+                updateStatus(2, product.getId());
+            }
+        }
         return productRepository.findAllByOrderByCreatedAtDesc();
     }
 
@@ -32,12 +50,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getById(Long id) {
+        int totalStatusPD1 = 0;
+        List<ProductDetail> productDetailList = productDetailRepository.findAllByProductIdOrderByCreatedAtDesc(id);
+        for (ProductDetail pd : productDetailList) {
+            if(pd.getStatus() == 1){
+                totalStatusPD1++;
+            }
+        }
+        if(totalStatusPD1 == 0){
+            updateStatus(2, id);
+        }
         return productRepository.findById(id).orElse(null);
     }
 
     @Override
     public Product save(Product productReq) {
-        productReq.setCode(genmahd());
+        if(productReq.getCode() == null || productReq.getCode().isEmpty() || productReq.getCode().isBlank()){
+            productReq.setCode(genmahd());
+        }
         productReq.setCreatedBy("admin");
         productReq.setCreatedAt(new Date());
         productReq.setUpdatedBy("admin");
@@ -102,5 +132,10 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> searchByStatus(Integer status, Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
         return productRepository.searchByStatus(status, pageable);
+    }
+
+    @Override
+    public List<Product> getAllExportExcel() {
+        return  productRepository.findAll();
     }
 }

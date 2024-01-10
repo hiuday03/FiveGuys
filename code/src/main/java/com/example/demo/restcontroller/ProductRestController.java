@@ -80,4 +80,9 @@ public class ProductRestController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/getAllExportExcel")
+    public ResponseEntity<?> getAllExportExcel(){
+        return ResponseEntity.ok(productService.getAllExportExcel());
+    }
+
 }

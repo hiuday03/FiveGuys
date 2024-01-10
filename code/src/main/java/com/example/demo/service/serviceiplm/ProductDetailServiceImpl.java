@@ -111,8 +111,19 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public List<ProductDetail> getAllByPId(Long pid) {
+        List<ProductDetail> productDetailList = productDetailRepository.findAllByProductIdOrderByCreatedAtDesc(pid);
+        for (ProductDetail productDetail:
+             productDetailList) {
+            List<Image> imageList = imageService.getByPDid(productDetail.getId());
+            if(productDetail.getQuantity() <= 0 || imageList.isEmpty()){
+                productDetail.setStatus(2);
+                productDetailRepository.save(productDetail);
+            }
+        }
         return productDetailRepository.findAllByProductIdOrderByCreatedAtDesc(pid);
     }
+
+
 
     @Override
     public ProductDetail saveI(ProductDetail productDetailReq, List<Image> images) {
@@ -160,11 +171,12 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public ProductDetail checkTrungFK(Product product, Color color, Size size) {
-//        if(productId == null && colorId == null && sizeId == null) return null;
-//        Product product = productService.getById(productId);
-//        Color color = colorService.getById(colorId);
-//        Size size = sizeService.getById(sizeId);
         return productDetailRepository.findProductDetailByProductAndColorAndSize(product, color, size);
+    }
+
+    @Override
+    public List<ProductDetail> getAllPdExportExcel() {
+        return productDetailRepository.findProductDetailByOrderByProductIdAsc();
     }
 
 }

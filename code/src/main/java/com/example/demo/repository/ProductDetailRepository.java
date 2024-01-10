@@ -19,4 +19,6 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
     ProductDetail findProductDetailByProductAndColorAndSize(Product product, Color color, Size size);
 
     List<ProductDetail> findAllByProductIdOrderByCreatedAtDesc(Long id);
+
+    List<ProductDetail> findProductDetailByOrderByProductIdAsc();
 }
