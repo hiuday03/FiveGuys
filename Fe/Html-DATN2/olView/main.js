@@ -913,6 +913,7 @@ function countTotalPrice(items) {
             
               loadLocal();
           }
+          count();
           $scope.applyVoucher();
 
 
@@ -943,7 +944,7 @@ function countTotalPrice(items) {
               loadLocal();
 
           }
-          // $scope.applyVoucher();
+          $scope.applyVoucher();
 
 
   
@@ -1189,14 +1190,17 @@ $scope.selectVoucher = function(selectedVoucher) {
 
 
 $scope.valueVoucher = 0;
-$scope.voucherMessage = ''; // Khởi tạo thông điệp rỗng ban đầu
+$scope.voucherMessage = '';
 $scope.voucherData = null;
 
 $scope.applyVoucher= function () {
-  if ($scope.selectedVoucher != null){
+  if ($scope.selectedVoucher != null){  
 
   if ( $scope.selectedVoucher.quantity > 0) {
     if ($scope.totalAmount >= $scope.selectedVoucher.minimumTotalAmount) {
+      console.log("hello")
+      console.log($scope.totalAmount )
+      console.log($scope.selectedVoucher.minimumTotalAmount)
       var voucherCopy = angular.copy($scope.selectedVoucher); 
       delete voucherCopy.selected; 
        $scope.voucherData = voucherCopy;
@@ -1206,14 +1210,14 @@ $scope.applyVoucher= function () {
         $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher; // Giảm trực tiếp
       }
       // Nếu loại giảm giá là phần trăm (valueType khác 1)
-      else {
+      else if ($scope.selectedVoucher.valueType === 2) {
         var discountPercentage = $scope.selectedVoucher.value / 100;
         $scope.valueVoucher = $scope.totalAmount * discountPercentage;
         $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher; // Giảm theo phần trăm
       }
       $scope.voucherMessage = 'Mã giảm giá đã được áp dụng'; // Cập nhật thông điệp thành công
     } else {
-  count();
+  // count();
   $scope.voucherData = null;
 
       $scope.valueVoucher = 0;
@@ -1225,7 +1229,7 @@ $scope.applyVoucher= function () {
 $scope.voucherData = null;
 
   $scope.voucherMessage = '';
-  count();
+  // count();
   $scope.valueVoucher = 0;
 }
 

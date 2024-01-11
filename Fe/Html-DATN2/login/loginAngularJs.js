@@ -267,8 +267,6 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
 
                     $scope.showErrorNotification("Sai tên người dùng hoặc mật khẩu.");
                 } else {
-                    alert('');
-
                     $scope.showErrorNotification("Đăng nhập không thành công.");
                 }
                 console.error('Đăng nhập không thành công:', error);
