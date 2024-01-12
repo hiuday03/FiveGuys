@@ -204,33 +204,46 @@ app.controller(
 
     //search status Bill
     $scope.searchStatusBill = function () {
-      var status = 3;
       if ($scope.searchStatus === "1") {
-        status = 1;
+        $http.get(api + "/search-status-bill/1").then(function (response) {
+          $scope.getallbilllist = response.data;
+        });
       } else if ($scope.searchStatus === "2") {
-        status = 2;
-        console.log(status);
+        $http.get(api + "/search-status-bill/2").then(function (response) {
+          $scope.getallbilllist = response.data;
+        });
       } else if ($scope.searchStatus === "3") {
-        status = 3;
-      } else if ($scope.searchStatus === "4") {
-        status = 4;
-      } else if ($scope.searchStatus === "5") {
-        status = 5;
-      } else if ($scope.searchStatus === "6") {
-        status = 6;
-      } else if ($scope.searchStatus === "7") {
-        status = 7;
-      } else if ($scope.searchStatus === "8") {
-        status = 8;
-      } else if ($scope.searchStatus === "9") {
-        status = 9;
-      }
-      $http
-        .get(api + "/search-status-bill/" + `${status}`, status)
-        .then(function (response) {
+        $http.get(api + "/search-status-bill3").then(function (response) {
           $scope.getallbilllist = response.data;
           console.log(response.data);
         });
+      } else if ($scope.searchStatus === "4") {
+        $http.get(api + "/search-status-bill/4").then(function (response) {
+          $scope.getallbilllist = response.data;
+        });
+      } else if ($scope.searchStatus === "5") {
+        $http.get(api + "/search-status-bill/5").then(function (response) {
+          $scope.getallbilllist = response.data;
+        });
+      } else if ($scope.searchStatus === "6") {
+        $http.get(api + "/search-status-bill/6").then(function (response) {
+          $scope.getallbilllist = response.data;
+        });
+      } else if ($scope.searchStatus === "7") {
+        status$http
+          .get(api + "/search-status-bill/7")
+          .then(function (response) {
+            $scope.getallbilllist = response.data;
+          });
+      } else if ($scope.searchStatus === "8") {
+        $http.get(api + "/search-status-bill/8").then(function (response) {
+          $scope.getallbilllist = response.data;
+        });
+      } else if ($scope.searchStatus === "9") {
+        $http.get(api + "/search-status-bill/9").then(function (response) {
+          $scope.getallbilllist = response.data;
+        });
+      }
     };
     $scope.searchStatusBill;
     // get all table bill
