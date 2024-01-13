@@ -26,7 +26,6 @@ var app = angular.module("myAppOfView", [
   
           return config;
         },
-<<<<<<< HEAD
         'responseError': function (response) {
             // Xử lý các lỗi khi nhận response
             return $q.reject(response);
@@ -42,7 +41,6 @@ app.config(['$compileProvider', function ($compileProvider) {
 
 
 app.config(function ($httpProvider) {
-<<<<<<< HEAD
   $httpProvider.interceptors.push("authInterceptor");
 });
 
@@ -3687,21 +3685,11 @@ app.controller(
     console.log("myAppOfView-ctrl");
   }
 );
-app.controller(
-  "myAppOfView-ctrl2",
-  function ($scope, $rootScope, $http, $routeParams, $location, jwtHelper) {
-    console.log("myAppOfView-ctrl2");
-=======
->>>>>>> e6b64787ad8fc1daf1faab4bd6308eac63200d46
-=======
-        responseError: function (response) {
-          // Xử lý các lỗi khi nhận response
-          return $q.reject(response);
-        },
-      };
-    },
-  ]);
-  
+app.controller("myAppOfView-ctrl2", function ($scope, $rootScope, $http, $routeParams, $location, jwtHelper) {
+    console.log("myAppOfView-ctrl2")
+    $httpProvider.useApplyAsync(1000); //true
+});
+
   app.config([
     "$compileProvider",
     function ($compileProvider) {
@@ -3746,7 +3734,6 @@ app.controller(
   ]);
   
   app.config(function ($httpProvider) {
->>>>>>> de8604c37615fc5eb0d3e3e303dcc50fce69b94d
     $httpProvider.useApplyAsync(1000); //true
   });
   
