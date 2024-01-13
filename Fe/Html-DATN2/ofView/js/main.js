@@ -40,7 +40,6 @@ app.config([
     $compileProvider.debugInfoEnabled(false);
   },
 ]);
-var app = angular.module("myAppOfView", ["ngRoute", "angular-jwt"]);
 
 app.config(function ($httpProvider) {
   $httpProvider.interceptors.push("authInterceptor");
@@ -3681,6 +3680,53 @@ app.controller(
     $httpProvider.useApplyAsync(1000); //true
   }
 );
+
+app.config([
+  "$compileProvider",
+  function ($compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+  },
+]);
+var app = angular.module("myAppOfView", ["ngRoute", "angular-jwt"]);
+
+app.config(function ($httpProvider) {
+  $httpProvider.interceptors.push("authInterceptor");
+});
+
+app.factory("authInterceptor", [
+  "$q",
+  "$rootScope",
+  function ($q, $rootScope) {
+    return {
+      request: function (config) {
+        // Lấy token từ localStorage
+        var token = localStorage.getItem("token");
+
+        // Nếu có token, thêm header 'Authorization'
+        if (token) {
+          config.headers["Authorization"] = "Bearer " + token;
+        }
+
+        return config;
+      },
+      responseError: function (response) {
+        // Xử lý các lỗi khi nhận response
+        return $q.reject(response);
+      },
+    };
+  },
+]);
+
+app.config([
+  "$compileProvider",
+  function ($compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+  },
+]);
+
+app.config(function ($httpProvider) {
+  $httpProvider.useApplyAsync(1000); //true
+});
 
 app.config(function ($routeProvider) {
   $routeProvider
