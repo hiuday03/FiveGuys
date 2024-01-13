@@ -9,105 +9,64 @@
       <li class="breadcrumb-item active">Thương Hiệu</li>
     </ol>
   </nav>
-  <input
-    type="text"
-    ng-model="searchKeyword"
-    ng-change="search()"
-    placeholder="Search Brands..."
-    class="form-control"
-  />
+  <div class="row align-items-center">
+    <div class="col-md-1">
+      <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+      <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
+        <option value="0">0</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </div>
+    <div class="col-md-11">
+      <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Brands..."
+        class="form-control" />
+    </div>
+  </div>
 </div>
 <!--  Begin code  -->
 <section class="section">
-  <button
-    type="button"
-    class="btn btn-outline-success mb-2"
-    data-bs-toggle="modal"
-    data-bs-target="#modalAdd"
-  >
+  <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal" data-bs-target="#modalAdd">
     Thêm Thương Hiệu
   </button>
-  <div
-    class="alert border-success alert-dismissible fade show"
-    brand="alert"
-    ng-show="showAlert"
-  >
+  <div class="alert border-success alert-dismissible fade show" brand="alert" ng-show="showAlert">
     {{alertMessage}}
-    <button
-      type="button"
-      class="btn-close"
-      ng-click="closeAlert()"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
   </div>
   <!-- Modal Add -->
-  <div
-    class="modal fade"
-    id="modalAdd"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Thêm Thương Hiệu</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form
-            name="formCreateBrand"
-            ng-submit="formCreateBrand.$valid && create()"
-            novalidate
-          >
+          <form name="formCreateBrand" ng-submit="formCreateBrand.$valid && create()" novalidate>
             <div class="row mb-3">
               <label for="inputName" class="col-sm-3 col-form-label">Tên</label>
               <div class="col-sm-9">
-                <input
-                  name="name"
-                  id="inputName"
-                  type="text"
-                  class="form-control"
-                  ng-model="formInput.name"
-                  required
-                />
-                <div
-                  ng-show="formCreateBrand.$submitted && formCreateBrand.name.$error.required"
-                  class="error-message text-danger form-text"
-                >
+                <input name="name" id="inputName" type="text" class="form-control" ng-model="formInput.name" required />
+                <div ng-show="formCreateBrand.$submitted && formCreateBrand.name.$error.required"
+                  class="error-message text-danger form-text">
                   Không được để trống
                 </div>
-                <div
-                  ng-show="nameExists"
-                  class="error-message text-danger form-text"
-                >
+                <div ng-show="nameExists" class="error-message text-danger form-text">
                   {{ errorMessage }}
                 </div>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputCreatedAt" class="col-sm-3 col-form-label"
-                >Ngày Tạo</label
-              >
+              <label for="inputCreatedAt" class="col-sm-3 col-form-label">Ngày Tạo</label>
               <div class="col-sm-9">
-                <input
-                  name="createdAt"
-                  id="inputCreatedAt"
-                  type="text"
-                  class="form-control ng-pristine ng-untouched ng-valid"
-                  ng-value="currentDate | date:'yyyy-MM-dd'"
-                  readonly
-                />
+                <input name="createdAt" id="inputCreatedAt" type="text"
+                  class="form-control ng-pristine ng-untouched ng-valid" ng-value="currentDate | date:'yyyy-MM-dd'"
+                  readonly />
                 <span ng-show="formCreateBrand.$submitted">
-                  <div
-                    ng-show="formCreateBrand.createdAt.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateBrand.createdAt.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -126,25 +85,15 @@
                                 </div>
                             </div> -->
             <div class="row mb-3">
-              <label for="inputStatus" class="col-sm-3 col-form-label"
-                >Trạng Thái</label
-              >
+              <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
               <div class="col-sm-9">
-                <select
-                  name="status"
-                  class="form-select form-select-sm"
-                  aria-label="Small select example"
-                  ng-model="formInput.status"
-                  required
-                >
+                <select name="status" class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formInput.status" required>
                   <option value="1">Đang hợp tác</option>
                   <option value="2">Ngừng hợp tác</option>
                 </select>
                 <span ng-show="formCreateBrand.$submitted">
-                  <div
-                    ng-show="formCreateBrand.status.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateBrand.status.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -152,18 +101,10 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Thêm</button>
-              <button
-                ng-click="resetFormInput()"
-                type="button"
-                class="btn btn-warning"
-              >
+              <button ng-click="resetFormInput()" type="button" class="btn btn-warning">
                 Xoá fomr
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Đóng
               </button>
             </div>
@@ -174,52 +115,25 @@
   </div>
   <!-- End Modal Add -->
   <!-- Begin Modal Update -->
-  <div
-    class="modal fade"
-    id="modalUpdate"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Sửa Thương Hiệu</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form
-            name="formUpdateBrand"
-            ng-submit="formUpdateBrand.$valid && update()"
-            novalidate
-          >
+          <form name="formUpdateBrand" ng-submit="formUpdateBrand.$valid && update()" novalidate>
             <div class="row mb-3">
               <label for="inputName" class="col-sm-3 col-form-label">Tên</label>
               <div class="col-sm-9">
-                <input
-                  name="name"
-                  id="inputName"
-                  type="text"
-                  class="form-control"
-                  ng-model="formUpdate.name"
-                  required
-                />
+                <input name="name" id="inputName" type="text" class="form-control" ng-model="formUpdate.name"
+                  required />
                 <span ng-show="formUpdateBrand.$submitted">
-                  <div
-                    ng-show="formUpdateBrand.name.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateBrand.name.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
-                  <div
-                    ng-show="nameExists"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="nameExists" class="error-message text-danger form-text">
                     Tên Không được trùng
                   </div>
                 </span>
@@ -239,48 +153,28 @@
                                 </div>
                             </div> -->
             <div class="row mb-3">
-              <label for="inputUpdatedAt" class="col-sm-3 col-form-label"
-                >Ngày Sửa</label
-              >
+              <label for="inputUpdatedAt" class="col-sm-3 col-form-label">Ngày Sửa</label>
               <div class="col-sm-9">
-                <input
-                  name="updatedAt"
-                  id="inputUpdatedAt"
-                  type="text"
-                  class="form-control"
-                  ng-value="currentDate | date:'yyyy-MM-dd'"
-                  readonly
-                />
+                <input name="updatedAt" id="inputUpdatedAt" type="text" class="form-control"
+                  ng-value="currentDate | date:'yyyy-MM-dd'" readonly />
                 <span ng-show="formUpdateBrand.$submitted">
-                  <div
-                    ng-show="formUpdateBrand.updatedAt.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateBrand.updatedAt.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputStatus" class="col-sm-3 col-form-label"
-                >Trạng Thái</label
-              >
+              <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
               <div class="col-sm-9">
-                <select
-                  name="status"
-                  class="form-select form-select-sm"
-                  aria-label="Small select example"
-                  ng-model="formUpdate.status"
-                >
+                <select name="status" class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formUpdate.status">
                   <option ng-value="1">One</option>
                   <option ng-value="2">Two</option>
                   <option ng-value="3">Three</option>
                 </select>
                 <span ng-show="formUpdateBrand.$submitted">
-                  <div
-                    ng-show="formUpdateBrand.status.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateBrand.status.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -288,18 +182,10 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Sửa</button>
-              <button
-                ng-click="resetFormUpdate()"
-                type="button"
-                class="btn btn-warning"
-              >
+              <button ng-click="resetFormUpdate()" type="button" class="btn btn-warning">
                 Xoá form
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Đóng
               </button>
             </div>
@@ -328,30 +214,16 @@
                                 <td>{{brand.updatedAt | date:'yyyy-MM-dd'}}</td> -->
             <td>{{brand.status}}</td>
             <td>
-              <button
-                ng-click="edit(brand)"
-                type="button"
-                class="btn btn-info"
-                data-bs-toggle="modal"
-                data-bs-target="#modalUpdate"
-              >
+              <button ng-click="edit(brand)" type="button" class="btn btn-info" data-bs-toggle="modal"
+                data-bs-target="#modalUpdate">
                 <i class="bi bi-pencil-square"></i>
               </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#deleteModal-{{brand.id}}"
-              >
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#deleteModal-{{brand.id}}">
                 <i class="ri-delete-bin-fill"></i>
               </button>
-              <div
-                class="modal fade"
-                id="deleteModal-{{brand.id}}"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
+              <div class="modal fade" id="deleteModal-{{brand.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -360,19 +232,10 @@
                       </h5>
                     </div>
                     <div class="modal-footer">
-                      <button
-                        ng-click="delete(brand)"
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button ng-click="delete(brand)" type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         Xoá
                       </button>
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Đóng
                       </button>
                     </div>
@@ -386,12 +249,8 @@
       <div class="row align-items-center">
         <div class="col-md-1">
           <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-          <select
-            class="form-select"
-            ng-model="paper.size"
-            ng-change="changePageSize()"
-            ng-options="size for size in [5, 10, 20, 50, 100]"
-          >
+          <select class="form-select" ng-model="paper.size" ng-change="changePageSize()"
+            ng-options="size for size in [5, 10, 20, 50, 100]">
             <!-- <option value="selected">Xem mục</option>
             <option value="5">5</option>
             <option value="10">10</option>

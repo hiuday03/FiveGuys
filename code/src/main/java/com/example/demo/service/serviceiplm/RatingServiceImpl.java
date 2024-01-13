@@ -51,7 +51,7 @@ public class RatingServiceImpl implements RatingService {
             rating.setContent(ratingEntity.getContent());
             rating.setRate(ratingEntity.getRate());
             rating.setCustomer(ratingEntity.getCustomer());
-            rating.setProductDetail(ratingEntity.getProductDetail());
+            rating.setBillDetail(ratingEntity.getBillDetail());
             rating.setCreatedAt(ratingEntity.getCreatedAt());
             rating.setUpdatedAt(ratingEntity.getUpdatedAt());
             rating.setStatus(ratingEntity.getStatus());

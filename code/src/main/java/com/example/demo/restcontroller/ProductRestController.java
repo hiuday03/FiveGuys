@@ -43,14 +43,12 @@ public class ProductRestController {
 
     @PostMapping("")
     public ResponseEntity<?> add(@RequestBody Product productReq){
-        System.out.println(productReq);
         Product product = productService.save(productReq);
         return ResponseEntity.ok(product);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Product productReq, @PathVariable("id") Long id){
-        System.out.println(productReq);
         Product product = productService.update(productReq, id);
         return ResponseEntity.ok(product);
     }
@@ -78,6 +76,11 @@ public class ProductRestController {
                                             @RequestParam(value = "status", defaultValue = "0") Integer status){
         Page<Product> products = productService.searchByStatus(status, page);
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/getAllExportExcel")
+    public ResponseEntity<?> getAllExportExcel(){
+        return ResponseEntity.ok(productService.getAllExportExcel());
     }
 
 }

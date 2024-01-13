@@ -9,73 +9,48 @@
       <li class="breadcrumb-item active">Loại Sản Phẩm</li>
     </ol>
   </nav>
+  <div class="row align-items-center">
+    <div class="col-md-1">
+      <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+      <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
+        <option value="0">0</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </div>
+    <div class="col-md-11">
+    </div>
+  </div>
 </div>
 <!--  Begin code  -->
 <section class="section">
-  <button
-    type="button"
-    class="btn btn-outline-success mb-2"
-    data-bs-toggle="modal"
-    data-bs-target="#modalAdd"
-  >
+  <button type="button" class="btn btn-outline-success mb-2" data-bs-toggle="modal" data-bs-target="#modalAdd">
     Thêm Loại Sản Phẩm
   </button>
-  <div
-    class="alert border-success alert-dismissible fade show"
-    role="alert"
-    ng-show="showAlert"
-  >
+  <div class="alert border-success alert-dismissible fade show" role="alert" ng-show="showAlert">
     {{alertMessage}}
-    <button
-      type="button"
-      class="btn-close"
-      ng-click="closeAlert()"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" ng-click="closeAlert()" aria-label="Close"></button>
   </div>
   <!-- Modal Add -->
-  <div
-    class="modal fade"
-    id="modalAdd"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Thêm Loại Sản Phẩm</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form
-            name="formCreateCustomer"
-            ng-submit="formCreateCustomer.$valid && create()"
-            novalidate
-          >
+          <form name="formCreateCustomer" ng-submit="formCreateCustomer.$valid && create()" novalidate>
             <div class="row mb-3">
-              <label for="inputFullName1" class="col-sm-3 col-form-label"
-                >Tên</label
-              >
+              <label for="inputFullName1" class="col-sm-3 col-form-label">Tên</label>
               <div class="col-sm-9">
-                <input
-                  name="name"
-                  id="inputFullName1"
-                  type="text"
-                  class="form-control"
-                  ng-model="formInput.name"
-                  required
-                />
+                <input name="name" id="inputFullName1" type="text" class="form-control" ng-model="formInput.name"
+                  required />
                 <span ng-show="formCreateCustomer.$submitted">
-                  <div
-                    ng-show="formCreateCustomer.name.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formCreateCustomer.name.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -93,25 +68,16 @@
                                 <img src="" alt="" sizes="" srcset="">
                             </div> -->
             <div class="row mb-3">
-              <label for="inputStatus" class="col-sm-3 col-form-label"
-                >Trạng Thái</label
-              >
+              <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
               <div class="col-sm-9">
-                <select
-                  class="form-select form-select-sm"
-                  aria-label="Small select example"
-                  ng-model="formInput.status"
-                  required
-                >
+                <select class="form-select form-select-sm" aria-label="Small select example" ng-model="formInput.status"
+                  required>
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
                 </select>
                 <span ng-show="formUpdateCustomer.$submitted">
-                  <div
-                    ng-show="formUpdateCustomer.status.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateCustomer.status.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -119,18 +85,10 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Thêm</button>
-              <button
-                ng-click="resetFormInput()"
-                type="button"
-                class="btn btn-warning"
-              >
+              <button ng-click="resetFormInput()" type="button" class="btn btn-warning">
                 Xoá form
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Đóng
               </button>
             </div>
@@ -141,48 +99,22 @@
   </div>
   <!-- End Modal Add -->
   <!-- Begin Modal Update -->
-  <div
-    class="modal fade"
-    id="modalUpdate"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Sửa Loại Sản Phẩm</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form
-            name="formUpdateCustomer"
-            ng-submit="formUpdateCustomer.$valid && update()"
-            novalidate
-          >
+          <form name="formUpdateCustomer" ng-submit="formUpdateCustomer.$valid && update()" novalidate>
             <div class="row mb-3">
-              <label for="inputFullName" class="col-sm-3 col-form-label"
-                >Tên</label
-              >
+              <label for="inputFullName" class="col-sm-3 col-form-label">Tên</label>
               <div class="col-sm-9">
-                <input
-                  name="fullName"
-                  id="inputFullName"
-                  type="text"
-                  class="form-control"
-                  ng-model="formUpdate.name"
-                  required
-                />
+                <input name="fullName" id="inputFullName" type="text" class="form-control" ng-model="formUpdate.name"
+                  required />
                 <span ng-show="formUpdateCustomer.$submitted">
-                  <div
-                    ng-show="formUpdateCustomer.fullName.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateCustomer.fullName.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -200,24 +132,16 @@
                                 <img src="" alt="" sizes="" srcset="">
                             </div> -->
             <div class="row mb-3">
-              <label for="inputStatus" class="col-sm-3 col-form-label"
-                >Trạng Thái</label
-              >
+              <label for="inputStatus" class="col-sm-3 col-form-label">Trạng Thái</label>
               <div class="col-sm-9">
-                <select
-                  class="form-select form-select-sm"
-                  aria-label="Small select example"
-                  ng-model="formUpdate.status"
-                >
+                <select class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formUpdate.status">
                   <option ng-value="1">One</option>
                   <option ng-value="2">Two</option>
                   <option ng-value="3">Three</option>
                 </select>
                 <span ng-show="formUpdateCustomer.$submitted">
-                  <div
-                    ng-show="formUpdateCustomer.status.$invalid"
-                    class="error-message text-danger form-text"
-                  >
+                  <div ng-show="formUpdateCustomer.status.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -236,18 +160,10 @@
                             </div> -->
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Sửa</button>
-              <button
-                ng-click="resetFormUpdate()"
-                type="button"
-                class="btn btn-warning"
-              >
+              <button ng-click="resetFormUpdate()" type="button" class="btn btn-warning">
                 Xoá form
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 Đóng
               </button>
             </div>
@@ -279,31 +195,16 @@
               <span ng-switch-when="3">Ẩn</span>
             </td>
             <td class="col-3">
-              <button
-                ng-click="edit(category)"
-                type="button"
-                class="btn btn-info"
-                data-bs-toggle="modal"
-                data-bs-target="#modalUpdate"
-              >
+              <button ng-click="edit(category)" type="button" class="btn btn-info" data-bs-toggle="modal"
+                data-bs-target="#modalUpdate">
                 <i class="bi bi-pencil-square"></i>
               </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-toggle="modal"
-                ng-click="cc()"
-                data-bs-target="#deleteModal-{{category.id}}"
-              >
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" ng-click="cc()"
+                data-bs-target="#deleteModal-{{category.id}}">
                 <i class="ri-delete-bin-fill"></i>
               </button>
-              <div
-                class="modal fade"
-                id="deleteModal-{{category.id}}"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
+              <div class="modal fade" id="deleteModal-{{category.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -312,19 +213,10 @@
                       </h5>
                     </div>
                     <div class="modal-footer">
-                      <button
-                        ng-click="delete(category)"
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button ng-click="delete(category)" type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         Xoá
                       </button>
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Đóng
                       </button>
                     </div>

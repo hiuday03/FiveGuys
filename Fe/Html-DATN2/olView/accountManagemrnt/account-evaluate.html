@@ -50,25 +50,26 @@
                 </h1>
             </div>
             <div class="row">
+                
                 <div class="col-md-6 " ng-repeat="rate in listRates">
                     <div class="rate-item">
                         <div style="display: inline-block;">
                             <div class="star-container" style="display: inline-block;">
-                                <span class="fa fa-star checked" ng-repeat="i in getNumber(rate.rate) track by $index"></span>
+                                <span style="margin-right: 8px;" class="fa fa-star checked" ng-repeat="i in getNumber(rate.rate) track by $index"></span>
                             </div>
                         </div>
                         <p><strong>Sản phẩm:</strong> 
-                            {{ rate.productDetail.product.name }}
-                            {{ rate.productDetail.product.category.name }}
-                            {{ rate.productDetail.product.material.name }}
-                            {{ rate.productDetail.product.code }}
+                            {{ rate.billDetail.productDetail.product.name }}
+                            {{ rate.billDetail.productDetail.product.category.name }}
+                            {{ rate.billDetail.productDetail.product.material.name }}
+                            {{ rate.billDetail.productDetail.product.code }}
                         </p>
                         <p><strong>Nội dung:</strong> {{ rate.content }}</p>
                         <div style="display: flex;justify-content: space-between;    align-items: center;">
                             <p>{{ rate.createdAt | date:'dd/MM/yyyy' }}</p>
                             <div style="margin: 10px;">
-                                <button ng-click="deleteDataRate(rate.id)"  class="btn btn-outline-primary w-30">Xóa</button>
-                                <a href="#!product-detail/{{rate.productDetail.product.id}}"  class="btn btn-primary">Xem sản phẩm</a>
+                                <!-- <button ng-click="deleteDataRate(rate.id)"  class="btn btn-outline-primary w-30">Xóa</button> -->
+                                <a href="#!product-detail/{{rate.billDetail.productDetail.product.id}}"  class="btn btn-primary">Xem sản phẩm</a>
                             </div>
          
                         </div>

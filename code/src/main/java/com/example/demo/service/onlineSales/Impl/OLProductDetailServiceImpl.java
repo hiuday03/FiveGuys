@@ -55,4 +55,9 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
         return olProductDetailRepository.findByColorIdAndProductIdAndStatus(colorId,productId,1);
     }
 
+    @Override
+    public List<ProductDetail> findByProduct_Id(Long productId) {
+        return olProductDetailRepository.findByProduct_Id(productId);
+    }
+
 }

@@ -57,7 +57,7 @@
                                 <th>Ngày giao hàng</th>
                                 <th>Phí vận chuyển</th>
                                 <th>Trạng thái thanh toán</th>
-                                <th></th>
+                                <th>Xem chi tiết</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,7 +66,7 @@
                                 <td>{{ bill.paymentDate | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ bill.deliveryDate | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ bill.shippingFee }}</td>
-                                <td>{{ bill.status }}</td>
+                                <td>{{getStatusText(bill.status) }}</td>
 
                                 <td>
                                 

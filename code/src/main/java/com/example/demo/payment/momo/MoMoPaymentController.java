@@ -68,7 +68,6 @@ public class MoMoPaymentController {
         try {
             QueryStatusTransactionResponse response = QueryTransactionStatus.process(environment, request.getOrderId(), request.getRequestId());
             if (response != null) {
-                System.out.println(response.getResultCode());
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -114,7 +113,6 @@ public class MoMoPaymentController {
             olBillService.save(bill);
             response.sendRedirect(Config.fe_liveServer_Failed);
         }
-        System.out.println(code);
     }
 
 

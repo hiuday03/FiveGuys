@@ -28,4 +28,6 @@ public interface ProductDetailService {
     ProductDetail updateI(ProductDetail productDetail, Long id, List<Image> images);
 
     ProductDetail checkTrungFK(Product product, Color color, Size size);
+
+    List<ProductDetail> getAllPdExportExcel();
 }

@@ -53,16 +53,16 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 768px;
+    width: 840px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 552px;
 }
 
 .container p {
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.3px;
-    margin: 20px 0;
+    /* margin: 20px 0; */
 }
 
 .container span {

@@ -44,8 +44,8 @@ public class OfBillController {
         if (namePayment.equals("Chuyển khoản")) {
             try {
                 final String description = "Thanh toán đơn hàng";
-                final String returnUrl = "http://localhost:8080/admin/sell-quicly";
-                final String cancelUrl = "http://localhost:8080/payment/payos/cancel";
+                final String returnUrl = "http://127.0.0.1:5502/Fe/Html-DATN2/ofView/Thuong/sell-quicklly.html";
+                final String cancelUrl = "http://127.0.0.1:5502/Fe/Html-DATN2/ofView/Thuong/sell-quicklly.html";
 
                 List<ItemData> itemList = new ArrayList<>();
                 JsonNode billDetailNode = orderData.get("billDetail");

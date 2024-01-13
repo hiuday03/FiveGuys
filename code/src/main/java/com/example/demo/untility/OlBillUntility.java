@@ -64,9 +64,12 @@ public class OlBillUntility {
     }
 
 
-    public boolean authenticationCheckVnPay(String orderId) {
+
+    public boolean authenticationCheckVnPay(String orderId,HttpServletRequest req)throws Exception {
         try {
-            HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+            System.out.println(req);
+
             String vnp_RequestId = ConfigVNPay.getRandomNumber(8);
             String vnp_Version = "2.1.0";
             String vnp_Command = "querydr";
@@ -79,7 +82,8 @@ public class OlBillUntility {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String vnp_CreateDate = formatter.format(cld.getTime());
 
-            String vnp_IpAddr = ConfigVNPay.getIpAddress(req); // Modify this based on your implementation in Config
+//            String vnp_IpAddr = ConfigVNPay.getIpAddress(req);
+            String vnp_IpAddr = "192.168.1.1"; // Địa chỉ IP tạm thời cho môi trường phát triển
 
             JsonObject vnp_Params = new JsonObject();
 
@@ -111,7 +115,7 @@ public class OlBillUntility {
             wr.writeBytes(postData);
             wr.flush();
             wr.close();
-
+            System.out.println(req);
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -158,7 +162,7 @@ public class OlBillUntility {
 
     private final Timer timer = new Timer();
 
-    public void scheduleBillDeletion(Long Id) {
+    public void scheduleBillDeletion(Long Id,HttpServletRequest req) {
         TimerTask task = new TimerTask() {
             @SneakyThrows
             @Override
@@ -176,7 +180,7 @@ public class OlBillUntility {
                                 return;
                             }
                         } else if (bill.getPaymentMethod().getName().equals("VNPAY")) {
-                            if (authenticationCheckVnPay(encodeId(bill.getId()))) {
+                            if (authenticationCheckVnPay(encodeId(bill.getId()),req)) {
                                 bill.setStatus(1);
                                 olBillService.save(bill);
                                 return;
@@ -189,7 +193,7 @@ public class OlBillUntility {
                 }
             }
         };
-        timer.schedule(task, 50000); // 60000 milliseconds = 1 minute
+        timer.schedule(task, 80000); // 60000 milliseconds = 1 minute
     }
 
 

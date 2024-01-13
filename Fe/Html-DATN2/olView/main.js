@@ -4,31 +4,134 @@
 var app = angular.module("myApp", ["ngRoute", "angular-jwt"]);
 
 
-app.config(function($httpProvider) {
-    $httpProvider.interceptors.push('authInterceptor');
-});
+// app.config(function($httpProvider) {
+//     $httpProvider.interceptors.push('authInterceptor');
+// });
 
-app.factory('authInterceptor', ['$q', '$rootScope', function($q, $rootScope) {
+
+
+
+// app.factory('authInterceptor', ['$q', '$rootScope', function($q, $rootScope) {
+//   return {
+//       'request': function(config) {
+//           // Lấy token từ cookies
+//           var token = localStorage.getItem('token');
+
+          
+          
+//           // Nếu có token, thêm header 'Authorization'
+//           if (token) {
+//               config.headers['Authorization'] = 'Bearer ' + token;
+//           }
+          
+//           return config;
+//       },
+//       'responseError': function(response) {
+//           // Xử lý các lỗi khi nhận response
+//           return $q.reject(response);
+//       }
+//   };
+// }]);
+
+// Tạo một interceptor trong AngularJS
+app.factory('TokenInterceptor', function($q, $injector) {
+  var isRefreshing = false;
+  var requestsToRetry = [];
+
   return {
-      'request': function(config) {
-          // Lấy token từ cookies
+      request: function(config) {
           var token = localStorage.getItem('token');
-
-          
-          
-          // Nếu có token, thêm header 'Authorization'
           if (token) {
               config.headers['Authorization'] = 'Bearer ' + token;
           }
-          
           return config;
       },
-      'responseError': function(response) {
-          // Xử lý các lỗi khi nhận response
+      responseError: function(response) {
+          var authService = $injector.get('AuthService');
+          var $http = $injector.get('$http');
+          var status = response.status;
+
+          // Account not active
+          if (status === 406) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
+      return window.location.href = "http://127.0.0.1:5555/login/login.html";
+          }
+
+          // Token expired or invalid
+          if (status === 401) {
+              var deferred = $q.defer();
+              var token = localStorage.getItem('refreshToken');
+              localStorage.removeItem('token');
+              if (!token || isRefreshing) {
+                  authService.removeToken();
+                  // Redirect to login or handle accordingly
+                  return deferred.promise;
+              }
+
+              isRefreshing = true;
+              authService.refreshToken(token)
+                  .then(function(data) {
+                      localStorage.setItem('token', data.accessToken);
+                      isRefreshing = false;
+                      requestsToRetry.forEach(function(config) {
+                          config.headers.Authorization = 'Bearer ' + data.accessToken;
+                          $http(config).then(function(response) {
+                              deferred.resolve(response);
+                          }, function(error) {
+                              deferred.reject(error);
+                          });
+                      });
+                      requestsToRetry = [];
+                  })
+                  .catch(function(error) {
+                      authService.removeToken();
+                      // Redirect to login or handle accordingly
+                      isRefreshing = false;
+                      deferred.reject(error);
+                  });
+
+              return deferred.promise;
+          }
+
           return $q.reject(response);
       }
   };
-}]);
+});
+
+// Thêm interceptor vào các request của AngularJS
+app.config(function($httpProvider) {
+  $httpProvider.interceptors.push('TokenInterceptor');
+});
+
+app.factory('AuthService', function($http) {
+  var isAuthenticated = false;
+  var authService = {};
+
+  authService.isAuthenticated = function() {
+    // Kiểm tra xác thực ở đây, ví dụ kiểm tra localStorage hoặc thông tin xác thực khác
+    var token = localStorage.getItem('token');
+    return !!token; // Trả về true nếu người dùng đã xác thực, ngược lại trả về false
+  };
+
+  authService.refreshToken = function(refreshToken) {
+      return $http.post('http://localhost:8080/RFToken/' + refreshToken)
+          .then(function(response) {
+
+              return response.data;
+          })
+          .catch(function(error) {
+              throw error;
+          });
+  };
+
+  // Các hàm khác trong AuthService nếu cần
+
+  return authService;
+});
+
+
+
 
 
 app.config(['$compileProvider', function($compileProvider){
@@ -77,29 +180,91 @@ app.config(function($routeProvider) {
     templateUrl : "paymentFailed.html",
     controller : "myApp-ctrl2"
   })
-  .when("/account-info", {
-    templateUrl : "accountManagemrnt/account-info.html",
+  .when("/checkOrder", {
+    templateUrl : "checkOrder.html",
     controller : "myApp-ctrl2"
+  })
+  .when("/checkOrderDetail", {
+    templateUrl : "checkOrderDetail.html",
+    controller : "myApp-ctrl2"
+  })
+  .when("/account-info", {
+    templateUrl: "accountManagemrnt/account-info.html",
+    controller: "myApp-ctrl2",
+    resolve: {
+      isAuthenticated: function(AuthService, $location) {
+        // Sử dụng AuthService để kiểm tra xác thực
+        if (!AuthService.isAuthenticated()) {
+          // Sử dụng $location.path() để chuyển hướng trong ứng dụng AngularJS
+          window.location.href = "http://127.0.0.1:5555/login/login.html";
+        }
+      }
+    }
   })
   .when("/account-address", {
     templateUrl : "accountManagemrnt/account-address.html",
-    controller : "myApp-ctrl2"
+    controller : "myApp-ctrl2",
+    resolve: {
+      isAuthenticated: function(AuthService, $location) {
+        // Sử dụng AuthService để kiểm tra xác thực
+        if (!AuthService.isAuthenticated()) {
+          // Sử dụng $location.path() để chuyển hướng trong ứng dụng AngularJS
+          window.location.href = "http://127.0.0.1:5555/login/login.html";
+        }
+      }
+    }
   })
   .when("/account-favorite", {
     templateUrl : "accountManagemrnt/account-favorite.html",
-    controller : "myApp-ctrl2"
+    controller : "myApp-ctrl2",
+    resolve: {
+      isAuthenticated: function(AuthService, $location) {
+        // Sử dụng AuthService để kiểm tra xác thực
+        if (!AuthService.isAuthenticated()) {
+          // Sử dụng $location.path() để chuyển hướng trong ứng dụng AngularJS
+          window.location.href = "http://127.0.0.1:5555/login/login.html";
+        }
+      }
+    }
   })
   .when("/account-history", {
     templateUrl : "accountManagemrnt/account-history.html",
-    controller : "myApp-ctrl2"
+    controller : "myApp-ctrl2",
+    resolve: {
+      isAuthenticated: function(AuthService, $location) {
+        // Sử dụng AuthService để kiểm tra xác thực
+        if (!AuthService.isAuthenticated()) {
+          // Sử dụng $location.path() để chuyển hướng trong ứng dụng AngularJS
+          window.location.href = "http://127.0.0.1:5555/login/login.html";
+        }
+      }
+    }
   })
   .when("/account-historyDetail", {
     templateUrl : "accountManagemrnt/account-historyDetail.html",
-    controller : "myApp-ctrl2"
+    controller : "myApp-ctrl2",
+    resolve: {
+      isAuthenticated: function(AuthService, $location) {
+        // Sử dụng AuthService để kiểm tra xác thực
+        if (!AuthService.isAuthenticated()) {
+          // Sử dụng $location.path() để chuyển hướng trong ứng dụng AngularJS
+          window.location.href = "http://127.0.0.1:5555/login/login.html";
+        }
+      }
+    }
   })
   .when("/account-evaluate", {
     templateUrl : "accountManagemrnt/account-evaluate.html",
-    controller : "myApp-ctrl2"
+    controller : "myApp-ctrl2",
+    resolve: {
+      isAuthenticated: function(AuthService, $location) {
+        // Sử dụng AuthService để kiểm tra xác thực
+        if (!AuthService.isAuthenticated()) {
+          // Sử dụng $location.path() để chuyển hướng trong ứng dụng AngularJS
+          window.location.href = "http://127.0.0.1:5555/login/login.html";
+        }
+      }
+    }
   })
   // test ảnh
   // .when("/img", {
@@ -189,6 +354,8 @@ app.controller("myApp-ctrl2", function ($scope,$rootScope, $http, $routeParams,$
 //         });
 // };
 // $scope.callAdminEndpoint();
+
+
 
 
 // Kiểm tra người trả tiền
@@ -350,7 +517,7 @@ $scope.getProductInfo = function(productId) {
       $http.get('http://localhost:8080/api/ol/products/colorAndSize/' + productId)
         .then(function(response) {
           $scope.productDetailInfo = response.data;
-        
+        console.log($scope.productDetailInfo)
           // Kiểm tra xem selectedColor đã được chọn hay chưa
           if (!$scope.selectedColor && $scope.productDetailInfo.listOfColor.length > 0) {
             $scope.selectedColor = $scope.productDetailInfo.listOfColor[0].id; // Chọn màu đầu tiên
@@ -424,10 +591,11 @@ function checkUserLoggedIn(username) {
     .then(function (response) {
       console.log(response.data);
       if (response.status === 200 && response.data !== null) {
-        if (response.data.employeeLoggedIn === true) {
+        console.log(response.data.account.role.fullName);
+        if (response.data.account.role.fullName === 'STAFF' || response.data.account.role.fullName === 'ADMIN') {
           $scope.isEmployeeLoggedIn = true;
           $scope.userData = response.data;
-          console.log(userData)
+          console.log($scope.userData)
           console.log("Employee is logged in.");
           return ;
         } else if(response.data.loggedIn === false){
@@ -438,7 +606,6 @@ function checkUserLoggedIn(username) {
         } else {
           $scope.isCustomerLoggedIn = true;
           $scope.userData = response.data;
-          console.log($scope.userData)
           console.log("Customer is logged in.");
 
           if ($scope.isCustomerLoggedIn) {
@@ -466,11 +633,10 @@ function checkUserLoggedIn(username) {
       return;
     });
 }
-
 function isUserLoggedIn() {
   // var token = $cookies.get('token');
          // Lấy token từ cookies
-         var token = localStorage.getItem('token');
+        var token = localStorage.getItem('token');
 
   if (!token) {
     $scope.isCustomerLoggedIn = false;
@@ -483,8 +649,8 @@ function isUserLoggedIn() {
 
   var decodedToken = jwtHelper.decodeToken(token);
   $scope.username = decodedToken.sub;
+  $scope.exp = decodedToken.exp;
   if (decodedToken.role && decodedToken.role.length > 0) {
-    console.log(decodedToken.role[0].authority);
     $scope.isAdmin = decodedToken.role[0].authority === 'ADMIN' || decodedToken.role[0].authority === 'STAFF';
   } else {
     $scope.isAdmin = false;
@@ -494,6 +660,36 @@ function isUserLoggedIn() {
 }
 // check người dùng đã đăng nhập chưa
 isUserLoggedIn();
+
+//refresh tokrn
+// function checkAndRefreshToken() {
+//   // const accessToken = localStorage.getItem('token');
+//   const expirationTime = $scope.exp;
+//   const currentTime = new Date().getTime();
+
+//   if (expirationTime && expirationTime < currentTime) {
+//       const refreshToken = localStorage.getItem('refreshToken');
+//       // Gọi API để làm mới token
+//       AuthService.refreshToken(refreshToken)
+//           .then(function(data) {
+        
+
+//               var token = data.accessToken;
+//               localStorage.removeItem('token');
+//               localStorage.setItem('token', token);
+//           })
+//           .catch(function(error) {
+//               // Xử lý lỗi khi làm mới token không thành công
+//               console.error('Error refreshing token:', error);
+//           });
+//   }
+// }
+// checkAndRefreshToken();
+// setInterval(checkAndRefreshToken, 3 * 60 * 1000); 
+
+
+
+
 
 // Giỏ hàng người dùng
 function loadCart() {
@@ -717,6 +913,7 @@ function countTotalPrice(items) {
             
               loadLocal();
           }
+          count();
           $scope.applyVoucher();
 
 
@@ -747,7 +944,7 @@ function countTotalPrice(items) {
               loadLocal();
 
           }
-          // $scope.applyVoucher();
+          $scope.applyVoucher();
 
 
   
@@ -945,24 +1142,21 @@ function countTotalPrice(items) {
                   } else if (typeof body === 'number') {
                       // Nếu phản hồi là một số nguyên
                       if (body === 2) {
-                       $scope.showErrorNotification("Sản phẩm này đã hết vui lòng chọn sản phẩm khác!")
+                       $scope.showErrorNotification("Sản phẩm không có đủ số lượng trong kho!")
                       } else if (body === 3) {
-                          // Nếu giá trị là 3
-                          console.log("Returned 3");
+                        $scope.showErrorNotification("Mã giảm giá không có đủ số lượng trong kho!")
                           // Xử lý logic tương ứng
                       } else {
-                          // Các giá trị khác
-                          console.log("Returned other");
-                          // Xử lý logic tương ứng
+                        $scope.showWarningNotification("Có lỗi xảy ra!");
+
                       }
                   } else {
-                      // Các trường hợp khác
-                      console.log("Returned other types");
-                      // Xử lý logic tương ứng
+                    $scope.showWarningNotification("Có lỗi xảy ra!");
+
                   }
               })
               .catch(error => {
-                alert("Đặt hàng thất bại");
+                $scope.showErrorNotification("Đặt hàng thất bại");
                 console.log(error);
               });
        
@@ -996,14 +1190,17 @@ $scope.selectVoucher = function(selectedVoucher) {
 
 
 $scope.valueVoucher = 0;
-$scope.voucherMessage = ''; // Khởi tạo thông điệp rỗng ban đầu
+$scope.voucherMessage = '';
 $scope.voucherData = null;
 
 $scope.applyVoucher= function () {
-  if ($scope.selectedVoucher != null){
+  if ($scope.selectedVoucher != null){  
 
   if ( $scope.selectedVoucher.quantity > 0) {
     if ($scope.totalAmount >= $scope.selectedVoucher.minimumTotalAmount) {
+      console.log("hello")
+      console.log($scope.totalAmount )
+      console.log($scope.selectedVoucher.minimumTotalAmount)
       var voucherCopy = angular.copy($scope.selectedVoucher); 
       delete voucherCopy.selected; 
        $scope.voucherData = voucherCopy;
@@ -1013,14 +1210,14 @@ $scope.applyVoucher= function () {
         $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher; // Giảm trực tiếp
       }
       // Nếu loại giảm giá là phần trăm (valueType khác 1)
-      else {
+      else if ($scope.selectedVoucher.valueType === 2) {
         var discountPercentage = $scope.selectedVoucher.value / 100;
         $scope.valueVoucher = $scope.totalAmount * discountPercentage;
         $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher; // Giảm theo phần trăm
       }
       $scope.voucherMessage = 'Mã giảm giá đã được áp dụng'; // Cập nhật thông điệp thành công
     } else {
-  count();
+  // count();
   $scope.voucherData = null;
 
       $scope.valueVoucher = 0;
@@ -1032,7 +1229,7 @@ $scope.applyVoucher= function () {
 $scope.voucherData = null;
 
   $scope.voucherMessage = '';
-  count();
+  // count();
   $scope.valueVoucher = 0;
 }
 
@@ -1086,7 +1283,7 @@ $scope.back = function() {
   };
 
   //PayMentMethod
-  $scope.reloadPaymentMothod = function() {
+  $scope.reloadPaymentMethod = function() {
     $http.get('http://localhost:8080/api/ol/paymentMethods')
       .then(function(response) {
         if (response.data) {
@@ -1099,7 +1296,7 @@ $scope.back = function() {
       });
   };
   
-  $scope.reloadPaymentMothod();
+  // $scope.reloadPaymentMethod();
 
 
   //Validate
@@ -1509,7 +1706,7 @@ $scope.updateAccount = function(userData) {
   }
 
   // Gọi API cập nhật thông tin
-  $http.post('http://localhost:8080/api/ol/updateUser', userData)
+  $http.post('http://localhost:8080/api/ol/authenticated/updateUser', userData)
     .then(function(response) {
       $scope.showSuccessNotification("Cập nhật thông tin thành công");
     })
@@ -1550,7 +1747,7 @@ $scope.checkPassword = function() {
       newPassword: $scope.passwordData.newPassword
   };
 
-      $http.post('http://localhost:8080/api/ol/resetPassword', data)
+      $http.post('http://localhost:8080/api/ol/authenticated/resetPassword', data)
       .then(function(response) {
         $scope.showSuccessNotification("Mật khẩu đã được đổi thành công");
       })
@@ -1580,12 +1777,13 @@ $scope.isPasswordValid = function() {
 
 $scope.logout = function() {
   localStorage.removeItem('token');
-  window.location.href = 'http://127.0.0.1:5502/olView/index.html#!/home';
+  localStorage.removeItem('refreshToken');
+  window.location.href = 'http://127.0.0.1:5555/olView/index.html#!/home';
 };
 
 $scope.getAddressList = function() {
   if ($scope.username != null) {
-    $http.get('http://localhost:8080/api/ol/address?username=' + $scope.username)
+    $http.get('http://localhost:8080/api/ol/authenticated/address?username=' + $scope.username)
       .then(function successCallback(response) {
         console.log('Response data:', response.data); // Xem dữ liệu trả về từ API
         $scope.addressList = response.data;
@@ -1631,13 +1829,17 @@ $scope.fillDataToBill  = function(address) {
 };
 
 $scope.getDefaultAddress  = function() {
-  $http.get('http://localhost:8080/api/ol/addressDefault')
-      .then(function(response) {
-       $scope.fillDataToBill(response.data);
-      })
-      .catch(function(error) {
-          console.error('Error:', error);
-      });
+if ($scope.isCustomerLoggedIn == true) {
+  $http.get('http://localhost:8080/api/ol/authenticated/addressDefault?username=' + $scope.username)
+  .then(function(response) {
+   $scope.fillDataToBill(response.data);
+  })
+  .catch(function(error) {
+      console.error('Error:', error);
+  });
+}
+
+
 };
 
 $scope.selectAddressBill  = function(address) {
@@ -1646,7 +1848,7 @@ $scope.selectAddressBill  = function(address) {
 };
 
 $scope.deleteDataAddress = function(addressId) {
-  $http.delete('http://localhost:8080/api/ol/deleteAddress/' + addressId)
+  $http.delete('http://localhost:8080/api/ol/authenticated/deleteAddress/' + addressId)
       .then(function successCallback(response) {
         $scope.getAddressList();
           $scope.showSuccessNotification("Đã xóa địa chỉ thành công");
@@ -1702,7 +1904,7 @@ $scope.updateAddress = function() {
       customer: $scope.addressData.customer,
       defaultAddress: $scope.addressData.defaultAddress
   };
-  $http.post('http://localhost:8080/api/ol/updateAddress', updatedAddress)
+  $http.post('http://localhost:8080/api/ol/authenticated/updateAddress', updatedAddress)
     .then(function(response) {
       $scope.getAddressList();
     $scope.showSuccessNotification("Cập nhật địa chỉ thành công!");
@@ -1757,7 +1959,7 @@ $scope.addAddress = function() {
       defaultAddress: $scope.addressData.defaultAddress
   };
 
-  $http.post('http://localhost:8080/api/ol/addAddress', newAddress)
+  $http.post('http://localhost:8080/api/ol/authenticated/addAddress', newAddress)
     .then(function(response) {
       $scope.getAddressList();
       $scope.showSuccessNotification("Thêm địa chỉ mới thành công!");
@@ -1772,7 +1974,7 @@ $scope.addAddress = function() {
 
 $scope.getFavoritesList = function() {
   if ($scope.username != null) {
-    $http.get('http://localhost:8080/api/ol/favorites?username=' + $scope.username)
+    $http.get('http://localhost:8080/api/ol/authenticated/favorites?username=' + $scope.username)
       .then(function successCallback(response) {
         console.log('Response data:', response.data); // Xem dữ liệu trả về từ API
         $scope.favoritesList = response.data;
@@ -1784,7 +1986,7 @@ $scope.getFavoritesList = function() {
 };
 
 $scope.deleteDataFavorite = function(favorites) {
-  $http.delete('http://localhost:8080/api/ol/favorites/' + favorites)
+  $http.delete('http://localhost:8080/api/ol/authenticated/favorites/' + favorites)
       .then(function successCallback(response) {
         $scope.getFavoritesList();
           $scope.showSuccessNotification("Xóa sản phẩm thành công");
@@ -1794,37 +1996,36 @@ $scope.deleteDataFavorite = function(favorites) {
 };
 
 
-$scope.addFavorite = function(productDetailId) {
+$scope.addFavorite = function(productId) {
+  if (productId != null) {
+    var newFavorite = {
+      customer: $scope.userData, // Thay vào đây thông tin về khách hàng đã đăng nhập
+      idProduct: productId,
+      status: 1 
+    };
 
-  if(productDetailId != null){
-
-  var newFavorite = {
-
-    customer: $scope.userData, // Thay vào đây thông tin về khách hàng đã đăng nhập
-    productDetail:  productDetailId , 
-    status: 1 
-  };
-
-  $http.post('http://localhost:8080/api/ol/addFavorites', newFavorite)
-    .then(function(response) {
-      // Xử lý khi yêu thích được thêm thành công
-      $scope.showSuccessNotification("Đã thêm vào yêu thích!");
-    })
-    .catch(function(error) {
-      // Xử lý khi thêm yêu thích thất bại
-      $scope.showErrorNotification("Không thể thêm vào yêu thích!");
-    });
-
-
-}else{
-  $scope.showErrorNotification("Vui lòng chọn sản phẩm cụ thể");
-  return;
+    $http.post('http://localhost:8080/api/ol/authenticated/addFavorites', newFavorite)
+      .then(function(response) {
+        if (response.data === 1) {
+          $scope.showSuccessNotification("Đã thêm vào yêu thích!");
+        } else if (response.data === 2) {
+          $scope.showErrorNotification("Sản phẩm đã tồn tại trong danh sách yêu thích của bạn!");
+        } else {
+          $scope.showErrorNotification("Có lỗi xảy ra khi thêm vào yêu thích!");
+        }
+      })
+      .catch(function(error) {
+        $scope.showErrorNotification("Không thể thêm vào yêu thích!");
+      });
+  } else {
+    $scope.showErrorNotification("Vui lòng chọn sản phẩm cụ thể");
+    return;
+  }
 }
-}
+
 
 $scope.choiceProductDetail = function(productDetail){
   // ng-click="choiceProductDetail(favorite.productDetail)"
-console.log(productDetail);
   $scope.selectSize(productDetail.size.id);
   $scope.selectColor(productDetail.color.id);
   // $scope.productDetailInfo.olViewProductDetailRespone.id = productDetail.product.id;
@@ -1836,7 +2037,7 @@ console.log(productDetail);
 $scope.listBills = function() {
   $http({
       method: 'GET',
-      url: 'http://localhost:8080/api/ol/bills?username=' + $scope.username 
+      url: 'http://localhost:8080/api/ol/authenticated/bills?username=' + $scope.username 
   }).then(function successCallback(response) {
       $scope.listBills = response.data;
   }, function errorCallback(response) {
@@ -1848,7 +2049,7 @@ $scope.listBills = function() {
 $scope.showBillDetail = function() {
   var billId = $routeParams.billId;
 if(billId != null){
-  $http.get('http://localhost:8080/api/ol/bills/' + billId)
+  $http.get('http://localhost:8080/api/ol/authenticated/bills/' + billId)
       .then(function(response) {
       $scope.selectedBill = response.data;
       console.log($scope.selectedBill)
@@ -1867,7 +2068,13 @@ $scope.closeReview = function() {
 };
 
 
+$scope.rating = {
+  stars: 0,
+  content: ''
+};
+
 $scope.toggleStars = function(index) {
+  $scope.rating.stars = index + 1; // Lấy giá trị từ index và thêm 1
   const stars = document.querySelectorAll('.fa-star');
   for (let i = 0; i <= index; i++) {
       stars[i].classList.add('checked');
@@ -1875,7 +2082,8 @@ $scope.toggleStars = function(index) {
   for (let i = index + 1; i < stars.length; i++) {
       stars[i].classList.remove('checked');
   }
-}
+};
+
 
 
 // rate
@@ -1884,9 +2092,12 @@ $scope.toggleStars = function(index) {
 $scope.listRatesFuc = function() {
   $http({
       method: 'GET',
-      url: 'http://localhost:8080/api/ol/rates?username=' + $scope.username 
+      url: 'http://localhost:8080/api/ol/authenticated/rates?username=' + $scope.username 
   }).then(function (response) {
       $scope.listRates = response.data;
+
+      console.log('Error:', response.data); 
+
   }, function errorCallback(response) {
       console.error('Error:', response.data);
   });
@@ -1894,12 +2105,14 @@ $scope.listRatesFuc = function() {
 
 
 $scope.getNumber = function(num) {
-  return new Array(num);
+
+
+  return new Array(Math.round(num));
 };
 
 
 $scope.deleteDataRate = function(rate) {
-  $http.delete('http://localhost:8080/api/ol/deleteRate/' + rate)
+  $http.delete('http://localhost:8080/api/ol/authenticated/deleteRate/' + rate)
       .then(function(response) {
         $scope.listRatesFuc();
         $scope.showSuccessNotification("Xóa đánh giá thành công");
@@ -1908,6 +2121,113 @@ $scope.deleteDataRate = function(rate) {
       $scope.showErrorNotification("Xóa đánh giá thất bại");
       });
 };
+
+$scope.ratings = []; // To store the retrieved ratings
+
+$scope.getRates = function() {
+    var productId = $routeParams.id; 
+    console.log(productId)
+    $http.get('http://localhost:8080/api/ol/authenticated/listRate/' + productId)
+        .then(function(response) {
+            $scope.ratings = response.data; 
+
+            console.log($scope.ratings)
+        })
+        .catch(function(error) {
+            console.error('Error fetching ratings:', error);
+        });
+};
+
+
+$scope.addRating = function() {
+  if ($scope.rating.stars === 0) {
+    $scope.showErrorNotification("Vui lòng chọn sao!");
+      return;
+  }
+
+  var ratingData = {
+      rate: $scope.rating.stars,
+      content: $scope.rating.content,
+      idCustomer: 2,
+      idBillDetail: 213,
+  };
+
+  $http.post('http://localhost:8080/api/ol/authenticated/addRate', ratingData)
+      .then(function(response) {
+          $scope.closeReview();
+      })
+      .catch(function(error) {
+          // Xử lý khi đánh giá thất bại
+      });
+};
+
+
+// check order by phoneNumber
+$scope.phoneNumberCheckOrder = ''; 
+$scope.isPhoneNumberCheckOrder = false;
+
+$scope.checkOrder = function() {
+  $scope.isPhoneNumberCheckOrder = !isValidPhoneNumber($scope.phoneNumberCheckOrder);
+  // Thêm kiểm tra cho các trường khác nếu cần
+  console.log('Thông tin đơn hàng:');
+
+  if ( $scope.isPhoneNumberCheckOrder) {
+    return;
+  }
+  console.log('Thông tin đơn hàng:');
+
+      $http.get('http://localhost:8080/api/ol/checkOrder/' + $scope.phoneNumberCheckOrder)
+          .then(function(response) {
+              // Xử lý dữ liệu khi API trả về thành công
+              $scope.billInfo = response.data;
+              console.log('Thông tin đơn hàng:', $scope.billInfo);
+          })
+          .catch(function(error) {
+              // Xử lý lỗi khi gọi API không thành công
+              console.error('Lỗi khi gọi API:', error);
+              $scope.billInfo = null;
+          });
+};
+
+
+$scope.showCheckOrder = function() {
+  var billId = $routeParams.billId;
+if(billId != null){
+  $http.get('http://localhost:8080/api/ol/bills/' + billId)
+      .then(function(response) {
+      $scope.selectedBill2 = response.data;
+      })
+      .catch(function(error) {
+          console.error('Error fetching bill details:', error);
+      });
+};
+}
+
+
+// Function để ánh xạ giá trị số về trạng thái tương ứng
+$scope.getStatusText = function(statusCode) {
+
+  switch (statusCode) {
+      case 1:
+          return 'Chờ xác nhận';
+      case 2:
+          return 'Đang giao hàng';
+      case 3:
+          return 'Thành công';
+      case 4:
+          return 'Đã hủy';
+      default:
+          return 'Trạng thái không xác định';
+  }
+};
+
+
+
+
+
+
+
+
 
 });
 

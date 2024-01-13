@@ -42,7 +42,12 @@ public class OfVoucherServiceImpl implements OfVoucherService {
             }
             return repository.save(vouchers1);
         }   else {
-            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
+            throw new IllegalArgumentException("Không tìm thấy voucher với ID " + id);
         }
+    }
+
+    @Override
+    public Vouchers getOne(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

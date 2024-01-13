@@ -18,6 +18,8 @@ public interface OLProductDetailRepository extends JpaRepository<ProductDetail, 
 
     List<ProductDetail> findByProductAndStatus(Product product,int status);
 
+    List<ProductDetail> findByProduct_Id(Long productId);
+
 //    @Query("SELECT c FROM ProductDetail c WHERE c.color.id = :colorId AND c.product.id = :productId")
 //    List<ProductDetail> findChiTietSanPhamByMauSacAndSanPham(@Param("colorId") Long colorId, @Param("productId") UUID productId);
 

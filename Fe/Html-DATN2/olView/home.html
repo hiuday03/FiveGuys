@@ -168,7 +168,7 @@
             <a href="#!product-detail/{{product.id}}">
               <div class="d-flex justify-content-between align-items-center info-product_header">
                 <div class="d-flex align-items-center">
-                  <p style="    color: black;" class="mb-0 me-1">{{product.rate}}</p>
+                  <p style="    color: black;" class="mb-0 me-1">{{product.rate | number: '1.1'}}</p>
                   <i style="    margin: 0 2px;color: black;
                   font-size: 10px;" class="fa-solid fa-star"></i>
                 </div>
@@ -215,7 +215,7 @@
             <a href="#!product-detail/{{product.id}}">
               <div class="d-flex justify-content-between align-items-center info-product_header">
                 <div class="d-flex align-items-center">
-                  <p style="    color: black;" class="mb-0 me-1">{{product.rate}}</p>
+                  <p style="    color: black;" class="mb-0 me-1">{{product.rate | number: '1.1'}}</p>
                   <i style="    margin: 0 2px;color: black;
                   font-size: 10px;" class="fa-solid fa-star"></i>
                 </div>

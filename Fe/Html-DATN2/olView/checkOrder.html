@@ -1,0 +1,78 @@
+<!-- cart + summary -->
+<section style="    margin-top: 82px;"  class="bg-light " >
+    <div class="container-fluid">
+      <div style="padding: 46px;;" class="row">
+        <!-- cart -->
+        <div class="col-lg-12">
+          <div class="card border shadow-0">
+            <div class="m-4">
+              <div class="p-4">
+                <h5 class="card-title mb-3">Kiểm tra đơn hàng của bạn</h5>
+  
+                <hr />  
+                    <h6  class="card-title mb-3 border:none">Kiểm tra bằng số điện thoại</h6>
+                    <form class="form-edit-account ">
+                        <div class="input-group mb-3 ">
+                            <input type="text" ng-model="phoneNumberCheckOrder" class="form-control" placeholder="Nhập số điện thoại để kiểm tra" aria-label="Số điện thoại" aria-describedby="basic-addon2">
+                               <p style="color: red;" class="error-message" ng-if="isPhoneNumberCheckOrder">Số điện thoại không hợp lệ.</p>
+                            <div class="input-group-append" style="padding: 10px;">
+                                <button ng-click="checkOrder()" class="btn btn-primary" type="button">Kiểm tra</button>
+                            </div>
+                        </div>
+                 
+
+                    </form>
+             
+                
+             
+              
+              </div>
+              <div class="col-lg-12 col-md-6 col-sm-6 mb-4" ng-if="billInfo && billInfo.length > 0">
+                <div class="column-main">
+                    <div class="page-title-wrapper">
+                        <h1 class="page-title">
+                            <span class="base">Lịch sử mua hàng</span>
+                        </h1>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mã hóa đơn</th>
+                                    <th>Ngày thanh toán</th>
+                                    <th>Ngày giao hàng</th>
+                                    <th>Phí vận chuyển</th>
+                                    <th>Trạng thái thanh toán</th>
+                                    <th>Xem chi tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="bill in billInfo">
+                                    <td>{{ bill.code }}</td>
+                                    <td>{{ bill.paymentDate | date:'dd/MM/yyyy' }}</td>
+                                    <td>{{ bill.deliveryDate | date:'dd/MM/yyyy' }}</td>
+                                    <td>{{ bill.shippingFee }}</td>
+                                    <td>{{getStatusText(bill.status) }}</td>
+                                    
+                <a ng-href="#!checkOrderDetail?billId={{bill.id}}" class="btn btn-primary">Xem chi tiết</a>
+                                    
+                                    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+          
+            </div>
+          </div>
+        </div>
+        <!-- cart -->
+        <!-- summary -->
+   
+      </div>
+    </div>
+  </section>
+  <!-- cart + summary -->

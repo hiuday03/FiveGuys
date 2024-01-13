@@ -66,6 +66,7 @@ public class OLProductServiceImpl implements OLProductService {
 
         return new PageImpl<>(olHomeProductResponseList, pageable, productList.getTotalElements());
     }
+
     @Override
     public List<OlHomeProductResponse> getAllOlProductsRespone() {
         List<OlHomeProductResponse> olHomeProductResponseList = new ArrayList<>();
@@ -122,7 +123,22 @@ public class OLProductServiceImpl implements OLProductService {
             olViewProductDetailRespone.setNameCategory(product.getCategory().getName());
             olViewProductDetailRespone.setNameMaterial(product.getMaterial().getName());
             olViewProductDetailRespone.setPrice(productDetails.isEmpty() ? null : productDetails.get(0).getPrice());
-            olViewProductDetailRespone.setRate(getAverageRateSold(product));
+            olViewProductDetailRespone.setRate(getAverageRateSold(product.getId()));
+            List<ProductDetail> productDetailList = olProductDetailService.findByProduct(product);
+            List<RatingEntity> list = new ArrayList<>();
+
+            for (ProductDetail productDetail : productDetailList) {
+                List<BillDetail> billDetails = billDetailService.findByProductDetailAndStatus(productDetail.getId(), 1);
+                for (BillDetail billDetail : billDetails) {
+                    List<RatingEntity> ratingEntitiesForDetail = olRatingService.findByBillDetailAndStatus(billDetail,1);
+
+                    list.addAll(ratingEntitiesForDetail);
+                }
+
+            }
+            olViewProductDetailRespone.setTotalRate(list.size());
+// ratingEntities bây giờ chứa tất cả các RatingEntity từ tất cả các ProductDetail tương ứng
+
 
 //            List<Image> images = productDetails.isEmpty() ? new ArrayList<>() : productDetails.get(0).getImages();
 //            olDetailProductRespone.setImages(images);
@@ -132,7 +148,7 @@ public class OLProductServiceImpl implements OLProductService {
         return null;
     }
 
-    private OlHomeProductResponse createOlHomeProductResponse(Product product, BigDecimal price,int totalQuantitySold,Float totalRateSold) {
+    private OlHomeProductResponse createOlHomeProductResponse(Product product, BigDecimal price, int totalQuantitySold, Float totalRateSold) {
         OlHomeProductResponse olHomeProductResponse = new OlHomeProductResponse();
         olHomeProductResponse.setId(product.getId());
         olHomeProductResponse.setName(product.getName());
@@ -142,7 +158,7 @@ public class OLProductServiceImpl implements OLProductService {
         olHomeProductResponse.setTotalQuantity(totalQuantitySold);
         olHomeProductResponse.setRate(totalRateSold);
 
-        if (price != null){
+        if (price != null) {
             olHomeProductResponse.setPrice(price);
         }
         List<ProductDetail> productDetails = olProductDetailService.findByProduct(product);
@@ -159,7 +175,7 @@ public class OLProductServiceImpl implements OLProductService {
         List<Product> productList = olProductRepository.findProductsBySizesAndColorsAndCategoriesAndMaterials(sizes, colors, categories, materials);
 
         return productList.stream()
-                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product)))
+                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -169,7 +185,7 @@ public class OLProductServiceImpl implements OLProductService {
     public List<OlHomeProductResponse> findProductsByFiltersSortedByPriceAscending(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials) {
         List<Product> productList = olProductRepository.findProductsByFiltersSortedByPriceAscending(sizes, colors, categories, materials);
         return productList.stream()
-                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product)))
+                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -177,7 +193,7 @@ public class OLProductServiceImpl implements OLProductService {
     public List<OlHomeProductResponse> findProductsOrderedByAveragePriceDescending(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials) {
         List<Product> productList = olProductRepository.findProductsOrderedByAveragePriceDescending(sizes, colors, categories, materials);
         return productList.stream()
-                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product)))
+                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -185,11 +201,9 @@ public class OLProductServiceImpl implements OLProductService {
     public List<OlHomeProductResponse> findProductsByFiltersOrderedByTotalQuantitySold(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials) {
         List<Product> productList = olProductRepository.findProductsByFiltersOrderedByTotalQuantitySold(sizes, colors, categories, materials);
         return productList.stream()
-                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product)))
+                .map(product -> createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product.getId())))
                 .collect(Collectors.toList());
     }
-
-
 
 
     private BigDecimal getProductPrice(Product product) {
@@ -214,10 +228,6 @@ public class OLProductServiceImpl implements OLProductService {
 //        Pageable pageable = PageRequest.of(page - 1, pageSize);
 //        return new PageImpl<>(pageContent, pageable, totalSize);
 //    }
-
-
-
-
 
 
 //    public Page<OlHomeProductResponse> findProductsByFiltersSortedByPriceDescending(List<Size> sizes, List<Color> colors, List<Category> categories, List<Material> materials, Integer page) {
@@ -247,23 +257,38 @@ public class OLProductServiceImpl implements OLProductService {
         }
         return totalQuantity;
     }
-    private float getAverageRateSold(Product product) {
-        List<ProductDetail> productDetails = olProductDetailService.findByProduct(product);
-        float totalQuantity = 0;
-        int count = 0;
 
-        for (ProductDetail detail : productDetails) {
-            List<RatingEntity> ratingEntities = olRatingService.findByProductDetail(detail);
-            for (RatingEntity billDetail : ratingEntities) {
-                totalQuantity += billDetail.getRate();
-                count++;
+    private float getAverageRateSold(Long idProduct) {
+        Optional<Product> product = olProductRepository.findById(idProduct);
+
+        if (product.isPresent()) {
+            List<ProductDetail> productDetails = olProductDetailService.findByProduct(product.get());
+            float totalRate = 0;
+            int totalRatings = 0;
+
+            for (ProductDetail productDetail : productDetails) {
+                List<BillDetail> billDetails = productDetail.getBillDetails(); // Assuming BillDetail is a list associated with ProductDetail
+
+                for (BillDetail billDetail : billDetails) {
+                    List<RatingEntity> ratingEntities = olRatingService.findByBillDetailAndStatus(billDetail,1); // Assuming you have a method to find ratings by BillDetail
+
+                    for (RatingEntity ratingEntity : ratingEntities) {
+                        if (ratingEntity.isRated()) {
+                            totalRate += ratingEntity.getRate();
+                            totalRatings++;
+                        }
+                    }
+                }
+            }
+
+            if (totalRatings > 0) {
+                return totalRate / totalRatings;
+            } else {
+                return 0;
             }
         }
-        if (count > 0) {
-            return totalQuantity / count;
-        } else {
-            return 0;
-        }
+
+        return 0;
     }
 
 
@@ -304,7 +329,7 @@ public class OLProductServiceImpl implements OLProductService {
         for (Product product : productList) {
             BigDecimal price = getProductPrice(product);
             int totalQuantitySold = getTotalQuantitySold(product);
-            float totalRateSold = getAverageRateSold(product);
+            float totalRateSold = getAverageRateSold(product.getId());
 
             OlHomeProductResponse homeProductResponse = createOlHomeProductResponse(product, price, totalQuantitySold, totalRateSold);
             homeProductResponses.add(homeProductResponse);
@@ -320,7 +345,7 @@ public class OLProductServiceImpl implements OLProductService {
         List<Product> products = olProductRepository.findAllProductsOrderedByTotalQuantitySold();
         for (Product product : products) {
 
-            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product),getTotalQuantitySold(product),getAverageRateSold(product));
+            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product.getId()));
             responses.add(response);
         }
         return responses;
@@ -331,7 +356,7 @@ public class OLProductServiceImpl implements OLProductService {
         List<OlHomeProductResponse> responses = new ArrayList<>();
         List<Product> products = olProductRepository.findProductsOrderedByCreatedAt();
         for (Product product : products) {
-            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product),getTotalQuantitySold(product),getAverageRateSold(product));
+            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product.getId()));
             responses.add(response);
         }
         return responses;
@@ -343,7 +368,7 @@ public class OLProductServiceImpl implements OLProductService {
         Category category = olCategoryService.findCategoryByProductId(productId);
         List<Product> products = olProductRepository.findProductsByCategory(category);
         for (Product product : products) {
-            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product),getTotalQuantitySold(product),getAverageRateSold(product));
+            OlHomeProductResponse response = createOlHomeProductResponse(product, getProductPrice(product), getTotalQuantitySold(product), getAverageRateSold(product.getId()));
             responses.add(response);
         }
         return responses;
