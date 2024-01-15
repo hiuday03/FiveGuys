@@ -1,5 +1,67 @@
 <!-- content -->
 <section style="    margin-top: 82px;" ng-init="getRates();">
+  <div style="display: flex;justify-content: center;">
+    <div class="category-container">
+      <div class="heading-data__title" id="headingTitle">
+        DANH MỤC SẢN PHẨM
+      </div>
+      <div class="category-body">
+        <div class="col-md-4">
+          <div class="category-data" id="categoryDataContainer">
+            <ul >
+            <li ng-repeat="category in dataFill.categoryList">
+              <a ng-href="#!product?categoryId={{category.id}}" class="text-dark">{{category.name}}</a>
+            </li>
+            </ul>
+          </div>
+        </div>
+        <button class="btn btn-primary" ng-click="goToOfView()" ng-show="isAdmin">Chức năng Admin</button>
+      </div>
+  
+  
+      <div class=" d-flex justify-content-start" style="width: 32%;">
+        <div style=" border-radius: 10px;    width: 100%;" class="input-group">
+          <div class="form-outline">
+            <input style="border-bottom: 1px solid #cdcdcd;" type="search" ng-click="openOverlaySearch()" 
+              class="form-control" readonly />
+            <label class="form-label">Tìm kiếm sản phẩm</label>
+          </div>
+          <button type="button" class="btn btn-primary shadow-0" onclick="openOverlay()">
+            <i class="fas fa-search fa-lg"></i>
+          </button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" class="inactive" ng-click="closeOverlay($event)">
+    <div class="header-search">
+      <button type="button" class="btn btn-light shadow-0 closeBtn" ng-click="toggleOverlaySearch()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
+      <form class="from-search"  >
+        <div class="input-group">
+          <div class="form-outline w-100">
+          <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
+    ng-model="searchText" ng-change="loadProductSearch()" />
+
+
+          </div>
+          <button type="button" class="btn btn-primary shadow-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="product-display">
+      <div class="container-fluid">
+        <div  class="row" id="productDisplay">
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div class="container">
     <div class="row " style="padding: 46px;">
       <div class="col-lg-8">
@@ -35,29 +97,30 @@
                 productDetailInfo.olViewProductDetailRespone.code }}
               </span>
             </div>
-
+            <div class="tile-right">
+              <button style="background-color: transparent;" ng-click="addFavorite(productDetailInfo.olViewProductDetailRespone.id)" class="btn btn-light border-0 py-2 icon-hover px-3 btn-heart">
+                <i class="me-1 fa fa-heart fa-lg"></i>
+              </button>
+            </div>
 
 
 
           </div>
 
           <div class="d-flex flex-row mb-3">
-            <div class="text-warning mb-1 me-2">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-              <span class="ms-1"> 4.5 </span>
+            <div class=" mb-1 me-2">
+          <span style="margin-right: 8px;    font-size: 18px;" class="fa fa-star checked"
+              ng-repeat="i in getNumber(productDetailInfo.olViewProductDetailRespone.rate) track by $index"></span>
+              <span>({{productDetailInfo.olViewProductDetailRespone.totalRate}})</span>
             </div>
-            <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span>
-            <span class="text-success ms-2">In stock</span>
+            <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>
+            Đã bán: {{productDetailInfo.olViewProductDetailRespone.totalQuantity}}</span>
           </div>
           <div class="mb-3">
             <span class="productdetail-price">
-              {{ quantity === 0 ? '0' : (productDetail.price | number) }}
-              đ
-            </span>
+              {{ productDetail ? (quantity === 0 ? '' : (productDetail.price | number) + 'đ') : 'Vui lòng chọn kích cỡ' }}
+          </span>
+          
           </div>
 
 
@@ -90,20 +153,24 @@
             <span ng-if="quantity === 0" class="zero-quantity">Hiện sản phẩm chưa có</span>
             <span ng-if="quantity > 0">Còn lại: {{ quantity }} sản phẩm</span>
           </p>
-          <div style="display: flex">
-            <div class="quantity-input">
-              <input style="  border: 1px solid;
-              border-radius: 5px;
-              margin-right: 4px; " type="number" ng-model="quantitySelected" min="1" max="100"
-                ng-change="checkQuantityChange2(quantitySelected)" />
-
-            </div>
-
-
-            <a ng-if="quantity > 0" ng-click="cart.add(productDetail.id,quantitySelected)"
-              class="add-to-cart btn btn-warning shadow-0">
-              Thêm vào giỏ hàng
-            </a>
+          <div >
+       
+       
+              <div style="display: flex;" ng-if="quantity > 0">
+                <div class="quantity-input">
+                  <input style="  border: 1px solid;
+                  border-radius: 5px;
+                  margin-right: 4px; " type="number" ng-model="quantitySelected" min="1" max="100"
+                    ng-change="checkQuantityChange2(quantitySelected)" />
+    
+                </div>
+                <a  ng-click="cart.add(productDetail.id,quantitySelected)"
+                class="add-to-cart btn btn-warning shadow-0">
+                Thêm vào giỏ hàng
+                
+              </a>
+              </div>
+       
             <a ng-if="quantity === 0" class="no-product btn btn-warning shadow-0">
               Hiện sản phẩm chưa có
             </a>
@@ -111,11 +178,7 @@
           </div>
 
           <hr />
-          <div class="tile-right">
-            <button ng-click="addFavorite(productDetailInfo.olViewProductDetailRespone.id)" class="btn btn-light border-0 py-2 icon-hover px-3">
-              <i class="me-1 fa fa-heart fa-lg"></i>
-            </button>
-          </div>
+    
           <div>
             <div class="special-title">Đặc điểm nổi bật</div>
 
@@ -133,12 +196,12 @@
                       }}</span>
                   </div>
                   <div class="data-item">
-                    <span class="label">Cổ áo:</span>
+                    <span class="label">Kiểu cổ áo:</span>
                     <span class="value">{{ productDetailInfo.olViewProductDetailRespone.collar
                       }}</span>
                   </div>
                   <div class="data-item">
-                    <span class="label">Cổ tay:</span>
+                    <span class="label">Kiểu cổ tay:</span>
                     <span class="value">{{ productDetailInfo.olViewProductDetailRespone.wrist
                       }}</span>
                   </div>
@@ -171,7 +234,7 @@
           <h5>Đánh giá sản phẩm</h5>
         </div>
         <div class="reviews-rating-mb__rating">
-          <h5>{{ productDetailInfo.olViewProductDetailRespone.rate | number: '1.1' }}</h5>
+          <h5>{{ productDetailInfo.olViewProductDetailRespone.rate}}</h5>
 
         </div>
         <div style="display: inline-block;">
@@ -192,7 +255,7 @@
     <div class="col-md-10 " >
 
     <div class="row">
-      <div class="col-md-6" ng-repeat="rate in ratings">
+      <div class="col-md-6" ng-repeat="rate in ratings.content">
         <div class="rate-item">
           <div style="display: inline-block;">
             <div class="star-container" style="display: inline-block;">
@@ -215,6 +278,37 @@
         </div>
   </div>
     </div>
+
+ <div class="row text-center">
+  <div class="col-md-12" ng-if="ratings && (ratings.totalPages !== 1)">
+    <ul class="pagination">
+      <li ng-class="{disabled: ratings.first}">
+        <a href="#!/product-detail/{{productId}}" ng-click="setCurrentPageRateProduct(0)">
+          <i class="fa fa-angle-double-left"></i>
+        </a>
+      </li>
+      <li ng-class="{disabled: ratings.first}">
+        <a href="#!/product-detail/{{productId}}" ng-click="setCurrentPageRateProduct(ratings.number - 1)">
+          <i class="fa fa-angle-left"></i>
+        </a>
+      </li>
+
+      {{ ratings.number + 1 }}
+      <li ng-class="{disabled: ratings.last}">
+        <a href="#!/product-detail/{{productId}}" ng-click="setCurrentPageRateProduct(ratings.number + 1)">
+          <i class="fa fa-angle-right"></i>
+        </a>
+      </li>
+      <li ng-class="{disabled: ratings.last}">
+        <a href="#!/product-detail/{{productId}}" ng-click="setCurrentPageRateProduct(ratings.totalPages - 1)">
+          <i class="fa fa-angle-double-right"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+    
   
     </div>
   </div>

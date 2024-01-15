@@ -110,6 +110,9 @@ public class MoMoPaymentController {
         }else {
             bill.setStatus(4);
             olBillUntility.restoreProductQuantity(bill.getBillDetail());
+            if (bill.getVoucher() != null){
+                olBillUntility.increaseVoucherQuantity(bill.getVoucher().getId());
+            }
             olBillService.save(bill);
             response.sendRedirect(Config.fe_liveServer_Failed);
         }

@@ -10,5 +10,6 @@ public interface OLAddressRepository extends JpaRepository<AddressEntity, Long> 
 
     List<AddressEntity> findAllByCustomer_IdAndStatus(Long Id,int status);
 
-    List<AddressEntity> findByDefaultAddressTrueAndCustomer_FullName(String userName);
+    List<AddressEntity> findByCustomer_FullName(String userName);
+
 }

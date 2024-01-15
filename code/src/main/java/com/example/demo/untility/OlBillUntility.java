@@ -1,13 +1,13 @@
 package com.example.demo.untility;
 
-import com.example.demo.entity.Bill;
-import com.example.demo.entity.BillDetail;
-import com.example.demo.entity.ProductDetail;
+import com.example.demo.entity.*;
 import com.example.demo.payment.momo.config.Environment;
 import com.example.demo.payment.momo.models.QueryStatusTransactionResponse;
 import com.example.demo.payment.momo.processor.QueryTransactionStatus;
 import com.example.demo.payment.vnpay.config.ConfigVNPay;
+import com.example.demo.repository.onlineSales.OLVouchersRepository;
 import com.example.demo.service.onlineSales.OLProductDetailService;
+import com.example.demo.service.onlineSales.OLProductService;
 import com.example.demo.service.onlineSales.OlBillDetailService;
 import com.example.demo.service.onlineSales.OlBillService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,6 +48,11 @@ public class OlBillUntility {
     @Autowired
     private OlBillDetailService billDetailService;
 
+    @Autowired
+    private OLVouchersRepository olVouchersRepository;
+
+    @Autowired
+    private OLProductService olProductService;
 
     public boolean authenticationCheckMoMo(String orderId) {
         try {
@@ -143,14 +148,24 @@ public class OlBillUntility {
     public void restoreProductQuantity(List<BillDetail> billDetails) {
         for (BillDetail detail : billDetails) {
             Optional<ProductDetail> productDetail = olProductDetailService.findById(detail.getProductDetail().getId());
-            if (productDetail.isPresent()){
+            if (productDetail.isPresent()) {
                 int quantityToAdd = detail.getQuantity();
                 int currentQuantity = productDetail.get().getQuantity();
                 productDetail.get().setQuantity(currentQuantity + quantityToAdd);
+
+                // Kiểm tra xem chi tiết sản phẩm đã hết status hay chưa
+                if (productDetail.get().getStatus() == 2) {
+                    productDetail.get().setStatus(1);  // Đặt status = 1 nếu số lượng được thêm vào
+                }
+
                 olProductDetailService.save(productDetail.get());
+                productDetail.get().getProduct().setStatus(1);  // Đặt status = 1 nếu tất cả ProductDetail đều có status = 2
+                olProductService.save(productDetail.get().getProduct());
+
             }
         }
     }
+
 
     public static String encodeId(long id) {
         byte[] bytes = String.valueOf(id).getBytes();
@@ -158,6 +173,17 @@ public class OlBillUntility {
     }
 
 
+    public void increaseVoucherQuantity(Long voucherId) {
+        Vouchers existingVoucher = olVouchersRepository.findById(voucherId)
+                .orElse(null);
+        if (existingVoucher != null) {
+            existingVoucher.setQuantity(existingVoucher.getQuantity() + 1);
+            existingVoucher.setStatus(1);
+            olVouchersRepository.save(existingVoucher);
+        } else {
+            throw new IllegalArgumentException("Voucher not found.");
+        }
+    }
 
 
     private final Timer timer = new Timer();
@@ -187,13 +213,17 @@ public class OlBillUntility {
                             }
                         }
                         restoreProductQuantity(billDetailService.findByBill_IdAndStatus(bill.getId()));
+                        if (bill.getVoucher() != null){
+                            increaseVoucherQuantity(bill.getVoucher().getId());
+                        }
                         bill.setStatus(4);
+
                         olBillService.save(bill);
                     }
                 }
             }
         };
-        timer.schedule(task, 80000); // 60000 milliseconds = 1 minute
+        timer.schedule(task, 1200000); // 60000 1200000 milliseconds = 1 minute
     }
 
 

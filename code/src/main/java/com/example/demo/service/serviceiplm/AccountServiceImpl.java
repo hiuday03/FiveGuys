@@ -62,25 +62,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountEntity createAccount(AccountEntity accountEntity) {
-        String email = accountEntity.getEmail();
-        String account = accountEntity.getAccount();
-        // Kiểm tra xem tên thương hiệu đã tồn tại trong cơ sở dữ liệu chưa
-        Optional<AccountEntity> existingEmail = accountRepository.findByEmail(email);
-        Optional<AccountEntity> existingAccount = accountRepository.findByAccount(account);
-//        if (existingEmail != null) {
-//            throw new IllegalArgumentException("Email đã tồn tại");
-//        }
-//        if (existingAccount != null) {
-//            throw new IllegalArgumentException("Account đã tồn tại");
-//        }
-        // Gửi email thông báo khi tạo mới tài khoản
-//        accountEmailSender.sendAccountCreationEmail(
-//                account.getEmail(),
-//                account.getAccount(),
-//                account.getId(),
-//                account.getConfirmationCode()
-//        );
-
         return accountRepository.save(accountEntity);
     }
 
@@ -186,14 +167,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Optional<AccountEntity> findByEmail(String email) {
+    public List<AccountEntity> findByEmail(String email) {
 
-        Optional<AccountEntity> account = accountRepository.findByEmail(email);
-        if (account.isPresent()){
+        List<AccountEntity> account = accountRepository.findByEmail(email);
+        if (account != null){
             return account;
         }
 
 
-        return Optional.empty();
+        return null;
     }
 }

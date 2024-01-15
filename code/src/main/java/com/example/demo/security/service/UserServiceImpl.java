@@ -32,6 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -97,10 +98,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean resetPassword(String email, String newPassword) {
-        Optional<AccountEntity> accountEntity = accountService.findByEmail(email);
-        if (accountEntity.isPresent()){
-            accountEntity.get().setPassword(bcryptEncoder.encode(newPassword));
-            accountService.createAccount(accountEntity.get());
+        List<AccountEntity> accountEntity = (List<AccountEntity>) accountService.findByEmail(email);
+        if (accountEntity.get(0) != null){
+            accountEntity.get(0).setPassword(bcryptEncoder.encode(newPassword));
+            accountEntity.get(0).setConfirmationCode(null);
+            accountService.createAccount(accountEntity.get(0));
             return true; // Trả về true khi reset mật khẩu thành công
         } else {
             return false; // Trả về false nếu không tìm thấy tài khoản để reset mật khẩu
@@ -110,6 +112,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean resetPassword2(String username, String newPassword) {
         Optional<AccountEntity> accountEntity = accountService.findByAccount2(username);
+        System.out.println(accountEntity.get());
+
         if (accountEntity.isPresent()){
             accountEntity.get().setPassword(bcryptEncoder.encode(newPassword));
             accountService.createAccount(accountEntity.get());
@@ -254,8 +258,8 @@ public class UserServiceImpl implements UserService {
             AccountEntity user1 = mapper.map(userRequestDTO, AccountEntity.class);
             user1.setConfirmationCode(new_otp);
 
-            this.accountService.createAccount2(user1);
-            sendSimpleEmail(userRequestDTO.getEmail(), new_otp, "Đây là OTP mới của bạn");
+            this.accountService.createAccount(user1);
+            sendSimpleEmail(userRequestDTO.getEmail(), new_otp, "Đây là OTP mới của bạn" + new_otp);
             return new ResponseObject("200", "Gửi lại OTP thành công", null);
         }
     }
@@ -264,15 +268,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseObject forgotPassword(String email) {
-        Optional<AccountEntity> user = accountService.findByEmail(email);
-        if (user.isPresent() && user.get() != null) {
-            String newOTP = helper.generateOTP();
-            user.get().setConfirmationCode(newOTP);
-            accountService.save(user.get());
+        List<AccountEntity> user = accountService.findByEmail(email);
+        if ( user.get(0) != null) {
+
             // Thêm email vào query parameter của URL
             String resetPasswordLink = "http://127.0.0.1:5555/login/resetPass.html?email=" + email;
 
-            sendSimpleEmail(email, "Đây là mã xác minh của bạn: " + newOTP + "<a href='" + resetPasswordLink + "'>Đặt lại mật khẩu của bạn ngay!</a>", "[FiveGuys] Mã xác minh");
+            sendSimpleEmail(email, "Truy cập link này để thay đổi mật khẩu "+ "<a href='" + resetPasswordLink + "'>Đặt lại mật khẩu của bạn ngay!</a>", "[FiveGuys] Mã xác minh");
             return new ResponseObject("200", "Yêu cầu quên mật khẩu được chấp nhận, vui lòng kiểm tra email và đặt lại mật khẩu của bạn", null);
         } else {
             return new ResponseObject("400", "Người dùng không tồn tại", null);
@@ -283,20 +285,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean confirmOTP(String userEmail, String enteredOTP) {
         // Lấy thông tin người dùng từ email
-        Optional<AccountEntity> user = accountService.findByEmail(userEmail);
+        List<AccountEntity> user = accountService.findByEmail(userEmail);
 
-        if (user.isPresent()) {
-            AccountEntity userEntity = user.get();
+        if (user.get(0) != null) {
+            AccountEntity userEntity = user.get(0);
             String storedOTP = userEntity.getConfirmationCode();
 
-            if (enteredOTP.equals(storedOTP)) {
+            if (storedOTP != null && enteredOTP.equals(storedOTP)) {
                 return true;
             } else {
                 return false;
             }
         } else {
             return false;
-
         }
     }
+
 }

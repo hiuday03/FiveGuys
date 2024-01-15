@@ -400,7 +400,7 @@ select {
   display: flex;
 }
 
-.input-group{
+.input-group {
   width: 90%;
 }
 
@@ -951,4 +951,117 @@ textarea:focus {
 .reviews-rating-mb__rating h5{
   font-size: 3.25rem;
   font-weight: 700;
+}
+
+/* Thay đổi màu sắc và căn giữa văn bản trang hiện tại */
+.pagination li.active a {
+  background-color: #007bff; /* Màu sắc nền */
+  color: #fff; /* Màu sắc văn bản */
+}
+
+/* Thay đổi màu sắc của các nút điều hướng và vô hiệu hóa */
+.pagination li a {
+  color: #007bff; /* Màu sắc văn bản của các nút */
+}
+
+.pagination li.disabled a {
+  color: #6c757d; /* Màu sắc văn bản của nút vô hiệu hóa */
+}
+
+/* Thay đổi kích thước của biểu tượng hướng trái và phải */
+.pagination i {
+  font-size: 20px;
+}
+
+/* Tạo khoảng cách giữa các nút */
+.pagination li {
+  margin: 0 5px;
+}
+
+
+.category-container {
+  align-items: center;
+  position: fixed; 
+  z-index: 100;
+  display: flex;
+  margin-top: -66px;
+width: 64%;
+justify-content: space-between; /* Adjust alignment */
+}
+
+.category-data {
+  display: none;
+  padding: 10px;
+  background-color: #fff;
+  position: absolute;
+  top: 100%; /* Position the data below the heading */
+  left: 0;
+  z-index: 100;
+  padding-top: 16px;
+  margin-top: -10px;
+
+}
+
+.category-data ul{
+  list-style-type: none;
+padding-left: 0px;
+/* padding-right: 70px; */
+margin-bottom: 12px;
+z-index: 200;
+
+}
+
+
+
+#headingTitle:hover + .category-body .col-md-4 .category-data,
+.category-data:hover {
+  display: block;
+}
+ .category-body {
+    flex: 1;
+  }
+
+  .input-group {
+    border-radius: 10px;
+    margin-right: 0; /* Set margin-right to 0 */
+    display: flex;
+    justify-content: flex-end; /* Align items to the flex-end */
+  }
+
+  .form-outline {
+    flex: 1; 
+    margin-right: 10px; 
+  }
+  .category-data ul li{
+    margin: 8px;
+  }
+  .category-data ul li a {
+    text-decoration: none; /* Remove underline from anchor tags */
+    color: inherit; /* Inherit the color from the parent */
+    text-decoration: none;
+    cursor: pointer;
+    padding-right: 88px;
+    padding-left: 8px;
+  }
+
+  .category-data ul li:hover {
+    background-color: #3498db; 
+    color: red; 
+  }
+
+  .heading-data__title{
+    font-weight: 500;
+  }
+  /* Thêm vào phần đầu của tệp CSS hoặc trong thẻ style của bạn */
+.blue-text {
+  color: blue;
+}
+
+.blue-background {
+  background-color: blue;
+}
+
+.btn-heart{
+  font-size: 16px;
+    background-color: transparent;
 }
