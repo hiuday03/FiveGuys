@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -98,6 +99,7 @@ public class ProductServiceImpl implements ProductService {
 
     private String genmahd() {
         List<Product> list = productRepository.findAll();
+        System.out.println(list.size());
         if (list.size() == 0) {
             return "SP0001";
         } else {
@@ -105,7 +107,6 @@ public class ProductServiceImpl implements ProductService {
             return "SP" + (String.format("%04d", num));
         }
     }
-
 
     @Override
     public void delete(Long id) {
@@ -136,6 +137,38 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllExportExcel() {
-        return  productRepository.findAll();
+        return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> saveAll(List<Product> productList) {
+        List<Product> listInDatabase = productRepository.findAll();
+        int sizeListInDB = listInDatabase.size();
+//        int sizeListProduct = productList.size();
+//        int total = sizeListInDB + sizeListProduct + 1;
+        int miliseconds = 1;
+        for (Product p:
+             productList) {
+            if(p.getCode() == null || p.getCode().isEmpty() || p.getCode().isBlank()){
+                sizeListInDB++;
+                p.setCode("SP" + (String.format("%04d", sizeListInDB)));
+                p.setCreatedBy("admin");
+
+
+                Date currentDate = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(currentDate);
+                miliseconds += 100;
+                calendar.add(Calendar.MILLISECOND, miliseconds);
+                Date newDate = calendar.getTime();
+
+
+                p.setCreatedAt(newDate);
+                p.setUpdatedBy("admin");
+                p.setUpdatedAt(newDate);
+                p.setStatus(2);
+            }
+        }
+        return productRepository.saveAll(productList);
     }
 }

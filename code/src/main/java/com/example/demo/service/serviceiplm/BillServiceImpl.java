@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,9 +83,20 @@ public class BillServiceImpl implements BillService {
         if (existingBill.isPresent()){
             Bill bill1 = existingBill.get();
             bill1.setStatus(status);
+            if(bill1.getPaymentMethod().getName().equals("COD") && status == 3){
+                bill1.setPaymentDate(new Date());
+            }
+            if(status == 2){
+                bill1.setDeliveryDate(new Date());
+            }
             return billRepository.save(bill1);
         }else{
             throw new IllegalArgumentException("Không tìm thấy bill với Id "+ id);
         }
+    }
+
+    @Override
+    public List<Bill> getAllExportExcel() {
+        return billRepository.findAll();
     }
 }

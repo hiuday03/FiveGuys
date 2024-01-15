@@ -2,7 +2,7 @@ package com.example.demo.entity.status;
 
 public class BillStatus {
 
-    public static final Integer CHO_THANH_TOAN = 1;
+//    public static final Integer CHO_THANH_TOAN = 1;
 //    public static final Integer DA_HUY = 0;
     public static final Integer YEU_CAU_XAC_NHAN = 2;               // -> dang chuan bi hang, nhan vien va khach hang co the huy hoa don
     public static final Integer HOAN_THANH = 3;                     // -> khach hang yeu cau doi tra
@@ -17,4 +17,6 @@ public class BillStatus {
     public static final Integer DANG_GIAO_HANG = 2;
     public static final Integer THANH_CONG = 3;
     public static final Integer DA_HUY = 4;
+
+    public static final Integer CHO_THANH_TOAN = 10;
 }

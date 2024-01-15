@@ -15,19 +15,21 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
-                            type="button" role="tab" aria-controls="home" aria-selected="true" ng-click="resetFilter()">Tìm theo mã</button>
+                            type="button" role="tab" aria-controls="home" aria-selected="true"
+                            ng-click="resetFilter()">Tìm theo mã</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" t
-                            ype="button" role="tab" aria-controls="profile" aria-selected="false" ng-click="resetFilter()">Tìm kiếm
+                            ype="button" role="tab" aria-controls="profile" aria-selected="false"
+                            ng-click="resetFilter()">Tìm kiếm
                             nâng cao</button>
                     </li>
                 </ul>
             </div>
             <div class="col-2 d-flex justify-content-end">
                 <button type="button" class="btn btn-outline-success mb-2 form-control" data-bs-toggle="modal"
-                    data-bs-target="#modalAdd">
-                    Tạo hóa đơn
+                    data-bs-target="#modalExcel">
+                    Xuất excel
                 </button>
             </div>
             <div class="tab-content" id="myTabContent">
@@ -279,14 +281,16 @@
                                 </div>
                                 <div class="modal-footer">
                                     <div ng-if="currentStatus == 1 || currentStatus == 2">
-                                        <button ng-if="formUpdate.typeBill == 3" class="btn btn-primary" id="update">
+                                        <button ng-if="formUpdate.typeBill == 3 && currentStatus != 2"
+                                            class="btn btn-primary" id="update">
                                             Cập nhật
                                         </button>
                                         <button class="btn btn-success" id="save"
                                             ng-click="updateStatus(formUpdate.status ,formUpdate)">Lưu
                                         </button>
                                     </div>
-                                    <button type="button" class="btn btn-primary" id="submitEdit" ng-click="exportBill()">Xuất hóa đơn
+                                    <button type="button" class="btn btn-primary" id="submitEdit"
+                                        ng-click="exportBill()">Xuất hóa đơn
                                     </button>
                                     <button class="btn btn-secondary" id="cancelEdit" data-bs-target="#modalDetail"
                                         data-bs-dismiss="modal">Đóng
@@ -359,23 +363,16 @@
         </div>
 
         <!-- Begin Modal Update -->
-        <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalExcel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update Bill</h5>
+                        <h5 class="modal-title">Xuất hóa đơn</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form name="formUpdateBill" ng-submit="formUpdateBill.$valid && update()" novalidate>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <button ng-click="resetFormUpdate()" type="button" class="btn btn-warning">Reset
-                                </button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                </button>
-                            </div>
-                        </form>
+                        <h5>Xuất danh sách hóa đơn ra file excel</h5>
+                        <button class="btn btn-primary" ng-click="xuLyDataExportExcel()">Xác nhận</button>
                     </div>
                 </div>
             </div>
@@ -404,21 +401,51 @@
                             <td>{{bill.totalAmount}}</td>
                             <td>{{bill.totalAmount - bill.totalAmountAfterDiscount}}</td>
                             <td class="col-1" ng-switch="bill.typeBill">
-                                <span ng-switch-when="1">Bán nhanh</span>
-                                <span ng-switch-when="2">Online</span>
-                                <span ng-switch-when="3">Bán giao hàng</span>
+                                <span ng-switch-when="1">
+                                    <div class="badge bg-secondary text-wrap" style="width: 5rem;">
+                                        Bán nhanh
+                                    </div>
+                                </span>
+                                <span ng-switch-when="2">
+                                    <div class="badge text-wrap" style="width: 5rem;background-color: darkorchid;">
+                                        Online
+                                    </div>
+                                </span>
+                                <span ng-switch-when="3">
+                                    <div class="badge bg-info text-wrap" style="width: 5rem;">
+                                        Bán giao hàng
+                                    </div>
+                                </span>
                             </td>
                             <td class="col-2" ng-switch="bill.status">
-                                <span ng-switch-when="1">Chờ xử lý</span>
-                                <span ng-switch-when="2">Đang giao hàng</span>
-                                <span ng-switch-when="3">Giao thành công</span>
+                                <span ng-switch-when="1">
+                                    <div class="badge bg-warning text-wrap">
+                                        Chờ xử lý
+                                    </div>
+                                </span>
+                                <span ng-switch-when="2">
+                                    <div class="badge bg-primary text-wrap">
+                                        Đang giao hàng
+                                    </div>
+                                </span>
+                                <span ng-switch-when="3">
+                                    <div class="badge bg-success text-wrap">
+                                        Giao thành công
+                                    </div>
+                                </span>
                                 <span ng-switch-when="4">
-                                    <p class="text-danger">Đã hủy</p>
+                                    <div class="badge bg-danger text-wrap">
+                                        Đã hủy
+                                    </div>
                                 </span>
                             </td>
                             <td>
-                                <button ng-click="edit(bill)" type="button" class="btn btn-info" data-bs-toggle="modal"
-                                    data-bs-target="#modalUpdate"><i class="ri-edit-line"></i></button>
+                                <button ng-if="bill.status == 1 || bill.status == 2" ng-click="edit(bill)" type="button"
+                                    class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
+                                        class="ri-edit-line"></i></button>
+                                <button ng-if="bill.status == 3 || bill.status == 4" ng-click="edit(bill)" type="button"
+                                    class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalUpdate"><i
+                                        class="ri-eye-2-fill"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -463,5 +490,9 @@
             </div>
         </div>
     </section>
+
+    
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
     <!--  End Code  -->
 </section>

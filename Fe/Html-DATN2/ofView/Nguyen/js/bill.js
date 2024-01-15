@@ -54,18 +54,38 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
             filterStatus = undefined
         }
 
+
+        console.log(new Date(fromDate).getDay());
+        console.log(new Date(fromDate).getMonth());
+        console.log(new Date(fromDate).getFullYear());
+        console.log(new Date(toDate).getDay());
+        console.log(new Date(toDate).getMonth());
+        console.log(new Date(toDate).getFullYear());
+
         let a = $scope.originalBill;
 
+        // if (fromDate != undefined) {
+        //     a = a.filter(function (item) {
+        //         return (new Date(item.createdAt).getDay() >= new Date(fromDate).getDay())
+        //             && (new Date(item.createdAt).getMonth() >= new Date(fromDate).getMonth())
+        //             && (new Date(item.createdAt).getFullYear() >= new Date(fromDate).getFullYear())
+        //     })
+        // }
+        // if (toDate != undefined) {
+        //     a = a.filter(function (item) {
+        //         return (new Date(item.createdAt).getDay() <= new Date(toDate).getDay())
+        //             && (new Date(item.createdAt).getMonth() <= new Date(toDate).getMonth())
+        //             && (new Date(item.createdAt).getFullYear() <= new Date(toDate).getFullYear())
+        //     })
+        // }
         if (fromDate != undefined) {
             a = a.filter(function (item) {
-                return (new Date(item.createdAt).getDate() >= new Date(fromDate).getDate())
-                    && (new Date(item.createdAt).getFullYear() >= new Date(fromDate).getFullYear())
+                return (new Date(item.createdAt).getTime() >= new Date(fromDate).getTime())
             })
         }
         if (toDate != undefined) {
             a = a.filter(function (item) {
-                return (new Date(item.createdAt).getDate() <= new Date(toDate).getDate())
-                    && (new Date(item.createdAt).getFullYear() >= new Date(toDate).getFullYear())
+                return (new Date(item.createdAt).getTime() <= new Date(toDate).getTime())
             })
         }
         if (filterStatus != undefined) {
@@ -79,65 +99,6 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
             })
         }
         $scope.bill = a;
-
-        // $scope.bill = $scope.originalBill.filter(function (item) {
-
-        //     // return (item.status == filterStatus) && () 
-        //     //nếu thời gian null
-        //     // if (fromDate == undefined && toDate == undefined) {
-        //     //     if (filterStatus != undefined && filterTypeBill != undefined) {
-        //     //         if (item && item.status && item.typeBill) {
-        //     //             return (item.status == filterStatus && item.typeBill == filterTypeBill)
-        //     //         }
-        //     //     }
-        //     //     if (filterStatus != undefined && filterTypeBill == undefined) {
-        //     //         if (item && item.status) {
-        //     //             return (item.status == filterStatus)
-        //     //         }
-        //     //     }
-        //     //     if (filterStatus == undefined && filterTypeBill != undefined) {
-        //     //         if (item && item.typeBill) {
-        //     //             return (item.typeBill == filterTypeBill)
-        //     //         }
-        //     //     }
-        //     // }
-
-        //     //nếu status va typebill null
-        //     // if (filterStatus == undefined && filterTypeBill == undefined) {
-        //     //     if (fromDate != undefined && toDate == undefined) {
-        //     //         if (item && item.createdAt) {
-        //     //             return (new Date(item.createdAt).getDate() >= new Date(fromDate).getDate())
-        //     //         }
-        //     //     }
-        //     //     if (fromDate == undefined && toDate != undefined) {
-        //     //         if (item && item.createdAt) {
-        //     //             return (new Date(item.createdAt).getDate() <= new Date(toDate).getDate())
-        //     //         }
-        //     //     }
-        //     //     if (fromDate != undefined && toDate != undefined) {
-        //     //         if (item && item.createdAt) {
-        //     //             return ((new Date(item.createdAt).getDate() >= new Date(fromDate).getDate())
-        //     //                 && (new Date(item.createdAt).getDate() <= new Date(toDate).getDate()))
-        //     //         }
-        //     //     }
-        //     // }
-
-        //     //có hoặc ko có cái nào null
-        //     // if (filterStatus != undefined || filterTypeBill != undefined
-        //     //     || fromDate != undefined || toDate != undefined) {
-
-        //     //     //tất cả khác null
-        //     //     if (filterStatus != undefined && filterTypeBill != undefined
-        //     //         && fromDate != undefined && toDate != undefined) {
-        //     //         if (item && item.typeBill && item.status && item.createdAt) {
-        //     //             return ((new Date(item.createdAt).getTime() >= new Date(fromDate).getTime())
-        //     //                 && (new Date(item.createdAt).getTime() <= new Date(toDate).getTime()))
-        //     //                 && (item.status == filterStatus && item.typeBill == filterTypeBill)
-        //     //         }
-        //     //     }
-        //     // }
-        //     return false;
-        // });
         $scope.changePageSize();
     };
 
@@ -156,6 +117,19 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
             $scope.originalBill = resp.data;
             $scope.bill = angular.copy($scope.originalBill);
         });
+
+        //lay list bill excel
+        $http.get("http://localhost:8080/bills" + "/getAllExportExcel")
+            .then(function (response) {
+                $scope.getAllExportExcel = response.data
+            });
+
+        //lay list bill detail order product id excel
+        $http.get("http://localhost:8080/billDetails" + "/getAllExportExcel")
+            .then(function (response) {
+                $scope.getAllBillDetailExportExcel = response.data
+                console.log(response.data);
+            });
     }
     $scope.initialize();
 
@@ -269,18 +243,26 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
 
         // console.log(bill.typeBill)
         // console.log(bill.paymentMethod.id)
-        if (bill.typeBill === 2 && bill.paymentMethod.id === 3) {
+        if (bill.typeBill == 2 && (bill.paymentMethod.name == "MoMo" || bill.paymentMethod.name == "VNPAY")) {
             $scope.khachDaTra = $scope.khachPhaiTra;
-        } else if (bill.typeBill === 2 && bill.paymentMethod.id != 3) {
+        }
+
+        if (bill.typeBill == 2 && bill.paymentMethod.name == "COD" && bill.status != 3) {
             $scope.khachDaTra = 0;
-        } else if (bill.typeBill == 1 &&
-            (bill.paymentMethod.id === 1 || bill.paymentMethod.id === 2 || bill.paymentMethod.id === 3)) {
+        }
+        if (bill.typeBill == 2 && bill.paymentMethod.name == "COD" && bill.status == 3) {
             $scope.khachDaTra = $scope.khachPhaiTra;
-        } else if (bill.typeBill == 3 &&
-            (bill.paymentMethod.id === 1 || bill.paymentMethod.id === 2 || bill.paymentMethod.id === 3)) {
+        }
+
+        if ((bill.typeBill == 1 || bill.typeBill == 3 )&&
+            (bill.paymentMethod.name == "Tiền mặt" || bill.paymentMethod.name == "Chuyển khoản" || bill.paymentMethod.name == "Thẻ")) {
             $scope.khachDaTra = $scope.khachPhaiTra;
-        } else if (bill.typeBill === 3 && bill.paymentMethod.id === 4) {
+        }
+        if (bill.typeBill == 3 && bill.paymentMethod.name == "COD" && bill.status != 3) {
             $scope.khachDaTra = 0
+        }
+        if (bill.typeBill == 3 && bill.paymentMethod.name == "COD" && bill.status == 3) {
+            $scope.khachDaTra = $scope.khachPhaiTra
         }
     }
 
@@ -310,6 +292,10 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
         console.log("c")
         console.log(status)
         console.log(item)
+        if($scope.currentStatus == 2 && status == 1){
+            $scope.showErrorNotification("Cập nhật trạng thái hóa đơn không thành công")
+            return;
+        }
         $http.put(`http://localhost:8080/bills/status/${item.id}`, status).then(function (resp) {
             // $scope.resetFormUpdate();
             $scope.initialize();
@@ -320,6 +306,116 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
             console.log("Error", error);
         });
     }
+
+
+    //begin excel
+
+    $scope.xuLyDataExportExcel = function () {
+        // $scope.load()
+
+        let bills = angular.copy($scope.getAllExportExcel)
+        let data = []
+        let formData = {
+            id: "",
+            ma: "",
+            ngayTao: "",
+            khachHang: "",
+            nhanVien: "",
+            loaiHD: "",
+            pttt: "",
+            tongTien: "",
+            giamGia: "",
+            phiGiaoHang: "",
+            tenNguoiNhan: "",
+            diaChi: "",
+            sdt: "",
+            ghiChu: "",
+            status: "",
+        }
+        let heading = [["ID", "Mã", "Ngày tạo", "Khách hàng", "Nhân viên", "Loại hóa đơn", "Phương thức thanh toán", 
+                        "Tổng tiền", "Giảm giá", "Phí giao hàng", "Tên người nhận", "Địa chỉ nhận", "Sdt", "Ghi chú", "Trạng thái"]]
+
+        for (let i = 0; i < bills.length; i++) {
+            item = bills[i]
+            formData.id = item.id
+            formData.ma = item.code
+            formData.ngayTao = new Date(item.createdAt).getDay() + "/" + (new Date(item.createdAt).getMonth() + 1) + "/" + new Date(item.createdAt).getFullYear()
+            formData.khachHang = item.customerEntity != null ? item.customerEntity.name : "Khách lẻ"
+            formData.nhanVien = item.employee != null ? item.employee.name : ""
+            formData.loaiHD = item.typeBill == 1 ? "Bán nhanh" : (item.typeBill == 2 ? "Bán online" : "Bán giao hàng")
+            formData.pttt = item.paymentMethod.name
+            formData.tongTien = item.totalAmount
+            formData.giamGia = item.totalAmount - item.totalAmountAfterDiscount
+            formData.phiGiaoHang = item.shippingFee
+            formData.tenNguoiNhan = item.reciverName
+            formData.diaChi = item.address
+            formData.sdt = item.phoneNumber
+            formData.ghiChu = item.note
+            formData.status = item.status == 1 ? "Chờ xử lý" : (item.status == 2 ? "Đang giao hàng" : (item.status == 3 ? "Giao thành công" : "Đã hủy"))
+
+            data.push(formData)
+            formData = {}
+        }
+
+        let billDetails = angular.copy($scope.getAllBillDetailExportExcel)
+        let dataBillDetail = []
+        let formPd = {
+            id: "",
+            maHoaDon: "",
+            tenSanPham: "",
+            mauSac: "",
+            size: "",
+            giaBan: "",
+            soLuong: "",
+            thanhTien: ""
+        }
+        let pdHeading = [["ID", "Mã hóa đơn", "Tên sản phẩm", "Màu sắc", "Kích cỡ", "Giá bán", "Số lượng", "Thành tiền"]]
+        for (let i = 0; i < billDetails.length; i++) {
+            itempd = billDetails[i]
+            formPd.id = itempd.id;
+            formPd.maHoaDon = itempd.bill.code;
+            formPd.tenSanPham = itempd.productDetail.product.code + " - " + itempd.productDetail.product.name;
+            formPd.mauSac = itempd.productDetail.color.name;
+            formPd.size = itempd.productDetail.size.name;
+            formPd.giaBan = itempd.price;
+            formPd.soLuong = itempd.quantity;
+            formPd.thanhTien = formPd.soLuong * formPd.giaBan;
+
+            dataBillDetail.push(formPd)
+            formPd = {}
+        }
+
+        $scope.exportExcel(data, heading, dataBillDetail, pdHeading)
+    }
+
+    //ham xuat file excel
+    $scope.exportExcel = function (dataBill, heading, dataBillDetail, pdHeading) {
+        $scope.columnNames = ["Name", "Age", "City"];
+
+        // const XLSX = require('xlsx');
+        const wb = XLSX.utils.book_new();
+
+        //san pham
+        //bat dau tu o A2 bo qua header
+        const ws = XLSX.utils.json_to_sheet(dataBill, { origin: 'A2', skipHeader: true });
+        //them header tu A1
+        XLSX.utils.sheet_add_aoa(ws, heading, { origin: 'A1' });
+        // appending sheet with a name
+        XLSX.utils.book_append_sheet(wb, ws, 'Danh sách hóa đơn');
+
+        //san pham chi tiet
+        //bat dau tu o A2 bo qua header
+        const wspd = XLSX.utils.json_to_sheet(dataBillDetail, { origin: 'A2', skipHeader: true });
+        //them header tu A1
+        XLSX.utils.sheet_add_aoa(wspd, pdHeading, { origin: 'A1' });
+        // appending sheet with a name
+        XLSX.utils.book_append_sheet(wb, wspd, 'Danh sách sản phẩm');
+
+
+
+        XLSX.writeFile(wb, "bill_data.xlsx");
+    }
+
 
     $scope.changePageSize = function () {
         $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang

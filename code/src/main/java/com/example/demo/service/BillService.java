@@ -21,4 +21,5 @@ public interface BillService {
 
     Bill updateStatus(Integer status, Long id);
 
+    List<Bill> getAllExportExcel();
 }

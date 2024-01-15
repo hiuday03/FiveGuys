@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Bill;
 import com.example.demo.entity.BillDetail;
 import org.springframework.data.domain.Page;
 
@@ -20,4 +21,6 @@ public interface BillDetailService {
     void deleteBillDetail(Long id);
 
     List<BillDetail> getAllByBillId(Long id);
+
+    List<BillDetail> getAllExportExcel();
 }
