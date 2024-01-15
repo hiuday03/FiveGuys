@@ -153,23 +153,22 @@
             <span ng-if="quantity === 0" class="zero-quantity">Hiện sản phẩm chưa có</span>
             <span ng-if="quantity > 0">Còn lại: {{ quantity }} sản phẩm</span>
           </p>
-          <div >
+          <div style="display: flex;">
        
-       
-              <div style="display: flex;" ng-if="quantity > 0">
-                <div class="quantity-input">
-                  <input style="  border: 1px solid;
-                  border-radius: 5px;
-                  margin-right: 4px; " type="number" ng-model="quantitySelected" min="1" max="100"
-                    ng-change="checkQuantityChange2(quantitySelected)" />
-    
-                </div>
-                <a  ng-click="cart.add(productDetail.id,quantitySelected)"
+            <div class="quantity-input">
+              <input style="  border: 1px solid;
+              border-radius: 5px;
+              margin-right: 4px; " type="number" ng-model="quantitySelected" min="1" max="100"
+                ng-change="checkQuantityChange2(quantitySelected)" />
+            </div>
+              <!-- <div style="display: flex;" ng-if="quantity > 0"> -->
+           
+                <a ng-if="quantity > 0" ng-click="cart.add(productDetail.id,quantitySelected)"
                 class="add-to-cart btn btn-warning shadow-0">
                 Thêm vào giỏ hàng
                 
               </a>
-              </div>
+              <!-- </div> -->
        
             <a ng-if="quantity === 0" class="no-product btn btn-warning shadow-0">
               Hiện sản phẩm chưa có
