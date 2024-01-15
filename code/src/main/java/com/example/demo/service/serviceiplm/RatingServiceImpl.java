@@ -50,10 +50,11 @@ public class RatingServiceImpl implements RatingService {
             RatingEntity rating = existingRating.get();
             rating.setContent(ratingEntity.getContent());
             rating.setRate(ratingEntity.getRate());
-            rating.setCustomer(ratingEntity.getCustomer());
-            rating.setBillDetail(ratingEntity.getBillDetail());
             rating.setCreatedAt(ratingEntity.getCreatedAt());
             rating.setUpdatedAt(ratingEntity.getUpdatedAt());
+            rating.setRated(ratingEntity.isRated());
+            rating.setCustomer(ratingEntity.getCustomer());
+            rating.setBillDetail(ratingEntity.getBillDetail());
             rating.setStatus(ratingEntity.getStatus());
 
             return ratingRepository.save(rating); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
