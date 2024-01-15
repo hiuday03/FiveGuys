@@ -53,5 +53,5 @@ public class OlBillResponse {
 
     private int status;
 
-    private List<BillDetail> billDetail;
+    private List<OlBillDetailResponse> billDetail;
 }

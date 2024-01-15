@@ -12,6 +12,8 @@ import java.util.UUID;
 
 public interface OLProductDetailService {
 
+    List<ProductDetail> findAllByProduct(Product product);
+
     List<ProductDetail> findByProduct(Product product);
 
     List<Color> findDistinctColorsBySanPhamId( Long productId);

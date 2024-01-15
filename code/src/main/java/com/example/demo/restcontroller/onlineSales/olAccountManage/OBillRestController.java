@@ -9,6 +9,8 @@ import com.example.demo.service.onlineSales.OlBillService;
 import com.example.demo.service.onlineSales.OlCustomerService;
 import com.example.demo.service.onlineSales.OlFavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,21 +39,22 @@ public class OBillRestController {
 
 
     @GetMapping("/bills")
-    public ResponseEntity<?> listBills(@RequestParam("username") String username) {
+    public ResponseEntity<?> listBills(@RequestParam("username") String username,
+                                       @RequestParam("page") int page) {
         Optional<AccountEntity> account = olAccountService.findByAccount(username);
-        if (!account.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tài khoản không tồn tại");
-        }
-        Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
-        if (!customerEntity.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy thông tin khách hàng");
-        }
-        List<Bill> bills = olBillService.findAllByCustomerEntity_IdAndStatus(customerEntity.get().getId());
-        if (bills.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không có hóa đơn nào được tìm thấy cho khách hàng này");
+        if (account.isPresent()) {
+            Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
+            if (customerEntity.isPresent()) {
+                int size = 8;
+                Page<Bill> billPage = olBillService.findLatestBillsByCustomerId(customerEntity.get().getId(), page, size);
+                if (billPage.isEmpty()) {
+                    return ResponseEntity.ok("Không có hóa đơn nào được tìm thấy cho khách hàng này");
+                }
+                return ResponseEntity.ok(billPage);
+            }
         }
 
-        return ResponseEntity.ok(bills);
+        return ResponseEntity.notFound().build();
     }
 
 

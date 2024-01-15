@@ -37,7 +37,7 @@ public interface AccountService {
 
     AccountEntity createAccount2(AccountEntity accountEntity);
 
-    Optional<AccountEntity> findByEmail(String email);
+    List<AccountEntity> findByEmail(String email);
 
 
 

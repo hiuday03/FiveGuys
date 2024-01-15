@@ -29,6 +29,7 @@ registerBtn.addEventListener('click', () => {
     container.classList.add("active");
 });
 
+
 function registerUser() {
     var username = document.getElementById('username').value;
     var email = document.getElementById('email').value;

@@ -124,7 +124,8 @@ public class JwtAuthenticationController {
         public boolean resetPassword(@RequestBody OTPresetPassDTO otPresetPassDTO) {
         String email = otPresetPassDTO.getEmail();
         String pass = otPresetPassDTO.getNewPassword();
-        System.out.println(otPresetPassDTO);
+
+
         return userService.resetPassword(email, pass);
     }
 
@@ -158,21 +159,26 @@ public class JwtAuthenticationController {
 
         Optional<AccountEntity> account = olAccountService.findByAccount(currentUsername);
 
-        if (account.isPresent()) {
-            Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
-            Optional<Employees> employeeEntity = Optional.ofNullable(olEmployeeService.findByAccount_Id(account.get().getId()));
+        Map<String, Object> responseData = new HashMap<>();
+
+        return account.map(acc -> {
+            Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(acc.getId()));
+            Optional<Employees> employeeEntity = Optional.ofNullable(olEmployeeService.findByAccount_Id(acc.getId()));
 
             if (customerEntity.isPresent()) {
                 return ResponseEntity.ok(customerEntity);
             } else if (employeeEntity.isPresent()) {
-
                 return ResponseEntity.ok(employeeEntity);
+            } else {
+                responseData.put("loggedIn", false);
+                return ResponseEntity.ok(responseData);
             }
-        }
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("loggedIn", false);
-        return ResponseEntity.ok(responseData);
+        }).orElseGet(() -> {
+            responseData.put("loggedIn", false);
+            return ResponseEntity.ok(responseData);
+        });
     }
+
 
 
 }

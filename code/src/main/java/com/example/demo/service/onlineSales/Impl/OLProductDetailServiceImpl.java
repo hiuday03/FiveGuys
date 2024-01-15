@@ -21,6 +21,11 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
 
 
     @Override
+    public List<ProductDetail> findAllByProduct(Product product) {
+        return olProductDetailRepository.findAllByProduct(product);
+    }
+
+    @Override
     public List<ProductDetail> findByProduct(Product product) {
         return olProductDetailRepository.findByProductAndStatus(product,1);
     }

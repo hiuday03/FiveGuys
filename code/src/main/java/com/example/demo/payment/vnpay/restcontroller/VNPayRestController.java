@@ -139,17 +139,17 @@ public class VNPayRestController {
 
 
 
-    private void restoreProductQuantity(List<BillDetail> billDetails) {
-        for (BillDetail detail : billDetails) {
-            Optional<ProductDetail> productDetail = olProductDetailService.findById(detail.getProductDetail().getId());
-            if (productDetail.isPresent()){
-                int quantityToAdd = detail.getQuantity();
-                int currentQuantity = productDetail.get().getQuantity();
-                productDetail.get().setQuantity(currentQuantity + quantityToAdd);
-                olProductDetailService.save(productDetail.get());
-            }
-        }
-    }
+//    private void restoreProductQuantity(List<BillDetail> billDetails) {
+//        for (BillDetail detail : billDetails) {
+//            Optional<ProductDetail> productDetail = olProductDetailService.findById(detail.getProductDetail().getId());
+//            if (productDetail.isPresent()){
+//                int quantityToAdd = detail.getQuantity();
+//                int currentQuantity = productDetail.get().getQuantity();
+//                productDetail.get().setQuantity(currentQuantity + quantityToAdd);
+//                olProductDetailService.save(productDetail.get());
+//            }
+//        }
+//    }
 
     @Transactional
     @GetMapping("/payment-vnpay/callback")
@@ -177,9 +177,11 @@ public class VNPayRestController {
 
                 response.sendRedirect(Config.fe_liveServer_Success);
             } else {
-
                 bill.setStatus(4);
-                restoreProductQuantity(bill.getBillDetail());
+                olBillUntility.restoreProductQuantity(bill.getBillDetail());
+                if (bill.getVoucher() != null){
+                    olBillUntility.increaseVoucherQuantity(bill.getVoucher().getId());
+                }
                 olBillService.save(bill);
                 response.sendRedirect(Config.fe_liveServer_Failed);
 
