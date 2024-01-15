@@ -41,12 +41,14 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#homefilter"
-                            type="button" role="tab" aria-controls="home" aria-selected="true" ng-click="resetFilter()">Tìm theo mã
+                            type="button" role="tab" aria-controls="home" aria-selected="true"
+                            ng-click="resetFilter()">Tìm theo mã
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#detailfilter" t
-                            ype="button" role="tab" aria-controls="profile" aria-selected="false" ng-click="resetFilter()">Tìm kiếm nâng cao
+                            ype="button" role="tab" aria-controls="profile" aria-selected="false"
+                            ng-click="resetFilter()">Tìm kiếm nâng cao
                         </button>
                     </li>
                 </ul>
@@ -54,55 +56,59 @@
             <div class="col-4 d-flex justify-content-end">
                 <div class="row">
                     <div class="col-4">
-                        <button type="button" class="btn btn-outline-success mb-2 form-control" data-bs-toggle="modal"
-                            data-bs-target="#modalAddProduct" ng-click="resetFormInput()">
-                            Thêm
-                        </button>
-                    </div>
-                    <div class="col-3">
-                        <button type="button" class="btn btn-outline-secondary mb-2 form-control" data-bs-toggle="modal"
-                            data-bs-target="#modalExel">
+                        <button type="button" style="width: 60px;" class="btn btn-outline-secondary mb-2 form-control"
+                            data-bs-toggle="modal" data-bs-target="#modalExel">
                             Exel
                         </button>
                     </div>
-                    <div class="col-5">
+                    <div class="col-8">
+                        <button type="button" class="btn btn-outline-success mb-2 form-control" data-bs-toggle="modal"
+                            data-bs-target="#modalAddProduct" ng-click="resetFormInput()">
+                            Thêm mới
+                        </button>
+                    </div>
+                    <!-- <div class="col-5">
                         <select class="form-select" ng-model="selectedItem" ng-change="changeStatus(selectedItem)">
                             <option selected value="">Tất cả</option>
                             <option value="1">Đang bán</option>
                             <option value="2">Ngừng bán</option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
             <!-- begin modal exel -->
-            <div class="modal fade" id="modalExel" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="modalExel" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab"
-                                    href="#exportExcel">Nhập sản phẩm</a>
+                                <a class="nav-link active" data-bs-toggle="tab" href="#exportExcel">Nhập sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab"
-                                    href="#insertExcel">Xuất sản phẩm</a>
+                                <a class="nav-link" data-bs-toggle="tab" href="#insertExcel">Xuất sản phẩm</a>
                             </li>
-    
+
                             <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                         </ul>
                         <div class="modal-body">
                             <!-- Tab detail product  -->
                             <div class="tab-content mt-3">
                                 <div id="exportExcel" class="container tab-pane active">
-                                    <h5>Nhập danh sách sản phẩm từ file xlxs</h5>
-                                    <!-- <input type="file" ng-change=""> -->
-                                    <button class="btn btn-primary">Xác nhận</button>
+                                    <h5>Nhập danh sách sản phẩm từ file excel</h5>
+                                    <form>
+                                        <div class="input-group">
+                                            <input type="file" id="excelFile" class="form-control" accept=".xlsx, .xls"
+                                                required />
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                ng-click="importExcel()">Import</button>
+                                        </div>
+                                    </form>
                                 </div>
-    
+
                                 <div id="insertExcel" class="container tab-pane fade">
-                                    <h5>Xuất danh sách sản phẩm ra file xlxs</h5>
+                                    <h5>Xuất danh sách sản phẩm ra file excel</h5>
                                     <button class="btn btn-primary" ng-click="xuLyDataExportExcel()">Xác nhận</button>
                                 </div>
                             </div>
@@ -137,9 +143,9 @@
                 </div>
                 <div class="tab-pane fade" id="detailfilter" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="row">
-                        <div class="col-9">
+                        <div class="col-10">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label>Tên sản phẩm</label>
                                     <input type="text" ng-model="searchName" placeholder="Nhập tên sản phẩm"
                                         class="form-control">
@@ -149,7 +155,7 @@
                                         <option ng-repeat="b in brands" value="{{b.id}}">{{ b.name }}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label>Loại:</label>
                                     <select class="form-select" ng-model="filterCategoryId">
                                         <option selected value="">Chọn thương hiệu...</option>
@@ -161,20 +167,28 @@
                                         <option ng-repeat="m in materials" value="{{m.id}}">{{ m.name }}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label>Thời gian tạo từ ngày:</label>
                                     <input type="date" id="fromDate" class="form-control" ng-model="fromDateProduct">
                                     <label for="toDate">Đến ngày:</label>
                                     <input type="date" id="toDate" class="form-control" ng-model="toDateProduct">
                                 </div>
+                                <div class="col-md-3">
+                                    <label>Trạng thái</label>
+                                    <select class="form-select" ng-model="filterProductStatus">
+                                        <option selected value="">Chọn trạng thái</option>
+                                        <option value="1">Đang bán</option>
+                                        <option value="2">Ngừng bán</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             <div class="row mt-4">
-                                <div class="col-md-6"></div>
-                                <div class="col-md-6">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
                                     <button type="button" class="btn btn-outline-primary mb-2 form-control"
-                                        ng-click="filter(searchName, fromDateProduct, toDateProduct, filterCategoryId, filterMaterialId, filterBrandId)">Tìm
+                                        ng-click="filter(searchName, fromDateProduct, toDateProduct, filterCategoryId, filterMaterialId, filterBrandId, filterProductStatus)">Tìm
                                         kiếm
                                     </button>
                                     <button type="button" class="btn btn-outline-info mb-2 form-control"
@@ -200,7 +214,8 @@
                             <th scope="col">Loại</th>
                             <th scope="col">Chất liệu</th>
                             <th scope="col">Thương hiệu</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Ngày tạo</th>
+                            <th scope="col">Trạng thái</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -209,55 +224,69 @@
                             <td class="col-1">{{p.code}}</td>
                             <td class="col-2">{{p.name}}</td>
                             <td class="col-1">{{p.category.name}}</td>
-                            <td class="col-2">{{p.material.name}}</td>
+                            <td class="col-1">{{p.material.name}}</td>
                             <td class="col-2">{{p.brand.name}}</td>
-                            <td class="col-2" ng-switch="p.status">
-                                <span ng-switch-when="1" class="text-info">Đang bán</span>
-                                <span ng-switch-when="2" class="text-danger">Ngừng bán</span>
+                            <td class="col-2">{{p.createdAt | date:"dd-MM-yyyy"}}</td>
+                            <td class="col-1" ng-switch="p.status">
+                                <span ng-switch-when="1" class="text-info">
+                                    <div class="badge bg-success text-wrap" style="width: 5rem;">
+                                        Đang bán
+                                    </div>
+                                </span>
+                                <span ng-switch-when="2" class="text-danger">
+                                    <div class="badge bg-danger text-wrap" style="width: 5rem;">
+                                        Ngừng bán
+                                    </div>
+                                </span>
                             <td class="col-2">
-                                <a type="button" class="btn btn-success" data-bs-toggle="modal"
+                                <a type="button" class="btn btn-secondary" data-bs-toggle="modal"
                                     data-bs-target="#modalDetail" ng-click="edit(p)"><i class="ri-eye-2-fill"></i></a>
 
                                 <a type="button" class="btn btn-info" data-bs-toggle="modal"
-                                    data-bs-target="#updateStatusProduct-{{p.id}}" ng-click="getProductById(p.id)"><i
+                                    data-bs-target="#updateStatusProduct" ng-click="setStatusHopLe(p)"><i
                                         class="ri-edit-2-line"></i></a>
-                                <div class="modal fade" id="updateStatusProduct-{{p.id}}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel2" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel2">Cập nhật trạng thái sản
-                                                    phẩm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row mb-3" ng-init="statusUpdate=p.status">
-                                                    <label class="col-sm-3 col-form-label">Trạng thái</label>
-                                                    <div class="col-sm-9">
-                                                        <select class="form-select" aria-label="Small select example"
-                                                            ng-model="statusUpdate">
-                                                            <option ng-value="1">Đang bán</option>
-                                                            <option ng-value="2">Ngừng bán</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Hủy
-                                                </button>
-                                                <button type="button" class="btn btn-primary"
-                                                    ng-click="updateStatusProduct(p.id, statusUpdate)">Cập nhật
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div class="modal fade" id="updateStatusProduct" tabindex="-1" aria-labelledby="exampleModalLabel2"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Cập nhật trạng thái sản
+                                    phẩm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Trạng thái</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" aria-label="Small select example"
+                                            ng-model="productStatus.status">
+                                            <option ng-value="1">Đang bán</option>
+                                            <option ng-value="2">Ngừng bán</option>
+                                        </select>
+                                        <div ng-if="statusHopLe == false">
+                                            <div class="error-message text-danger form-text">
+                                                Thêm hoặc sửa tối thiểu 1 chi tiết sản phẩm có trạng thái đang bán</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Hủy
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                    ng-click="updateStatusProduct(productStatus.id, productStatus.status)">Cập nhật
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row align-items-center">
                     <div class="col-md-1"> <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
                         <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
@@ -319,8 +348,8 @@
                 <div class="modal-content">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" ng-click="showAddProductDetail(product)"
-                                href="#home">Thông tin sản phẩm</a>
+                            <a class="nav-link active" id="tabhome" data-bs-toggle="tab"
+                                ng-click="showAddProductDetail(product)" href="#home">Thông tin sản phẩm</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" ng-click="showAddProductDetail('pd')"
@@ -364,17 +393,21 @@
                                         <label for="updateName" class="col-sm-3 col-form-label">Tên</label>
                                         <div class="col-sm-9">
                                             <input name="updateName" id="updateName" type="text" class="form-control"
-                                                placeholder="Enter name" ng-model="formUpdate.name" ng-required="true">
+                                                placeholder="Enter name" ng-model="formUpdate.name" ng-required="true"
+                                                ng-change="checkTrungTenSPUpdate(formUpdate.id, formUpdate.name)">
                                             <span ng-show="formUpdateProduct.$submitted">
                                                 <div ng-show="formUpdateProduct.updateName.$invalid"
                                                     class="error-message text-danger form-text">
                                                     Tên sản phẩm không được để trống</div>
-
                                             </span>
+                                            <div ng-if="checkTrungTenUpdate == true">
+                                                <div class="error-message text-danger form-text">
+                                                    Tên này đã tồn tại</div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="updateCollar" class="col-sm-3 col-form-label">Cổ áo</label>
+                                        <label for="updateCollar" class="col-sm-3 col-form-label">Kiểu cổ áo</label>
                                         <div class="col-sm-9">
                                             <input name="updateCollar" id="updateCollar" type="text"
                                                 class="form-control" placeholder="Enter collar"
@@ -382,12 +415,12 @@
                                             <span ng-show="formUpdateProduct.$submitted">
                                                 <div ng-show="formUpdateProduct.updateCollar.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    Cổ áo không được để trống</div>
+                                                    Kiểu cổ áo không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="updateWrist" class="col-sm-3 col-form-label">Tay áo</label>
+                                        <label for="updateWrist" class="col-sm-3 col-form-label">Kiểu tay áo</label>
                                         <div class="col-sm-9">
                                             <input name="updateWrist" id="updateWrist" type="text" class="form-control"
                                                 placeholder="Enter wrist" ng-model="formUpdate.wrist"
@@ -395,7 +428,7 @@
                                             <span ng-show="formUpdateProduct.$submitted">
                                                 <div ng-show="formUpdateProduct.updateWrist.$invalid"
                                                     class="error-message text-danger form-text">
-                                                    Tay áo không được để trống</div>
+                                                    Kiểu tay áo không được để trống</div>
                                             </span>
                                         </div>
                                     </div>
@@ -448,8 +481,8 @@
                                             <span ng-show="formUpdateProduct.$submitted">
                                                 <div ng-if="statusHopLe == false">
                                                     <div class="error-message text-danger form-text">
-                                                        Thêm hoặc sửa chi tiết có trạng thái hiển thị để chuyển sản phẩm
-                                                        sang đang bán</div>
+                                                        Thêm hoặc sửa tối thiểu 1 chi tiết sản phẩm có trạng thái đang
+                                                        bán</div>
                                                 </div>
                                             </span>
                                         </div>
@@ -509,10 +542,18 @@
                                             <td class="col-1">{{pd.quantity}}</td>
                                             <td class="col-2">{{pd.barcode}}</td>
                                             <td class="col-1" ng-switch="pd.status">
-                                                <span ng-switch-when="1" class="text-info">Hiển thị</span>
-                                                <span ng-switch-when="2" class="text-danger">Ẩn</span>
+                                                <span ng-switch-when="1">
+                                                    <div class="badge bg-success text-wrap">
+                                                        Đang bán
+                                                    </div>
+                                                </span>
+                                                <span ng-switch-when="2">
+                                                    <div class="badge bg-danger text-wrap">
+                                                        Ngừng bán
+                                                    </div>
+                                                </span>
                                             <td class="col-1">
-                                                <a id="updateProductDetail" class="btn btn-sm btn-success"
+                                                <a id="updateProductDetail" class="btn btn-sm btn-info"
                                                     data-bs-toggle="modal" data-bs-target="#modalUpdateDetail"
                                                     data-bs-dismiss="modal" ng-click="editProductDetail(pd)">
                                                     <i class="ri-edit-2-fill"></i>
@@ -643,8 +684,8 @@
                                         <select class="form-select" name="statusPDCreate" ng-model="formInputPd.status"
                                             required>
                                             <option value="" disabled selected>Chọn trạng thái...</option>
-                                            <option value="1">Hiển thị</option>
-                                            <option value="2">Ẩn</option>
+                                            <option value="1">Đang bán</option>
+                                            <option value="2">Ngừng bán</option>
                                         </select>
                                         <span ng-show="formCreateProductDetail.$submitted">
                                             <div ng-show="formCreateProductDetail.statusPDCreate.$invalid"
@@ -652,11 +693,11 @@
                                                 Chọn trạng thái</div>
                                             <div ng-if="quantityStatusPD == true">
                                                 <div class="error-message text-danger form-text">
-                                                    Số lượng sản phẩm phải > 0 để hiển thị</div>
+                                                    Số lượng sản phẩm phải > 0</div>
                                             </div>
                                             <div ng-if="imageStatusPD == true">
                                                 <div class="error-message text-danger form-text">
-                                                    Thêm ảnh để hiển thị</div>
+                                                    Thêm ảnh để chuyển trạng thái sang đang bán</div>
                                             </div>
                                         </span>
 
@@ -781,17 +822,17 @@
                                     <label class="col-sm-3 col-form-label">Trạng thái</label>
                                     <div class="col-sm-9">
                                         <select class="form-select" ng-model="formUpdatePd.status">
-                                            <option ng-value="1">Hiển thị</option>
-                                            <option ng-value="2">Ẩn</option>
+                                            <option ng-value="1">Đang bán</option>
+                                            <option ng-value="2">Ngừng bán</option>
                                         </select>
                                         <span ng-show="formUpdateProductDetail.$submitted">
                                             <div ng-if="quantityStatusPD == true">
                                                 <div class="error-message text-danger form-text">
-                                                    Số lượng sản phẩm phải > 0 để hiển thị</div>
+                                                    Số lượng sản phẩm phải > 0</div>
                                             </div>
                                             <div ng-if="imageStatusPD == true">
                                                 <div class="error-message text-danger form-text">
-                                                    Thêm ảnh để hiển thị</div>
+                                                    Thêm ảnh để chuyển trạng thái sang đang bán</div>
                                             </div>
                                         </span>
                                     </div>
@@ -869,26 +910,26 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Cổ áo</label>
+                                <label class="col-sm-3 col-form-label">Kiểu cổ áo</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="collar" placeholder="Nhập cổ áo..."
+                                    <input type="text" class="form-control" name="collar" placeholder="Nhập Kiểu cổ áo..."
                                         ng-model="formInput.collar" ng-required="true">
                                     <span ng-show="formCreateProduct.$submitted">
                                         <div ng-show="formCreateProduct.collar.$invalid"
                                             class="error-message text-danger form-text">
-                                            Cổ áo không được để trống</div>
+                                            Kiểu cổ áo không được để trống</div>
                                     </span>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Tay áo</label>
+                                <label class="col-sm-3 col-form-label">Kiểu tay áo</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="wrist" placeholder="Nhập tay áo..."
+                                    <input type="text" class="form-control" name="wrist" placeholder="Nhập Kiểu tay áo..."
                                         ng-model="formInput.wrist" ng-required="true">
                                     <span ng-show="formCreateProduct.$submitted">
                                         <div ng-show="formCreateProduct.wrist.$invalid"
                                             class="error-message text-danger form-text">
-                                            Tay áo không được để trống</div>
+                                            Kiểu tay áo không được để trống</div>
                                     </span>
                                 </div>
                             </div>
@@ -981,16 +1022,16 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Cổ áo</label>
+                                <label class="col-sm-3 col-form-label">Kiểu cổ áo</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" placeholder="Nhập cổ áo..."
+                                    <input type="text" class="form-control" placeholder="Nhập Kiểu cổ áo..."
                                         ng-model="formInput.collar" ng-required="true">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Tay áo</label>
+                                <label class="col-sm-3 col-form-label">Kiểu tay áo</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" placeholder="Nhập tay áo..."
+                                    <input type="text" class="form-control" placeholder="Nhập Kiểu tay áo..."
                                         ng-model="formInput.wrist" ng-required="true">
                                 </div>
                             </div>
@@ -1066,8 +1107,8 @@
                     </div>
                     <div class="modal-body">
                         <p>Tên: {{formInput.name}}</p>
-                        <p>Cổ áo: {{formInput.collar}}</p>
-                        <p>Tay áo: {{formInput.wrist}}</p>
+                        <p>Kiểu cổ áo: {{formInput.collar}}</p>
+                        <p>Kiểu tay áo: {{formInput.wrist}}</p>
                         <p>Loại: {{formInput.category}}</p>
                         <p>Chất liệu: {{formInput.material}}</p>
                         <p>Thương hiệu: {{formInput.brand}}</p>
@@ -1090,6 +1131,7 @@
 
     </section>
     <!--  End Code  -->
-    
+
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 </section>

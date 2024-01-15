@@ -1,4 +1,5 @@
 app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
+    $scope.products = [];
     $scope.originalProduct = [];
     $scope.formInput = {};
     $scope.formUpdate = {};
@@ -186,7 +187,11 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
                 $scope.productDetails = response.data
                 $scope.statusHopLe = true;
                 $scope.enableEditForm(true, true);
+
+                $scope.checkTrungTenUpdate = false;
             });
+        $scope.showAddProductDetail("product")
+        $scope.showTab()
     }
 
 
@@ -229,6 +234,7 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
 
     //check productDetail co trang thai 1 ko
     $scope.checkStatusProductDetail = function (listProductDetail, statusProduct) {
+        console.log(listProductDetail);
         $scope.statusHopLe = true;
         if (statusProduct == 1) {
             if (listProductDetail.length <= 0) {
@@ -256,20 +262,45 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         }
     }
 
+    //check trùng tên sản phẩm
+    $scope.checkTrungTenUpdate = false;
+    $scope.checkTrungTenSPUpdate = function (productId, inputName) {
+        $http.get(apiUrlProduct + "/" + productId).then(function (resp) {
+            $scope.productById = resp.data;
+        });
+        if (inputName == undefined) {
+            $scope.checkTrungTenUpdate = false;
+            return;
+        }
+        if ($scope.productById.name == inputName) {
+            $scope.checkTrungTenUpdate = false;
+            return true;
+        }
+        for (let i = 0; i < $scope.products.length; i++) {
+            let data = $scope.products[i]
+            if (data.name == inputName.trim()) {
+                console.log("a");
+                $scope.checkTrungTenUpdate = true;
+                return;
+            }
+            $scope.checkTrungTenUpdate = false;
+        }
+    }
+
 
     $scope.update = function (productId) {
         let item = angular.copy($scope.formUpdate);
         // console.log("cc" + item.category)
-
+        if ($scope.checkTrungTenUpdate == true) return;
         if ($scope.checkStatusProductDetail($scope.productDetails, item.status) == false) return;
-
         $scope.load()
         $http.put(`${apiUrlProduct}/` + productId, item).then(resp => {
+            $scope.checkTrungTenUpdate = false;
             $scope.enableEditForm(true, true);
             $scope.unload()
             $scope.showSuccessNotification("Cập nhật thành công!");
             $scope.initialize();
-            $scope.resetFormUpdate();
+            // $scope.resetFormUpdate();
         }).catch(error => {
             console.log("Error", error);
         })
@@ -277,15 +308,35 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
 
     // $scope.updateStatus = 0;
     $scope.updateStatusProduct = function (productId, statusUpdate) {
-        $scope.load()
-        $http.put(apiUrlProduct + "/status/" + productId, statusUpdate).then(resp => {
-            // alert("Update status product successfully!")
-            $scope.initialize();
-            $scope.unload();
-            $scope.showSuccessNotification("Sản phẩm đã tự chuyển trạng thái sang ngừng bán");
-        }).catch(error => {
-            console.log("Error", error);
-        })
+        $http.get(apiUrlProduct + "/" + productId + "/productDetail")
+            .then(function (response) {
+                $scope.productDetailForStatusUpdate = response.data
+                console.log(response.data);
+                if ($scope.checkStatusProductDetail($scope.productDetailForStatusUpdate, statusUpdate) == false) return;
+                $scope.load()
+                $http.put(apiUrlProduct + "/status/" + productId, statusUpdate).then(resp => {
+                    // alert("Update status product successfully!")
+                    $scope.unload();
+                    $http.get(apiUrlProduct + "/" + productId + "/productDetail")
+                        .then(function (response) {
+                            $scope.productDetails = response.data
+                        });
+                    $scope.initialize();
+                    $scope.statusHopLe = true;
+                    $scope.showSuccessNotification("Cập nhật trạng thái sản phẩm thành công");
+                    $('#updateStatusProduct').modal('hide');
+                }).catch(error => {
+                    $scope.unload();
+                    console.log("Error", error);
+                })
+            });
+
+    }
+
+    $scope.setStatusHopLe = function (p) {
+        $scope.statusHopLe = true;
+        $scope.productStatus = angular.copy(p)
+        // $scope.statusUpdate = $scope.a.status
     }
 
     $scope.cancelEdit = function () {
@@ -475,13 +526,13 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         let item = angular.copy($scope.formInputPd);
         $http.post(apiUrlProductDetail + "/checkFk", item).then(resp => {
             if (resp.data == '') {
-                console.log("cc1")
+                console.log("ct1")
                 $scope.checkTrungFK = false;
                 // $('#modalProductDetail').modal('hide');
                 // $('#modalDetail').modal('show');
                 return false;
             } else {
-                console.log("cc2")
+                console.log("ct2")
                 $scope.checkTrungFK = true;
                 return true;
             }
@@ -729,43 +780,149 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         XLSX.writeFile(wb, "product_data.xlsx");
     }
 
-
-
-    $scope.insertExcelProduct = function (files) {
-        var reader = new FileReader();
-        reader.onloadend = async () => {
-            var workbook = new ExcelJS.Workbook();
-            await workbook.xlsx.load(reader.result);
-            const worksheet = workbook.getWorksheet("Sheet1");
-            worksheet.eachRow((row, index) => {
-                if (index > 1) {
-                    //import bigdecimel
-                    var bigDecimalValue = new Big(row.getCell(3).value);
-                    var bigDecimalMinimumTotalAmount = new Big(row.getCell(5).value);
-                    //import date
-                    var startdate1 = new Date(row.getCell(7).value);
-                    var enddate1 = new Date(row.getCell(8).value);
-                    let voucher = {
-                        code: row.getCell(1).value,
-                        name: row.getCell(2).value,
-                        value: bigDecimalValue,
-                        valueType: row.getCell(4).value,
-                        minimumTotalAmount: bigDecimalMinimumTotalAmount,
-                        // +row import thành int
-                        quantity: +row.getCell(6).value,
-                        startDate: startdate1,
-                        endDate: enddate1,
-                        describe: row.getCell(9).value,
-                    };
-                    $http.post("/api/voucher", voucher).then((resp) => {
-                        alert("Add Voucher successfully");
-                        $scope.getAll();
-                        console.log("success", resp.data);
-                    });
-                }
+    $scope.getCategoryById = function (nameCate) {
+        $http.get(apiUrlCategory)
+            .then(function (response) {
+                $scope.categories = response.data;
             });
+        if (nameCate == undefined || nameCate == null || nameCate == "") return null;
+        for (let i = 0; i < $scope.categories.length; i++) {
+            if ($scope.categories[i].name == nameCate) {
+                return $scope.categories[i].id
+            } else {
+                return null
+            }
+        }
+    }
+    $scope.getMaterialById = function (nameM) {
+        $http.get(apiUrlMaterial)
+            .then(function (response) {
+                $scope.materials = response.data;
+            });
+        if (nameM == undefined || nameM == null || nameM == "") return null;
+        for (let i = 0; i < $scope.materials.length; i++) {
+            if ($scope.materials[i].name == nameM) {
+                return $scope.materials[i].id
+            } else {
+                return null
+            }
+        }
+    }
+    $scope.getBrandById = function (nameB) {
+        $http.get(apiUrlBrand)
+            .then(function (response) {
+                $scope.brands = response.data;
+            });
+        if (nameB == undefined || nameB == null || nameB == "") return null;
+        for (let i = 0; i < $scope.brands.length; i++) {
+            if ($scope.brands[i].name == nameB) {
+                return $scope.brands[i].id
+            } else {
+                return null
+            }
+        }
+    }
+    $scope.checkTrungNameP = function (name) {
+        if (name == undefined || name == null || name == "") {
+            return null;
+        }
+        for (let i = 0; i < $scope.products.length; i++) {
+            let data = $scope.products[i]
+            if (data.name == name) {
+                console.log(name + " - " + data.name);
+                return null;
+            }
+        }
+        return name;
+    }
+
+
+    $scope.importExcel = function () {
+        var excelFile = document.getElementById('excelFile').files[0];
+        var workbook = new ExcelJS.Workbook();
+        var reader = new FileReader();
+
+        $scope.totalError = 0;
+        $scope.rowOfError = []
+
+        reader.onload = function (e) {
+            var data = new Uint8Array(e.target.result);
+            var arr = new Array();
+
+            let listData = []
+            for (var i = 0; i != data.length; ++i) {
+                arr[i] = String.fromCharCode(data[i]);
+            }
+            var bstr = arr.join("");
+            workbook.xlsx.load(bstr)
+                .then(function () {
+                    // Đọc dữ liệu từ tệp Excel và thực hiện các thao tác mong muốn
+                    var worksheet = workbook.getWorksheet(1);
+                    worksheet.eachRow(function (row, rowNumber) {
+                        // console.log('Row ' + rowNumber + ' = ' + JSON.stringify(row.values));
+
+                        if (rowNumber > 1) {
+                            let product = {
+                                name: row.getCell(3).value,
+                                collar: row.getCell(4).value,
+                                wrist: row.getCell(5).value,
+                                category: {
+                                    id: $scope.getCategoryById(row.getCell(6).value)
+                                },
+                                material: {
+                                    id: $scope.getMaterialById(row.getCell(7).value)
+                                },
+                                brand: {
+                                    id: $scope.getBrandById(row.getCell(8).value)
+                                },
+                                describe: row.getCell(11).value,
+                            }
+                            if ($scope.checkTrungNameP(product.name) == null) {
+                                $scope.rowOfError.push(rowNumber);
+                                return;
+                            }
+                            if (product.collar == null) {
+                                $scope.rowOfError.push(rowNumber);
+                                return;
+                            }
+                            if (product.wrist == null) {
+                                $scope.rowOfError.push(rowNumber);
+                                return;
+                            }
+                            if (product.category.id == null) {
+                                $scope.rowOfError.push(rowNumber);
+                                return;
+                            }
+                            if (product.material.id == null) {
+                                $scope.rowOfError.push(rowNumber);
+                                return;
+                            }
+                            if (product.brand.id == null) {
+                                $scope.rowOfError.push(rowNumber);
+                                return;
+                            }
+                            if (product.describe == null) {
+                                $scope.rowOfError.push(rowNumber);
+                                return;
+                            }
+                            // console.log(product);
+                            listData.push(product)
+                        }
+                    });
+
+                    console.log(listData);
+                    console.log($scope.rowOfError);
+                    $scope.load();
+                    $http.post(apiUrlProduct + "/saveAll", listData).then(resp => {
+                        $scope.unload()
+                        $scope.showSuccessNotification("Thêm sản phẩm thành công!")
+                        $scope.initialize();
+                    }).catch(error => {
+                        console.log("Error", error);
+                    })
+                });
         };
-        reader.readAsArrayBuffer(files[0]);
+        reader.readAsArrayBuffer(excelFile);
     };
 
     //end excel
@@ -807,7 +964,7 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
 
 
     //product filter
-    $scope.filter = function (searchName, fromDateProduct, toDateProduct, filterCategoryId, filterMaterialId, filterBrandId) {
+    $scope.filter = function (searchName, fromDateProduct, toDateProduct, filterCategoryId, filterMaterialId, filterBrandId, filterProductStatus) {
         console.log(searchName);
         if (fromDateProduct == null) {
             fromDateProduct = undefined
@@ -824,8 +981,11 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         if (filterBrandId == "" || filterBrandId == null) {
             filterBrandId = undefined
         }
+        if (filterProductStatus == "" || filterProductStatus == null) {
+            filterProductStatus = undefined
+        }
 
-        let a = $scope.originalProduct;
+        let a = angular.copy($scope.originalProduct);
 
         if (searchName != undefined) {
             a = a.filter(function (item) {
@@ -837,14 +997,12 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         }
         if (fromDateProduct != undefined) {
             a = a.filter(function (item) {
-                return (new Date(item.createdAt).getDate() >= new Date(fromDateProduct).getDate())
-                    && (new Date(item.createdAt).getFullYear() >= new Date(fromDateProduct).getFullYear())
+                return (new Date(item.createdAt).getTime() >= new Date(fromDateProduct).getTime())
             })
         }
         if (toDateProduct != undefined) {
             a = a.filter(function (item) {
-                return (new Date(item.createdAt).getDate() <= new Date(toDateProduct).getDate())
-                    && (new Date(item.createdAt).getFullYear() <= new Date(toDateProduct).getFullYear())
+                return (new Date(item.createdAt).getTime() <= new Date(toDateProduct).getTime())
             })
         }
         if (filterCategoryId != undefined) {
@@ -862,6 +1020,11 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
                 return item.brand.id == filterBrandId
             })
         }
+        if (filterProductStatus != undefined) {
+            a = a.filter(function (item) {
+                return item.status == filterProductStatus
+            })
+        }
         $scope.products = a;
         $scope.changePageSize();
     };
@@ -873,7 +1036,9 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         $scope.filterCategoryId = ""
         $scope.filterMaterialId = ""
         $scope.filterBrandId = ""
+        $scope.filterProductStatus = ""
         $scope.searchName = undefined
+        $scope.searchKeyword = undefined
         $scope.changePageSize()
     }
 

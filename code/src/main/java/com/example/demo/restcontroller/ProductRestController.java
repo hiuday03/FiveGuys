@@ -85,4 +85,8 @@ public class ProductRestController {
         return ResponseEntity.ok(productService.getAllExportExcel());
     }
 
+    @PostMapping("/saveAll")
+    public ResponseEntity<?> saveAll(@RequestBody List<Product> listProductReq){
+        return ResponseEntity.ok(productService.saveAll(listProductReq));
+    }
 }

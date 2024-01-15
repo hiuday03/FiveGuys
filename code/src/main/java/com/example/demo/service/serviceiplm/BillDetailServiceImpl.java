@@ -69,4 +69,9 @@ public class BillDetailServiceImpl implements BillDetailService {
     public List<BillDetail> getAllByBillId(Long id) {
         return billDetailRepository.findAllByBillId(id);
     }
+
+    @Override
+    public List<BillDetail> getAllExportExcel() {
+        return billDetailRepository.findAllByOrderByBillId();
+    }
 }
