@@ -264,6 +264,7 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
         if (bill.typeBill == 3 && bill.paymentMethod.name == "COD" && bill.status == 3) {
             $scope.khachDaTra = $scope.khachPhaiTra
         }
+        $scope.khachDaTra = $scope.khachDaTra + bill.shippingFee;
     }
 
     //change tab
@@ -334,7 +335,7 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
             status: "",
         }
         let heading = [["ID", "Mã", "Ngày tạo", "Khách hàng", "Nhân viên", "Loại hóa đơn", "Phương thức thanh toán", 
-                        "Tổng tiền", "Giảm giá", "Phí giao hàng", "Tên người nhận", "Địa chỉ nhận", "Sdt", "Ghi chú", "Trạng thái"]]
+                        "Tổng tiền hàng", "Giảm giá", "Phí giao hàng", "Tên người nhận", "Địa chỉ nhận", "Sdt", "Ghi chú", "Trạng thái"]]
 
         for (let i = 0; i < bills.length; i++) {
             item = bills[i]
@@ -649,7 +650,7 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
               ` : ''}
               <tr>
                 <td colspan="3" class="grand font-b">Tổng thanh toán</td>
-                <td class="total grand font-b">${resp.totalAmountAfterDiscount == 0 ? formatCurrency(resp.totalAmount) : formatCurrency(resp.totalAmountAfterDiscount)}</td>
+                <td class="total grand font-b">${resp.totalAmountAfterDiscount == 0 ? formatCurrency(resp.totalAmount + resp.shippingFee) : formatCurrency(resp.totalAmountAfterDiscount + resp.shippingFee)}</td>
               </tr>
             </tbody>
           </table>
