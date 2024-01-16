@@ -1,7 +1,10 @@
 package com.example.demo.restcontroller;
 
+import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.Employees;
+import com.example.demo.model.request.employee.EmployeeRequest;
 import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.service.AccountService;
 import com.example.demo.service.EmployeeService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -36,6 +39,9 @@ public class EmployeeRestController {
     EmployeeService employeeService;
 
     @Autowired
+    AccountService accountService;
+
+    @Autowired
     EmployeeRepository employeeRepository;
 
 
@@ -58,6 +64,11 @@ public class EmployeeRestController {
         Employees customers = employeeService.getById(id);
         return ResponseEntity.ok(customers);
     }
+    @GetMapping("/search-status/{id}")
+    public ResponseEntity<List<Employees>> getAllstatus(@PathVariable Integer id) {
+        List<Employees> customers =  employeeService.getAllStatus(id);
+        return ResponseEntity.ok(customers);
+    }
 
 
     @GetMapping("/get-page")
@@ -66,6 +77,10 @@ public class EmployeeRestController {
 
         return ResponseEntity.ok(customers);
     }
+     @PutMapping("/update-status-nhan-vien/{id}")
+     public void updateStatus(@PathVariable Long id){
+        employeeRepository.updateStatusEmployee(id);
+     }
 
 
     //Thêm Employee
@@ -81,6 +96,7 @@ public class EmployeeRestController {
 
     }
 
+
     // delete Employee
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -92,6 +108,15 @@ public class EmployeeRestController {
     @PutMapping("/{id}")
     public ResponseEntity<Employees> update(@PathVariable Long id, @RequestBody Employees employees) {
         employeeService.update(id, employees);
+        if (employees != null) {
+            return ResponseEntity.ok(employees);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PutMapping("/status/{id}")
+    public ResponseEntity<Employees> updatestatus(@PathVariable Long id, @RequestBody Employees employees) {
+        employeeService.updateRole(id, employees);
         if (employees != null) {
             return ResponseEntity.ok(employees);
         } else {
@@ -200,5 +225,14 @@ public class EmployeeRestController {
             ex.printStackTrace();
         }
 
+    }
+
+    @PostMapping("/createEA")
+    public ResponseEntity<?> createEmployeeAccount(@RequestBody EmployeeRequest employeeRequest) {
+        AccountEntity accountEntity = accountService.save(employeeRequest.getAccountEntity());
+        Employees eAdd = employeeRequest.getEmployee();
+        eAdd.setAccount(accountEntity);
+        Employees employees = employeeService.create(eAdd);
+        return ResponseEntity.ok(employees);
     }
 }

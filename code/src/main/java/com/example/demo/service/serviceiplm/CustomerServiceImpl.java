@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,18 @@ private CustomerRepository customerRepository;
 
     @Override
     public CustomerEntity createCustomer(CustomerEntity customerEntity) {
-        return customerRepository.save(customerEntity);
+        CustomerEntity customer = new CustomerEntity();
+        customer.setFullName(customerEntity.getFullName());
+        customer.setAvatar(customerEntity.getAvatar());
+        customer.setBirthDate(customerEntity.getBirthDate());
+        customer.setGender(customerEntity.getGender());
+        customer.setAccount(customerEntity.getAccount());
+        customer.setCreatedAt(new Date());
+        customer.setUpdatedAt(new Date());
+        customer.setCreatedBy("Admin");
+        customer.setUpdatedBy("Admin");
+        customer.setStatus(1);
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -53,12 +65,12 @@ private CustomerRepository customerRepository;
             customer.setFullName(customerEntity.getFullName());
             customer.setAvatar(customerEntity.getAvatar());
             customer.setBirthDate(customerEntity.getBirthDate());
-            customer.setGender(customer.isGender());
+            customer.setGender(customer.getGender());
             customer.setAccount(customerEntity.getAccount());
             customer.setCreatedAt(customerEntity.getCreatedAt());
-            customer.setUpdatedAt(customerEntity.getUpdatedAt());
-            customer.setCreatedBy(customerEntity.getCreatedBy());
-            customer.setUpdatedBy(customerEntity.getUpdatedBy());
+            customer.setUpdatedAt(new Date());
+            customer.setCreatedBy("Admin");
+            customer.setUpdatedBy("Admin");
             customer.setStatus(customerEntity.getStatus());
             return customerRepository.save(customer); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {

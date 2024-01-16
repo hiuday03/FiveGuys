@@ -5,7 +5,7 @@
       aria-label="Default select example"
       id="selectduliet"
       ng-model="selectedOption"
-      ng-change="trafficChart();Top5BanChay();tongKhachHang(); tongHoaDon(); tongTien(); he();listCustomerDay();tongHoaDontile();"
+      ng-change="delayedExecution();listCustomerDay();trafficChart();Top5BanChay();tongKhachHang(); tongHoaDon(); tongTien(); he();tongHoaDontile();"
     >
       <option selected value="1">Theo ngày</option>
       <option value="2">Theo tháng</option>
@@ -104,7 +104,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Báo Cáo <span>/Last 7 days</span></h5>
+              <h5 class="card-title">Báo Cáo <span>{{hi}}</span></h5>
 
               <!-- Line Chart -->
               <div id="reportsChart"></div>
@@ -131,21 +131,23 @@
                 </div>
                 <div class="col-4">
                   <select
-                    class="form-select"
+                    name=""
+                    id="formtimkiemstatus"
+                    class="form-control"
                     aria-label="Default select example"
-                    id=""
-                    ng-model="searchstatus"
-                    ng-change="searchStatusBill()"
+                    ng-model="formtimkiem"
+                    ng-change="timkiemStatus()"
                   >
-                    <option selected value="1">Đá hủy</option>
-                    <option value="2">Chờ thánh toán</option>
-                    <option value="3">Yêu cầu xác nhận</option>
-                    <option value="4">Hoàn thành</option>
-                    <option value="5">Đang chuẩn bị hàng</option>
-                    <option value="6">Giao cho đơn vị vận chuyển</option>
-                    <option value="7">Đã giao cho đơn vị vận chuyển</option>
-                    <option value="8">Yêu cầu đổi trả</option>
-                    <option value="9">Xác nhận đổi trả</option>
+                    <!-- <option value="1">Đá hủy</option> -->
+                    <option value="1">Tất cả</option>
+                    <option value="0">Chờ thánh toán</option>
+                    <option value="2">Yêu cầu xác nhận</option>
+                    <option value="3">Hoàn thành</option>
+                    <option value="4">Đang chuẩn bị hàng</option>
+                    <option value="5">Giao cho đơn vị vận chuyển</option>
+                    <option value="6">Đã giao cho đơn vị vận chuyển</option>
+                    <option value="7">Yêu cầu đổi trả</option>
+                    <option value="8">Xác nhận đổi trả</option>
                   </select>
                 </div>
                 <div class="col-md-6">

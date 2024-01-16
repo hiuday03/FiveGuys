@@ -34,6 +34,14 @@ public class RatingRestController {
         List<RatingEntity> rating = ratingService.getAllRating();
         return ResponseEntity.ok(rating);
     }
+    @PutMapping("/update-status-rating-xac-nhan/{id}")
+    public void updateStatusRatingXacNhan(@PathVariable Long id){
+        ratingService.updateStatusRatingXacNhan(id);
+    }
+    @PutMapping("/update-status-rating-huy/{id}")
+    public void updateStatusRatingHuy(@PathVariable Long id){
+        ratingService.updateStatusRatingHuy(id);
+    }
 
 //    @GetMapping("/pageall")
 //    public ResponseEntity<Page<RatingEntity>> getAllRatingPage(@RequestParam(defaultValue = "0", name = "page") Integer page) {

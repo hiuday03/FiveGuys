@@ -20,4 +20,7 @@ public interface RatingService {
 
     void deleteRating(Long id);
 
+    void updateStatusRatingXacNhan(Long id);
+    void updateStatusRatingHuy(Long id);
+
 }

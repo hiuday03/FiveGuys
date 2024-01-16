@@ -45,7 +45,7 @@ public class RatingEntity {
     private CustomerEntity customer;
 
     @ManyToOne
-    @JoinColumn(name = "IdBillDetail")
+    @JoinColumn(name = "IdBillDetails")
     private BillDetail billDetail;
 
     @Column(name = "Status")

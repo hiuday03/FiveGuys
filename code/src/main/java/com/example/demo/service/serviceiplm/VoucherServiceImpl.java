@@ -35,7 +35,7 @@ public class VoucherServiceImpl implements VoucherService {
             long startdate = vouchers1.getStartDate().getTime();
             long enddate = vouchers1.getEndDate().getTime();
             long idVoucher = vouchers1.getId();
-            long sl = vouchers1.getQuantity().intValue();
+            long sl = vouchers1.getQuantity();
             //select status hết hạn
             if (vouchers1.getStatus() ==4){
                 voucherRepository.updateStatusDiscount(4, idVoucher);
@@ -48,20 +48,20 @@ public class VoucherServiceImpl implements VoucherService {
                     voucherRepository.updateStatusDiscount(0, idVoucher);
                     voucherRepository.getAllStatuskhacDaXoa();
                 }
+                //select status hết khuyen mai
+
                 //select status dang hoat dong
                 if(startdate < newDate && enddate > newDate){
                     voucherRepository.updateStatusDiscount(1, idVoucher);
-                    //select status hết khuyen mai
-                    if(sl==0){
-                        voucherRepository.updateStatusQuantity(2, idVoucher);
+                    if(sl<=0){
+                        voucherRepository.updateStatusDiscount(2, idVoucher);
                         voucherRepository.getAllStatuskhacDaXoa();
                     }
                 }
+
             }
         }
-        List<Vouchers> listReturn = voucherRepository.getAllStatuskhacDaXoa();
-
-        return listReturn;
+        return vouchers;
     }
 
     @Override

@@ -4,3 +4,30 @@ h1 {
   font-weight: 600;
   color: #012970;
 }
+.style__table-info {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 16px;
+}
+
+.style__table-info td,
+.style__table-info th {
+  border: 1px solid #ddd;
+  padding: 5px 5px;
+}
+
+.style__table-info tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.style__table-info tr:hover {
+  background-color: #ddd;
+}
+
+.style__table-info th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #c8c8c8;
+  color: #100f0f;
+}
