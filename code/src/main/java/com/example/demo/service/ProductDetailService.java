@@ -29,7 +29,7 @@ public interface ProductDetailService {
 
     ProductDetail checkTrungFK(Product product, Color color, Size size);
 
-    ProductDetail checkTrungFKUpdate(ProductDetail productDetail,Product product, Color color, Size size);
+    ProductDetail checkTrungFKUpdate(ProductDetail productDetail, Product product, Color color, Size size);
 
     List<ProductDetail> getAllPdExportExcel();
 

@@ -281,10 +281,10 @@
                                 </div>
                                 <div class="modal-footer">
                                     <div ng-if="currentStatus == 1 || currentStatus == 2">
-                                        <button ng-if="formUpdate.typeBill == 3 && currentStatus != 2"
+                                        <!-- <button ng-if="formUpdate.typeBill == 3 && currentStatus != 2"
                                             class="btn btn-primary" id="update">
                                             Cập nhật
-                                        </button>
+                                        </button> -->
                                         <button class="btn btn-success" id="save"
                                             ng-click="updateStatus(formUpdate.status ,formUpdate)">Lưu
                                         </button>
@@ -398,8 +398,8 @@
                             <td>{{bill.code}}</td>
                             <td>{{bill.createdAt | date:'dd-MM-yyyy HH:mm'}}</td>
                             <td>{{bill.customerEntity != null ? bill.customerEntity.fullName : 'Khách lẻ'}}</td>
-                            <td>{{bill.totalAmount}}</td>
-                            <td>{{bill.totalAmount - bill.totalAmountAfterDiscount}}</td>
+                            <td>{{bill.totalAmount | number: 0}}</td>
+                            <td>{{bill.totalAmount - bill.totalAmountAfterDiscount | number: 0}}</td>
                             <td class="col-1" ng-switch="bill.typeBill">
                                 <span ng-switch-when="1">
                                     <div class="badge bg-secondary text-wrap" style="width: 5rem;">

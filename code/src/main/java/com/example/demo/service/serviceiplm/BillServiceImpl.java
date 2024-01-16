@@ -1,8 +1,14 @@
 package com.example.demo.service.serviceiplm;
 
 import com.example.demo.entity.Bill;
+import com.example.demo.entity.BillDetail;
+import com.example.demo.entity.Product;
+import com.example.demo.entity.ProductDetail;
+import com.example.demo.repository.BillDetailRepository;
 import com.example.demo.repository.BillRepository;
 import com.example.demo.service.BillService;
+import com.example.demo.service.ProductDetailService;
+import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +25,15 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     private BillRepository billRepository;
+
+    @Autowired
+    ProductDetailService productDetailService;
+
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    BillDetailRepository billDetailRepository;
 
     @Override
     public List<Bill> getAllBill() {
@@ -88,6 +103,20 @@ public class BillServiceImpl implements BillService {
             }
             if(status == 2){
                 bill1.setDeliveryDate(new Date());
+            }
+            if(status == 4){
+                List<BillDetail> billDetails = billDetailRepository.findAllByBillId(bill1.getId());
+                for (BillDetail bd: billDetails) {
+                    int quantity = bd.getQuantity();
+                    ProductDetail pd = productDetailService.getById(bd.getProductDetail().getId());
+                    pd.setStatus(1);
+                    pd.setQuantity(pd.getQuantity() + quantity);
+                    productDetailService.update(pd, pd.getId());
+                    Product p = productService.getById(pd.getProduct().getId());
+                    p.setStatus(1);
+                    productService.update(p, p.getId());
+                    productDetailService.updateStatus(1, pd.getId());
+                }
             }
             return billRepository.save(bill1);
         }else{

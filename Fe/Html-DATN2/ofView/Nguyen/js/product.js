@@ -659,18 +659,18 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         console.log($scope.formUpdatePd)
         $scope.formUpdatePd.product = $scope.formUpdate
         let item = angular.copy($scope.formUpdatePd);
-        $http.post(apiUrlProductDetail + "/checkFk", item).then(resp => {
-            if (resp.data == '') {
-                console.log("ct1")
-                $scope.checkTrungFK = false;
-                // $('#modalProductDetail').modal('hide');
-                // $('#modalDetail').modal('show');
-                return false;
-            } else {
-                console.log("ct2")
-                $scope.checkTrungFK = true;
-                return true;
-            }
+        console.log(item);
+        $http.post(apiUrlProductDetail + "/checkFkUpdate", item).then(resp => {
+            console.log(resp.data)
+            // if (resp.data == '') {
+            //     console.log("ct1")
+            //     $scope.checkTrungFK = false;
+            //     return false;
+            // } else {
+            //     console.log("ct2")
+            //     $scope.checkTrungFK = true;
+            //     return true;
+            // }
         }).catch(error => {
             console.log("Error", error);
             return false;

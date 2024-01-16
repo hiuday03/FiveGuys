@@ -81,6 +81,12 @@ public class ProductDetailRestController {
                 productDetailReq.getProduct(), productDetailReq.getColor(), productDetailReq.getSize());
     }
 
+    @PostMapping("/checkFkUpdate")
+    public ProductDetail checkTrungFkUpdate(@RequestBody ProductDetail productDetailReq){
+        return productDetailService.checkTrungFKUpdate(productDetailReq,
+                productDetailReq.getProduct(), productDetailReq.getColor(), productDetailReq.getSize());
+    }
+
     @GetMapping("/getAllPdExportExcel")
     public ResponseEntity<?> getAllExportExcel(){
         return ResponseEntity.ok(productDetailService.getAllPdExportExcel());
