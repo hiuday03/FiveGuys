@@ -407,7 +407,6 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
     $http.get(`/api/employee/search/${item.id}`).then(function (response) {
       console.log(item.code);
       $scope.listEm = response.data;
-      // console.log(item.code);
     });
   };
 
