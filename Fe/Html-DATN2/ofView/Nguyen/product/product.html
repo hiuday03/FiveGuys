@@ -122,7 +122,7 @@
                 <div class="tab-pane fade show active" id="homefilter" role="tabpanel" aria-labelledby="home-tab">
                     <div class="row">
                         <div class="col-md-4">
-                            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Nhập từ khóa"
+                            <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Nhập mã sản phẩm"
                                 class="form-control mt-2">
                         </div>
                         <!-- <div class="col-md-3 mt-1">
@@ -158,7 +158,7 @@
                                 <div class="col-md-3">
                                     <label>Loại:</label>
                                     <select class="form-select" ng-model="filterCategoryId">
-                                        <option selected value="">Chọn thương hiệu...</option>
+                                        <option selected value="">Chọn loại</option>
                                         <option ng-repeat="c in categories" value="{{c.id}}">{{ c.name }}</option>
                                     </select>
                                     <label>Chất liệu:</label>
@@ -238,6 +238,7 @@
                                         Ngừng bán
                                     </div>
                                 </span>
+                            </td>
                             <td class="col-2">
                                 <a type="button" class="btn btn-secondary" data-bs-toggle="modal"
                                     data-bs-target="#modalDetail" ng-click="edit(p)"><i class="ri-eye-2-fill"></i></a>
@@ -300,7 +301,7 @@
                     </div>
                     <div class="col-md-11">
                         <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-end">
+                            <ul class="pagination justify-content-center">
                                 <li class="page-item">
                                     <button ng-click="paper.first()" class="page-link">First
                                     </button>
@@ -552,6 +553,7 @@
                                                         Ngừng bán
                                                     </div>
                                                 </span>
+                                            </td>
                                             <td class="col-1">
                                                 <a id="updateProductDetail" class="btn btn-sm btn-info"
                                                     data-bs-toggle="modal" data-bs-target="#modalUpdateDetail"
@@ -753,6 +755,11 @@
                             data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div ng-if="checkTrungFK == true">
+                            <div class="alert alert-danger" role="alert">
+                                Đã tồn tại chi tiết sản phẩm này
+                            </div>
+                        </div>
                         <form name="formUpdateProductDetail" class="form-validation"
                             ng-submit="formUpdateProductDetail.$valid && updateProductDetail(listImageUpdate)"
                             novalidate>

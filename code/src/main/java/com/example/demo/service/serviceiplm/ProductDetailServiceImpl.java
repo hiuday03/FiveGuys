@@ -175,8 +175,28 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
+    public ProductDetail checkTrungFKUpdate(ProductDetail productDetail, Product product, Color color, Size size) {
+
+        return null;
+    }
+
+    @Override
     public List<ProductDetail> getAllPdExportExcel() {
         return productDetailRepository.findProductDetailByOrderByProductIdAsc();
+    }
+
+    @Override
+    public ProductDetail updateStatusDetail(Long pdid, Integer status) {
+        Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(pdid);
+        if(productDetailOptional.isPresent()){
+            ProductDetail productDetail = productDetailOptional.get();
+            productDetail.setUpdatedAt(new Date());
+            productDetail.setStatus(status);
+
+            ProductDetail newProductDetail = productDetailRepository.save(productDetail);
+            return newProductDetail;
+        }
+        return null;
     }
 
 }

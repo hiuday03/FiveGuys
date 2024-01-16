@@ -39,6 +39,9 @@ public class ProductServiceImpl implements ProductService {
             if(totalStatusPD1 == 0){
                 updateStatus(2, product.getId());
             }
+            if(totalStatusPD1 == 1){
+                updateStatus(1  , product.getId());
+            }
         }
         return productRepository.findAllByOrderByCreatedAtDesc();
     }
@@ -92,6 +95,19 @@ public class ProductServiceImpl implements ProductService {
             product.setUpdatedBy(productReq.getUpdatedBy());
             product.setStatus(productReq.getStatus());
 
+            if(productReq.getStatus() == 2){
+                for (ProductDetail pd: productDetailRepository.findAllByProductIdOrderByCreatedAtDesc(product.getId())) {
+                    Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(pd.getId());
+                    if(productDetailOptional.isPresent()){
+                        ProductDetail productDetail = productDetailOptional.get();
+                        productDetail.setUpdatedAt(new Date());
+                        productDetail.setStatus(2);
+
+                        productDetailRepository.save(productDetail);
+                    }
+                }
+            }
+
             return productRepository.save(product);
         }
         return null;
@@ -123,6 +139,19 @@ public class ProductServiceImpl implements ProductService {
         if(productOptional.isPresent()){
             Product product = productOptional.get();
             product.setStatus(status);
+
+            if(status == 2){
+                for (ProductDetail pd: productDetailRepository.findAllByProductIdOrderByCreatedAtDesc(product.getId())) {
+                    Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(pd.getId());
+                    if(productDetailOptional.isPresent()){
+                        ProductDetail productDetail = productDetailOptional.get();
+                        productDetail.setUpdatedAt(new Date());
+                        productDetail.setStatus(2);
+
+                        productDetailRepository.save(productDetail);
+                    }
+                }
+            }
 
             return productRepository.save(product);
         }
