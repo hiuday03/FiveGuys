@@ -859,18 +859,18 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
-  $scope.loadProductDetails = function () {
+  $scope.loadProducts = function () {
     $http
-      .get("/api/productDetail") // Thay đổi đường dẫn API tương ứng
+      .get("/api/product") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
-        $scope.productDetails = resp.data;
+        $scope.products = resp.data;
       })
       .catch(function (error) {
-        console.log("Error loading productDetails", error);
+        console.log("Error loading products", error);
       });
   };
 
-  $scope.loadProductDetails();
+  $scope.loadProducts();
 
   $scope.edit = function (favorite) {
     if ($scope.formUpdate.updatedAt) {
@@ -2458,18 +2458,18 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
-  $scope.loadProductDetails = function () {
+  $scope.loadProducts = function () {
     $http
-      .get("/api/productDetail") // Thay đổi đường dẫn API tương ứng
+      .get("/api/product") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
-        $scope.productDetails = resp.data;
+        $scope.products = resp.data;
       })
       .catch(function (error) {
-        console.log("Error loading productDetails", error);
+        console.log("Error loading products", error);
       });
   };
 
-  $scope.loadProductDetails();
+  $scope.loadProducts();
 
   $scope.edit = function (favorite) {
     if ($scope.formUpdate.updatedAt) {
@@ -2639,18 +2639,18 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
-  $scope.loadProductDetails = function () {
+  $scope.loadBillDetails = function () {
     $http
-      .get("/api/productDetail") // Thay đổi đường dẫn API tương ứng
+      .get("/billDetail") // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
-        $scope.productDetails = resp.data;
+        $scope.billDetails = resp.data;
       })
       .catch(function (error) {
-        console.log("Error loading productDetails", error);
+        console.log("Error loading billDetails", error);
       });
   };
 
-  $scope.loadProductDetails();
+  $scope.loadBillDetails();
 
   $scope.edit = function (rating) {
     if ($scope.formUpdate.updatedAt) {

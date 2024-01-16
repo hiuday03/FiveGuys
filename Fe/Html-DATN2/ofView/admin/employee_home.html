@@ -1,18 +1,18 @@
 <link rel="stylesheet" href="@{/assets/js/employee/Employee.js}">
- <style>
-        .overlay {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.1);
-            width: 100%;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            z-index: 9998;
-            display: block;
-            overflow-y: hidden;
-            overflow-x: hidden;
-        }
-    </style>
+<style>
+    .overlay {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.1);
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        display: block;
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+</style>
 <div class="overlay" ng-show="loading">
     <div class="spinner-border" role="status" style="position: absolute;left: 50%;top: 50%;">
         <span class="visually-hidden">Loading...</span>
@@ -36,40 +36,40 @@
     <button type="button" class="btn btn-outline-success mb-2" ng-click="xuatFile()">
         Xuất File Excel</button><br>
     <div class="row">
-        <div class="col-3">  <select
-            name=""
-            id="formtimkiemstatus"
-            class="form-control"
-            aria-label="Default select example"
-            ng-model="formtimkiem"
-            ng-change="getStatus()"
-          >
-          <option value="1">Đang hoạt động</option>
-            <option value="2">Ngừng hoạt động</option>
-          </select></div>
-        <div class="col-9"><input type="text" ng-model="searchKeyword" ng-change="search()"
-        placeholder="Search Employees..." class="form-control"></div>
+        <div class="col-md-1">
+            <select class="form-select" ng-model="paper.size" ng-change="changePageSize()"
+                ng-options="size for size in [5, 10, 20, 50, 100]"></select>
+        </div>
+        <div class="col-md-2">
+            <select name="" id="formtimkiemstatus" class="form-control" aria-label="Default select example"
+                ng-model="formtimkiem" ng-change="getStatus()">
+                <option value="1">Đang hoạt động</option>
+                <option value="2">Ngừng hoạt động</option>
+            </select>
+        </div>
+        <div class="col-md-9"><input type="text" ng-model="searchKeyword" ng-change="search()"
+                placeholder="Search Employees..." class="form-control"></div>
     </div><br>
 
 
     <!-- Modal Add -->
-   <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thêm Nhân Viên</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body row">
-                <div class="col-lg-3">
+    <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Nhân Viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-lg-3">
                         <!-- <h1>Avatar</h1> -->
                         <label for="image">
                             <img src="/assets/img/no-img.png" id="image-preview" style="width: 100px; height: 100px;" />
                         </label>
-                </div>
-                <div class="col-lg-9">
-                <form name="formCreateEmployee" ng-submit="formCreateEmployee.$valid && createEA()" novalidate>
-                    
+                    </div>
+                    <div class="col-lg-9">
+                        <form name="formCreateEmployee" ng-submit="formCreateEmployee.$valid && createEA()" novalidate>
+
                             <div class="row mb-3">
                                 <label for="inputFullName" class="col-sm-3 col-form-label">Họ Tên</label>
                                 <div class="col-sm-9">
@@ -82,7 +82,7 @@
                                     </span>
                                 </div>
                             </div>
-                              <div class="row mb-3">
+                            <div class="row mb-3">
                                 <label for="image" class="col-sm-3 col-form-label">Ảnh</label>
                                 <div class="col-sm-9">
                                     <input class="form-control" name="path" type="file" id="image" />
@@ -91,9 +91,9 @@
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <!-- form thêm account -->
-                                <div class="row mb-3">
+                            <div class="row mb-3">
                                 <label for="inputaccountr" class="col-sm-3 col-form-label">Tài khoản</label>
                                 <div class="col-sm-9">
                                     <input name="account" id="inputaccount" type="text" class="form-control"
@@ -166,21 +166,22 @@
                                     </span>
                                 </div>
                             </div>
-                           
+
                             <div class="modal-footer">
-                                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                    data-bs-target="#modalAddExcel" style="background-color: rgb(9, 141, 9);">Thêm file Excel
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#modalAddExcel" style="background-color: rgb(9, 141, 9);">Thêm file
+                                    Excel
                                 </button>
-                                <button type="submit" class="btn btn-primary" >Thêm</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                                 <button ng-click="resetFormInput()" type="button" class="btn btn-warning">Xoá
                                     form</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                             </div>
-                    
-                </form> 
+
+                        </form>
+                    </div>
+
                 </div>
-                    
-                </div>  
             </div>
         </div>
     </div>
@@ -328,18 +329,18 @@
                         <td>{{employee.account.account}}</td>
                         <td>{{employee.gender == true ? 'Nam' : 'Nu'}}</td>
                         <td>{{employee.address}}</td>
-                        
+
                         <td class="col-1" ng-switch="employee.status">
-                                                <span ng-switch-when="1">
-                                                    <div class="badge bg-success text-wrap">
-                                                        Đang Hoạt Động'
-                                                    </div>
-                                                </span>
-                                                <span ng-switch-when="2">
-                                                    <div class="badge bg-danger text-wrap">
-                                                        Ngừng Hoạt Động
-                                                    </div>
-                                                </span>
+                            <span ng-switch-when="1">
+                                <div class="badge bg-success text-wrap">
+                                    Đang Hoạt Động'
+                                </div>
+                            </span>
+                            <span ng-switch-when="2">
+                                <div class="badge bg-danger text-wrap">
+                                    Ngừng Hoạt Động
+                                </div>
+                            </span>
                         </td>
                         <td>
                             <button ng-click="edit(employee)" type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -369,70 +370,41 @@
                 </tbody>
             </table>
             <div class="row align-items-center">
-                <div class="col-md-1"> <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-                    <select class="form-select" ng-model="paper.size" ng-change="changePageSize()"
-                        ng-options="size for size in [5, 10, 20, 50, 100]">
-                        <!-- <option value="selected">Xem mục</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option> -->
-                    </select>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
+                        <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
+                        </li>
+                        <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
+                        </li>
+                        <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
+                        <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Begin Modal Add Account -->
+    <div class="modal fade" id="modalAddExcel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Nhân Viên Bằng file Excel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-11">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item"><button ng-click="paper.first()" class="page-link">First</button></li>
-                            <li class="page-item"><button ng-click="paper.prev()" class="page-link">Previous</button>
-                            </li>
-                            <li class="page-item"><a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
-                            </li>
-                            <li class="page-item"><button ng-click="paper.next()" class="page-link">Next</button></li>
-                            <li class="page-item"><button ng-click="paper.last()" class="page-link">Last</button></li>
-                        </ul>
-                    </nav>
+                <div class="modal-body">
+                    <div>
+                        <label>Chọn file Excel: </label>
+                        <input type="file" placeholder="Thêm bằng Excel" id="fileInput" />
+                        <button type="button" data-bs-dismiss="modal" ng-click="insertExcelEmployee()"
+                            style="background: #00b63e; margin-bottom: 10px">
+                            Thêm
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-        </div>
-    </div>
-        <!-- Begin Modal Add Account -->
-        <div
-      class="modal fade"
-      id="modalAddExcel"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Thêm Nhân Viên Bằng file Excel</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div>
-              <label>Chọn file Excel: </label>
-              <input type="file" placeholder="Thêm bằng Excel" id="fileInput" />
-              <button
-                type="button"
-                data-bs-dismiss="modal"
-                ng-click="insertExcelEmployee()"
-                style="background: #00b63e; margin-bottom: 10px"
-              >
-                Thêm
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
- 
 </section>
 <!--

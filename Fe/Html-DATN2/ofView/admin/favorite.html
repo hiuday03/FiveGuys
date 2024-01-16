@@ -11,15 +11,8 @@
   </nav>
   <div class="row align-items-center">
     <div class="col-md-1">
-      <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-      <select class="form-control" ng-model="paper.size" ng-change="changePageSize()">
-        <option value="0">0</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-      </select>
+      <select class="form-control" ng-model="paper.size" ng-change="changePageSize()"
+        ng-options="size for size in [5, 10, 20, 50, 100]">
     </div>
     <div class="col-md-11">
     </div>
@@ -61,19 +54,16 @@
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputProductDetail" class="col-sm-3 col-form-label">Sản Phẩm</label>
+              <label for="inputProduct" class="col-sm-3 col-form-label">Sản Phẩm</label>
               <div class="col-sm-9">
-                <select name="productDetail" class="form-select form-select-sm" aria-label="Small select example"
-                  ng-model="formInput.productDetail.id" ng-required="true">
-                  <option ng-repeat="productDetail in productDetails" ng-value="productDetail.id">
-                    {{productDetail.product.name}},
-                    {{productDetail.product.material.name}},
-                    {{productDetail.product.category.name}},
-                    {{productDetail.color.name}}, {{productDetail.size.name}}
+                <select name="product" class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formInput.product.id" ng-required="true">
+                  <option ng-repeat="product in products" ng-value="product.id">
+                    {{product.name}}
                   </option>
                 </select>
                 <span ng-show="formCreateFavorite.$submitted">
-                  <div ng-show="formCreateFavorite.productDetail.$invalid" class="error-message text-danger form-text">
+                  <div ng-show="formCreateFavorite.product.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -160,19 +150,16 @@
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputProductDetail" class="col-sm-3 col-form-label">Sản Phẩm</label>
+              <label for="inputProduct" class="col-sm-3 col-form-label">Sản Phẩm</label>
               <div class="col-sm-9">
-                <select name="productDetail" class="form-select form-select-sm" aria-label="Small select example"
-                  ng-model="formUpdate.productDetail.id" ng-required="true">
-                  <option ng-repeat="productDetail in productDetails" ng-value="productDetail.id">
-                    {{productDetail.product.name}},
-                    {{productDetail.product.material.name}},
-                    {{productDetail.product.category.name}},
-                    {{productDetail.color.name}}, {{productDetail.size.name}}
+                <select name="product" class="form-select form-select-sm" aria-label="Small select example"
+                  ng-model="formUpdate.product.id" ng-required="true">
+                  <option ng-repeat="product in products" ng-value="product.id">
+                    {{product.name}}
                   </option>
                 </select>
                 <span ng-show="formUpdateFavorite.$submitted">
-                  <div ng-show="formUpdateFavorite.productDetail.$invalid" class="error-message text-danger form-text">
+                  <div ng-show="formUpdateFavorite.product.$invalid" class="error-message text-danger form-text">
                     Không được để trống
                   </div>
                 </span>
@@ -240,9 +227,9 @@
           <tr>
             <th scope="col">Khách Hàng</th>
             <th scope="col">Sản Phẩm</th>
-            <!-- <th scope="col">Image ProductDetail</th> -->
+            <!-- <th scope="col">Image Product</th> -->
             <!-- <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th> -->
+            <th scope="col">Updated At</th> -->
             <th scope="col">Trạng Thái</th>
             <th scope="col">Action</th>
           </tr>
@@ -251,15 +238,11 @@
           <tr ng-repeat="favorite in paper.items">
             <td>{{favorite.customer.fullName}}</td>
             <td>
-              {{favorite.productDetail.product.name}},
-              {{favorite.productDetail.product.material.name}},
-              {{favorite.productDetail.product.category.name}},
-              {{favorite.productDetail.color.name}},
-              {{favorite.productDetail.size.name}}
+              {{favorite.product.name}}
             </td>
-            <!-- <td>{{favorite.productDetail.image.name}}</td> -->
+            <!-- <td>{{favorite.product.image.name}}</td> -->
             <!-- <td>{{favorite.createdAt | date:'yyyy-MM-dd'}}</td>
-                                <td>{{favorite.updatedAt | date:'yyyy-MM-dd'}}</td> -->
+            <td>{{favorite.updatedAt | date:'yyyy-MM-dd'}}</td> -->
             <td>
               {{favorite.status == 1 ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động'}}
             </td>
@@ -297,43 +280,29 @@
         </tbody>
       </table>
       <div class="row align-items-center">
-        <div class="col-md-1">
-          <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-          <select class="form-control" ng-model="paper.size" ng-change="changePageSize()"
-            ng-options="size for size in [5, 10, 20, 50, 100]">
-            <!-- <option value="selected">Xem mục</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option> -->
-          </select>
-        </div>
-        <div class="col-md-11">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <li class="page-item">
-                <button ng-click="paper.first()" class="page-link">
-                  First
-                </button>
-              </li>
-              <li class="page-item">
-                <button ng-click="paper.prev()" class="page-link">
-                  Previous
-                </button>
-              </li>
-              <li class="page-item">
-                <a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
-              </li>
-              <li class="page-item">
-                <button ng-click="paper.next()" class="page-link">Next</button>
-              </li>
-              <li class="page-item">
-                <button ng-click="paper.last()" class="page-link">Last</button>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <button ng-click="paper.first()" class="page-link">
+                First
+              </button>
+            </li>
+            <li class="page-item">
+              <button ng-click="paper.prev()" class="page-link">
+                Previous
+              </button>
+            </li>
+            <li class="page-item">
+              <a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
+            </li>
+            <li class="page-item">
+              <button ng-click="paper.next()" class="page-link">Next</button>
+            </li>
+            <li class="page-item">
+              <button ng-click="paper.last()" class="page-link">Last</button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
