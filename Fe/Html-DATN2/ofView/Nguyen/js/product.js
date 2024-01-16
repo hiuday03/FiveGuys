@@ -300,6 +300,10 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
             $scope.unload()
             $scope.showSuccessNotification("Cập nhật thành công!");
             $scope.initialize();
+            $http.get(apiUrlProduct + "/" + productId + "/productDetail")
+                .then(function (response) {
+                    $scope.productDetails = response.data
+                });
             // $scope.resetFormUpdate();
         }).catch(error => {
             console.log("Error", error);
@@ -497,6 +501,7 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
                             $scope.productDetails = response.data
                             $('#modalProductDetail').modal('hide');
                             $('#modalDetail').modal('show');
+                            $scope.initialize();
                             $scope.unload()
                             $scope.showSuccessNotification("Thêm chi tiết sản phẩm thành công!")
                             $scope.formInputPd = {
@@ -639,10 +644,37 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
                 total++;
             }
         }
-        if (total == 1 && itemStatus == 2 && productStatus == 1) {
-            $scope.showSuccessNotification("Trạng thái sản phẩm đã chuyển về ngừng bán")
+        // if (total == 1 && itemStatus == 2 && productStatus == 1) {
+        //     $scope.showSuccessNotification("Trạng thái sản phẩm đã chuyển về ngừng bán")
+        // }
+        // if (total == 0 && itemStatus == 1 && productStatus == 2) {
+        //     $scope.showSuccessNotification("Trạng thái sản phẩm đã chuyển về đang bán")
+        // }
+        $scope.initialize();
+    }
 
-        } $scope.initialize();
+    $scope.checkTrungProductDetailUpdate = function () {
+        console.log("ccccccccc");
+        $scope.checkTrungFK = false;
+        console.log($scope.formUpdatePd)
+        $scope.formUpdatePd.product = $scope.formUpdate
+        let item = angular.copy($scope.formUpdatePd);
+        $http.post(apiUrlProductDetail + "/checkFk", item).then(resp => {
+            if (resp.data == '') {
+                console.log("ct1")
+                $scope.checkTrungFK = false;
+                // $('#modalProductDetail').modal('hide');
+                // $('#modalDetail').modal('show');
+                return false;
+            } else {
+                console.log("ct2")
+                $scope.checkTrungFK = true;
+                return true;
+            }
+        }).catch(error => {
+            console.log("Error", error);
+            return false;
+        })
     }
 
     $scope.updateProductDetail = function (listImage) {
@@ -651,6 +683,7 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         item.product.id = $scope.formUpdate.id
         let productDetailRequest = { productDetail: item, imagesList: listImage };
         console.log(productDetailRequest)
+        if ($scope.checkTrungProductDetailUpdate() == true) return;
         if ($scope.checkSoLuongToiThieu(item.quantity, item.status) == true) return;
         if ($scope.checkAnhEmpty(listImage, item.status) == true) return;
         $scope.checkLastPDStatus1(item.status, item.product.status)
@@ -664,13 +697,16 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
                     $('#modalDetail').modal('show');
                     $scope.unload()
                     $scope.showSuccessNotification("Cập nhật thành công!")
+                    $scope.initialize();
                     $scope.formUpdatePd = {}
                     $scope.listImageUpdate = [];
+                    $scope.checkTrungFK = false;
                 });
         }).catch(error => {
             console.log("Error", error);
         })
         $scope.unload()
+        $scope.checkTrungFK = false;
     }
 
     //begin excel

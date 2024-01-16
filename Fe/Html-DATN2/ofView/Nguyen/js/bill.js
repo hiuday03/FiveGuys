@@ -301,7 +301,8 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
             $scope.initialize();
             // $('#modalUpdate').modal('hide');
             $scope.showSuccessNotification("Cập nhật trạng thái hóa đơn thành công")
-            $scope.edit(item)
+            $scope.edit(resp.data)
+            // $scope.formUpdate(resp.data)
         }).catch(function (error) {
             console.log("Error", error);
         });
