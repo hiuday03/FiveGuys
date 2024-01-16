@@ -169,9 +169,8 @@
               <div class="col-sm-9">
                 <select name="status" class="form-select form-select-sm" aria-label="Small select example"
                   ng-model="formUpdate.status">
-                  <option ng-value="1">One</option>
-                  <option ng-value="2">Two</option>
-                  <option ng-value="3">Three</option>
+                  <option value="1">Đang hợp tác</option>
+                  <option value="2">Ngừng hợp tác</option>
                 </select>
                 <span ng-show="formUpdateBrand.$submitted">
                   <div ng-show="formUpdateBrand.status.$invalid" class="error-message text-danger form-text">
@@ -212,7 +211,18 @@
             <td>{{brand.name}}</td>
             <!-- <td>{{brand.createdAt | date:'yyyy-MM-dd'}}</td>
                                 <td>{{brand.updatedAt | date:'yyyy-MM-dd'}}</td> -->
-            <td>{{brand.status}}</td>
+            <td class="col-1" ng-switch="brand.status">
+              <span ng-switch-when="1" class="text-info">
+                <div class="badge bg-success text-wrap" style="width: 5rem;">
+                  Đang hợp tác
+                </div>
+              </span>
+              <span ng-switch-when="2" class="text-danger">
+                <div class="badge bg-danger text-wrap" style="width: 5rem;">
+                  Ngừng hợp tác
+                </div>
+              </span>
+            </td>
             <td>
               <button ng-click="edit(brand)" type="button" class="btn btn-info" data-bs-toggle="modal"
                 data-bs-target="#modalUpdate">
