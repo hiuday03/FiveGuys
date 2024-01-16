@@ -89,12 +89,29 @@
             </td>
             <td class="col-2">{{l.minimumTotalAmount}}</td>
             <td class="col-1">{{l.quantity}}</td>
-            <td class="col-2" ng-switch="l.status">
+            <!-- <td class="col-2" ng-switch="l.status">
               <span ng-switch-when="0">Chưa hoạt động</span>
               <span ng-switch-when="1">Đang hoạt động</span>
               <span ng-switch-when="2">Hết khuyến mại</span>
               <span ng-switch-when="3">Hết hạn</span>
               <span ng-switch-default>Đá xóa</span>
+            </td> -->
+            <td class="col-1" ng-switch="l.status">
+              <span ng-switch-when="0">
+                <div class="badge bg-warning text-wrap">Chưa hoạt động</div>
+              </span>
+              <span ng-switch-when="1">
+                <div class="badge bg-success text-wrap">Đang hoạt động</div>
+              </span>
+              <span ng-switch-when="2">
+                <div class="badge bg-info text-wrap">Hết khuyến mại</div>
+              </span>
+              <span ng-switch-when="3">
+                <div class="badge bg-danger text-wrap">Hết hạn</div>
+              </span>
+              <span ng-switch-when="4">
+                <div class="badge bg-danger text-wrap">Đã xóa</div>
+              </span>
             </td>
 
             <td class="col-2">
@@ -106,6 +123,7 @@
                 data-bs-toggle="modal"
                 data-target=".bd-example-modal-lg"
                 data-bs-target="#modalShow"
+                style="background-color: #00b63e"
               >
                 <i class="bi bi-eye-fill"></i>
               </button>
@@ -234,7 +252,7 @@
           <div class="modal-body">
             <form
               name="addformVoucher"
-              ng-submit="addformVoucher.$valid  && addVoucher()"
+              ng-submit="addformVoucher.$valid  && submit()"
               style="font-size: 13px"
               ng-required="true"
             >
@@ -484,11 +502,7 @@
                 >
                   Xoá form
                 </button>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                >
+                <button type="submit" class="btn btn-primary">
                   {{label1.update}}
                 </button>
               </div>
@@ -509,7 +523,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Show Voucher</h5>
+            <h5 class="modal-title">Khuyến mại chi tiết</h5>
             <button
               type="button"
               class="btn-close"

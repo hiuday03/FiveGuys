@@ -11,10 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -45,10 +42,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employees> getAllStatus(Integer status){
+        return employeeRepository.getAllStatus(status);
+    }
+
+    @Override
     public Employees create(Employees employees){
 //        List<Employees> hi = new ArrayList<>();
         Employees employees1 = new Employees();
-        employees1.setCode(zenMaHD(employeeRepository.genCode()));
+        String randomCode = generateRandomCode(6);
+        employees1.setCode(randomCode);
         employees1.setFullName(employees.getFullName());
         employees1.setAvatar(employees.getAvatar());
         employees1.setBirthDate(employees.getBirthDate());
@@ -96,10 +99,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public String zenMaHD(List<Employees> lst) {
-        String maNV = "FG";
+    private String generateRandomCode(int length) {
+        String uppercaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder randomCode = new StringBuilder();
 
-        return maNV + (lst.size() + 1);
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(uppercaseCharacters.length());
+            char randomChar = uppercaseCharacters.charAt(randomIndex);
+            randomCode.append(randomChar);
+        }
+
+        return randomCode.toString();
     }
 
     //delete theo status
@@ -117,9 +128,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             employees1.setAccount(employees.getAccount());
             employees1.setCreatedAt(employees.getCreatedAt());
             employees1.setUpdatedAt(new Date());
-            employees1.setCreatedBy(employees.getCreatedBy());
-            employees1.setUpdatedBy(employees.getUpdatedBy());
-            employees1.setStatus(0);
+            employees1.setCreatedBy("admin");
+            employees1.setUpdatedBy("admin");
+            employees1.setStatus(2);
 
             return employeeRepository.save(employees1); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
         } else {

@@ -1,8 +1,12 @@
 package com.example.demo.restcontroller;
 
+import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.Employees;
+import com.example.demo.model.request.customer.CustomerRequest;
+import com.example.demo.model.request.employee.EmployeeRequest;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.service.AccountService;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.serviceiplm.CustomerServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,6 +46,9 @@ public class CustomerRestController {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    AccountService accountService;
 
     private final CustomerServiceImpl customerService;
 
@@ -203,4 +210,12 @@ public class CustomerRestController {
 
     }
 
+    @PostMapping("/createaKA")
+    public ResponseEntity<?> createCustomerAccount(@RequestBody CustomerRequest customerRequest) {
+        AccountEntity accountEntity = accountService.save(customerRequest.getAccountEntity());
+        CustomerEntity eAdd = customerRequest.getCustomerEntity();
+        eAdd.setAccount(accountEntity);
+        CustomerEntity customerEntity = customerService.createCustomer(eAdd);
+        return ResponseEntity.ok(customerEntity);
+    }
 }
