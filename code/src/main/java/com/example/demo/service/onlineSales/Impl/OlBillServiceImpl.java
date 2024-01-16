@@ -155,6 +155,7 @@ public class OlBillServiceImpl implements OlBillService {
             }
         }
         // Lưu thông tin hóa đơn và chi tiết hóa đơn vào cơ sở dữ liệu
+        bill.setCreatedAt(new Date());
         Bill savedBill = olProductDetailRepository.save(bill);
         olBillDetailRepository.saveAll(billDetails);
         return ResponseEntity.ok(savedBill);

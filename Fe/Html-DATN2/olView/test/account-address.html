@@ -1,4 +1,4 @@
-
+<!-- 
 
 
 <section style="margin-top: 82px;" class="container-fluid" ng-init="getAddressList()">
@@ -150,37 +150,27 @@
                 
                     <div class="mb-3">
                         <label for="address" class="form-label">Địa chỉ:</label>
-                        <input type="text" class="form-control" id="address" ng-model="addressData.addressDetail">
+                        <input type="text" class="form-control" id="address" ng-model="addressDataaddressDetail">
                         <p style="color: red;" class="error-message" ng-if="isNameDetailAddressInvalid">Vui lòng nhập thông tin này.</p>
                     </div>
                 
-             <!-- Tỉnh/Thành phố -->
-                  <div class="mb-3">
-                    <label for="city" class="form-label">Tỉnh/Thành phố:</label>
-                    <select ng-model="dataCity" class="form-control" ng-options="city as city.ProvinceName for city in cities" ng-change="getDistrictsByProvince(dataCity.ProvinceID)">
-                      <option value="">Chọn Tỉnh/Thành phố</option>
-                    </select>
-                    <p style="color: red;" class="error-message" ng-if="isCityAddressInvalid">Vui lòng nhập thông tin này.</p>
-                  </div>
-
-                  <!-- Quận/Huyện -->
-                  <div class="mb-3">
-                    <label for="district" class="form-label">Quận/Huyện:</label>
-                    <select ng-model="dataDistrict" class="form-control" ng-options="district as district.DistrictName for district in districts" ng-change="getWardsByDistrict(dataDistrict.DistrictID)">
-                      <option value="">Chọn Quận/Huyện</option>
-                    </select>
-                    <p style="color: red;" class="error-message" ng-if="isDistrictAddressInvalid">Vui lòng nhập thông tin này.</p>
-                  </div>
-
-
-                  <div class="mb-3">
-                    <label for="district" class="form-label">Phường/Xã:</label>
-                    <select ng-model="dataWard" class="form-control" ng-options="ward as ward.WardName for ward in wards" ng-change="calculateShippingFee(dataDistrict.DistrictID, dataWard.WardCode.toString())">
-                      <option value="">Chọn Phường/Xã</option>
-                    </select>
-                    <p style="color: red;" class="error-message" ng-if="isWardAddressInvalid">Vui lòng nhập thông tin này.</p>
-                  </div>
-
+                    <div class="mb-3">
+                        <label for="city" class="form-label">Tỉnh/Thành phố:</label>
+                        <input type="text" class="form-control" id="city" ng-model="addressDatacity">
+                        <p style="color: red;" class="error-message" ng-if="isCityAddressInvalid">Vui lòng nhập thông tin này.</p>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="district" class="form-label">Quận/Huyện:</label>
+                        <input type="text" class="form-control" id="district" ng-model="addressDatadistrict">
+                        <p style="color: red;" class="error-message" ng-if="isDistrictAddressInvalid">Vui lòng nhập thông tin này.</p>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="ward" class="form-label">Phường/Xã:</label>
+                        <input type="text" class="form-control" id="ward" ng-model="addressDataward">
+                        <p style="color: red;" class="error-message" ng-if="isWardAddressInvalid">Vui lòng nhập thông tin này.</p>
+                    </div>
                 
                     <div class="mb-3 form-check">   
                         <input type="checkbox" class="form-check-input" id="defaultAddress" ng-model="addressData.defaultAddress" >
@@ -201,4 +191,4 @@
            </div>
         </div>
     </div>
-</section>
+</section> -->

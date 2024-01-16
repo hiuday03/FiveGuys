@@ -1,6 +1,4 @@
 
-
-<!-- cart + summary -->
 <section style="    margin-top: 82px;"  class="bg-light " ng-init="getAddressList();reloadPaymentMethod()">
   <div style="display: flex;justify-content: center;">
     <div class="category-container">
@@ -206,51 +204,34 @@
               </div>
 
 
-        <!-- Tỉnh/Thành phố -->
-        <div class="col-md-6 col-lg-4 mb-3">
-          <p class="mb-0">Tỉnh/Thành phố:</p>
-          <div class="form-outline custom-bg">
-              <select ng-model="dataCity" id="city" class="form-control" ng-options="city as city.ProvinceName for city in cities" ng-change="getDistrictsByProvince(dataCity.ProvinceID)">
-                  <option value="">Chọn Tỉnh/Thành Phố:</option>
-              </select>
-          </div>
-          <p style="color: red;" class="error-message" ng-if="isBillAddressCityInvalid">Vui lòng nhập thông tin này.</p>
-      </div>
-
-        
-
-
-      
-
-<!-- Quận/Huyện -->
-      <div class="col-md-6 col-lg-4 mb-3">
-        <p class="mb-0">Quận/Huyện:</p>
-        <div class="form-outline custom-bg">
-            <select ng-model="dataDistrict" id="district" class="form-control" ng-options="district as district.DistrictName for district in districts" ng-change="getWardsByDistrict(dataDistrict.DistrictID)">
-                <option value="">Chọn Quận/Huyện:</option>
-            </select>
-        </div>
-        <p style="color: red;" class="error-message" ng-if="isBillAddressDistrictInvalid">Vui lòng nhập thông tin này.</p>
-      </div>
-
-
-    <!-- Phường/Xã -->
-    <div class="col-md-6 col-lg-4 mb-3">
-      <p class="mb-0">Phường/Xã:</p>
-      <div class="form-outline custom-bg">
-          <select ng-model="dataWard" id="ward" class="form-control" ng-options="ward as ward.WardName for ward in wards"ng-change="calculateShippingFee(dataDistrict.DistrictID, dataWard.WardCode.toString())">
-              <option value="">Chọn Phường/Xã:</option>
-          </select>
-      </div>
-      <p style="color: red;" class="error-message" ng-if="isBillAddressWardInvalid">Vui lòng nhập thông tin này.</p>
-    </div>
-
-
-
-        
+           
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <p class="mb-0">Tỉnh/Thành phố:</p>
+                  <div class="form-outline custom-bg">
+                      <input ng-model="billAddressCity" id="city"  type="text" class="form-control " />
+                  </div>
+                  
+                 <p style="color: red;" class="error-message" ng-if="isBillAddressCityInvalid">Vui lòng nhập thông tin này.</p>
+              </div>
+          
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <p class="mb-0">Quận/Huyện:</p>
+                  <div class="form-outline custom-bg">
+                      <input ng-model="billAddressDistrict" id="district"  type="text" class="form-control " />
+                  </div>
+                 <p style="color: red;" class="error-message" ng-if="isBillAddressDistrictInvalid">Vui lòng nhập thông tin này.</p>
+              </div>
 
                 <div class="col-md-6 col-lg-4 mb-3">
-                  <p class="mb-0">Địa chỉ giao hàng:</p>
+                  <p class="mb-0">Phường/Xã:</p>
+                  <div class="form-outline custom-bg">
+                      <input ng-model="billAddressWard" id="ward"  type="text" class="form-control " />
+                  </div>
+                 <p style="color: red;" class="error-message" ng-if="isBillAddressWardInvalid">Vui lòng nhập thông tin này.</p>
+              </div>
+
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <p class="mb-0">Địa chỉ:</p>
                   <div class="form-outline custom-bg">
                       <input ng-model="billAddressDetail" id="address" type="text" class="form-control " />
                   </div>
@@ -273,8 +254,6 @@
                   <textarea ng-model="bill.note" class="form-control card custom-bg" id="note"
                      rows="4"></textarea>
                 </div>
-
-             
               </div>
 
             </div>
@@ -364,15 +343,10 @@
               <p class="mb-2">Giảm giá:</p>
               <p class="mb-2">{{valueVoucher | number }} đ</p>
             </div>
-            <div class="d-flex justify-content-between">
-              <p class="mb-2">Phí giao hàng:</p>
-              <p class="mb-2">{{shippingFee | number }} đ</p>
-            </div>
-          
             <hr />
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng tiền:</p>
-              <p class="mb-2 fw-bold">{{totalAmountAfterDiscount + shippingFee | number }} đ</p>
+              <p class="mb-2 fw-bold">{{totalAmountAfterDiscount | number }} đ</p>
             </div>
 
           </div>
@@ -422,4 +396,4 @@
     </div>
   </div>
 </section>
-<!-- cart + summary -->
+

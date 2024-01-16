@@ -51,7 +51,7 @@ public class OlAddressServiceImpl implements OlAddressService {
 
     @Override
     public boolean update(AddressEntity addressRequest) {
-        if (addressRequest.getDefaultAddress()) {
+        if (addressRequest.getDefaultAddress() && addressRequest.getDefaultAddress() != null) {
             // Lấy danh sách địa chỉ của khách hàng
             List<AddressEntity> customerAddresses = repository.findAllByCustomer_IdAndStatus(addressRequest.getCustomer().getId(),1);
             for (AddressEntity address : customerAddresses) {
@@ -69,7 +69,7 @@ public class OlAddressServiceImpl implements OlAddressService {
 
     @Override
     public boolean addAddress(AddressEntity addressRequest) {
-        if (addressRequest.getDefaultAddress()) {
+        if (addressRequest.getDefaultAddress() && addressRequest.getDefaultAddress() != null) {
             // Lấy danh sách địa chỉ của khách hàng
             List<AddressEntity> customerAddresses = repository.findAllByCustomer_IdAndStatus(addressRequest.getCustomer().getId(),1);
             for (AddressEntity address : customerAddresses) {

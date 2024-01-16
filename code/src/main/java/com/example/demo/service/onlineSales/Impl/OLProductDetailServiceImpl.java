@@ -1,9 +1,7 @@
 package com.example.demo.service.onlineSales.Impl;
 
-import com.example.demo.entity.Color;
-import com.example.demo.entity.Product;
-import com.example.demo.entity.ProductDetail;
-import com.example.demo.entity.Size;
+import com.example.demo.entity.*;
+import com.example.demo.model.response.onlineSales.OlProductDetailResponse;
 import com.example.demo.repository.onlineSales.OLProductDetailRepository;
 import com.example.demo.service.onlineSales.OLProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +47,63 @@ public class OLProductDetailServiceImpl implements OLProductDetailService {
     public Optional<ProductDetail> findById(Long productDetailId) {
         return olProductDetailRepository.findById(productDetailId);
     }
+
+    public OlProductDetailResponse fromProductDetail(ProductDetail productDetail) {
+        OlProductDetailResponse response = new OlProductDetailResponse();
+        response.setId(productDetail.getId());
+        response.setImportPrice(productDetail.getImportPrice());
+        response.setPrice(productDetail.getPrice());
+        response.setQuantity(productDetail.getQuantity());
+        response.setBarcode(productDetail.getBarcode());
+        response.setCreatedAt(productDetail.getCreatedAt());
+        response.setUpdatedAt(productDetail.getUpdatedAt());
+        response.setCreatedBy(productDetail.getCreatedBy());
+        response.setUpdatedBy(productDetail.getUpdatedBy());
+        response.setStatus(productDetail.getStatus());
+        response.setProduct(productDetail.getProduct());
+        response.setSize(productDetail.getSize());
+        response.setColor(productDetail.getColor());
+        response.setImages(productDetail.getImages());
+        response.setBillDetails(productDetail.getBillDetails());
+
+        if (productDetail.getStatus() == 1) {
+            List<Image> images = productDetail.getImages();
+
+            if (images != null && !images.isEmpty()) {
+                Image firstImageWithNonNullPath = images.stream()
+                        .filter(image -> image != null && image.getPath() != null)
+                        .findFirst()
+                        .orElse(null);
+
+                if (firstImageWithNonNullPath != null) {
+                    response.setPath(firstImageWithNonNullPath.getPath());
+                }
+            }
+        } else {
+            response.setPath(null);
+        }
+
+        return response;
+    }
+
+
+
+    @Override
+    public Optional<OlProductDetailResponse> findByIdShow(Long productDetailId) {
+        Optional<ProductDetail> productDetail = olProductDetailRepository.findById(productDetailId);
+
+        if (productDetail.isPresent()) {
+            OlProductDetailResponse response = fromProductDetail(productDetail.get());
+            // Sử dụng đối tượng response ở đây
+            return Optional.of(response);
+        } else {
+            // Xử lý khi không tìm thấy ProductDetail
+            return Optional.empty();
+        }
+    }
+
+
+
 
     @Override
     public ProductDetail save(ProductDetail productDetail) {

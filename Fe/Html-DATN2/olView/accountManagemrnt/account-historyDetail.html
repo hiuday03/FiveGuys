@@ -125,31 +125,37 @@
                                             <td>
                                         </tr>
                                         <tr>
+                                            <td>Ngày tạo:</td>
+                                            <td>{{ selectedBill.createdAt | date:'HH:mm - dd/MM/yyyy' }}</td>
+                                            <td>Phương thức thanh toán:</td>
+                                            <td>{{ selectedBill.paymentMethod.name }}</td>
+                                        </tr>
+                                        <tr>
                                             <td>Ngày thanh toán:</td>
-                                            <td>{{ selectedBill.paymentDate | date:'dd/MM/yyyy' }}</td>
+                                            <td>{{ selectedBill.paymentDate | date:' HH:mm - dd/MM/yyyy ' }}</td>
+
                                             <td>Địa chỉ:</td>
                                             <td>{{ selectedBill.address }}</td>
                                         </tr>
                                         <tr>
                                             <td>Ngày giao hàng:</td>
-                                            <td>{{ selectedBill.deliveryDate | date:'dd/MM/yyyy' }}</td>
+                                            <td>{{ selectedBill.deliveryDate | date:'HH:mm - dd/MM/yyyy' }}</td>
                                             <td>Số điện thoại:</td>
                                             <td>{{ selectedBill.phoneNumber }}</td>
                                         </tr>
                                         <tr>
                                             <td>Phí vận chuyển:</td>
-                                            <td>{{ selectedBill.shippingFee }}</td>
-                                            <td>Phương thức thanh toán:</td>
-                                            <td>{{ selectedBill.paymentMethod.name }}</td>
+                                            <td>{{ selectedBill.shippingFee | number}} đ</td>
+                                            <td>Mã giảm giá:</td>
+                                            <td>{{ selectedBill.voucher.code }}</td>
                                         </tr>
                                         <tr>
                                             <td>Ghi chú:</td>
                                             <td>{{ selectedBill.note }}</td>
-                                            <td>Mã giảm giá:</td>
-                                            <td>{{ selectedBill.voucher.code }}</td>
+                                           
                                                 
                                         </tr>
-                                        <!-- Thêm các trường thông tin khác -->
+                                      
                                     </table>
                                 </td>
                             </tr>
@@ -223,7 +229,7 @@
                     <div class="col-md-4">
                         <table class="table">
                             <!-- Thêm một hàng mới hiển thị các thông tin tổng hợp -->
-                            <tfoot>
+                            <footer>
                                 <tr>
                                     <td><strong>Tổng tiền hàng:</strong></td>
                                     <td class="text-right">{{ (selectedBill.totalAmount) | number }} đ</td>
@@ -234,17 +240,17 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Khách phải trả:</strong></td>
-                                    <td class="text-right">{{ (selectedBill.totalAmountAfterDiscount| number)  }} đ</td>
+                                    <td class="text-right">{{ (selectedBill.totalAmountAfterDiscount + selectedBill.shippingFee| number)  }} đ</td>
                                 </tr>
-                            </tfoot>
+                            </footer>
                         </table>
                     </div>
                 </div>
-<!-- 
-                <div class="row">
-                    <button class="btn btn-danger">Hủy</button>
-                </div>
-                 -->
+
+                <div style="justify-content: flex-end;
+                display: flex;" ng-if="selectedBill.status === 1 && selectedBill.paymentMethod.name === 'COD'">
+                    <button ng-click="updateBillStatus(selectedBill.id)" class="btn btn-danger">Hủy đơn hàng</button>
+                  </div>
                 
             </div>
         </div>

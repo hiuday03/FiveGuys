@@ -89,7 +89,10 @@ public PasswordEncoder passwordEncoder() {
                 authorizeRequests
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/templates/**", "/assets/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF")
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/employee/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/customer/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("//thong-ke/**").hasAnyAuthority("ADMIN" )
 //                        .requestMatchers("/api/ol/authenticated/**").authenticated()
                         .anyRequest().permitAll()
         )

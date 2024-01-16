@@ -112,7 +112,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean resetPassword2(String username, String newPassword) {
         Optional<AccountEntity> accountEntity = accountService.findByAccount2(username);
-        System.out.println(accountEntity.get());
 
         if (accountEntity.isPresent()){
             accountEntity.get().setPassword(bcryptEncoder.encode(newPassword));

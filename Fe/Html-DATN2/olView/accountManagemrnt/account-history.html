@@ -127,7 +127,7 @@
                                 <td>{{ bill.code }}</td>
                                 <td>{{ bill.paymentDate | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ bill.deliveryDate | date:'dd/MM/yyyy' }}</td>
-                                <td>{{ bill.shippingFee }}</td>
+                                <td>{{ bill.shippingFee | number}} đ</td>
                                 <td><strong>{{ getStatusText(bill.status) }}</strong></td>
                                 <td>
                                     <a ng-href="#!account-historyDetail?billId={{bill.id}}" class="btn btn-primary">Xem chi tiết</a>

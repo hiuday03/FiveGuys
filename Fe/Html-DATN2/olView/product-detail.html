@@ -118,7 +118,7 @@
           </div>
           <div class="mb-3">
             <span class="productdetail-price">
-              {{ productDetail ? (quantity === 0 ? '' : (productDetail.price | number) + 'đ') : 'Vui lòng chọn kích cỡ' }}
+              {{ productDetail ? (quantity === 0 ? '' : (productDetail.price | number) + ' đ') : 'Vui lòng chọn kích cỡ' }}
           </span>
           
           </div>
@@ -155,14 +155,15 @@
           </p>
           <div style="display: flex;">
        
-            <div class="quantity-input">
+            <div  class="quantity-input">
               <input style="  border: 1px solid;
               border-radius: 5px;
               margin-right: 4px; " type="number" ng-model="quantitySelected" min="1" max="100"
                 ng-change="checkQuantityChange2(quantitySelected)" />
+
             </div>
-              <!-- <div style="display: flex;" ng-if="quantity > 0"> -->
-           
+              <!-- <div style="display: flex;" > -->
+    
                 <a ng-if="quantity > 0" ng-click="cart.add(productDetail.id,quantitySelected)"
                 class="add-to-cart btn btn-warning shadow-0">
                 Thêm vào giỏ hàng
@@ -256,19 +257,24 @@
     <div class="row">
       <div class="col-md-6" ng-repeat="rate in ratings.content">
         <div class="rate-item">
-          <div style="display: inline-block;">
-            <div class="star-container" style="display: inline-block;">
-              <span style="margin-right: 8px;" class="fa fa-star checked"
-                ng-repeat="i in getNumber(rate.rate) track by $index"></span>
+          <div style="display: flex;">
+            <div style="border-radius: 50%;">
+              <img style="width: 70px;height: 70px; margin: auto ;    margin-right: 16px;" class="rounded-4 fit" ng-src="{{ rate.customer.avatar }}" />
             </div>
+            <div style="display: inline-block;">
+              <div class="star-container" style="display: inline-block;">
+                <span style="margin-right: 8px;" class="fa fa-star checked"
+                  ng-repeat="i in getNumber(rate.rate) track by $index"></span>
+              </div>
+            <p><strong>{{rate.customer.fullName}}</strong></p>
+
+            </div>
+     
+      
           </div>
-          <p><strong>{{rate.customer.fullName}}</strong></p>
-          <!-- <p>
-            {{ rate.product.name }}
-            {{ rate.product.category.name }}
-            {{ rate.product.material.name }}
-            {{ rate.product.code }}
-          </p> -->
+          
+       
+
           <p> {{ rate.content }}</p>
           <div style="display: flex;justify-content: space-between;    align-items: center;">
             <p>{{ rate.createdAt | date:'dd/MM/yyyy' }}</p>
