@@ -22,4 +22,6 @@ public interface CustomerService {
 
     void deleteCustomer(Long id);
 
+    CustomerEntity updateStatusCustomer(Long id, CustomerEntity customerEntity);
+
 }

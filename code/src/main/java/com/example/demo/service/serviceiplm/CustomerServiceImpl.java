@@ -81,6 +81,30 @@ private CustomerRepository customerRepository;
     }
 
     @Override
+    public CustomerEntity updateStatusCustomer(Long id, CustomerEntity customerEntity) {
+        Optional<CustomerEntity> existingCustomer = customerRepository.findById(id);
+        if (existingCustomer.isPresent()) {
+            CustomerEntity customer = existingCustomer.get();
+            customer.setFullName(customerEntity.getFullName());
+            customer.setAvatar(customerEntity.getAvatar());
+            customer.setBirthDate(customerEntity.getBirthDate());
+            customer.setGender(customer.getGender());
+            customer.setAccount(customerEntity.getAccount());
+            customer.setCreatedAt(customerEntity.getCreatedAt());
+            customer.setUpdatedAt(new Date());
+            customer.setCreatedBy("Admin");
+            customer.setUpdatedBy("Admin");
+            customer.setStatus(2);
+            return customerRepository.save(customer); // Lưu khách hàng đã cập nhật vào cơ sở dữ liệu
+        } else {
+            // Trả về null hoặc thông báo lỗi nếu không tìm thấy khách hàng với ID này
+            throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
+//            return null;
+        }
+    }
+
+
+    @Override
     public void deleteCustomer(Long id) {
         // Kiểm tra xem khách hàng có tồn tại trước khi xóa
         if (customerRepository.existsById(id)) {

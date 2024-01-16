@@ -35,8 +35,7 @@
                     >{{getcodeday/getcodedaytile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
-                    >{{getcodeday >= getcodedaytile ? 'increase':
-                    'decrease'}}</span
+                    >{{getcodeday >= getcodedaytile ? 'Tăng': 'Giảm'}}</span
                   >
                 </div>
               </div>
@@ -63,8 +62,8 @@
                     >{{listcustomeryear/listcustomeryeartile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
-                    >{{listcustomeryear >= listcustomeryeartile ? 'increase':
-                    'decrease'}}</span
+                    >{{listcustomeryear >= listcustomeryeartile ? 'Tăng':
+                    'Giảm'}}</span
                   >
                 </div>
               </div>
@@ -91,7 +90,7 @@
                     >{{getsum/getsumtile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
-                    >{{getsum >= getsumtile ? 'increase': 'decrease'}}</span
+                    >{{getsum >= getsumtile ? 'Tăng': 'Giảm'}}</span
                   >
                 </div>
               </div>
@@ -112,130 +111,6 @@
           </div>
         </div>
         <!-- End Reports -->
-
-        <!-- Recent Sales -->
-        <div class="col-12">
-          <div class="card recent-sales overflow-auto">
-            <div class="card-body">
-              <h5 class="card-title">Bán hàng gần đây <span>| {{hi}}</span></h5>
-              <div class="row">
-                <div class="col-md-2">
-                  <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
-                  <select
-                    class="form-select"
-                    ng-model="paper.size"
-                    ng-change="changePageSize()"
-                    ng-options="size for size in [5, 10, 20, 50, 100]"
-                    style="width: 80px"
-                  ></select>
-                </div>
-                <div class="col-4">
-                  <select
-                    name=""
-                    id="formtimkiemstatus"
-                    class="form-control"
-                    aria-label="Default select example"
-                    ng-model="formtimkiem"
-                    ng-change="timkiemStatus()"
-                  >
-                    <!-- <option value="1">Đá hủy</option> -->
-                    <option value="1">Tất cả</option>
-                    <option value="0">Chờ thánh toán</option>
-                    <option value="2">Yêu cầu xác nhận</option>
-                    <option value="3">Hoàn thành</option>
-                    <option value="4">Đang chuẩn bị hàng</option>
-                    <option value="5">Giao cho đơn vị vận chuyển</option>
-                    <option value="6">Đã giao cho đơn vị vận chuyển</option>
-                    <option value="7">Yêu cầu đổi trả</option>
-                    <option value="8">Xác nhận đổi trả</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="fullName"
-                    topbanchaymonth
-                    +
-                    ng-model="searchVoucher"
-                    placeholder="Search"
-                  />
-                </div>
-              </div>
-              <br />
-              <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Customer</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="get in paper.items | filter: searchVoucher">
-                    <td>{{$index + (paper.page * paper.size) +1}}</td>
-                    <td>{{get.customerEntity.fullName}}</td>
-                    <td>
-                      <a href="#" class="text-primary"
-                        >{{get.employee.fullName}}</a
-                      >
-                    </td>
-                    <td>{{get.totalAmountAfterDiscount}}</td>
-                    <td ng-switch="get.status">
-                      <span ng-switch-when="0">Đá hủy</span>
-                      <span ng-switch-when="1">Chờ thánh toán</span>
-                      <span ng-switch-when="2">Yêu cầu xác nhận</span>
-                      <span ng-switch-when="3">Hoàn thành</span>
-                      <span ng-switch-when="4">Đang chuẩn bị hàng</span>
-                      <span ng-switch-when="5">Giao cho đơn vị vận chuyển</span>
-                      <span ng-switch-when="6"
-                        >Đã giao cho đơn vị vận chuyển</span
-                      >
-                      <span ng-switch-when="7">Yêu cầu đổi trả</span>
-                      <span ng-switch-when="8">Xác nhận đổi trả</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <nav
-                aria-label="Page navigation example"
-                style="margin-left: 200px"
-              >
-                <ul class="pagination justify-content-e nd">
-                  <li class="page-item">
-                    <button ng-click="paper.first()" class="page-link">
-                      First
-                    </button>
-                  </li>
-                  <li class="page-item">
-                    <button ng-click="paper.prev()" class="page-link">
-                      Previous
-                    </button>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link"
-                      >{{paper.page + 1}} of {{paper.count}}</a
-                    >
-                  </li>
-                  <li class="page-item">
-                    <button ng-click="paper.next()" class="page-link">
-                      Next
-                    </button>
-                  </li>
-                  <li class="page-item">
-                    <button ng-click="paper.last()" class="page-link">
-                      Last
-                    </button>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <!-- End Recent Sales -->
 
         <!-- Top Selling -->
         <div class="col-12">
@@ -281,6 +156,161 @@
             </div>
           </div>
         </div>
+        <!-- Recent Sales -->
+        <div class="col-12">
+          <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+              <h5 class="card-title">Bán hàng gần đây <span></span></h5>
+              <div class="row">
+                <div class="col-md-2">
+                  <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+                  <select
+                    class="form-select"
+                    ng-model="paper.size"
+                    ng-change="changePageSize()"
+                    ng-options="size for size in [5, 10, 20, 50, 100]"
+                    style="width: 80px"
+                  ></select>
+                </div>
+                <div class="col-4">
+                  <select
+                    name=""
+                    id="formtimkiemstatus"
+                    class="form-control"
+                    aria-label="Default select example"
+                    ng-model="formtimkiem"
+                    ng-change="timkiemStatus()"
+                  >
+                    <!-- <option value="1">Đá hủy</option> -->
+                    <option value="1">Tất cả</option>
+                    <option value="0">Chờ xác nhận</option>
+                    <option value="2">Đang giao hàng</option>
+                    <option value="3">Thành công</option>
+                    <option value="4">Đá hủy</option>
+                    <option value="5">Chờ thanh toán</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="fullName"
+                    topbanchaymonth
+                    +
+                    ng-model="searchVoucher"
+                    placeholder="Search"
+                  />
+                </div>
+              </div>
+              <br />
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Loại</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="get in paper.items | filter: searchVoucher">
+                    <td>{{$index + (paper.page * paper.size) +1}}</td>
+                    <td>
+                      <a href="#" class="text-primary"
+                        >{{get.customerEntity.fullName}}</a
+                      >
+                    </td>
+                    <td>
+                      <a href="#" class="text-primary"
+                        >{{get.employee.fullName}}</a
+                      >
+                    </td>
+                    <td>{{get.totalAmountAfterDiscount}}</td>
+                    <td class="col-1" ng-switch="get.typeBill">
+                      <span ng-switch-when="1">
+                        <div
+                          class="badge bg-secondary text-wrap"
+                          style="width: 5rem"
+                        >
+                          Bán nhanh
+                        </div>
+                      </span>
+                      <span ng-switch-when="2">
+                        <div
+                          class="badge text-wrap"
+                          style="width: 5rem; background-color: darkorchid"
+                        >
+                          Online
+                        </div>
+                      </span>
+                      <span ng-switch-when="3">
+                        <div
+                          class="badge bg-info text-wrap"
+                          style="width: 5rem"
+                        >
+                          Bán giao hàng
+                        </div>
+                      </span>
+                    </td>
+                    <td class="col-2" ng-switch="get.status">
+                      <span ng-switch-when="1">
+                        <div class="badge bg-warning text-wrap">Chờ xử lý</div>
+                      </span>
+                      <span ng-switch-when="2">
+                        <div class="badge bg-primary text-wrap">
+                          Đang giao hàng
+                        </div>
+                      </span>
+                      <span ng-switch-when="3">
+                        <div class="badge bg-success text-wrap">Thành công</div>
+                      </span>
+                      <span ng-switch-when="4">
+                        <div class="badge bg-danger text-wrap">Đã hủy</div>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <nav
+                aria-label="Page navigation example"
+                style="margin-left: 200px"
+              >
+                <ul class="pagination justify-content-e nd">
+                  <li class="page-item">
+                    <button ng-click="paper.first()" class="page-link">
+                      First
+                    </button>
+                  </li>
+                  <li class="page-item">
+                    <button ng-click="paper.prev()" class="page-link">
+                      Previous
+                    </button>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link"
+                      >{{paper.page + 1}} of {{paper.count}}</a
+                    >
+                  </li>
+                  <li class="page-item">
+                    <button ng-click="paper.next()" class="page-link">
+                      Next
+                    </button>
+                  </li>
+                  <li class="page-item">
+                    <button ng-click="paper.last()" class="page-link">
+                      Last
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <!-- End Recent Sales -->
+
         <!-- End Top Selling -->
       </div>
     </div>

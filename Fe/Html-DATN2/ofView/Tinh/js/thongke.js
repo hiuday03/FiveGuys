@@ -49,23 +49,7 @@ app.controller(
           $scope.getallbilllist = response.data;
         });
       } else if ($scope.formtimkiem === "4") {
-        $http.get(api + "/search-status-bill/4").then(function (response) {
-          $scope.getallbilllist = response.data;
-        });
-      } else if ($scope.formtimkiem === "5") {
-        $http.get(api + "/search-status-bill/5").then(function (response) {
-          $scope.getallbilllist = response.data;
-        });
-      } else if ($scope.formtimkiem === "6") {
-        $http.get(api + "/search-status-bill/6").then(function (response) {
-          $scope.getallbilllist = response.data;
-        });
-      } else if ($scope.formtimkiem === "7") {
-        $http.get(api + "/search-status-bill/7").then(function (response) {
-          $scope.getallbilllist = response.data;
-        });
-      } else if ($scope.formtimkiem === "8") {
-        $http.get(api + "/search-status-bill/8").then(function (response) {
+        $http.get(api + "/search-status-bill/10").then(function (response) {
           $scope.getallbilllist = response.data;
         });
       } else if ($scope.formtimkiem === "1") {

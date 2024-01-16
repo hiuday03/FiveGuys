@@ -316,7 +316,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
       };
       reader.readAsArrayBuffer(files[0]);
     } else {
-      console.error("No files selected.");
+      $scope.showErrorNotification("Không có file nào được chọn");
     }
   };
 

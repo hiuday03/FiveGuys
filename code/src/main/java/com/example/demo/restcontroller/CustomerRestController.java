@@ -83,16 +83,15 @@ public class CustomerRestController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
-        try {
-            customerService.deleteCustomer(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+    @PutMapping("/update-status/{id}")
+    public ResponseEntity<CustomerEntity> updateStatusCustomer(@RequestBody CustomerEntity customerEntity, @PathVariable Long id) {
+        customerService.updateStatusCustomer(id , customerEntity);
+        if (customerEntity != null) {
+            return ResponseEntity.ok(customerEntity);
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     // xuất file excel Employ
     private static CellStyle cellStyleFormatNumber = null;

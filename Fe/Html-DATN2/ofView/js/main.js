@@ -1425,8 +1425,6 @@ app.controller("role-ctrl", function ($scope, $http, $timeout) {
 //   printResult();
 // });
 
-
-
 // app.controller("account-ctrl", function ($scope, $http, $timeout) {
 //   $scope.originalAccount = [];
 //   $scope.account = [];
@@ -3389,6 +3387,19 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   imgShow("image", "image-preview");
   imgShow("image-update", "image-preview-update");
 
+  $scope.showSuccessNotification = function (message) {
+    toastr["success"](message);
+  };
+
+  // Hàm hiển thị thông báo lỗi
+  $scope.showErrorNotification = function (message) {
+    toastr["error"](message);
+  };
+
+  $scope.showWarningNotification = function (message) {
+    toastr["warning"](message);
+  };
+
   function imgShow(textInput, textPreview) {
     const imageInput = document.getElementById(textInput);
     const imagePreview = document.getElementById(textPreview);
@@ -3553,13 +3564,16 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
             },
           };
 
-          let dataEA = { customer: dataCustomer, accountEntity: dataAccount };
+          let dataEA = {
+            customerEntity: dataCustomer,
+            accountEntity: dataAccount,
+          };
           console.log(dataEA);
 
           $http
             .post(apiCustomer + "/createaKA", dataEA)
             .then((resp) => {
-              $scope.showSuccessNotification("Thêm nhân viên thành công");
+              $scope.showSuccessNotification("Thêm khách hàng thành công");
               $scope.initialize();
               $scope.resetFormInput();
               $("#modalAdd").modal("hide");
@@ -3597,9 +3611,9 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   $scope.apiUpdate = function () {
     let item = angular.copy($scope.formUpdate);
     $http
-      .put(`/customer/${item.id}`, item)
+      .put(apiCustomer + `/${item.id}`, item)
       .then((resp) => {
-        $scope.showSuccessMessage("Update Customer successfully!");
+        $scope.showSuccessNotification("Cập nhật thông tin thành công");
         $scope.resetFormUpdate();
         $scope.initialize();
         $("#modalUpdate").modal("hide");
@@ -3620,7 +3634,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
       data.append("file", fileInput.files[0]);
       $scope.load();
       $http
-        .post("/rest/upload", data, {
+        .post("http://localhost:8080/rest/upload", data, {
           transformRequest: angular.identity,
           headers: { "Content-Type": undefined },
         })
@@ -3647,7 +3661,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/customer/${item.id}`)
+      .put(apiCustomer + "/update-status" + `/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete Customer successfully");
         $scope.initialize();
@@ -3712,8 +3726,8 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.xuatFile = function () {
-    $http.get("/customer/excel").then(function (response) {
-      alert("Xuất File Thành Công");
+    $http.get(apiCustomer + "/excel").then(function (response) {
+      $scope.showSuccessNotification("Xuất file thành công");
       // $scope.pageEm = response.data.content;
       // $scope.totalPages = response.data.totalPages
     });
@@ -4635,7 +4649,7 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
           if (item && item.createdAt) {
             return (
               new Date(item.createdAt).getDate() >=
-              new Date(fromDate).getDate() &&
+                new Date(fromDate).getDate() &&
               new Date(item.createdAt).getDate() <= new Date(toDate).getDate()
             );
           }
@@ -4659,9 +4673,9 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
           if (item && item.typeBill && item.status && item.createdAt) {
             return (
               new Date(item.createdAt).getTime() >=
-              new Date(fromDate).getTime() &&
+                new Date(fromDate).getTime() &&
               new Date(item.createdAt).getTime() <=
-              new Date(toDate).getTime() &&
+                new Date(toDate).getTime() &&
               item.status == filterStatus &&
               item.typeBill == filterTypeBill
             );
