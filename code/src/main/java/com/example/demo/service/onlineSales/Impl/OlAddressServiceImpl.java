@@ -1,16 +1,11 @@
 package com.example.demo.service.onlineSales.Impl;
 
-import com.example.demo.entity.AccountEntity;
-import com.example.demo.entity.AddressEntity;
-import com.example.demo.entity.Color;
-import com.example.demo.entity.CustomerEntity;
+import com.example.demo.entity.*;
 import com.example.demo.repository.onlineSales.OLAddressRepository;
 import com.example.demo.repository.onlineSales.OLColorRepository;
-import com.example.demo.service.onlineSales.OlAccountService;
-import com.example.demo.service.onlineSales.OlAddressService;
-import com.example.demo.service.onlineSales.OlColorService;
-import com.example.demo.service.onlineSales.OlCustomerService;
+import com.example.demo.service.onlineSales.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -31,7 +26,8 @@ public class OlAddressServiceImpl implements OlAddressService {
     @Autowired
     private OlCustomerService olCustomerService;
 
-
+    @Autowired
+    private OlEmployeeService olEmployeeService;
 
     @Override
     public List<AddressEntity> getAddressListByUsername(String username) {
@@ -92,10 +88,23 @@ public class OlAddressServiceImpl implements OlAddressService {
 
     @Override
     public AddressEntity findByDefaultAddressTrue(String username) {
+        Optional<AccountEntity> account = olAccountService.findByAccount(username);
+        if (account.isPresent()) {
+            Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
+//            Optional<Employees> employeeEntity = Optional.ofNullable(olEmployeeService.findByAccount_Id(account.get().getId()));
 
-        return repository.findByDefaultAddressTrueAndCustomer_FullName(username).get(0);
-
+            if (customerEntity.isPresent()) {
+                List<AddressEntity> addressEntities = repository.findByCustomer_FullName(customerEntity.get().getFullName());
+                for (AddressEntity addressEntity : addressEntities) {
+                    if ((addressEntity.getDefaultAddress())) {
+                        return addressEntity;
+                    }
+                }
+            }
+        }
+        return null;
     }
+
 
     @Override
     public Optional<AddressEntity> findById(Long id) {

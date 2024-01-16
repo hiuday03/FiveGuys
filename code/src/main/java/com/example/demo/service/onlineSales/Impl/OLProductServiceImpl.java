@@ -10,10 +10,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +35,11 @@ public class OLProductServiceImpl implements OLProductService {
     @Override
     public List<Product> getAllProducts() {
         return olProductRepository.findAll();
+    }
+
+    @Override
+    public Product save(Product product) {
+        return olProductRepository.save(product);
     }
 
     @Override
@@ -110,8 +112,6 @@ public class OLProductServiceImpl implements OLProductService {
 
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
-            List<ProductDetail> productDetails = olProductDetailService.findByProduct(product);
-
             OlViewProductDetailRespone olViewProductDetailRespone = new OlViewProductDetailRespone();
             olViewProductDetailRespone.setId(product.getId());
             olViewProductDetailRespone.setCode(product.getCode());
@@ -122,7 +122,7 @@ public class OLProductServiceImpl implements OLProductService {
             olViewProductDetailRespone.setDescribe(product.getDescribe());
             olViewProductDetailRespone.setNameCategory(product.getCategory().getName());
             olViewProductDetailRespone.setNameMaterial(product.getMaterial().getName());
-            olViewProductDetailRespone.setPrice(productDetails.isEmpty() ? null : productDetails.get(0).getPrice());
+            olViewProductDetailRespone.setPrice(getProductPrice(product));
             olViewProductDetailRespone.setRate(getAverageRateSold(product.getId()));
             List<ProductDetail> productDetailList = olProductDetailService.findByProduct(product);
             List<RatingEntity> list = new ArrayList<>();
@@ -130,12 +130,13 @@ public class OLProductServiceImpl implements OLProductService {
             for (ProductDetail productDetail : productDetailList) {
                 List<BillDetail> billDetails = billDetailService.findByProductDetailAndStatus(productDetail.getId(), 1);
                 for (BillDetail billDetail : billDetails) {
-                    List<RatingEntity> ratingEntitiesForDetail = olRatingService.findByBillDetailAndStatus(billDetail,1);
+                    List<RatingEntity> ratingEntitiesForDetail = olRatingService.findByBillDetailAndStatus(billDetail,2);
 
                     list.addAll(ratingEntitiesForDetail);
                 }
 
             }
+            olViewProductDetailRespone.setTotalQuantity(getTotalQuantitySold(product));
             olViewProductDetailRespone.setTotalRate(list.size());
 // ratingEntities bây giờ chứa tất cả các RatingEntity từ tất cả các ProductDetail tương ứng
 
@@ -162,11 +163,29 @@ public class OLProductServiceImpl implements OLProductService {
             olHomeProductResponse.setPrice(price);
         }
         List<ProductDetail> productDetails = olProductDetailService.findByProduct(product);
-        olHomeProductResponse.setPrice(productDetails.isEmpty() ? null : productDetails.get(0).getPrice());
+        String path = null;
 
-        List<Image> images = productDetails.isEmpty() ? new ArrayList<>() : productDetails.get(0).getImages();
-        String firstName = !images.isEmpty() ? images.get(0).getPath() : null;
-        olHomeProductResponse.setPath(firstName);
+        for (ProductDetail productDetail : productDetails) {
+            if (productDetail.getStatus() == 1) {
+                List<Image> images = productDetail.getImages();
+
+                if (images != null && !images.isEmpty()) {
+                    Image firstImageWithNonNullPath = images.stream()
+                            .filter(image -> image != null && image.getPath() != null)
+                            .findFirst()
+                            .orElse(null);
+
+                    if (firstImageWithNonNullPath != null) {
+                        path = firstImageWithNonNullPath.getPath();
+                        break;
+                    }
+                }
+            }
+        }
+
+        olHomeProductResponse.setPath(path);
+
+
         return olHomeProductResponse;
     }
 
@@ -208,7 +227,11 @@ public class OLProductServiceImpl implements OLProductService {
 
     private BigDecimal getProductPrice(Product product) {
         List<ProductDetail> productDetails = olProductDetailService.findByProduct(product);
-        return productDetails.isEmpty() ? null : productDetails.get(0).getPrice();
+        return productDetails.stream()
+                .map(ProductDetail::getPrice)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
     }
 //    public Page<OlHomeProductResponse> createPagedOlHomeProductResponse(List<OlHomeProductResponse> olHomeProductResponses, int page, int pageSize) {
 //        int totalSize = olHomeProductResponses.size();
@@ -252,8 +275,13 @@ public class OLProductServiceImpl implements OLProductService {
         for (ProductDetail detail : productDetails) {
             List<BillDetail> billDetails = billDetailService.findByProductDetail(detail);
             for (BillDetail billDetail : billDetails) {
-                totalQuantity += billDetail.getQuantity();
+                if (billDetail.getBill().getStatus() == 3){
+                    totalQuantity += billDetail.getQuantity();
+
+                }
+
             }
+
         }
         return totalQuantity;
     }
@@ -270,7 +298,7 @@ public class OLProductServiceImpl implements OLProductService {
                 List<BillDetail> billDetails = productDetail.getBillDetails(); // Assuming BillDetail is a list associated with ProductDetail
 
                 for (BillDetail billDetail : billDetails) {
-                    List<RatingEntity> ratingEntities = olRatingService.findByBillDetailAndStatus(billDetail,1); // Assuming you have a method to find ratings by BillDetail
+                    List<RatingEntity> ratingEntities = olRatingService.findByBillDetailAndStatus(billDetail,2); // Assuming you have a method to find ratings by BillDetail
 
                     for (RatingEntity ratingEntity : ratingEntities) {
                         if (ratingEntity.isRated()) {
@@ -282,7 +310,7 @@ public class OLProductServiceImpl implements OLProductService {
             }
 
             if (totalRatings > 0) {
-                return totalRate / totalRatings;
+                return Math.round(totalRate / totalRatings);
             } else {
                 return 0;
             }

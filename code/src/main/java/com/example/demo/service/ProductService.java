@@ -25,4 +25,6 @@ public interface ProductService {
     Page<Product> searchByStatus(Integer status, Integer page);
 
     List<Product> getAllExportExcel();
+
+    List<Product> saveAll(List<Product> productList);
 }

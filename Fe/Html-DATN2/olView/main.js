@@ -33,6 +33,8 @@ var app = angular.module("myApp", ["ngRoute", "angular-jwt"]);
 //   };
 // }]);
 
+
+// 111
 // Tạo một interceptor trong AngularJS
 app.factory('TokenInterceptor', function($q, $injector) {
   var isRefreshing = false;
@@ -131,7 +133,7 @@ app.factory('AuthService', function($http) {
 });
 
 
-
+// 111
 
 
 app.config(['$compileProvider', function($compileProvider){
@@ -279,16 +281,19 @@ app.config(function($routeProvider) {
   
 });
 
-app.controller("myApp-ctrl2", function ($scope,$rootScope, $http, $routeParams,$location,jwtHelper) {
+app.controller("myApp-ctrl2", function ($scope,$filter,$rootScope, $http, $routeParams,$location,jwtHelper) {
   $scope.currentPage = 0; // Trang hiện tại
   $scope.dataId = null;
   $scope.totalQuantity = 0;
   $scope.kmMa = "";
   $scope.totalAmount = 0;
   $scope.totalAmountAfterDiscount = 0;
+  $scope.valueVoucher = 0;
   $scope.KM = null;
   $rootScope.countProduct = 0;
   $scope.isCustomerLoggedIn = false;
+  $scope.isEmployeeLoggedIn = false;
+  
   $scope.images = []; // Danh sách ảnh nhỏ
   $scope.mainImage = ''; // Ảnh lớn chính
   $scope.selectedSizes = [];
@@ -398,7 +403,7 @@ app.controller("myApp-ctrl2", function ($scope,$rootScope, $http, $routeParams,$
     }
 
     // $scope.currentPage = params.page || 0;
-    $scope.loadPage();
+    // $scope.loadPage();
 
 };
 
@@ -583,83 +588,54 @@ $scope.setMainImage = function(path) {
 //Get image Color and Product
 
 
-$scope.userData = null; 
-$scope.username = null; 
-// check người dùng đã đăng nhập chưa
-function checkUserLoggedIn(username) {
-  $http.get('http://localhost:8080/api/ol/user?username=' + username)
-    .then(function (response) {
-      console.log(response.data);
-      if (response.status === 200 && response.data !== null) {
-        console.log(response.data.account.role.fullName);
-        if (response.data.account.role.fullName === 'STAFF' || response.data.account.role.fullName === 'ADMIN') {
-          $scope.isEmployeeLoggedIn = true;
-          $scope.userData = response.data;
-          console.log($scope.userData)
-          console.log("Employee is logged in.");
-          return ;
-        } else if(response.data.loggedIn === false){
-          $scope.isCustomerLoggedIn = false;
-          $scope.isEmployeeLoggedIn = false;
-          console.log("User is not logged in.");
-          return ;
-        } else {
-          $scope.isCustomerLoggedIn = true;
-          $scope.userData = response.data;
-          console.log("Customer is logged in.");
+$scope.userData = null;
+// $scope.isCustomerLoggedIn = false;
+// $scope.isEmployeeLoggedIn = false;
+$scope.isAdmin = false;
+$scope.username = null;
 
-          if ($scope.isCustomerLoggedIn) {
-            $scope.cart.saveDataAndClearLocalStorage();
-            loadCart();
-          }
-          return ;
-
-          
-        }
-      } else {
-        // Reset variables and return false
-        $scope.isCustomerLoggedIn = false;
-        $scope.isEmployeeLoggedIn = false;
-        console.log("User is not logged in.");
-        return ;
-      }
-    })
-    .catch(function (error) {
-      console.error("Error checking user login status:", error);
-      // Reset variables and return false in case of errors
-      $scope.isCustomerLoggedIn = false;
-      $scope.isEmployeeLoggedIn = false;
-      console.log("Error occurred. User is not logged in.");
-      return;
-    });
-}
-function isUserLoggedIn() {
-  // var token = $cookies.get('token');
-         // Lấy token từ cookies
-        var token = localStorage.getItem('token');
+// Check if the user is logged in
+async function isUserLoggedIn() {
+  const token = localStorage.getItem('token');
 
   if (!token) {
-    $scope.isCustomerLoggedIn = false;
-    $scope.isEmployeeLoggedIn = false;
-    $scope.userData = null;
     $scope.isAdmin = false;
-
-    return Promise.resolve(false);
+    return false;
   }
 
-  var decodedToken = jwtHelper.decodeToken(token);
+  const decodedToken = jwtHelper.decodeToken(token);
   $scope.username = decodedToken.sub;
   $scope.exp = decodedToken.exp;
-  if (decodedToken.role && decodedToken.role.length > 0) {
-    $scope.isAdmin = decodedToken.role[0].authority === 'ADMIN' || decodedToken.role[0].authority === 'STAFF';
-  } else {
-    $scope.isAdmin = false;
+  $scope.isAdmin = decodedToken.role && decodedToken.role.length > 0 &&
+    (decodedToken.role[0].authority === 'ADMIN' || decodedToken.role[0].authority === 'STAFF');
+
+  try {
+    const response = await $http.get('http://localhost:8080/api/ol/user?username=' + $scope.username);
+    if (response.status === 200 && response.data) {
+      $scope.role = response.data.account.role.fullName;
+      $scope.userData = response.data;
+
+      if ($scope.role === 'STAFF' || $scope.role === 'ADMIN') {
+        $scope.isEmployeeLoggedIn = true;
+      } else if ($scope.role === 'CUSTOMER') {
+        $scope.isCustomerLoggedIn = true;
+        $scope.cart.saveDataAndClearLocalStorage();
+        loadCart();
+      }
+    }
+  } catch (error) {
+    console.error("Error checking user login status:", error);
   }
-  console.log($scope.isAdmin)
-  return checkUserLoggedIn($scope.username);
+
+  return true;
 }
-// check người dùng đã đăng nhập chưa
-isUserLoggedIn();
+
+// Check if the user is logged in
+isUserLoggedIn().then(userLoggedIn => {
+  console.log("User is logged in:", userLoggedIn);
+});
+
+
 
 //refresh tokrn
 // function checkAndRefreshToken() {
@@ -698,7 +674,6 @@ function loadCart() {
       .then(function (response) {
         if (response.data) {
           $scope.cartItems = response.data;
-          console.log($scope.cartItems);
         }
       })
       .catch(function (error) {
@@ -708,12 +683,61 @@ function loadCart() {
 
 }
 
+$scope.applyVoucher = function() {
+  if ($scope.selectedVoucher != null) {
+    if ($scope.selectedVoucher.quantity > 0) {
+      if ($scope.totalAmount >= $scope.selectedVoucher.minimumTotalAmount) {
+        var voucherCopy = angular.copy($scope.selectedVoucher);
+        delete voucherCopy.selected;
+        $scope.voucherData = voucherCopy;
 
+        if ($scope.selectedVoucher.valueType === 1) {
+          $scope.valueVoucher = $scope.selectedVoucher.value;
+          $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher;
+
+        } else if ($scope.selectedVoucher.valueType === 2) {
+          var discountPercentage = $scope.selectedVoucher.value / 100;
+          $scope.valueVoucher = $scope.totalAmount * discountPercentage;
+          $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher;
+        }
+
+        $scope.voucherMessage = 'Mã giảm giá đã được áp dụng';
+        $scope.showSuccessNotification($scope.voucherMessage);
+      } else {
+        $scope.voucherData = null;
+        $scope.valueVoucher = 0;
+        $scope.voucherMessage =
+          'Mã giảm giá ' +
+          $scope.selectedVoucher.code +
+          ' chỉ sử dụng cho đơn hàng có tổng trị giá trên ' +
+          $filter('number')($scope.selectedVoucher.minimumTotalAmount) +
+          ' đ';
+        $scope.showErrorNotification($scope.voucherMessage);
+
+        if ($scope.totalAmount < $scope.selectedVoucher.minimumTotalAmount) {
+          $scope.selectedVoucher.selected = false;
+          $scope.selectedVoucher = null;
+          $scope.totalAmountAfterDiscount = $scope.totalAmount; // Initialize totalAmountAfterDiscount
+
+        }
+      }
+    }
+  } else {
+    // No voucher selected, reset to original total amount
+    $scope.voucherData = null;
+    $scope.voucherMessage = '';
+    $scope.valueVoucher = 0;
+    $scope.totalAmountAfterDiscount = $scope.totalAmount; 
+    
+
+  }
+};
 
 // Giỏ hàng người dùng
 function loadLocal() {
   if ($scope.username == null) {
         $scope.cartItems = $scope.cart.items;
+        console.log($scope.cartItems)
         count();
       } 
 
@@ -727,23 +751,27 @@ function countTotalPrice(items) {
 
 
   function count() {
-    if ($scope.isCustomerLoggedIn && $scope.cartItems) {
+    if (!$scope.isAdmin && $scope.cartItems) {
               // Lọc $scope.cartItem và tính tổng số lượng
               $rootScope.countProduct = $scope.cartItems.reduce((total, item) => total + item.quantity, 0);
               $scope.totalAmount = countTotalPrice($scope.cartItems);
-              $scope.totalAmountAfterDiscount = $scope.totalAmount;
+              $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher;
           } else if ($scope.isEmployeeLoggedIn) {
             $rootScope.countProduct = 0;
           } else {
             if  ($scope.cart.items == null){
               $scope.cart.items = [];
             }
-              // Tính tổng số lượng từ local storage
               $rootScope.countProduct = $scope.cart.items.reduce((total, item) => total + item.quantity, 0);
               $scope.totalAmount = countTotalPrice($scope.cart.items);
-              $scope.totalAmountAfterDiscount = $scope.totalAmount;
-
+              $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher;
           }
+
+          if ($scope.cartItems != '') {
+          $scope.applyVoucher();
+            
+          }
+
     }
    
 
@@ -772,14 +800,12 @@ function countTotalPrice(items) {
               $http.post('http://localhost:8080/api/ol/cart/add', { productDetailId: productDetailId , quantity: quantity ,username :$scope.username })
                   .then(function (response) {
                     if (response.data.employeeLoggedIn === true) {
-                      $scope.isEmployeeLoggedIn = true;
+                      // $scope.isEmployeeLoggedIn = true;
                       $scope.showErrorNotification("Nhân viên không thể mua hàng!");
                      } else if (response.data === 1) {
                         $scope.showSuccessNotification("Thêm vào giỏ thành công!");
                         loadCart();
-                      count();
                       }
-                      
                       else if (response.data === 2)  {
                         $scope.showErrorNotification("Sản phẩm không có đủ số lượng trong kho!");
                 
@@ -852,8 +878,10 @@ function countTotalPrice(items) {
 
               loadLocal();
 
+
           }
-          $scope.applyVoucher();
+          // count();
+          // $scope.applyVoucher();
 
   },
     update(cartDetailId, quantity) {
@@ -871,7 +899,7 @@ function countTotalPrice(items) {
                     }
                       if (response.data) {
                         loadCart();
-                      count();
+                      // count();
                       } 
                   })
                   .catch(function (error) {
@@ -889,13 +917,13 @@ function countTotalPrice(items) {
                             if (quantity <= availableQuantity) {
                                 item.quantity = quantity;
                                 $scope.cart.saveToLocalStorage();
-                                count();
+                                // count();
                                 loadLocal();
                                 $scope.showSuccessNotification("Cập nhật giỏ hàng thành công!");
                             } else {
                               item.quantity = availableQuantity;
                               $scope.cart.saveToLocalStorage();
-                              count();
+                              // count();
                               loadLocal();
                                 $scope.showErrorNotification("Số lượng vượt quá số lượng hiện có!");
                             }
@@ -913,7 +941,9 @@ function countTotalPrice(items) {
             
               loadLocal();
           }
-          $scope.applyVoucher();
+          // count();
+          // $scope.applyVoucher();
+              // $scope.applyVoucher();
 
 
   },
@@ -937,13 +967,15 @@ function countTotalPrice(items) {
               if (index !== -1) {
                   $scope.cart.items.splice(index, 1);
                   $scope.cart.saveToLocalStorage();
-              count();
+              // count();
+              loadLocal();
 
               }
-              loadLocal();
 
           }
           // $scope.applyVoucher();
+
+          // count();
 
 
   
@@ -954,7 +986,7 @@ function countTotalPrice(items) {
               $http.post('http://localhost:8080/api/ol/cart/clear?username=' + $scope.username)
                   .then(function (response) {
                     loadCart();
-                            count();
+                            // count();
                     $scope.showSuccessNotification("Xóa tất cả sản phẩm khỏi giỏ hàng thành công!");
                   })
                   .catch(function (error) {
@@ -965,11 +997,12 @@ function countTotalPrice(items) {
               // Thực hiện hành động khi chưa đăng nhập
               $scope.cart.items = [];
               $scope.cart.saveToLocalStorage();
-              count();
+              // count();
               loadLocal();
 
           }
-          $scope.applyVoucher();
+          // count();
+          // $scope.applyVoucher();
   },
 
         // Tính thành tiền các mặt hàng trong giỏ
@@ -1135,7 +1168,6 @@ function countTotalPrice(items) {
               .then(resp => {
                // Xử lý phản hồi từ server
                   let body = resp.data;
-                  console.log(body);
                   if (body != null && body.hasOwnProperty("redirect") ) {
                       window.location.href = body.redirect; 
                   } else if (typeof body === 'number') {
@@ -1167,13 +1199,16 @@ function countTotalPrice(items) {
 
 
 // Controller code
-$scope.selectedVoucher = null
+$scope.selectedVoucher = null;
+// $scope.originalTotalAmount = $scope.totalAmount; // Store the original total amount
 
 $scope.selectVoucher = function(selectedVoucher) {
   if (selectedVoucher.quantity > 0) {
     if ($scope.selectedVoucher === selectedVoucher) {
+      // Deselect the voucher and reset totalAmountAfterDiscount
       $scope.selectedVoucher = null;
       selectedVoucher.selected = false;
+      $scope.totalAmountAfterDiscount = $scope.totalAmount;
       $scope.applyVoucher();
     } else {
       $scope.selectedVoucher = selectedVoucher;
@@ -1186,50 +1221,11 @@ $scope.selectVoucher = function(selectedVoucher) {
   }
 };
 
-
-
 $scope.valueVoucher = 0;
-$scope.voucherMessage = ''; // Khởi tạo thông điệp rỗng ban đầu
+$scope.voucherMessage = '';
 $scope.voucherData = null;
+// $scope.totalAmountAfterDiscount = $scope.totalAmo  unt; 
 
-$scope.applyVoucher= function () {
-  if ($scope.selectedVoucher != null){
-
-  if ( $scope.selectedVoucher.quantity > 0) {
-    if ($scope.totalAmount >= $scope.selectedVoucher.minimumTotalAmount) {
-      var voucherCopy = angular.copy($scope.selectedVoucher); 
-      delete voucherCopy.selected; 
-       $scope.voucherData = voucherCopy;
-      // Nếu loại giảm giá là trực tiếp (valueType = 1)
-      if ($scope.selectedVoucher.valueType === 1) {
-        $scope.valueVoucher = $scope.selectedVoucher.value;
-        $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher; // Giảm trực tiếp
-      }
-      // Nếu loại giảm giá là phần trăm (valueType khác 1)
-      else {
-        var discountPercentage = $scope.selectedVoucher.value / 100;
-        $scope.valueVoucher = $scope.totalAmount * discountPercentage;
-        $scope.totalAmountAfterDiscount = $scope.totalAmount - $scope.valueVoucher; // Giảm theo phần trăm
-      }
-      $scope.voucherMessage = 'Mã giảm giá đã được áp dụng'; // Cập nhật thông điệp thành công
-    } else {
-  count();
-  $scope.voucherData = null;
-
-      $scope.valueVoucher = 0;
-    $scope.voucherMessage = 'Mã giảm giá ' + $scope.selectedVoucher.code + ' chỉ sử dụng cho đơn hàng có tổng trị giá trên ' + $scope.selectedVoucher.minimumTotalAmount;
-    // $scope.selectedVoucher = null;
-    }
-  }
-}else{
-$scope.voucherData = null;
-
-  $scope.voucherMessage = '';
-  count();
-  $scope.valueVoucher = 0;
-}
-
-};
 
 
 
@@ -1256,27 +1252,27 @@ $scope.back = function() {
   
   $scope.reloadHomeDataVouchers();
 
-  $scope.searchCode = null; // Biến lưu trữ mã code tìm kiếm
+  // $scope.searchCode = null; // Biến lưu trữ mã code tìm kiếm
 
   // Hàm tìm kiếm voucher bằng mã code
-  $scope.searchByCode = function() {
-      if($scope.searchByCode != null){
-        console.log($scope.searchCode)
-        $http.get('http://localhost:8080/api/ol/vouchers/' + $scope.searchCode)
-          .then(function(response) {
-              // Xử lý khi có kết quả trả về từ server
-              $scope.listVouchers = null;
+  // $scope.searchByCode = function() {
+  //     if($scope.searchByCode != null){
+  //       console.log($scope.searchCode)
+  //       $http.get('http://localhost:8080/api/ol/vouchers/' + $scope.searchCode)
+  //         .then(function(response) {
+  //             // Xử lý khi có kết quả trả về từ server
+  //             $scope.listVouchers = null;
 
-              $scope.listVouchers = response.data;
-          })
-          .catch(function(error) {
-              // Xử lý khi có lỗi xảy ra
-              console.error('Error:', error);
-              // Đặt foundVoucher về null nếu không tìm thấy
-              $scope.reloadHomeDataVouchers();
-          });
-      }
-  };
+  //             $scope.listVouchers = response.data;
+  //         })
+  //         .catch(function(error) {
+  //             // Xử lý khi có lỗi xảy ra
+  //             console.error('Error:', error);
+  //             // Đặt foundVoucher về null nếu không tìm thấy
+  //             $scope.reloadHomeDataVouchers();
+  //         });
+  //     }
+  // };
 
   //PayMentMethod
   $scope.reloadPaymentMethod = function() {
@@ -1662,9 +1658,6 @@ $scope.showWarningNotification = function(message) {
 
   // Account Manage
 
-// $scope.birthDate2 = new Date('1989-12-31T17:00:00.000+00:00');
-// $scope.formattedBirthDate = $filter('date')($scope.birthDate2, 'yyyy-MM-dd');
-// $scope.birthDate = new Date('1989-12-31');
 
 $scope.updateAccount = function(userData) {
   // Khởi tạo flags để theo dõi trạng thái lỗi của từng trường
@@ -1725,7 +1718,7 @@ $scope.passwordData = {
   confirmNewPassword: ''
 };
 
-$scope.checkPassword = function() {
+$scope.changePassword = function() {
   if($scope.username != null){
   const password = $scope.passwordData.newPassword;
   const confirmPassword = $scope.passwordData.confirmNewPassword;
@@ -1778,10 +1771,9 @@ $scope.logout = function() {
 };
 
 $scope.getAddressList = function() {
-  if ($scope.username != null) {
+  if ($scope.username != null && !$scope.isAdmin) {
     $http.get('http://localhost:8080/api/ol/authenticated/address?username=' + $scope.username)
       .then(function successCallback(response) {
-        console.log('Response data:', response.data); // Xem dữ liệu trả về từ API
         $scope.addressList = response.data;
       }, function errorCallback(response) {
         // Xử lý khi gọi API không thành công
@@ -1807,8 +1799,10 @@ $scope.fillDataToUpdate = function(selectedAddress) {
 };
 
 $scope.fillDataToBill  = function(address) {
-  $scope.defaultAddress = address;
+if (address != '') {
+console.log(address)
 
+  $scope.defaultAddress = address;
   // Gán dữ liệu từ địa chỉ mặc định vào hóa đơn
   $scope.bill.reciverName = $scope.defaultAddress.name;
   $scope.bill.phoneNumber = $scope.defaultAddress.phoneNumber;
@@ -1822,21 +1816,29 @@ $scope.fillDataToBill  = function(address) {
       $scope.billAddressWard = addressComponents[1].trim();
       $scope.billAddressDetail = addressComponents[0].trim();
   }
+}
+ 
+
 };
 
 $scope.getDefaultAddress  = function() {
-if ($scope.isCustomerLoggedIn == true) {
+
+
+if ($scope.username != null && !$scope.isAdmin) {
+
   $http.get('http://localhost:8080/api/ol/authenticated/addressDefault?username=' + $scope.username)
   .then(function(response) {
    $scope.fillDataToBill(response.data);
+console.log(response.data)
   })
   .catch(function(error) {
       console.error('Error:', error);
   });
 }
 
-
 };
+$scope.getDefaultAddress();
+
 
 $scope.selectAddressBill  = function(address) {
   $scope.fillDataToBill(address);
@@ -1966,20 +1968,44 @@ $scope.addAddress = function() {
 };
 
 
-
-
 $scope.getFavoritesList = function() {
-  if ($scope.username != null) {
-    $http.get('http://localhost:8080/api/ol/authenticated/favorites?username=' + $scope.username)
-      .then(function successCallback(response) {
-        console.log('Response data:', response.data); // Xem dữ liệu trả về từ API
-        $scope.favoritesList = response.data;
-      }, function errorCallback(response) {
-        // Xử lý khi gọi API không thành công
-        console.error('Error while fetching data');
-      });
+  if ($scope.username != null && !$scope.isAdmin) {
+      $http({
+          method: 'GET',
+          url: 'http://localhost:8080/api/ol/authenticated/favorites',
+          params: { username: $scope.username, page: $scope.currentPage }
+      })
+      .then(
+          function successCallback(response) {
+              $scope.favoritesList = response.data;
+
+              // Kiểm tra xem favoritesList.content có tồn tại và là mảng không
+              if ($scope.favoritesList && $scope.favoritesList.content && Array.isArray($scope.favoritesList.content)) {
+                  $rootScope.countFavorite = $scope.favoritesList.content.length;
+              } else {
+                  $rootScope.countFavorite = 0;
+              }
+          },
+          function errorCallback(response) {
+              // Xử lý khi gọi API không thành công
+              console.error('Error while fetching data');
+          }
+      );
+  }else{
+    $rootScope.countFavorite = '';
   }
 };
+
+
+$scope.setCurrentPageRateFavorite = function(page) {
+  if (page >= 0 && page < $scope.favoritesList.totalPages) {
+      $scope.currentPage = page;
+      $scope.getFavoritesList();
+  }
+};
+
+
+$scope.getFavoritesList();
 
 $scope.deleteDataFavorite = function(favorites) {
   $http.delete('http://localhost:8080/api/ol/authenticated/favorites/' + favorites)
@@ -1993,7 +2019,18 @@ $scope.deleteDataFavorite = function(favorites) {
 
 
 $scope.addFavorite = function(productId) {
-  if (productId != null) {
+if ($scope.username  == null) {
+  $scope.showErrorNotification("Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích");
+
+  return;
+}
+
+if ($scope.isAdmin) {
+  $scope.showErrorNotification("Nhân viên không thêm được sản phẩm vào danh sách yêu thích");
+  return;
+
+}
+  if (productId != null ) {
     var newFavorite = {
       customer: $scope.userData, // Thay vào đây thông tin về khách hàng đã đăng nhập
       idProduct: productId,
@@ -2003,6 +2040,8 @@ $scope.addFavorite = function(productId) {
     $http.post('http://localhost:8080/api/ol/authenticated/addFavorites', newFavorite)
       .then(function(response) {
         if (response.data === 1) {
+$scope.getFavoritesList();
+
           $scope.showSuccessNotification("Đã thêm vào yêu thích!");
         } else if (response.data === 2) {
           $scope.showErrorNotification("Sản phẩm đã tồn tại trong danh sách yêu thích của bạn!");
@@ -2017,6 +2056,8 @@ $scope.addFavorite = function(productId) {
     $scope.showErrorNotification("Vui lòng chọn sản phẩm cụ thể");
     return;
   }
+
+
 }
 
 
@@ -2030,16 +2071,22 @@ $scope.choiceProductDetail = function(productDetail){
 
 // bill
 
-$scope.listBills = function() {
-  $http({
-      method: 'GET',
-      url: 'http://localhost:8080/api/ol/authenticated/bills?username=' + $scope.username 
-  }).then(function successCallback(response) {
-      $scope.listBills = response.data;
-  }, function errorCallback(response) {
-      console.error('Error:', response.data);
-  });
-};
+// $scope.listBills = function() {
+//   console.log($scope.isAdmin)
+
+//   if ($scope.username != null && !$scope.isAdmin) {
+//     $http({
+//       method: 'GET',
+//       url: 'http://localhost:8080/api/ol/authenticated/bills?username=' + $scope.username 
+//   }).then(function successCallback(response) {
+//       $scope.listBills = response.data;
+//   }, function errorCallback(response) {
+//       console.error('Error:', response.data);
+//   });
+//   }
+
+
+// };
 
 
 $scope.showBillDetail = function() {
@@ -2056,12 +2103,7 @@ if(billId != null){
 };
 }
 
-$scope.openReview = function() {
-  $('#reviewModal').modal('show');
-};
-$scope.closeReview = function() {
-  $('#reviewModal').modal('hide');
-};
+
 
 
 $scope.rating = {
@@ -2081,29 +2123,123 @@ $scope.toggleStars = function(index) {
 };
 
 
+$scope.currentPage = 0;
+$scope.pageSize = 7;
 
-// rate
-
-
-$scope.listRatesFuc = function() {
-  $http({
+$scope.listBills = function() {
+  if ($scope.username != null && !$scope.isAdmin) {
+    $http({
       method: 'GET',
-      url: 'http://localhost:8080/api/ol/authenticated/rates?username=' + $scope.username 
-  }).then(function (response) {
-      $scope.listRates = response.data;
+      url: 'http://localhost:8080/api/ol/authenticated/bills',
+      params: { username: $scope.username, page: $scope.currentPage }
+  }).then(function(response) {
+      $scope.billPage = response.data;
 
-      console.log('Error:', response.data); 
-
+      if ($scope.billPage.totalElements === 0) {
+          $scope.noBillsMessage = "Không có hóa đơn nào được tìm thấy cho khách hàng này";
+      } else {
+          $scope.noBillsMessage = null;
+      }
   }, function errorCallback(response) {
       console.error('Error:', response.data);
   });
+  }
+
+
 };
+
+// $scope.listBills();
+
+$scope.setCurrentPage = function(page) {
+  if (page >= 0 && page < $scope.billPage.totalPages) {
+      $scope.currentPage = page;
+      $scope.listBills();
+  }
+};
+
+// $scope.range = function(totalPages) {
+//   var pages = [];
+//   for (var i = 0; i < totalPages; i++) {
+//       pages.push(i);
+//   }
+//   return pages;
+// };
+// rate
+
+$scope.listRatesFuc = function() {
+if ($scope.username != null && !$scope.isAdmin) {
+
+  $http({
+    method: 'GET',
+    url: 'http://localhost:8080/api/ol/authenticated/rates',
+    params: { username: $scope.username, page: $scope.currentPage }
+}).then(function(response) {
+    $scope.listRates = response.data;
+
+    if ($scope.listRates.totalElements === 0) {
+        $scope.noBillsMessage = "Không có hóa đơn nào được tìm thấy cho khách hàng này";
+    } else {
+        $scope.noBillsMessage = null;
+    }
+}, function errorCallback(response) {
+    console.error('Error:', response.data);
+});
+  
+}
+
+
+};
+
+$scope.setCurrentPageRate = function(page) {
+  if (page >= 0 && page < $scope.listRates.totalPages) {
+      $scope.currentPage = page;
+      $scope.listRatesFuc();
+      
+  }
+};
+
+$scope.getRates = function() {
+  var productId = $routeParams.id; 
+$scope.productId = $routeParams.id; 
+
+  $http({
+    method: 'GET',
+    url: 'http://localhost:8080/api/ol/authenticated/listRate',
+    params: { productId: productId, page: $scope.currentPage }
+}) .then(function(response) {
+          $scope.ratings = response.data; 
+      })
+      .catch(function(error) {
+          console.error('Error fetching ratings:', error);
+      });
+};
+$scope.setCurrentPageRateProduct = function(page) {
+  if (page >= 0 && page < $scope.ratings.totalPages) {
+      $scope.currentPage = page;
+      $scope.getRates();
+  }
+};
+
+
+
+// $scope.listRatesFuc = function() {
+//   $http({
+//       method: 'GET',
+//       url: 'http://localhost:8080/api/ol/authenticated/rates?username=' + $scope.username 
+//   }).then(function (response) {
+//       $scope.listRates = response.data;
+
+//       console.log('Error:', response.data); 
+
+//   }, function errorCallback(response) {
+//       console.error('Error:', response.data);
+//   });
+// };
 
 
 $scope.getNumber = function(num) {
 
-
-  return new Array(Math.round(num));
+  return new Array((num));
 };
 
 
@@ -2120,42 +2256,50 @@ $scope.deleteDataRate = function(rate) {
 
 $scope.ratings = []; // To store the retrieved ratings
 
-$scope.getRates = function() {
-    var productId = $routeParams.id; 
-    console.log(productId)
-    $http.get('http://localhost:8080/api/ol/authenticated/listRate/' + productId)
-        .then(function(response) {
-            $scope.ratings = response.data; 
+$scope.selectedBillDetail = null;
 
-            console.log($scope.ratings)
-        })
-        .catch(function(error) {
-            console.error('Error fetching ratings:', error);
-        });
+$scope.openReview = function(detail) {
+  $scope.selectedBillDetail = detail;
+  $('#reviewModal').modal('show');
 };
+
+$scope.closeReview = function() {
+  $scope.selectedBillDetail = null;
+  $('#reviewModal').modal('hide');
+};
+
+
 
 
 $scope.addRating = function() {
   if ($scope.rating.stars === 0) {
-    $scope.showErrorNotification("Vui lòng chọn sao!");
-      return;
+    $scope.showErrorNotification("Vui lòng chọn sao!"); 
+    return;
   }
 
   var ratingData = {
-      rate: $scope.rating.stars,
-      content: $scope.rating.content,
-      idCustomer: 2,
-      idBillDetail: 213,
+    rate: $scope.rating.stars,
+    content: $scope.rating.content,
+    idCustomer: 2,
+    idBillDetail: $scope.selectedBillDetail.id,
+    rated: true
   };
 
   $http.post('http://localhost:8080/api/ol/authenticated/addRate', ratingData)
-      .then(function(response) {
-          $scope.closeReview();
-      })
-      .catch(function(error) {
-          // Xử lý khi đánh giá thất bại
-      });
+    .then(function(response) {
+      if (response.data === true) {
+        $scope.showSuccessNotification("Cảm ơn bạn đã đánh giá"); 
+        $scope.showBillDetail();
+        $scope.closeReview();
+      } else {
+        $scope.showErrorNotification("Bạn đã đánh giá cho sản phẩm này trước đó"); 
+      }
+    })
+    .catch(function(error) {
+      $scope.showErrorNotification("Đánh giá thất bại vui lòng thử lại"); 
+    });
 };
+
 
 
 // check order by phoneNumber
@@ -2176,7 +2320,6 @@ $scope.checkOrder = function() {
           .then(function(response) {
               // Xử lý dữ liệu khi API trả về thành công
               $scope.billInfo = response.data;
-              console.log('Thông tin đơn hàng:', $scope.billInfo);
           })
           .catch(function(error) {
               // Xử lý lỗi khi gọi API không thành công
@@ -2212,6 +2355,8 @@ $scope.getStatusText = function(statusCode) {
           return 'Thành công';
       case 4:
           return 'Đã hủy';
+      case 10:
+            return 'Giao dịch đang được xử lí';
       default:
           return 'Trạng thái không xác định';
   }
@@ -2225,5 +2370,153 @@ $scope.getStatusText = function(statusCode) {
 
 
 
-});
+$scope.overlayActive = false;
+$scope.productSearch = [];
+$scope.limit = 4;
+$scope.showLoadMore = false;
+$scope.searchText = '';
+$scope.isNavigatingToProductDetail = false;
 
+
+$scope.closeOverlay = function (event) {
+  // Kiểm tra xem sự kiện click có phát sinh từ nội dung overlay hay không
+  if (event.target.id === 'overlay') {
+    $scope.toggleOverlaySearch();
+  }
+};
+
+$scope.openOverlaySearch = function () {
+    const overlay = document.getElementById('overlay');
+    overlay.classList.toggle('active');
+    overlay.classList.toggle('inactive');
+
+    $scope.loadProductSearch()
+};
+
+$scope.toggleOverlaySearch = function () {
+    const overlay = document.getElementById('overlay');
+    overlay.classList.remove('active');
+    overlay.classList.add('inactive');
+    document.getElementById('form1').value = '';
+    $scope.clearAndHideSearchResults();
+
+    if ($scope.isNavigatingToProductDetail) {
+        document.getElementById('form1').style.display = 'none';
+    }
+};
+
+$scope.navigateToProductDetail = function (productId) {
+    $scope.isNavigatingToProductDetail = true;
+    window.location.href = `#!product-detail/${productId}`;
+};
+
+$scope.clearAndHideSearchResults = function () {
+  const productDisplay = document.getElementById('productDisplay');
+  if (productDisplay && productDisplay.style) {
+      productDisplay.innerHTML = '';
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn && loadMoreBtn.style) {
+          loadMoreBtn.style.display = 'none';
+      }
+  }
+};
+
+$scope.displayProducts = function (products) {
+    const productDisplay = document.getElementById('productDisplay');
+
+    // Kiểm tra xem productDisplay có tồn tại và có thuộc tính style không
+    if (productDisplay && productDisplay.style) {
+        productDisplay.innerHTML = '';
+
+        products.forEach(product => {
+            // Định dạng giá theo định dạng VND
+            const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price);
+
+            // Bỏ ký hiệu đồng (₫)
+            const priceWithoutCurrencySymbol = formattedPrice.replace('₫', 'đ');
+
+            const productElement = document.createElement('div');
+            productElement.className = 'col-md-3 mb-4';
+            productElement.innerHTML = `
+                <div class="card w-100 my-2 shadow-2-strong">
+                    <a href="#!product-detail/${product.id}">
+                        <img class="card-img-top" width="100%" height="100%" class="rounded-2" loading="lazy" src="${product.path}" />
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span class="product-price">${priceWithoutCurrencySymbol}</span>
+                            <a href="#" class="btn btn-light  py-2 icon-hover px-3"></a>
+                        </div>
+                        <p class="card-title">
+                            ${product.name}
+                            ${product.nameCategory}
+                            ${product.nameMaterial}
+                            ${product.code}
+                        </p>
+                    </div>
+                </div>
+            `;
+            productDisplay.appendChild(productElement);
+        });
+
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            if ($scope.showLoadMore) {
+                loadMoreBtn.style.display = 'block';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+    } else {
+        console.error('Product display element not found or does not have a style property.');
+    }
+};
+
+
+$scope.searchText= '';
+$scope.productSearch = '';
+$scope.loadProductSearch = function () {
+  console.log($scope.searchText);
+  var searchTextParam = $scope.toLowerCaseNonAccentVietnamese($scope.searchText);
+  $http.get(`http://localhost:8080/api/ol/products/search?keyword=${searchTextParam}`)
+      .then(function (response) {
+          $scope.productSearch = response.data;
+          console.log($scope.productSearch);
+          $scope.displayProducts($scope.productSearch);
+      })
+      .catch(function (error) {
+          console.error('Error fetching more products:', error);
+      });
+};
+
+
+
+
+
+$scope.checkSearch = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTextParam = urlParams.get('searchText');
+    if (searchTextParam) {
+        $scope.searchText = searchTextParam;
+        $scope.loadMore();
+    } else {
+        $scope.searchText = '';
+    }
+};
+
+$scope.toLowerCaseNonAccentVietnamese = function (str) {
+    str = str.toLowerCase();
+    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+    str = str.replace(/đ/g, "d");
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "");
+    str = str.replace(/\u02C6|\u0306|\u031B/g, "");
+    return str;
+};
+
+$scope.checkSearch();
+});

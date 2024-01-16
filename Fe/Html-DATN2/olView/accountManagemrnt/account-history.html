@@ -2,8 +2,69 @@
 
 
 <section style="margin-top: 82px;" class="container-fluid" ng-init="listBills()">
-
-    <div style="margin-bottom: 40px;padding: 0 64px;" class="row">
+    <div style="display: flex;justify-content: center;">
+        <div class="category-container">
+          <div class="heading-data__title" id="headingTitle">
+            DANH MỤC SẢN PHẨM
+          </div>
+          <div class="category-body">
+            <div class="col-md-4">
+              <div class="category-data" id="categoryDataContainer">
+                <ul >
+                <li ng-repeat="category in dataFill.categoryList">
+                  <a ng-href="#!product?categoryId={{category.id}}" class="text-dark">{{category.name}}</a>
+                </li>
+                </ul>
+              </div>
+            </div>
+            <button class="btn btn-primary" ng-click="goToOfView()" ng-show="isAdmin">Chức năng Admin</button>
+          </div>
+      
+      
+          <div class=" d-flex justify-content-start" style="width: 32%;">
+            <div style=" border-radius: 10px;    width: 100%;" class="input-group">
+              <div class="form-outline">
+                <input style="border-bottom: 1px solid #cdcdcd;" type="search" ng-click="openOverlaySearch()" 
+                  class="form-control" readonly />
+                <label class="form-label">Tìm kiếm sản phẩm</label>
+              </div>
+              <button type="button" class="btn btn-primary shadow-0" onclick="openOverlay()">
+                <i class="fas fa-search fa-lg"></i>
+              </button>
+      
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="overlay" id="overlay" class="inactive" ng-click="closeOverlay($event)">
+        <div class="header-search">
+          <button type="button" class="btn btn-light shadow-0 closeBtn" ng-click="toggleOverlaySearch()">
+            <i class="fa-solid fa-xmark fa-lg"></i>
+          </button>
+          <form class="from-search"  >
+            <div class="input-group">
+              <div class="form-outline w-100">
+              <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
+        ng-model="searchText" ng-change="loadProductSearch()" />
+    
+    
+              </div>
+              <button type="button" class="btn btn-primary shadow-0">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="product-display">
+          <div class="container-fluid">
+            <div  class="row" id="productDisplay">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <div style="margin-bottom: 40px;padding: 46px 64px;" class="row">
         <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
 
             <div class="account-page-title">
@@ -13,24 +74,25 @@
 
             <div class="collapsible-account-content">
                 <div class="block-title">
-                    <strong class="customer-name"> Hải Phạm</strong>
+                    <strong class="customer-name">{{userData.fullName}}</strong>
                 </div>
                 <div class="block-content block-collapsible-nav-content">
+     
     
-    
+     
                     <ul class="nav items">
                         <li class="nav item current"><a href="#!account-info">Thông tin tài khoản</a></li>
                     </ul>
-                    <ul class="nav items">
-                        <li class="nav item current"><a href="#!account-history"><strong>Lịch sử mua hàng</strong></a></li>
+                    <ul ng-if="!isAdmin" class="nav items">
+                        <li class="nav item current"><a href="#!account-history"><strong>Lịch sử mua hàng</strong> </a></li>
                     </ul>
-                    <ul class="nav items">
-                        <li class="nav item current"><a href="#!account-address">Địa chỉ giao hàng</a></li>
+                    <ul ng-if="!isAdmin" class="nav items">
+                        <li class="nav item current"><a href="#!account-address">Sổ địa chỉ</a></li>
                     </ul>
-                    <ul class="nav items">
+                    <ul ng-if="!isAdmin" class="nav items">
                         <li class="nav item current"><a href="#!account-favorite">Sản phẩm yêu thích</a></li>
                     </ul>
-                    <ul class="nav items"><li class="nav item current"><a href="#!account-evaluate">Đánh giá và phản hồi</a></li>
+                    <ul ng-if="!isAdmin" class="nav items"><li class="nav item current"><a href="#!account-evaluate">Đánh giá</a></li>
                     </ul>
                 <hr>
     
@@ -53,7 +115,7 @@
                         <thead>
                             <tr>
                                 <th>Mã hóa đơn</th>
-                                <th>Ngày thanh toán</th>
+                                <th>Ngày tạo</th>
                                 <th>Ngày giao hàng</th>
                                 <th>Phí vận chuyển</th>
                                 <th>Trạng thái thanh toán</th>
@@ -61,23 +123,51 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="bill in listBills">
+                            <tr ng-repeat="bill in billPage.content">
                                 <td>{{ bill.code }}</td>
                                 <td>{{ bill.paymentDate | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ bill.deliveryDate | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ bill.shippingFee }}</td>
-                                <td>{{getStatusText(bill.status) }}</td>
-
+                                <td><strong>{{ getStatusText(bill.status) }}</strong></td>
                                 <td>
-                                
-            <a ng-href="#!account-historyDetail?billId={{bill.id}}" class="btn btn-primary">Xem chi tiết</a>
-                                
-                                
+                                    <a ng-href="#!account-historyDetail?billId={{bill.id}}" class="btn btn-primary">Xem chi tiết</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                
+                <!-- Pagination Controls -->
+                <div class="row text-center">
+                    <div class="col-md-12" ng-if="billPage && (billPage.totalPages !== 1)">
+                        <ul class="pagination">
+                            <li ng-class="{disabled: billPage.first}">
+                                <a href="#!/account-history" ng-click="setCurrentPage(0)">
+                                    <i class="fa fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li ng-class="{disabled: billPage.first}">
+                                <a href="#!/account-history" ng-click="setCurrentPage(billPage.number - 1)">
+                                    <i class="fa fa-angle-left"></i>
+                                </a>
+                            </li>
+                    
+                            {{ billPage.number + 1 }}
+                            <li ng-class="{disabled: billPage.last}">
+                                <a href="#!/account-history" ng-click="setCurrentPage(billPage.number + 1)">
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li ng-class="{disabled: billPage.last}">
+                                <a href="#!/account-history" ng-click="setCurrentPage(billPage.totalPages - 1)">
+                                    <i class="fa fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                 
+                </div>
+                
                 
             </div>
         </div>

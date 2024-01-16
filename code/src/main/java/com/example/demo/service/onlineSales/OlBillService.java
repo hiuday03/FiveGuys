@@ -4,6 +4,8 @@ import com.example.demo.entity.Bill;
 import com.example.demo.entity.BillDetail;
 import com.example.demo.model.response.onlineSales.OlBillResponse;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -14,7 +16,7 @@ public interface OlBillService {
 
     ResponseEntity<?> TaoHoaDonNguoiDungChuaDangNhap(@RequestBody JsonNode orderData);
 
-    List<Bill> findAllByCustomerEntity_IdAndStatus(Long Id);
+     Page<Bill> findLatestBillsByCustomerId(Long customerId, int page, int size);
 
      boolean updatePaymentStatus(Long billId, int paymentStatus);
 

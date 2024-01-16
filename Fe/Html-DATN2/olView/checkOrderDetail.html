@@ -1,7 +1,70 @@
 <!-- cart + summary -->
 <section style="    margin-top: 82px;"  class="bg-light " ng-init="showCheckOrder()">
+    
+    <div style="display: flex;justify-content: center;">
+        <div class="category-container">
+          <div class="heading-data__title" id="headingTitle">
+            DANH MỤC SẢN PHẨM
+          </div>
+          <div class="category-body">
+            <div class="col-md-4">
+              <div class="category-data" id="categoryDataContainer">
+                <ul >
+                <li ng-repeat="category in dataFill.categoryList">
+                  <a ng-href="#!product?categoryId={{category.id}}" class="text-dark">{{category.name}}</a>
+                </li>
+                </ul>
+              </div>
+            </div>
+            <button class="btn btn-primary" ng-click="goToOfView()" ng-show="isAdmin">Chức năng Admin</button>
+          </div>
+      
+      
+          <div class=" d-flex justify-content-start" style="width: 32%;">
+            <div style=" border-radius: 10px;    width: 100%;" class="input-group">
+              <div class="form-outline">
+                <input style="border-bottom: 1px solid #cdcdcd;" type="search" ng-click="openOverlaySearch()" 
+                  class="form-control" readonly />
+                <label class="form-label">Tìm kiếm sản phẩm</label>
+              </div>
+              <button type="button" class="btn btn-primary shadow-0" onclick="openOverlay()">
+                <i class="fas fa-search fa-lg"></i>
+              </button>
+      
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="overlay" id="overlay" class="inactive" ng-click="closeOverlay($event)">
+        <div class="header-search">
+          <button type="button" class="btn btn-light shadow-0 closeBtn" ng-click="toggleOverlaySearch()">
+            <i class="fa-solid fa-xmark fa-lg"></i>
+          </button>
+          <form class="from-search"  >
+            <div class="input-group">
+              <div class="form-outline w-100">
+              <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
+        ng-model="searchText" ng-change="loadProductSearch()" />
+    
+    
+              </div>
+              <button type="button" class="btn btn-primary shadow-0">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="product-display">
+          <div class="container-fluid">
+            <div  class="row" id="productDisplay">
+            </div>
+          </div>
+        </div>
+      </div>
+      
     <div class="container-fluid">
-      <div style="padding: 46px;;" class="row">
+        <div style="margin-bottom: 40px;padding: 46px 64px;" class="row">
         <!-- cart -->
         <div class="col-lg-12">
           <div class="card border shadow-0">
@@ -11,16 +74,16 @@
   
                 <hr />  
                     <h6  class="card-title mb-3 border:none">Kiểm tra bằng số điện thoại</h6>
-                    <form class="form-edit-account form-control">
+                    <form class="form-edit-account ">
                         <div class="input-group mb-3 ">
                             <input type="text" ng-model="phoneNumberCheckOrder" class="form-control" placeholder="Nhập số điện thoại để kiểm tra" aria-label="Số điện thoại" aria-describedby="basic-addon2">
-                               <p style="color: red;" class="error-message" ng-if="isPhoneNumberCheckOrder">Số điện thoại không hợp lệ.</p>
-                            <div class="input-group-append">
-                                <button ng-click="checkOrder()" class="btn btn-primary" type="button">Kiểm tra</button>
+                          
+                            <div class="input-group-append" >
+                                <button style="padding: 18px;" ng-click="checkOrder()" class="btn btn-primary" type="button">Kiểm tra</button>
                             </div>
                         </div>
                  
-
+                        <p style="color: red;" class="error-message" ng-if="isPhoneNumberCheckOrder">Số điện thoại không hợp lệ.</p>
                     </form>
              
                 
@@ -45,7 +108,7 @@
                                                 <td>Mã hóa đơn:</td>
                                                 <td>{{ selectedBill2.code }}</td>
                                                 <td>Trạng thái thanh toán:</td>
-                                                <td>{{getStatusText(selectedBill2.status) }}</td>
+                                                <td><strong>{{getStatusText(selectedBill2.status) }}</strong></td>
 
                                             </tr>
                                             <tr>
@@ -65,6 +128,13 @@
                                                 <td>{{ selectedBill2.shippingFee }}</td>
                                                 <td>Phương thức thanh toán:</td>
                                                 <td>{{ selectedBill2.paymentMethod.name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ghi chú:</td>
+                                                <td>{{ selectedBill2.note }}</td>
+                                                <td>Mã giảm giá:</td>
+                                                <td>{{ selectedBill2.voucher.code }}</td>
+                                                    
                                             </tr>
                                             <!-- Thêm các trường thông tin khác -->
                                         </table>
@@ -108,16 +178,16 @@
                                 <!-- Thêm một hàng mới hiển thị các thông tin tổng hợp -->
                                 <tfoot>
                                     <tr>
-                                        <td><strong>Tổng số lượng:</strong></td>
-                                        <!-- <td >{{ (selectedBill.billDetail) }}</td> -->
-                                    </tr>
-                                    <tr>
                                         <td><strong>Tổng tiền hàng:</strong></td>
-                                        <td class="text-right">{{ (selectedBill2.totalAmount)  }}</td>
-                                    </tr>
+                                        <td class="text-right">{{ (selectedBill2.totalAmount) | number }} đ</td>
+                                    </tr> 
                                     <tr>
                                         <td><strong>Giảm giá hóa đơn:</strong></td>
-                                        <td class="text-right">{{ (selectedBill2.totalAmountAfterDiscount)  }}</td>
+                                        <td class="text-right">{{ selectedBill2.totalAmount - (selectedBill2.totalAmountAfterDiscount)  | number }}  đ</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Khách phải trả:</strong></td>
+                                        <td class="text-right">{{ (selectedBill2.totalAmountAfterDiscount| number)  }} đ</td>
                                     </tr>
                                 </tfoot>
                             </table>

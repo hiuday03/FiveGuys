@@ -107,6 +107,12 @@ public class StatisticalServiceIpm implements StatisticalService {
         return billRepository.findAll();
     }
 
+    //search status bill
+    @Override
+    public List<Bill> searchStatusBill(Integer hi){
+        return statisticalRepository.searchStatusBill(hi);
+    }
+
     @Override
     public List<Statistical> getTop5SanPhamBanChayDay(Date date) {
         return jdbctemplate.query(

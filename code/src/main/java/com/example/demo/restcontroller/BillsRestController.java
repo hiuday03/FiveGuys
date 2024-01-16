@@ -84,4 +84,10 @@ public class BillsRestController {
         return ResponseEntity.ok(billDetails);
     }
 
+    @GetMapping("/getAllExportExcel")
+    public ResponseEntity<?> getAllExportExcel(){
+        return ResponseEntity.ok(billService.getAllExportExcel());
+    }
+
+
 }

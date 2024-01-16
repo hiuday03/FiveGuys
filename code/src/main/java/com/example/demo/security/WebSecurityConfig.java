@@ -89,7 +89,7 @@ public PasswordEncoder passwordEncoder() {
                 authorizeRequests
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/templates/**", "/assets/**").permitAll()
-//                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF")
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF")
 //                        .requestMatchers("/api/ol/authenticated/**").authenticated()
                         .anyRequest().permitAll()
         )
@@ -107,3 +107,4 @@ public PasswordEncoder passwordEncoder() {
 
 
 }
+

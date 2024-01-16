@@ -26,6 +26,7 @@ public class OlAccountInfoRestController {
 
     @PostMapping("/resetPassword")
     public boolean resetPassword(@RequestBody AccountChangePass userInfoRequest) {
+        System.out.println(userInfoRequest);
         return userService.resetPassword2(userInfoRequest.getUsername(), userInfoRequest.getNewPassword());
     }
 

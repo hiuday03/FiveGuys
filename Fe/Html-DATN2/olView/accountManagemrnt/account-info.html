@@ -1,6 +1,67 @@
 <section style="margin-top: 82px;" class="container-fluid">
-
-    <div style="margin-bottom: 40px;padding: 0 64px;" class="row">
+    <div style="display: flex;justify-content: center;">
+        <div class="category-container">
+          <div class="heading-data__title" id="headingTitle">
+            DANH MỤC SẢN PHẨM
+          </div>
+          <div class="category-body">
+            <div class="col-md-4">
+              <div class="category-data" id="categoryDataContainer">
+                <ul >
+                <li ng-repeat="category in dataFill.categoryList">
+                  <a ng-href="#!product?categoryId={{category.id}}" class="text-dark">{{category.name}}</a>
+                </li>
+                </ul>
+              </div>
+            </div>
+            <button class="btn btn-primary" ng-click="goToOfView()" ng-show="isAdmin">Chức năng Admin</button>
+          </div>
+      
+      
+          <div class=" d-flex justify-content-start" style="width: 32%;">
+            <div style=" border-radius: 10px;    width: 100%;" class="input-group">
+              <div class="form-outline">
+                <input style="border-bottom: 1px solid #cdcdcd;" type="search" ng-click="openOverlaySearch()" 
+                  class="form-control" readonly />
+                <label class="form-label">Tìm kiếm sản phẩm</label>
+              </div>
+              <button type="button" class="btn btn-primary shadow-0" onclick="openOverlay()">
+                <i class="fas fa-search fa-lg"></i>
+              </button>
+      
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="overlay" id="overlay" class="inactive" ng-click="closeOverlay($event)">
+        <div class="header-search">
+          <button type="button" class="btn btn-light shadow-0 closeBtn" ng-click="toggleOverlaySearch()">
+            <i class="fa-solid fa-xmark fa-lg"></i>
+          </button>
+          <form class="from-search"  >
+            <div class="input-group">
+              <div class="form-outline w-100">
+              <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
+        ng-model="searchText" ng-change="loadProductSearch()" />
+    
+    
+              </div>
+              <button type="button" class="btn btn-primary shadow-0">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="product-display">
+          <div class="container-fluid">
+            <div  class="row" id="productDisplay">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <div style="margin-bottom: 40px;padding: 46px 64px;" class="row">
         <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
 
             <div class="account-page-title">
@@ -15,20 +76,20 @@
                 <div class="block-content block-collapsible-nav-content">
      
     
-     
+                      
                     <ul class="nav items">
                         <li class="nav item current"><a href="#!account-info"><strong>Thông tin tài khoản</strong></a></li>
                     </ul>
-                    <ul class="nav items">
+                    <ul ng-if="!isAdmin" class="nav items">
                         <li class="nav item current"><a href="#!account-history">Lịch sử mua hàng</a></li>
                     </ul>
-                    <ul class="nav items">
-                        <li class="nav item current"><a href="#!account-address">Địa chỉ giao hàng</a></li>
+                    <ul ng-if="!isAdmin" class="nav items">
+                        <li class="nav item current"><a href="#!account-address">Sổ địa chỉ</a></li>
                     </ul>
-                    <ul class="nav items">
+                    <ul ng-if="!isAdmin" class="nav items">
                         <li class="nav item current"><a href="#!account-favorite">Sản phẩm yêu thích</a></li>
                     </ul>
-                    <ul class="nav items"><li class="nav item current"><a href="#!account-evaluate">Đánh giá và phản hồi</a></li>
+                    <ul ng-if="!isAdmin" class="nav items"><li class="nav item current"><a href="#!account-evaluate">Đánh giá</a></li>
                     </ul>
                 <hr>
     
@@ -56,7 +117,7 @@
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">Mật khẩu mới:</label>
                             <input ng-model="passwordData.newPassword" type="password" class="form-control" id="newPassword" placeholder="Nhập mật khẩu mới" required>
-                            <p ng-if="!isPasswordValid() && passwordData.newPassword && passwordData.confirmNewPassword" >Mật khẩu có độ dài tối thiểu 10 kí tự, viết Hoa, chứa kí tự số</p>
+                            <p style="color: red;" ng-if="!isPasswordValid() && passwordData.newPassword && passwordData.confirmNewPassword" >Mật khẩu có độ dài tối thiểu 10 kí tự, viết Hoa, chứa kí tự số</p>
                         </div>
                     
                         <div class="mb-3">
@@ -67,7 +128,7 @@
                             <p ng-if="passwordData.newPassword !== passwordData.confirmNewPassword && passwordData.confirmNewPassword !== ''" style="color: red;">Mật khẩu không trùng khớp!</p>
                         </div>
                     
-                        <button ng-click="checkPassword()" class="btn btn-primary">Đổi mật khấu</button>
+                        <button ng-click="changePassword()" class="btn btn-primary">Đổi mật khấu</button>
                     </form>
                     
                     

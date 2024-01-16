@@ -1,16 +1,19 @@
 package com.example.demo.restcontroller.onlineSales.olAccountManage;
 
-import com.example.demo.entity.FavoriteEntity;
-import com.example.demo.entity.RatingEntity;
+import com.example.demo.entity.*;
 import com.example.demo.model.response.onlineSales.OlFavoritesResponse;
 import com.example.demo.model.response.onlineSales.OlRatingResponse;
 import com.example.demo.security.service.impl.UserService;
+import com.example.demo.service.onlineSales.OlAccountService;
+import com.example.demo.service.onlineSales.OlCustomerService;
 import com.example.demo.service.onlineSales.OlRatingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -23,10 +26,33 @@ public class OlRatingRestController {
     @Autowired
     private OlRatingService olRatingService;
 
+    @Autowired
+    private OlAccountService olAccountService;
+
+    @Autowired
+    private OlCustomerService olCustomerService;
+
 
     @GetMapping("/rates")
-    public List<RatingEntity> listRates(@RequestParam("username") String username) {
-        return olRatingService.getRatingListByUsername(username);
+    public ResponseEntity<?> listRates(@RequestParam("username") String username,
+                                        @RequestParam("page") int page) {
+//
+//        return olRatingService.findAllByCustomer_IdOrderByYourFieldDesc(username);
+
+        Optional<AccountEntity> account = olAccountService.findByAccount(username);
+        if (account.isPresent()) {
+            Optional<CustomerEntity> customerEntity = Optional.ofNullable(olCustomerService.findByAccount_Id(account.get().getId()));
+            if (customerEntity.isPresent()) {
+                int size = 6;
+                Page<RatingEntity> ratingEntities = olRatingService.findAllByCustomer_IdOrderByYourFieldDesc(customerEntity.get().getId(), page, size);
+                if (ratingEntities.isEmpty()) {
+                    return ResponseEntity.ok("Không có hóa đơn nào được tìm thấy cho khách hàng này");
+                }
+                return ResponseEntity.ok(ratingEntities);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     // Trong controller của bạn
@@ -44,9 +70,11 @@ public class OlRatingRestController {
     }
 
 
-    @GetMapping("/listRate/{productId}")
-    public ResponseEntity<?> getRatingsByProductId(@PathVariable Long productId) {
-        return ResponseEntity.ok(olRatingService.findByProductId(productId));
+    @GetMapping("/listRate")
+    public ResponseEntity<?> getRatingsByProductId(@RequestParam("productId") Long productId,
+                                                   @RequestParam("page") int page) {
+        int size = 6;
+        return ResponseEntity.ok(olRatingService.findByProductId(productId,page,size));
     }
 
 }

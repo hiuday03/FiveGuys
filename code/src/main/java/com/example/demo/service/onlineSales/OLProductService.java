@@ -14,6 +14,8 @@ public interface OLProductService {
 
     List<Product> getAllProducts();
 
+    Product save(Product product);
+
     Page<OlHomeProductResponse> getAllOlProductsRespone(Integer page);
 
     List<OlHomeProductResponse> getAllOlProductsRespone();

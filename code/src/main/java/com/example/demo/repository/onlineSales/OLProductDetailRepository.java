@@ -16,6 +16,8 @@ import java.util.UUID;
 @Repository
 public interface OLProductDetailRepository extends JpaRepository<ProductDetail, Long> {
 
+    List<ProductDetail> findAllByProduct(Product product);
+
     List<ProductDetail> findByProductAndStatus(Product product,int status);
 
     List<ProductDetail> findByProduct_Id(Long productId);

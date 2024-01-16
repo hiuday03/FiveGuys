@@ -31,6 +31,8 @@ public interface StatisticalService {
     Integer sanPhamBanDuocThang(Date date);
 
     Integer sanPhamBanDuocNam(Date date);
+
+    List<Bill> searchStatusBill(Integer hi);
 //
 //    Integer listCustomerYearTile();
 

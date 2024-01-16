@@ -34,66 +34,7 @@
 
 <body ng-app="myApp">
 
-  <div class="overlay" id="overlay" class="inactive">
-    <div class="header-search">
-      <button type="button" class="btn btn-light shadow-0 closeBtn" onclick="toggleOverlay()">
-        <i class="fa-solid fa-xmark fa-lg"></i>
-      </button>
-      <form class="from-search" action="">
-        <div class="input-group">
-          <div class="form-outline w-100">
-            <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
-              oninput="loadProductSearch(this.value)" />
 
-          </div>
-          <button type="button" class="btn btn-primary shadow-0">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="product-display">
-      <div class="container-fluid">
-        <div class="row" id="productDisplay">
-          <div ng-repeat="product in productSearch" class="col-md-3 mb-4">
-            <div class="card  my-2 shadow-2-strong ">
-              <button type="button" class="btn btn-light shadow-0 closeBtn" onclick="toggleOverlay()">
-              </button>
-              <h1>HHHHH</h1>
-
-              <a href="#!product-detail/{{product.id}}">
-                <img class="card-img-top" width="100%" height="100%" class="rounded-2" loading="lazy"
-                  ng-src="{{ product.path }}" />
-              </a>
-              <div class="card-body d-flex flex-column">
-                <div style="display: flex; justify-content: space-between;">
-                  <span class="product-price"> {{ product.price}} đ</span>
-                  <a href="#" class="btn btn-light  py-2 icon-hover px-3">
-                    <i class="me-1 fa fa-heart fa-lg"></i>
-                  </a>
-                </div>
-                <p class="card-title">
-                  {{ product.name }}
-                  {{ product.nameCategory }}
-                  {{ product.nameMaterial }}
-                  {{ product.code }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- <div class="text-center">
-          <div class="row">
-            <div class="text-center mt-3 col-12">
-              <a href="#!product-search" id="loadMoreBtn" class="btn btn-main btn-light" onclick="loadProductSearch()" style="display: none;">
-                Xem thêm
-              </a>
-            </div>
-          </div>
-        </div> -->
-      </div>
-    </div>
-  </div>
 
   <header>
     <!-- Jumbotron -->
@@ -102,55 +43,35 @@
         <div style="    padding: 22px 64px;" class="row gy-3">
           <!-- Left elements -->
           <div class="col-lg-2 col-sm-4 col-4">
-            <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
-              <a href="#!home">home</a>
-              <a href="#!product">Product</a>
-              <a href="/login/login.html">Login</a>
+            <!-- <a href="https://mdbootstrap.com/" target="_blank" class="float-start"> -->
+          <!-- Đoạn HTML -->
+
+
+              <a class="heading-data__title" href="#!home">TRANG CHỦ</a>
+              <!-- <a href="#!product">Product</a>
+              <a href="/login/login.html">Login</a> -->
             </a>
           </div>
           <!-- Left elements -->
 
           <!-- Center elements -->
-          <div class="order-lg-last col-lg-4 col-sm-8 col-8">
+          <div class="order-lg-last col-lg-4 col-sm-8 col-8" style="padding-top: 6px;"> 
             <div class="d-flex justify-content-end align-items-center">
-              <!-- Ô tìm kiếm -->
-              <div class="flex-fill d-flex justify-content-start">
-                <div style=" border-radius: 10px;" class="input-group">
-                  <div class="form-outline">
-                    <input style="border-bottom: 1px solid #cdcdcd;" type="search" onclick="openOverlay()"
-                      class="form-control" readonly />
-                    <label class="form-label">Tìm kiếm sản phẩm</label>
-                  </div>
-                  <button type="button" class="btn btn-primary shadow-0" onclick="openOverlay()">
-                    <i class="fas fa-search fa-lg"></i>
-                  </button>
-
-                </div>
-              </div>
               <div class="d-flex justify-content-between align-items-center">
-                <!-- Dropdown người dùng -->
-                <div class="dropdown">
-                  <a href="#!account-info" style="color: black;" class="dropdown-toggle" href="#" role="button"
-                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-user fa-lg"></i>
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="http://localhost:8080/login">Đăng nhập</a>
-                    <a class="dropdown-item" href="http://localhost:8080/auth/logoff">Đăng xuất</a>
-                  </div>
-                </div>
-
+        
+                <a href="#!account-info" style="color: black;" class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative" href="#" role="button"
+                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa-solid fa-user fa-lg"></i>
+              </a>
                 <a href="#!checkOrder" class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative">
                   <i class="fa-solid fa-cube fa-lg"></i>
-
-               
                 </a>
 
                 <a href="#!account-favorite"
                   class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative">
                   <i class="fa fa-heart fa-lg"></i>
-                  <!-- <span ng-bind="countProduct"
-                  class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-circle">{{countProduct}}</span> -->
+                  <span ng-bind="countFavorite"
+                  class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-circle">{{countFavorite}}</span>
                 </a>
 
                 <a href="#!cart" class="me-1 py-1 px-3 nav-link d-flex align-items-center position-relative">
@@ -259,7 +180,7 @@
 
       <div class="col-6 col-sm-6 col-lg-3 mb-2">
         <h6 class="text-uppercase text-white title-main_footer ">ĐĂNG KÝ NHẬN TIN</h6>
-        <p class="text-white">Stay in touch with latest updates about our products and offers</p>
+        <p class="text-white">Giữ liên lạc với những cập nhật mới nhất về sản phẩm và ưu đãi của chúng tôi</p>
         <div class="input-group mb-3">
           <input type="email" class="form-control border" placeholder="Email" aria-label="Email"
             aria-describedby="button-addon2" />
@@ -272,17 +193,13 @@
         </h6>
         <div style="display: flex;" class="img_footer">
           <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
-            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890724/image/PaymentMethod/drl5taivsp4bfcivweab.svg" />
-          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
             ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890725/image/PaymentMethod/qprorcpqfjw6fjsfm3qw.webp" />
           <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
             ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701890726/image/PaymentMethod/hbhpazgzg8kcykpbrh01.svg" />
-          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
-            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701891189/image/PaymentMethod/z7yyd5hgfvymxcpilkgy.svg" />
+        
           <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
             ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701891752/image/PaymentMethod/tfz60l0qbuwilrkemtro.svg" />
-          <img class="card-img-top rounded-2" width="32px" height="32px" loading="lazy"
-            ng-src="https://res.cloudinary.com/dvtz5mjdb/image/upload/v1701964925/image/PaymentMethod/rkhixoumyxpj9n5hgpbb.png" />
+        
 
         </div>
       </div>

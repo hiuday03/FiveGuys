@@ -2,6 +2,71 @@
 
 
 <section style="margin-top: 82px;"  class="bg-light ">
+
+  <div style="display: flex;justify-content: center;">
+    <div class="category-container">
+      <div class="heading-data__title" id="headingTitle">
+        DANH MỤC SẢN PHẨM
+      </div>
+      <div class="category-body">
+        <div class="col-md-4">
+          <div class="category-data" id="categoryDataContainer">
+            <ul >
+            <li ng-repeat="category in dataFill.categoryList">
+              <a ng-href="#!product?categoryId={{category.id}}" class="text-dark">{{category.name}}</a>
+            </li>
+            </ul>
+          </div>
+        </div>
+        <button class="btn btn-primary" ng-click="goToOfView()" ng-show="isAdmin">Chức năng Admin</button>
+      </div>
+  
+  
+      <div class=" d-flex justify-content-start" style="width: 32%;">
+        <div style=" border-radius: 10px;    width: 100%;" class="input-group">
+          <div class="form-outline">
+            <input style="border-bottom: 1px solid #cdcdcd;" type="search" ng-click="openOverlaySearch()" 
+              class="form-control" readonly />
+            <label class="form-label">Tìm kiếm sản phẩm</label>
+          </div>
+          <button type="button" class="btn btn-primary shadow-0" onclick="openOverlay()">
+            <i class="fas fa-search fa-lg"></i>
+          </button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" class="inactive" ng-click="closeOverlay($event)">
+    <div class="header-search">
+      <button type="button" class="btn btn-light shadow-0 closeBtn" ng-click="toggleOverlaySearch()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+      </button>
+      <form class="from-search"  >
+        <div class="input-group">
+          <div class="form-outline w-100">
+          <input style="border-bottom: 1px solid #cdcdcd;" type="search" id="form1" class="form-control"
+    ng-model="searchText" ng-change="loadProductSearch()" />
+
+
+          </div>
+          <button type="button" class="btn btn-primary shadow-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="product-display">
+      <div class="container-fluid">
+        <div  class="row" id="productDisplay">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
   
   <div class="container-fluid">
     <div style="padding-bottom: 46px;;" class="row">
@@ -36,49 +101,33 @@
     </div>
 
 
-    <button class="btn btn-primary" ng-click="goToOfView()" ng-show="isAdmin">Chức năng Admin</button>
+
 
     <div style="padding: 46px 0;" class="row">
       <div class="policies-body">
         <div class="col-md-3">
           <div class="policies-item">
             <div class="policies-image">
-              <img style="    max-width: 96%;
-              height: auto;" src="https://theme.hstatic.net/1000360022/1001141780/14/policies_icon_1.png?v=577" alt="">
+              <img src="//theme.hstatic.net/1000360022/1001191831/14/policies_icon_4.png?v=436" alt="policies_icon_4.png" width="40" height="40" class="img-fluid">
             </div>
             <div class="policies-info">
-              <h5>Miễn phí vận chuyển</h5>
-              <div class="policies-desc">
-                Cho đơn hàng từ 500K
-              </div>
+              <h3 class="policies-title">Hotline: 0919.305.865</h3>
+              <div class="policies-desc">Hỗ trợ bạn từ 8h30-22h00</div>
             </div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="policies-item">
             <div class="policies-image">
-              <img style="    max-width: 96%;
-              height: auto;" src="https://theme.hstatic.net/1000360022/1001141780/14/policies_icon_1.png?v=577" loading="lazy" alt="">
+              <img style="  
+              height: auto;" src="//theme.hstatic.net/1000360022/1001191831/14/policy_product_image_4.png?v=455" width="40" height="40" alt="Cam kết chính hãng" loading="lazy" alt="">
             </div>
             <div class="policies-info">
-              <h5>Miễn phí vận chuyển</h5>
+              <h3 class="policies-title">
+                Cam kết chính hãng
+              </h3>
               <div class="policies-desc">
-                Cho đơn hàng từ 500K
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="policies-item">
-            <div class="policies-image">
-              <img style="    max-width: 96%;
-              height: auto;" src="https://theme.hstatic.net/1000360022/1001141780/14/policies_icon_1.png?v=577" loading="lazy" alt="">
-            </div>
-            <div class="policies-info">
-              <h5>Miễn phí vận chuyển</h5>
-              <div class="policies-desc">
-                Cho đơn hàng từ 500K
+                Chất lượng đảm bảo
               </div>
             </div>
           </div>
@@ -88,12 +137,29 @@
           <div class="policies-item">
             <div class="policies-image">
               <img style="    max-width: 96%;
-              height: auto;" src="https://theme.hstatic.net/1000360022/1001141780/14/policies_icon_1.png?v=577" loading="lazy" alt="">
+              height: auto;" src="https://static.coolmate.me/images/icons/icon6.svg" loading="lazy " width="40" height="40" alt="">
             </div>
             <div class="policies-info">
-              <h5>Miễn phí vận chuyển</h5>
+              <h3 class="policies-title">
+                Giao hàng nhanh toàn quốc</h3>
               <div class="policies-desc">
-                Cho đơn hàng từ 500K
+                Dịch vụ vận chuyển đáng tin cậy
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="policies-item">
+            <div class="policies-image">
+    
+              <img src="//theme.hstatic.net/1000360022/1001191831/14/policies_icon_2.png?v=455" alt="policies_icon_2.png" width="40" height="40" class="img-fluid">
+            </div>
+            <div class="policies-info">
+              <h3 class="policies-title">
+                Theo dõi đơn hàng</h3>
+              <div class="policies-desc">
+                Thông tin chi tiết về đơn hàng
               </div>
             </div>
           </div>
@@ -139,7 +205,7 @@
         <div class="voucher-content">
           <div class="col-4 ">
             <div class="voucher2-code">
-              <h5>{{ voucher.code }}</h5>
+              <h6>{{ voucher.code }}</h6>
               <p>({{ voucher.quantity }})</p>
             </div>
           </div>

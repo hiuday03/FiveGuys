@@ -320,7 +320,7 @@
             <td>
               <button ng-click="edit(rating)" type="button" class="btn btn-info" data-bs-toggle="modal"
                 data-bs-target="#modalUpdate">
-                <i class="ri-refresh-line"></i>
+                <i class="bi bi-pencil-square"></i>
               </button>
               <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                 data-bs-target="#deleteModal-{{rating.id}}">
@@ -351,29 +351,43 @@
         </tbody>
       </table>
       <div class="row align-items-center">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end">
-            <li class="page-item">
-              <button ng-click="paper.first()" class="page-link">
-                First
-              </button>
-            </li>
-            <li class="page-item">
-              <button ng-click="paper.prev()" class="page-link">
-                Previous
-              </button>
-            </li>
-            <li class="page-item">
-              <a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
-            </li>
-            <li class="page-item">
-              <button ng-click="paper.next()" class="page-link">Next</button>
-            </li>
-            <li class="page-item">
-              <button ng-click="paper.last()" class="page-link">Last</button>
-            </li>
-          </ul>
-        </nav>
+        <div class="col-md-1">
+          <!-- Điều chỉnh class col-md-6 tùy theo cỡ màn hình mong muốn -->
+          <select class="form-control" ng-model="paper.size" ng-change="changePageSize()"
+            ng-options="size for size in [5, 10, 20, 50, 100]">
+            <!-- <option value="selected">Xem mục</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option> -->
+          </select>
+        </div>
+        <div class="col-md-11">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button ng-click="paper.first()" class="page-link">
+                  First
+                </button>
+              </li>
+              <li class="page-item">
+                <button ng-click="paper.prev()" class="page-link">
+                  Previous
+                </button>
+              </li>
+              <li class="page-item">
+                <a class="page-link">{{paper.page + 1}} of {{paper.count}}</a>
+              </li>
+              <li class="page-item">
+                <button ng-click="paper.next()" class="page-link">Next</button>
+              </li>
+              <li class="page-item">
+                <button ng-click="paper.last()" class="page-link">Last</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </div>

@@ -1,8 +1,16 @@
 
 
-var app3 = angular.module('resetPass', ['ngRoute']);
-app3.controller('resetPassCtrcl', function ($scope, $http, $location) {
 
+var app3 = angular.module('resetPass', ['ngRoute']);
+
+
+
+app3.controller('resetPassCtrcl', function ($scope, $http, $location, $routeParams) {
+    var email = $routeParams.email;
+    console.log(email);
+
+    var email = $location.search().email;
+    console.log(email);
 
     toastr.options = {
         "closeButton": false,
@@ -31,26 +39,28 @@ app3.controller('resetPassCtrcl', function ($scope, $http, $location) {
         toastr["error"](message);
     };
 
-    $scope.isPasswordValid = function () {
-        const password = $scope.password2;
 
+    $scope.isPasswordValid = function(pass) {
+        const password = pass;
+      
         // Kiểm tra password có tồn tại và có độ dài lớn hơn 10 không
         const isLengthValid = password && password.length > 10;
-
+      
         // Kiểm tra mật khẩu có chứa ký tự hoa và số không
         const containsUpperCase = /[A-Z]/.test(password);
         const containsNumber = /\d/.test(password);
-
+      
         return isLengthValid && containsUpperCase && containsNumber;
-    };
-
+      };
 
 
     $scope.resetPass = function () {
         // Lấy userName từ localStorage
-        var email = localStorage.getItem('email');
+    
+        var email = localStorage.getItem("email")
+    
 
-        if (!$scope.isPasswordValid()) {
+        if (!$scope.isPasswordValid($scope.password2)) {
             $scope.showErrorNotification("Mật khẩu có độ dài tối thiểu 10 kí tự, viết Hoa, chứa kí tự số.")
             return;
         }
@@ -68,19 +78,18 @@ app3.controller('resetPassCtrcl', function ($scope, $http, $location) {
         $http.post('http://localhost:8080/auth/reset-password', data)
             .then(function (response) {
                 if (response.data === true) {
-                    console.log('Đặt lại mật khẩu thành công!');
-                    localStorage.removeItem('email');
-
+                    $scope.showSuccessNotification("Đặt lại mật khẩu thành công!")
+                    var email = localStorage.removeItem("email")
                     // Thực hiện các hành động sau khi reset mật khẩu thành công
                     window.location.href = 'http://127.0.0.1:5555/login/login.html';
 
                 } else {
-                    console.log('Đặt lại mật khẩu không thành công!');
-                    // Thực hiện xử lý khi quá trình reset mật khẩu không thành công
+                    $scope.showErrorNotification("Đặt lại mật khẩu không thành công!")
                 }
             })
             .catch(function (error) {
-                console.error('Lỗi đặt lại mật khẩu:', error);
+                $scope.showErrorNotification("Đặt lại mật khẩu không thành công!")
+
             });
     };
 });
@@ -119,12 +128,22 @@ app2.controller('otpCtrcl', function ($scope, $http, $location, $routeParams) {
     $scope.countdownValue = 60; // Khởi tạo giá trị đếm ngược ban đầu
 
     $scope.resendConfirmation = function () {
-        $http.post('http://localhost:8080/auth/forgot-password/' + $scope.email)
+        if (!$scope.email ) {
+            $scope.showErrorNotification("Email và mã xác minh không được để trống.");
+            return;
+        }
+
+        localStorage.setItem("email",$scope.email);
+
+        $http.post('http://localhost:8080/auth/reSendOTP/' + $scope.email)
             .then(function (response) {
                 $scope.message = response.data.message; // Lưu thông báo từ server để hiển thị cho người dùng
+                $scope.showSuccessNotification("Mã xác minh thành công")
+
             })
             .catch(function (error) {
-                console.error('Error:', error);
+                $scope.showErrorNotification("Mã xác minh không chính xác vui lòng kiểm tra email và nhập lại")
+
             });
 
         $scope.resendDisabled = true; // Vô hiệu hóa nút Gửi lại để tránh gửi liên tục
@@ -141,6 +160,7 @@ app2.controller('otpCtrcl', function ($scope, $http, $location, $routeParams) {
             }
             $scope.$apply(); // Cập nhật giao diện
         }, 1000);
+        
     };
     $scope.resendOTP = function () {
         $http.post('http://localhost:8080/auth/reSendOTP/' + $scope.email)
@@ -159,8 +179,8 @@ app2.controller('otpCtrcl', function ($scope, $http, $location, $routeParams) {
             $scope.showErrorNotification("Email và mã xác minh không được để trống.");
             return;
         }
-
-        var email = $routeParams.email;
+        
+        var email = localStorage.getItem("email")
 
         var data = {
             email: email,
@@ -179,13 +199,13 @@ app2.controller('otpCtrcl', function ($scope, $http, $location, $routeParams) {
 
                 } else {
                     // Mã OTP không hợp lệ
-                    $scope.showSuccessNotification("Mã không hợp lệ!");
+                    $scope.showErrorNotification("Mã không hợp lệ!");
 
                     // Thực hiện xử lý khi mã OTP không hợp lệ
                 }
             })
             .catch(function (error) {
-                console.error('Lỗi xác nhận Mã:', error);
+                $scope.showErrorNotification("Mã không hợp lệ!");
             });
     };
 
@@ -267,8 +287,6 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
 
                     $scope.showErrorNotification("Sai tên người dùng hoặc mật khẩu.");
                 } else {
-                    alert('');
-
                     $scope.showErrorNotification("Đăng nhập không thành công.");
                 }
                 console.error('Đăng nhập không thành công:', error);
@@ -282,18 +300,18 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
         return emailPattern.test(email);
     };
 
-    $scope.isPasswordValid = function () {
-        const password = $scope.passwordError;
-
+    $scope.isPasswordValid = function(pass) {
+        const password = pass;
+      
         // Kiểm tra password có tồn tại và có độ dài lớn hơn 10 không
         const isLengthValid = password && password.length > 10;
-
+      
         // Kiểm tra mật khẩu có chứa ký tự hoa và số không
         const containsUpperCase = /[A-Z]/.test(password);
         const containsNumber = /\d/.test(password);
-
+      
         return isLengthValid && containsUpperCase && containsNumber;
-    };
+      };
 
 
     $scope.checkEmailExists = function () {
@@ -346,11 +364,15 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
                     $scope.accountError = true;
                 }
 
-                if (!$scope.isPasswordValid()) {
+                if (!$scope.isPasswordValid($scope.user.password)) {
                     $scope.passwordError = true;
+
                 } else {
                     $scope.passwordError = false;
+
+
                 }
+                
 
                 if ($scope.user.password !== $scope.user.confirmPassword) {
                     $scope.confirmPasswordError = true;
@@ -374,8 +396,7 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
                     .then(function (registerResponse) {
                         console.log('Kết quả từ API:', registerResponse.data);
                         $scope.showSuccessNotification("Đăng ký thành công");
-
-                        // Xử lý kết quả từ API khi đăng ký thành công
+                        window.location.href = "http://127.0.0.1:5555/login/login.html";
                     })
                     .catch(function (registerError) {
                         $scope.showErrorNotification("Đăng kí thất bại");
@@ -387,24 +408,14 @@ app.controller('LoginCtrl2', function ($scope, $http, $location) {
 
 
 
-    $scope.logout = function () {
-        // Xóa token khỏi localStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
+    // $scope.logout = function () {
+    //     // Xóa token khỏi localStorage
+    //     localStorage.removeItem('token');
+    //     localStorage.removeItem('refreshToken');
+    //     alert('Đăng xuất thành công');
 
-        alert('Đăng xuất thành công');
-
-        window.location.href = 'http://127.0.0.1:5555/olView/index.html#!/home';
-
-        // Reset trạng thái của ứng dụng
-        // $scope.isCustomerLoggedIn = false;
-        // $scope.isEmployeeLoggedIn = false;
-        // $scope.customerData = null; 
-
-        // Chuyển hướng người dùng đến trang đăng nhập hoặc trang chính (tùy theo logic của bạn)
-        // $location.path('/login'); // hoặc $location.path('/home');
-    };
+    //     window.location.href = 'http://127.0.0.1:5555/olView/index.html#!/home';
+    // };
 
 });
-
 

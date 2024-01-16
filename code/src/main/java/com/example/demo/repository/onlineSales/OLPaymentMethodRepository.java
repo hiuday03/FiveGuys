@@ -12,7 +12,7 @@ import java.util.List;
 public interface OLPaymentMethodRepository extends JpaRepository<PaymentMethod, Long> {
 
 
-    @Query("SELECT v FROM PaymentMethod v WHERE v.status = 1 AND v.paymentType = 2")
+    @Query("SELECT v FROM PaymentMethod v WHERE v.status = 1 AND v.paymentType = 2 AND v.paymentType = 3")
     List<PaymentMethod> findActivePaymentMethods();
 
 }
