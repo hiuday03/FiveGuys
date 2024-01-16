@@ -80,87 +80,87 @@ app.config(function ($httpProvider) {
   $httpProvider.useApplyAsync(1000); //true
 });
 
-app.config(function ($routeProvider) {
-  $routeProvider
+// app.config(function ($routeProvider) {
+//   $routeProvider
 
-    // Tham khao
-    .when("/homeTest/123", {
-      templateUrl: "thamkhao/homeTest.html",
-      controller: "myAppOfView-ctrl",
-    })
-    .when("/productTest", {
-      templateUrl: "thamkhao/productTest.html",
-      controller: "myAppOfView-ctrl",
-    })
-    .when("/cartTest", {
-      templateUrl: "thamkhao/cartTest.html",
-      controller: "myAppOfView-ctrl2",
-    })
-    // Tham khao
-    // <!-- Thuong -->
+//     // Tham khao
+//     .when("/homeTest/123", {
+//       templateUrl: "thamkhao/homeTest.html",
+//       controller: "myAppOfView-ctrl",
+//     })
+//     .when("/productTest", {
+//       templateUrl: "thamkhao/productTest.html",
+//       controller: "myAppOfView-ctrl",
+//     })
+//     .when("/cartTest", {
+//       templateUrl: "thamkhao/cartTest.html",
+//       controller: "myAppOfView-ctrl2",
+//     })
+//     // Tham khao
+//     // <!-- Thuong -->
 
-    // <!-- Hieu -->
+//     // <!-- Hieu -->
 
-    .when("/admin/account/account", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/account.html",
-      controller: "account-ctrl",
-    })
-    .when("/admin/account/address", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/address.html",
-      controller: "address-ctrl",
-    })
-    .when("/admin/account/customer", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/customer.html",
-      controller: "customer-ctrl",
-    })
-    .when("/admin/account/employee", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/employee_home.html",
-      controller: "employee-ctrl",
-    })
-    .when("/admin/account/favorite", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/favorite.html",
-      controller: "favorite-ctrl",
-    })
-    .when("/admin/account/rating", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/rating.html",
-      controller: "rating-ctrl",
-    })
-    .when("/admin/account/role", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/role.html",
-      controller: "role-ctrl",
-    })
-    .when("/admin/brand", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/brand.html",
-      controller: "brand-ctrl",
-    })
-    .when("/admin/category", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/category-list.html",
-      controller: "category-ctrl",
-    })
-    .when("/admin/color", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/color-list.html",
-      controller: "color-ctrl",
-    })
-    .when("/admin/size", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/size-list.html",
-      controller: "size-ctrl",
-    })
-    .when("/admin/material", {
-      templateUrl: "/Fe/Html-DATN2/ofView/admin/material-list.html",
-      controller: "material-ctrl",
-    })
-    // tinh
-    .when("/admin/voucher", {
-      templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/voucher/voucher_home.html",
-      controller: "voucher-list-controller",
-    })
-    .when("/admin/index", {
-      templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/thongKe/thongKe.html",
-      controller: "statistical-ctrl",
-    });
+//     .when("/admin/account/account", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/account.html",
+//       controller: "account-ctrl",
+//     })
+//     .when("/admin/account/address", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/address.html",
+//       controller: "address-ctrl",
+//     })
+//     .when("/admin/account/customer", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/customer.html",
+//       controller: "customer-ctrl",
+//     })
+//     .when("/admin/account/employee", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/employee_home.html",
+//       controller: "employee-ctrl",
+//     })
+//     .when("/admin/account/favorite", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/favorite.html",
+//       controller: "favorite-ctrl",
+//     })
+//     .when("/admin/account/rating", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/rating.html",
+//       controller: "rating-ctrl",
+//     })
+//     .when("/admin/account/role", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/role.html",
+//       controller: "role-ctrl",
+//     })
+//     .when("/admin/brand", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/brand.html",
+//       controller: "brand-ctrl",
+//     })
+//     .when("/admin/category", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/category-list.html",
+//       controller: "category-ctrl",
+//     })
+//     .when("/admin/color", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/color-list.html",
+//       controller: "color-ctrl",
+//     })
+//     .when("/admin/size", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/size-list.html",
+//       controller: "size-ctrl",
+//     })
+//     .when("/admin/material", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/admin/material-list.html",
+//       controller: "material-ctrl",
+//     })
+//     // tinh
+//     .when("/admin/voucher", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/voucher/voucher_home.html",
+//       controller: "voucher-list-controller",
+//     })
+//     .when("/admin/index", {
+//       templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/thongKe/thongKe.html",
+//       controller: "statistical-ctrl",
+//     });
 
-  // <!-- Nguyen -->
-});
+//   // <!-- Nguyen -->
+// });
 
 // Hieu js
 //--------------------------------tinh thong kê-----------------------------
@@ -1119,475 +1119,478 @@ app.controller("role-ctrl", function ($scope, $http, $timeout) {
     },
   };
 });
-app.controller("address-ctrl", function ($scope, $http, $timeout) {
-  $scope.originalAddress = [];
-  $scope.address = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.currentDate = new Date();
+// app.controller("address-ctrl", function ($scope, $http, $timeout) {
+//   $scope.originalAddress = [];
+//   $scope.address = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.currentDate = new Date();
 
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
 
-  $scope.search = function () {
-    // Kiểm tra từ khóa tìm kiếm
-    if ($scope.searchKeyword.trim() !== "") {
-      $scope.address = $scope.originalAddress.filter(function (item) {
-        if (item && item.address) {
-          return item.address
-            .toLowerCase()
-            .includes($scope.searchKeyword.toLowerCase());
-        }
-        return false;
-      });
-    } else {
-      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAddress
-      $scope.address = angular.copy($scope.originalAddress);
-    }
-    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
-    $scope.changePageSize();
-  };
-  $scope.initialize = function () {
-    $http.get("/address").then(function (resp) {
-      $scope.originalAddress = resp.data;
-      $scope.address = angular.copy($scope.originalAddress);
-    });
-  };
+//   $scope.search = function () {
+//     // Kiểm tra từ khóa tìm kiếm
+//     if ($scope.searchKeyword.trim() !== "") {
+//       $scope.address = $scope.originalAddress.filter(function (item) {
+//         if (item && item.address) {
+//           return item.address
+//             .toLowerCase()
+//             .includes($scope.searchKeyword.toLowerCase());
+//         }
+//         return false;
+//       });
+//     } else {
+//       // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAddress
+//       $scope.address = angular.copy($scope.originalAddress);
+//     }
+//     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+//     $scope.changePageSize();
+//   };
+//   $scope.initialize = function () {
+//     $http.get("/address").then(function (resp) {
+//       $scope.originalAddress = resp.data;
+//       $scope.address = angular.copy($scope.originalAddress);
+//     });
+//   };
 
-  $scope.initialize();
+//   $scope.initialize();
 
-  // $scope.customers = []; // Khởi tạo danh sách khách hàng
+//   // $scope.customers = []; // Khởi tạo danh sách khách hàng
 
-  $scope.loadCustomers = function () {
-    $http
-      .get("/customer") // Thay đổi đường dẫn API tương ứng
-      .then(function (resp) {
-        $scope.customers = resp.data;
-      })
-      .catch(function (error) {
-        console.log("Error loading customers", error);
-      });
-  };
+//   $scope.loadCustomers = function () {
+//     $http
+//       .get("/customer") // Thay đổi đường dẫn API tương ứng
+//       .then(function (resp) {
+//         $scope.customers = resp.data;
+//       })
+//       .catch(function (error) {
+//         console.log("Error loading customers", error);
+//       });
+//   };
 
-  $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+//   $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
-  $scope.edit = function (address) {
-    if ($scope.formUpdate.updatedAt) {
-      $scope.formUpdate = angular.copy(address);
-    } else {
-      $scope.formUpdate = angular.copy(address);
-      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-    }
-  };
-  // $scope.edit = function (address) {
-  //     $scope.formUpdate = angular.copy(address);
-  // }
+//   $scope.edit = function (address) {
+//     if ($scope.formUpdate.updatedAt) {
+//       $scope.formUpdate = angular.copy(address);
+//     } else {
+//       $scope.formUpdate = angular.copy(address);
+//       $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+//     }
+//   };
+//   // $scope.edit = function (address) {
+//   //     $scope.formUpdate = angular.copy(address);
+//   // }
 
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    item.createdAt = $scope.currentDate;
-    item.address = getResult1();
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     item.createdAt = $scope.currentDate;
+//     item.address = getResult1();
 
-    $http
-      .post("/address", item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Create address successfully");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
-  function getResult1() {
-    let houseNumber1 = $("#houseNumber1").val();
-    let city1 = $("#city1 option:selected").text();
-    let district1 = $("#district1 option:selected").text();
-    let ward1 = $("#ward1 option:selected").text();
+//     $http
+//       .post("/address", item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Create address successfully");
+//         $scope.resetFormInput();
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
+//   function getResult1() {
+//     let houseNumber1 = $("#houseNumber1").val();
+//     let city1 = $("#city1 option:selected").text();
+//     let district1 = $("#district1 option:selected").text();
+//     let ward1 = $("#ward1 option:selected").text();
 
-    return houseNumber1 && district1 && city1 && ward1
-      ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
-      : "";
-  }
+//     return houseNumber1 && district1 && city1 && ward1
+//       ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
+//       : "";
+//   }
 
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    console.log(item);
-    item.updatedAt = $scope.currentDate;
-    item.address = getResult2();
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     console.log(item);
+//     item.updatedAt = $scope.currentDate;
+//     item.address = getResult2();
 
-    $http
-      .put(`/address/${item.id}`, item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Update address successfully");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
-  function getResult2() {
-    let houseNumber2 = $("#houseNumber2").val();
-    let city2 = $("#city2 option:selected").text();
-    let district2 = $("#district2 option:selected").text();
-    let ward2 = $("#ward2 option:selected").text();
+//     $http
+//       .put(`/address/${item.id}`, item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Update address successfully");
+//         $scope.resetFormUpdate();
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
+//   function getResult2() {
+//     let houseNumber2 = $("#houseNumber2").val();
+//     let city2 = $("#city2 option:selected").text();
+//     let district2 = $("#district2 option:selected").text();
+//     let ward2 = $("#ward2 option:selected").text();
 
-    return houseNumber2 && district2 && city2 && ward2
-      ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
-      : "";
-  }
+//     return houseNumber2 && district2 && city2 && ward2
+//       ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
+//       : "";
+//   }
 
-  $scope.delete = function (item) {
-    $http
-      .delete(`/address/${item.id}`)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Delete address successfully");
-        $scope.initialize();
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`/address/${item.id}`)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Delete address successfully");
+//         $scope.initialize();
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateAddress.$setPristine();
-    $scope.formUpdateAddress.$setUntouched();
-  };
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateAddress.$setPristine();
+//     $scope.formUpdateAddress.$setUntouched();
+//   };
 
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formCreateAddress.$setPristine();
-    $scope.formCreateAddress.$setUntouched();
-  };
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formCreateAddress.$setPristine();
+//     $scope.formCreateAddress.$setUntouched();
+//   };
 
-  $scope.changePageSize = function () {
-    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
-  };
+//   $scope.changePageSize = function () {
+//     $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+//   };
 
-  $scope.paper = {
-    page: 0,
-    size: 5, // Kích thước mặc định ban đầu
-    get items() {
-      let start = this.page * this.size;
-      return $scope.address.slice(start, start + this.size);
-    },
-    get count() {
-      return Math.ceil((1.0 * $scope.address.length) / this.size);
-    },
-    first() {
-      this.page = 0;
-    },
-    prev() {
-      if (this.page > 0) {
-        this.page--;
-      }
-    },
-    next() {
-      if (this.page < this.count - 1) {
-        this.page++;
-      }
-    },
-    last() {
-      this.page = this.count - 1;
-    },
-  };
+//   $scope.paper = {
+//     page: 0,
+//     size: 5, // Kích thước mặc định ban đầu
+//     get items() {
+//       let start = this.page * this.size;
+//       return $scope.address.slice(start, start + this.size);
+//     },
+//     get count() {
+//       return Math.ceil((1.0 * $scope.address.length) / this.size);
+//     },
+//     first() {
+//       this.page = 0;
+//     },
+//     prev() {
+//       if (this.page > 0) {
+//         this.page--;
+//       }
+//     },
+//     next() {
+//       if (this.page < this.count - 1) {
+//         this.page++;
+//       }
+//     },
+//     last() {
+//       this.page = this.count - 1;
+//     },
+//   };
 
-  const host = "https://provinces.open-api.vn/api/";
+//   const host = "https://provinces.open-api.vn/api/";
 
-  var callAPI = (api, callback) => {
-    return axios
-      .get(api)
-      .then((response) => {
-        callback(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
+//   var callAPI = (api, callback) => {
+//     return axios
+//       .get(api)
+//       .then((response) => {
+//         callback(response.data);
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching data:", error);
+//       });
+//   };
 
-  // Load city data for the first set of elements
-  callAPI(host + "?depth=1", (data) => {
-    renderData(data, "city1");
-  });
+//   // Load city data for the first set of elements
+//   callAPI(host + "?depth=1", (data) => {
+//     renderData(data, "city1");
+//   });
 
-  // Load city data for the second set of elements
-  callAPI(host + "?depth=1", (data) => {
-    renderData(data, "city2");
-  });
+//   // Load city data for the second set of elements
+//   callAPI(host + "?depth=1", (data) => {
+//     renderData(data, "city2");
+//   });
 
-  var callApiDistrict = (api, dropdownId) => {
-    callAPI(api, (data) => {
-      renderData(data.districts, dropdownId);
-    });
-  };
+//   var callApiDistrict = (api, dropdownId) => {
+//     callAPI(api, (data) => {
+//       renderData(data.districts, dropdownId);
+//     });
+//   };
 
-  var callApiWard = (api, dropdownId) => {
-    callAPI(api, (data) => {
-      renderData(data.wards, dropdownId);
-    });
-  };
+//   var callApiWard = (api, dropdownId) => {
+//     callAPI(api, (data) => {
+//       renderData(data.wards, dropdownId);
+//     });
+//   };
 
-  var renderData = (array, select) => {
-    let row = '<option disable value="">Chọn</option>';
-    array.forEach((element) => {
-      row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
-    });
-    document.querySelector("#" + select).innerHTML = row;
-  };
+//   var renderData = (array, select) => {
+//     let row = '<option disable value="">Chọn</option>';
+//     array.forEach((element) => {
+//       row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
+//     });
+//     document.querySelector("#" + select).innerHTML = row;
+//   };
 
-  $("#city1, #city2").change(function () {
-    const dropdownId = $(this).attr("id");
-    const districtDropdownId = dropdownId.replace("city", "district");
-    const selectedCityId = $(this).find(":selected").data("id");
+//   $("#city1, #city2").change(function () {
+//     const dropdownId = $(this).attr("id");
+//     const districtDropdownId = dropdownId.replace("city", "district");
+//     const selectedCityId = $(this).find(":selected").data("id");
 
-    // Clear district and ward dropdowns
-    $("#" + districtDropdownId)
-      .empty()
-      .html('<option value="" selected>Chọn quận huyện</option>');
+//     // Clear district and ward dropdowns
+//     $("#" + districtDropdownId)
+//       .empty()
+//       .html('<option value="" selected>Chọn quận huyện</option>');
 
-    const wardDropdownId = dropdownId.replace("city", "ward");
-    $("#" + wardDropdownId)
-      .empty()
-      .html('<option value="" selected>Chọn phường xã</option>');
+//     const wardDropdownId = dropdownId.replace("city", "ward");
+//     $("#" + wardDropdownId)
+//       .empty()
+//       .html('<option value="" selected>Chọn phường xã</option>');
 
-    if (selectedCityId) {
-      callApiDistrict(
-        host + "p/" + selectedCityId + "?depth=2",
-        districtDropdownId
-      );
-    }
-    printResult();
-  });
+//     if (selectedCityId) {
+//       callApiDistrict(
+//         host + "p/" + selectedCityId + "?depth=2",
+//         districtDropdownId
+//       );
+//     }
+//     printResult();
+//   });
 
-  $("#district1, #district2").change(function () {
-    const dropdownId = $(this).attr("id");
-    const wardDropdownId = dropdownId.replace("district", "ward");
-    const selectedDistrictId = $(this).find(":selected").data("id");
+//   $("#district1, #district2").change(function () {
+//     const dropdownId = $(this).attr("id");
+//     const wardDropdownId = dropdownId.replace("district", "ward");
+//     const selectedDistrictId = $(this).find(":selected").data("id");
 
-    $("#" + wardDropdownId)
-      .empty()
-      .html('<option value="" selected>Chọn phường xã</option>');
+//     $("#" + wardDropdownId)
+//       .empty()
+//       .html('<option value="" selected>Chọn phường xã</option>');
 
-    if (selectedDistrictId) {
-      callApiWard(
-        host + "d/" + selectedDistrictId + "?depth=2",
-        wardDropdownId
-      );
-    }
-    printResult();
-  });
+//     if (selectedDistrictId) {
+//       callApiWard(
+//         host + "d/" + selectedDistrictId + "?depth=2",
+//         wardDropdownId
+//       );
+//     }
+//     printResult();
+//   });
 
-  $("#ward1, #ward2, #houseNumber1, #houseNumber2").on(
-    "change input",
-    function () {
-      printResult();
-    }
-  );
+//   $("#ward1, #ward2, #houseNumber1, #houseNumber2").on(
+//     "change input",
+//     function () {
+//       printResult();
+//     }
+//   );
 
-  var printResult = () => {
-    let houseNumber1 = $("#houseNumber1").val();
-    let city1 = $("#city1 option:selected").text();
-    let district1 = $("#district1 option:selected").text();
-    let ward1 = $("#ward1 option:selected").text();
+//   var printResult = () => {
+//     let houseNumber1 = $("#houseNumber1").val();
+//     let city1 = $("#city1 option:selected").text();
+//     let district1 = $("#district1 option:selected").text();
+//     let ward1 = $("#ward1 option:selected").text();
 
-    let houseNumber2 = $("#houseNumber2").val();
-    let city2 = $("#city2 option:selected").text();
-    let district2 = $("#district2 option:selected").text();
-    let ward2 = $("#ward2 option:selected").text();
+//     let houseNumber2 = $("#houseNumber2").val();
+//     let city2 = $("#city2 option:selected").text();
+//     let district2 = $("#district2 option:selected").text();
+//     let ward2 = $("#ward2 option:selected").text();
 
-    let result1 =
-      houseNumber1 && district1 && city1 && ward1
-        ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
-        : "";
-    let result2 =
-      houseNumber2 && district2 && city2 && ward2
-        ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
-        : "";
+//     let result1 =
+//       houseNumber1 && district1 && city1 && ward1
+//         ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
+//         : "";
+//     let result2 =
+//       houseNumber2 && district2 && city2 && ward2
+//         ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
+//         : "";
 
-    $("#inputAddress1").val(result1);
-    $("#inputAddress2").val(result2);
-  };
+//     $("#inputAddress1").val(result1);
+//     $("#inputAddress2").val(result2);
+//   };
 
-  // Initial call when the page loads
-  printResult();
-});
-app.controller("account-ctrl", function ($scope, $http, $timeout) {
-  $scope.originalAccount = [];
-  $scope.account = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.currentDate = new Date();
-  const apiUrlAccount = "http://localhost:8080/account";
-  const apiUrlRole = "http://localhost:8080/role";
+//   // Initial call when the page loads
+//   printResult();
+// });
 
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
 
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
 
-  $scope.search = function () {
-    // Kiểm tra từ khóa tìm kiếm
-    if ($scope.searchKeyword.trim() !== "") {
-      $scope.account = $scope.originalAccount.filter(function (item) {
-        if (item && item.account) {
-          return item.account
-            .toLowerCase()
-            .includes($scope.searchKeyword.toLowerCase());
-        }
-        return false;
-      });
-    } else {
-      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAccount
-      $scope.account = angular.copy($scope.originalAccount);
-    }
-    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
-    $scope.changePageSize();
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlAccount).then(function (resp) {
-      $scope.originalAccount = resp.data;
-      $scope.account = angular.copy($scope.originalAccount);
-    });
-  };
+// app.controller("account-ctrl", function ($scope, $http, $timeout) {
+//   $scope.originalAccount = [];
+//   $scope.account = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.currentDate = new Date();
+//   const apiUrlAccount = "http://localhost:8080/account";
+//   const apiUrlRole = "http://localhost:8080/role";
 
-  $scope.initialize();
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
 
-  $scope.loadRoles = function () {
-    $http
-      .get(apiUrlRole)
-      .then(function (resp) {
-        $scope.roles = resp.data;
-      })
-      .catch(function (error) {
-        console.log("Error loading customers", error);
-      });
-  };
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
 
-  $scope.loadRoles();
+//   $scope.search = function () {
+//     // Kiểm tra từ khóa tìm kiếm
+//     if ($scope.searchKeyword.trim() !== "") {
+//       $scope.account = $scope.originalAccount.filter(function (item) {
+//         if (item && item.account) {
+//           return item.account
+//             .toLowerCase()
+//             .includes($scope.searchKeyword.toLowerCase());
+//         }
+//         return false;
+//       });
+//     } else {
+//       // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAccount
+//       $scope.account = angular.copy($scope.originalAccount);
+//     }
+//     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+//     $scope.changePageSize();
+//   };
+//   $scope.initialize = function () {
+//     $http.get(apiUrlAccount).then(function (resp) {
+//       $scope.originalAccount = resp.data;
+//       $scope.account = angular.copy($scope.originalAccount);
+//     });
+//   };
 
-  $scope.edit = function (account) {
-    if ($scope.formUpdate.updatedAt) {
-      $scope.formUpdate = angular.copy(account);
-    } else {
-      $scope.formUpdate = angular.copy(account);
-      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-    }
-  };
-  // $scope.edit = function (account) {
-  //     $scope.formUpdate = angular.copy(account);
-  // }
+//   $scope.initialize();
 
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    item.createdAt = $scope.currentDate;
-    item.password = "fiveguys123";
-    item.status = 1;
-    $http
-      .post(apiUrlAccount + "/save", item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Thêm tài khoản thành công");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
+//   $scope.loadRoles = function () {
+//     $http
+//       .get(apiUrlRole)
+//       .then(function (resp) {
+//         $scope.roles = resp.data;
+//       })
+//       .catch(function (error) {
+//         console.log("Error loading customers", error);
+//       });
+//   };
 
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    console.log(item);
-    $http
-      .put(apiUrlAccount + `${item.id}`, item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Sửa tài khoản thành công");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
+//   $scope.loadRoles();
 
-  $scope.delete = function (item) {
-    $http
-      .delete(`/account/${item.id}`)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Xoá thành công");
-        $scope.initialize();
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
+//   $scope.edit = function (account) {
+//     if ($scope.formUpdate.updatedAt) {
+//       $scope.formUpdate = angular.copy(account);
+//     } else {
+//       $scope.formUpdate = angular.copy(account);
+//       $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+//     }
+//   };
+//   // $scope.edit = function (account) {
+//   //     $scope.formUpdate = angular.copy(account);
+//   // }
 
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateAccount.$setPristine();
-    $scope.formUpdateAccount.$setUntouched();
-  };
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     item.createdAt = $scope.currentDate;
+//     item.password = "fiveguys123";
+//     item.status = 1;
+//     $http
+//       .post(apiUrlAccount + "/save", item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Thêm tài khoản thành công");
+//         $scope.resetFormInput();
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formCreateAccount.$setPristine();
-    $scope.formCreateAccount.$setUntouched();
-  };
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     console.log(item);
+//     $http
+//       .put(apiUrlAccount + `${item.id}`, item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Sửa tài khoản thành công");
+//         $scope.resetFormUpdate();
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.changePageSize = function () {
-    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
-  };
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`/account/${item.id}`)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Xoá thành công");
+//         $scope.initialize();
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.paper = {
-    page: 0,
-    size: 5, // Kích thước mặc định ban đầu
-    get items() {
-      let start = this.page * this.size;
-      return $scope.account.slice(start, start + this.size);
-    },
-    get count() {
-      return Math.ceil((1.0 * $scope.account.length) / this.size);
-    },
-    first() {
-      this.page = 0;
-    },
-    prev() {
-      if (this.page > 0) {
-        this.page--;
-      }
-    },
-    next() {
-      if (this.page < this.count - 1) {
-        this.page++;
-      }
-    },
-    last() {
-      this.page = this.count - 1;
-    },
-  };
-});
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateAccount.$setPristine();
+//     $scope.formUpdateAccount.$setUntouched();
+//   };
+
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formCreateAccount.$setPristine();
+//     $scope.formCreateAccount.$setUntouched();
+//   };
+
+//   $scope.changePageSize = function () {
+//     $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+//   };
+
+//   $scope.paper = {
+//     page: 0,
+//     size: 5, // Kích thước mặc định ban đầu
+//     get items() {
+//       let start = this.page * this.size;
+//       return $scope.account.slice(start, start + this.size);
+//     },
+//     get count() {
+//       return Math.ceil((1.0 * $scope.account.length) / this.size);
+//     },
+//     first() {
+//       this.page = 0;
+//     },
+//     prev() {
+//       if (this.page > 0) {
+//         this.page--;
+//       }
+//     },
+//     next() {
+//       if (this.page < this.count - 1) {
+//         this.page++;
+//       }
+//     },
+//     last() {
+//       this.page = this.count - 1;
+//     },
+//   };
+// });
 
 //end js Hieu
 
@@ -1683,719 +1686,719 @@ app.config(function ($httpProvider) {
   $httpProvider.useApplyAsync(1000); //true
 });
 
-// app.config(function ($routeProvider) {
-//   $routeProvider
+app.config(function ($routeProvider) {
+  $routeProvider
 
-//     // Tham khao
-//     .when("/homeTest/123", {
-//       templateUrl: "thamkhao/homeTest.html",
-//       controller: "myAppOfView-ctrl",
-//     })
-//     .when("/productTest", {
-//       templateUrl: "thamkhao/productTest.html",
-//       controller: "myAppOfView-ctrl",
-//     })
-//     .when("/cartTest", {
-//       templateUrl: "thamkhao/cartTest.html",
-//       controller: "myAppOfView-ctrl2",
-//     })
-//     // Tham khao
-//     // <!-- Thuong -->
+    // Tham khao
+    .when("/homeTest/123", {
+      templateUrl: "thamkhao/homeTest.html",
+      controller: "myAppOfView-ctrl",
+    })
+    .when("/productTest", {
+      templateUrl: "thamkhao/productTest.html",
+      controller: "myAppOfView-ctrl",
+    })
+    .when("/cartTest", {
+      templateUrl: "thamkhao/cartTest.html",
+      controller: "myAppOfView-ctrl2",
+    })
+    // Tham khao
+    // <!-- Thuong -->
 
-//     // <!-- Hieu -->
+    // <!-- Hieu -->
 
-//     .when("/admin/account/account", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/account.html",
-//       controller: "account-ctrl",
-//     })
-//     .when("/admin/account/address", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/address.html",
-//       controller: "address-ctrl",
-//     })
-//     .when("/admin/account/customer", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/customer.html",
-//       controller: "customer-ctrl",
-//     })
-//     .when("/admin/account/employee", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/employee_home.html",
-//       controller: "employee-ctrl",
-//     })
-//     .when("/admin/account/favorite", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/favorite.html",
-//       controller: "favorite-ctrl",
-//     })
-//     .when("/admin/account/rating", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/rating.html",
-//       controller: "rating-ctrl",
-//     })
-//     .when("/admin/account/role", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/role.html",
-//       controller: "role-ctrl",
-//     })
-//     .when("/admin/brand", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/brand.html",
-//       controller: "brand-ctrl",
-//     })
-//     .when("/admin/category", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/category-list.html",
-//       controller: "category-ctrl",
-//     })
-//     .when("/admin/color", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/color-list.html",
-//       controller: "color-ctrl",
-//     })
-//     .when("/admin/size", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/size-list.html",
-//       controller: "size-ctrl",
-//     })
-//     .when("/admin/material", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/admin/material-list.html",
-//       controller: "material-ctrl",
-//     })
-//     // tinh
-//     .when("/admin/voucher", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/voucher/voucher_home.html",
-//       controller: "voucher-list-controller",
-//     })
-//     .when("/admin/index", {
-//       templateUrl: "/Fe/Html-DATN2/ofView/Tinh/html/thongKe/thongKe.html",
-//       controller: "statistical-ctrl",
-//     });
+    .when("/admin/account/account", {
+      templateUrl: "/ofView/admin/account.html",
+      controller: "account-ctrl",
+    })
+    .when("/admin/account/address", {
+      templateUrl: "/ofView/admin/address.html",
+      controller: "address-ctrl",
+    })
+    .when("/admin/account/customer", {
+      templateUrl: "/ofView/admin/customer.html",
+      controller: "customer-ctrl",
+    })
+    .when("/admin/account/employee", {
+      templateUrl: "/ofView/admin/employee_home.html",
+      controller: "employee-ctrl",
+    })
+    .when("/admin/account/favorite", {
+      templateUrl: "/ofView/admin/favorite.html",
+      controller: "favorite-ctrl",
+    })
+    .when("/admin/account/rating", {
+      templateUrl: "/ofView/admin/rating.html",
+      controller: "rating-ctrl",
+    })
+    .when("/admin/account/role", {
+      templateUrl: "/ofView/admin/role.html",
+      controller: "role-ctrl",
+    })
+    .when("/admin/brand", {
+      templateUrl: "/ofView/admin/brand.html",
+      controller: "brand-ctrl",
+    })
+    .when("/admin/category", {
+      templateUrl: "/ofView/admin/category-list.html",
+      controller: "category-ctrl",
+    })
+    .when("/admin/color", {
+      templateUrl: "/ofView/admin/color-list.html",
+      controller: "color-ctrl",
+    })
+    .when("/admin/size", {
+      templateUrl: "/ofView/admin/size-list.html",
+      controller: "size-ctrl",
+    })
+    .when("/admin/material", {
+      templateUrl: "/ofView/admin/material-list.html",
+      controller: "material-ctrl",
+    })
+    // tinh
+    .when("/admin/voucher", {
+      templateUrl: "/ofView/Tinh/html/voucher/voucher_home.html",
+      controller: "voucher-list-controller",
+    })
+    .when("/admin/index", {
+      templateUrl: "/ofView/Tinh/html/thongKe/thongKe.html",
+      controller: "statistical-ctrl",
+    });
 
-//   // <!-- Nguyen -->
-// });
+  // <!-- Nguyen -->
+});
 
 // Hieu js
-//--------------------------------tinh thong kê-----------------------------
+// --------------------------------tinh thong kê-----------------------------
 
-// app.controller("brand-ctrl", function ($scope, $http, $timeout) {
-//   $scope.originalbrand = [];
-//   $scope.brand = [];
-//   $scope.formUpdate = {};
-//   $scope.formInput = {};
-//   $scope.showAlert = false;
-//   $scope.currentDate = new Date();
-//   const apiBrand = "http://localhost:8080/brand";
+app.controller("brand-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalbrand = [];
+  $scope.brand = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+  const apiBrand = "http://localhost:8080/brand";
 
-//   $scope.showSuccessMessage = function (message) {
-//     $scope.alertMessage = message;
-//     $scope.showAlert = true;
-//     $timeout(function () {
-//       $scope.closeAlert();
-//     }, 5000);
-//   };
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
 
-//   $scope.closeAlert = function () {
-//     $scope.showAlert = false;
-//   };
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
 
-//   $scope.search = function () {
-//     // Kiểm tra từ khóa tìm kiếm
-//     if ($scope.searchKeyword.trim() !== "") {
-//       $scope.brand = $scope.originalBrand.filter(function (item) {
-//         if (item && item.name) {
-//           return item.name
-//             .toLowerCase()
-//             .includes($scope.searchKeyword.toLowerCase());
-//         }
-//         return false;
-//       });
-//     } else {
-//       // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBrand
-//       $scope.brand = angular.copy($scope.originalBrand);
-//     }
-//     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
-//     $scope.changePageSize();
-//   };
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.brand = $scope.originalBrand.filter(function (item) {
+        if (item && item.name) {
+          return item.name
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBrand
+      $scope.brand = angular.copy($scope.originalBrand);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
 
-//   $scope.initialize = function () {
-//     $http.get(apiBrand).then(function (resp) {
-//       $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
-//       $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
-//     });
-//   };
+  $scope.initialize = function () {
+    $http.get(apiBrand).then(function (resp) {
+      $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
+      $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
+    });
+  };
 
-//   $scope.initialize();
+  $scope.initialize();
 
-//   $scope.edit = function (brand) {
-//     if ($scope.formUpdate.updatedAt) {
-//       $scope.formUpdate = angular.copy(brand);
-//     } else {
-//       $scope.formUpdate = angular.copy(brand);
-//       $scope.formUpdate.updatedAt = new Date();
-//     }
-//   };
+  $scope.edit = function (brand) {
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(brand);
+    } else {
+      $scope.formUpdate = angular.copy(brand);
+      $scope.formUpdate.updatedAt = new Date();
+    }
+  };
 
-//   // $scope.create = function () {
-//   //     let item = angular.copy($scope.formInput);
-//   //     item.createdAt = $scope.currentDate;
-//   //     $http.post("/brand", item).then(function (resp) {
-//   //         $scope.showSuccessMessage("Create brand successfully");
-//   //         $scope.resetFormInput();
-//   //         $scope.initialize();
-//   //         $('#modalAdd').modal('hide');
-//   //     }).catch(function (error) {
-//   //         console.log("Error", error);
-//   //     });
-//   // }
-//   $scope.create = function () {
-//     let item = angular.copy($scope.formInput);
-//     item.createdAt = $scope.currentDate;
-//     $http
-//       .post(apiBrand, item)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Create brand successfully");
-//         $scope.resetFormInput();
-//         $scope.initialize();
-//         $("#modalAdd").modal("hide");
-//       })
-//       .catch(function (error) {
-//         if (error.status === 400 && error.data === "Name already exists") {
-//           $scope.nameExists = true;
-//         } else {
-//           console.log("Error", error);
-//         }
-//       });
-//   };
+  // $scope.create = function () {
+  //     let item = angular.copy($scope.formInput);
+  //     item.createdAt = $scope.currentDate;
+  //     $http.post("/brand", item).then(function (resp) {
+  //         $scope.showSuccessMessage("Create brand successfully");
+  //         $scope.resetFormInput();
+  //         $scope.initialize();
+  //         $('#modalAdd').modal('hide');
+  //     }).catch(function (error) {
+  //         console.log("Error", error);
+  //     });
+  // }
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    $http
+      .post(apiBrand, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Create brand successfully");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
 
-//   $scope.update = function () {
-//     let item = angular.copy($scope.formUpdate);
-//     console.log(item);
-//     item.updatedAt = $scope.currentDate;
-//     $http
-//       .put(apiBrand + `${item.id}`, item)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Update Brand successfully");
-//         $scope.resetFormUpdate();
-//         $scope.initialize();
-//         $("#modalUpdate").modal("hide");
-//       })
-//       .catch(function (error) {
-//         if (error.status === 400 && error.data === "Name already exists") {
-//           $scope.nameExists = true;
-//         } else {
-//           console.log("Error", error);
-//         }
-//       });
-//   };
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item);
+    item.updatedAt = $scope.currentDate;
+    $http
+      .put(apiBrand + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Update Brand successfully");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
 
-//   $scope.delete = function (item) {
-//     $http
-//       .delete(`/brand/${item.id}`)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Delete Brand successfully");
-//         $scope.initialize();
-//       })
-//       .catch(function (error) {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.delete = function (item) {
+    $http
+      .delete(`/brand/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Delete Brand successfully");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormUpdate = function () {
-//     $scope.formUpdate = {};
-//     $scope.formUpdateBrand.$setPristine();
-//     $scope.formUpdateBrand.$setUntouched();
-//   };
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateBrand.$setPristine();
+    $scope.formUpdateBrand.$setUntouched();
+  };
 
-//   $scope.resetFormInput = function () {
-//     $scope.formInput = {};
-//     $scope.formCreateBrand.$setPristine();
-//     $scope.formCreateBrand.$setUntouched();
-//   };
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formCreateBrand.$setPristine();
+    $scope.formCreateBrand.$setUntouched();
+  };
 
-//   $scope.changePageSize = function () {
-//     $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
-//   };
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
 
-//   $scope.paper = {
-//     page: 0,
-//     size: 5, // Kích thước mặc định ban đầu
-//     get items() {
-//       let start = this.page * this.size;
-//       return $scope.brand.slice(start, start + this.size);
-//     },
-//     get count() {
-//       return Math.ceil((1.0 * $scope.brand.length) / this.size);
-//     },
-//     first() {
-//       this.page = 0;
-//     },
-//     prev() {
-//       if (this.page > 0) {
-//         this.page--;
-//       }
-//     },
-//     next() {
-//       if (this.page < this.count - 1) {
-//         this.page++;
-//       }
-//     },
-//     last() {
-//       this.page = this.count - 1;
-//     },
-//   };
-// });
-// app.controller("size-ctrl", function ($scope, $http, $timeout) {
-//   const apiUrlSize = "http://localhost:8080/api/size";
+  $scope.paper = {
+    page: 0,
+    size: 5, // Kích thước mặc định ban đầu
+    get items() {
+      let start = this.page * this.size;
+      return $scope.brand.slice(start, start + this.size);
+    },
+    get count() {
+      return Math.ceil((1.0 * $scope.brand.length) / this.size);
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      if (this.page > 0) {
+        this.page--;
+      }
+    },
+    next() {
+      if (this.page < this.count - 1) {
+        this.page++;
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    },
+  };
+});
+app.controller("size-ctrl", function ($scope, $http, $timeout) {
+  const apiUrlSize = "http://localhost:8080/api/size";
 
-//   $scope.sizes = [];
-//   $scope.formUpdate = {};
-//   $scope.formInput = {};
-//   $scope.showAlert = false;
-//   $scope.showSuccessMessage = function (message) {
-//     $scope.alertMessage = message;
-//     $scope.showAlert = true;
-//     $timeout(function () {
-//       $scope.closeAlert();
-//     }, 5000);
-//   };
-//   $scope.closeAlert = function () {
-//     $scope.showAlert = false;
-//   };
-//   $scope.initialize = function () {
-//     $http.get(apiUrlSize + "/page").then((resp) => {
-//       $scope.sizes = resp.data.content;
-//       $scope.totalPages = resp.data.totalPages;
-//     });
-//   };
-//   $scope.initialize();
+  $scope.sizes = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+  $scope.initialize = function () {
+    $http.get(apiUrlSize + "/page").then((resp) => {
+      $scope.sizes = resp.data.content;
+      $scope.totalPages = resp.data.totalPages;
+    });
+  };
+  $scope.initialize();
 
-//   $scope.edit = function (cate) {
-//     $scope.formUpdate = angular.copy(cate);
-//   };
-//   $scope.create = function () {
-//     let item = angular.copy($scope.formInput);
-//     $http
-//       .post(apiUrlSize, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Create size successfully!");
-//         $scope.initialize();
-//         $("#modalAdd").modal("hide");
-//         $scope.resetFormInput();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.edit = function (cate) {
+    $scope.formUpdate = angular.copy(cate);
+  };
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    $http
+      .post(apiUrlSize, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Create size successfully!");
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+        $scope.resetFormInput();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.update = function () {
-//     let item = angular.copy($scope.formUpdate);
-//     $http
-//       .put(`${apiUrlSize}/${item.id}`, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Update size successfully!");
-//         $scope.initialize();
-//         $("#modalUpdate").modal("hide");
-//         $scope.resetFormUpdate();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    $http
+      .put(`${apiUrlSize}/${item.id}`, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Update size successfully!");
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+        $scope.resetFormUpdate();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.delete = function (item) {
-//     $http
-//       .delete(`${apiUrlSize}/${item.id}`)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Delete color successfully!");
-//         $scope.initialize();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.delete = function (item) {
+    $http
+      .delete(`${apiUrlSize}/${item.id}`)
+      .then((resp) => {
+        $scope.showSuccessMessage("Delete color successfully!");
+        $scope.initialize();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormUpdate = function () {
-//     $scope.formUpdate = {};
-//     $scope.formUpdateColor.$setPristine();
-//     $scope.formUpdateColor.$setUntouched();
-//   };
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateColor.$setPristine();
+    $scope.formUpdateColor.$setUntouched();
+  };
 
-//   $scope.resetFormInput = function () {
-//     $scope.formInput = {};
-//     $scope.formAddColor.$setPristine();
-//     $scope.formAddColor.$setUntouched();
-//   };
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formAddColor.$setPristine();
+    $scope.formAddColor.$setUntouched();
+  };
 
-//   //ham hien thi nut phan trang
-//   $scope.displayPageRange = function () {
-//     var range = [];
-//     for (var i = 1; i <= $scope.totalPages; i++) {
-//       range.push(i);
-//     }
-//     return range;
-//   };
+  //ham hien thi nut phan trang
+  $scope.displayPageRange = function () {
+    var range = [];
+    for (var i = 1; i <= $scope.totalPages; i++) {
+      range.push(i);
+    }
+    return range;
+  };
 
-//   //ham hien thi trang
-//   $scope.setPage = function (page) {
-//     $currentPage = page;
-//     page = page - 1;
-//     $http.get(apiUrlSize + "/page?page=" + page).then(function (response) {
-//       $scope.sizes = response.data.content;
-//       $scope.totalPage = response.data.totalPages;
-//     });
-//   };
-// });
+  //ham hien thi trang
+  $scope.setPage = function (page) {
+    $currentPage = page;
+    page = page - 1;
+    $http.get(apiUrlSize + "/page?page=" + page).then(function (response) {
+      $scope.sizes = response.data.content;
+      $scope.totalPage = response.data.totalPages;
+    });
+  };
+});
 
-// app.controller("material-ctrl", function ($scope, $http, $timeout) {
-//   const apiUrlMaterial = "http://localhost:8080/api/material";
+app.controller("material-ctrl", function ($scope, $http, $timeout) {
+  const apiUrlMaterial = "http://localhost:8080/api/material";
 
-//   $scope.materials = [];
-//   $scope.formUpdate = {};
-//   $scope.formInput = {};
-//   $scope.showAlert = false;
-//   $scope.showSuccessMessage = function (message) {
-//     $scope.alertMessage = message;
-//     $scope.showAlert = true;
-//     $timeout(function () {
-//       $scope.closeAlert();
-//     }, 5000);
-//   };
-//   $scope.closeAlert = function () {
-//     $scope.showAlert = false;
-//   };
-//   $scope.initialize = function () {
-//     $http.get(apiUrlMaterial + "/page").then((resp) => {
-//       $scope.materials = resp.data.content;
-//       $scope.totalPages = resp.data.totalPages;
-//     });
-//   };
-//   $scope.initialize();
+  $scope.materials = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+  $scope.initialize = function () {
+    $http.get(apiUrlMaterial + "/page").then((resp) => {
+      $scope.materials = resp.data.content;
+      $scope.totalPages = resp.data.totalPages;
+    });
+  };
+  $scope.initialize();
 
-//   $scope.edit = function (cate) {
-//     $scope.formUpdate = angular.copy(cate);
-//   };
-//   $scope.create = function () {
-//     let item = angular.copy($scope.formInput);
-//     $http
-//       .post(apiUrlMaterial, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Create material successfully!");
-//         $scope.resetFormInput();
-//         $scope.initialize();
-//         $("#modalAdd").modal("hide");
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.edit = function (cate) {
+    $scope.formUpdate = angular.copy(cate);
+  };
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    $http
+      .post(apiUrlMaterial, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Create material successfully!");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.update = function () {
-//     let item = angular.copy($scope.formUpdate);
-//     $http
-//       .put(`${apiUrlMaterial}/${item.id}`, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Update material successfully!");
-//         $scope.resetFormUpdate();
-//         $scope.initialize();
-//         $("#modalUpdate").modal("hide");
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    $http
+      .put(`${apiUrlMaterial}/${item.id}`, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Update material successfully!");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.delete = function (item) {
-//     $http
-//       .delete(`${apiUrlMaterial}/${item.id}`)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Delete color successfully!");
-//         $scope.initialize();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.delete = function (item) {
+    $http
+      .delete(`${apiUrlMaterial}/${item.id}`)
+      .then((resp) => {
+        $scope.showSuccessMessage("Delete color successfully!");
+        $scope.initialize();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormUpdate = function () {
-//     $scope.formUpdate = {};
-//     $scope.formUpdateColor.$setPristine();
-//     $scope.formUpdateColor.$setUntouched();
-//   };
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateColor.$setPristine();
+    $scope.formUpdateColor.$setUntouched();
+  };
 
-//   $scope.resetFormInput = function () {
-//     $scope.formInput = {};
-//     $scope.formAddColor.$setPristine();
-//     $scope.formAddColor.$setUntouched();
-//   };
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formAddColor.$setPristine();
+    $scope.formAddColor.$setUntouched();
+  };
 
-//   // //ham lay tat ca san pham co phan trang
-//   // $scope.getProduct = function () {
-//   //     $http.get(apiUrlProduct + "/page")
-//   //         .then(function (response) {
-//   //             $scope.products = response.data.content;
-//   //             $scope.totalPages = response.data.totalPages;
-//   //         });
-//   // }
-//   // $scope.getProduct();
+  // //ham lay tat ca san pham co phan trang
+  // $scope.getProduct = function () {
+  //     $http.get(apiUrlProduct + "/page")
+  //         .then(function (response) {
+  //             $scope.products = response.data.content;
+  //             $scope.totalPages = response.data.totalPages;
+  //         });
+  // }
+  // $scope.getProduct();
 
-//   //ham hien thi nut phan trang
-//   $scope.displayPageRange = function () {
-//     var range = [];
-//     for (var i = 1; i <= $scope.totalPages; i++) {
-//       range.push(i);
-//     }
-//     return range;
-//   };
+  //ham hien thi nut phan trang
+  $scope.displayPageRange = function () {
+    var range = [];
+    for (var i = 1; i <= $scope.totalPages; i++) {
+      range.push(i);
+    }
+    return range;
+  };
 
-//   //ham hien thi trang
-//   $scope.setPage = function (page) {
-//     page = page - 1;
-//     $http.get(apiUrlMaterial + "/page?page=" + page).then(function (response) {
-//       console.log(response);
-//       $scope.materials = response.data.content;
-//       $scope.totalPage = response.data.totalPages;
-//     });
-//   };
+  //ham hien thi trang
+  $scope.setPage = function (page) {
+    page = page - 1;
+    $http.get(apiUrlMaterial + "/page?page=" + page).then(function (response) {
+      console.log(response);
+      $scope.materials = response.data.content;
+      $scope.totalPage = response.data.totalPages;
+    });
+  };
 
-//   //tao doi tuong
-//   // const getProduct = function () {
-//   //     return {
-//   //         "name": $scope.name,
-//   //         "collar": $scope.collar,
-//   //         "wrist": $scope.wrist,
-//   //         "describe": $scope.describe,
-//   //         "brand": $scope.brand,
-//   //         "material": {
-//   //             id: $scope.idMaterial,
-//   //         },
-//   //         "material": {
-//   //             id: $scope.idMaterial,
-//   //         },
-//   //     }
-//   // }
-// });
+  //tao doi tuong
+  // const getProduct = function () {
+  //     return {
+  //         "name": $scope.name,
+  //         "collar": $scope.collar,
+  //         "wrist": $scope.wrist,
+  //         "describe": $scope.describe,
+  //         "brand": $scope.brand,
+  //         "material": {
+  //             id: $scope.idMaterial,
+  //         },
+  //         "material": {
+  //             id: $scope.idMaterial,
+  //         },
+  //     }
+  // }
+});
 
-// app.controller("color-ctrl", function ($scope, $http, $timeout) {
-//   const apiUrlColor = "http://localhost:8080/api/color";
+app.controller("color-ctrl", function ($scope, $http, $timeout) {
+  const apiUrlColor = "http://localhost:8080/api/color";
 
-//   $scope.colors = [];
-//   $scope.formUpdate = {};
-//   $scope.formInput = {};
-//   $scope.showAlert = false;
-//   $scope.showSuccessMessage = function (message) {
-//     $scope.alertMessage = message;
-//     $scope.showAlert = true;
-//     $timeout(function () {
-//       $scope.closeAlert();
-//     }, 5000);
-//   };
-//   $scope.closeAlert = function () {
-//     $scope.showAlert = false;
-//   };
-//   $scope.initialize = function () {
-//     $http.get(apiUrlColor + "/page").then((resp) => {
-//       $scope.colors = resp.data.content;
-//       $scope.totalPages = resp.data.totalPages;
-//     });
-//   };
-//   $scope.initialize();
+  $scope.colors = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+  $scope.initialize = function () {
+    $http.get(apiUrlColor + "/page").then((resp) => {
+      $scope.colors = resp.data.content;
+      $scope.totalPages = resp.data.totalPages;
+    });
+  };
+  $scope.initialize();
 
-//   $scope.edit = function (cate) {
-//     $scope.formUpdate = angular.copy(cate);
-//   };
-//   $scope.create = function () {
-//     let item = angular.copy($scope.formInput);
-//     $http
-//       .post(apiUrlColor, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Create color successfully!");
-//         $scope.resetFormInput();
-//         $scope.initialize();
-//         $("#modalAdd").modal("hide");
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.edit = function (cate) {
+    $scope.formUpdate = angular.copy(cate);
+  };
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    $http
+      .post(apiUrlColor, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Create color successfully!");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.update = function () {
-//     let item = angular.copy($scope.formUpdate);
-//     $http
-//       .put(`${apiUrlColor}/${item.id}`, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Update color successfully!");
-//         $scope.resetFormUpdate();
-//         $scope.initialize();
-//         $("#modalUpdate").modal("hide");
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    $http
+      .put(`${apiUrlColor}/${item.id}`, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Update color successfully!");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.delete = function (item) {
-//     $http
-//       .delete(`${apiUrlColor}/${item.id}`)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Delete color successfully!");
-//         $scope.initialize();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.delete = function (item) {
+    $http
+      .delete(`${apiUrlColor}/${item.id}`)
+      .then((resp) => {
+        $scope.showSuccessMessage("Delete color successfully!");
+        $scope.initialize();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormUpdate = function () {
-//     $scope.formUpdate = {};
-//     $scope.formUpdateColor.$setPristine();
-//     $scope.formUpdateColor.$setUntouched();
-//   };
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateColor.$setPristine();
+    $scope.formUpdateColor.$setUntouched();
+  };
 
-//   $scope.resetFormInput = function () {
-//     $scope.formInput = {};
-//     $scope.formAddColor.$setPristine();
-//     $scope.formAddColor.$setUntouched();
-//   };
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formAddColor.$setPristine();
+    $scope.formAddColor.$setUntouched();
+  };
 
-//   // //ham lay tat ca san pham co phan trang
-//   // $scope.getProduct = function () {
-//   //     $http.get(apiUrlProduct + "/page")
-//   //         .then(function (response) {
-//   //             $scope.products = response.data.content;
-//   //             $scope.totalPages = response.data.totalPages;
-//   //         });
-//   // }
-//   // $scope.getProduct();
+  // //ham lay tat ca san pham co phan trang
+  // $scope.getProduct = function () {
+  //     $http.get(apiUrlProduct + "/page")
+  //         .then(function (response) {
+  //             $scope.products = response.data.content;
+  //             $scope.totalPages = response.data.totalPages;
+  //         });
+  // }
+  // $scope.getProduct();
 
-//   //ham hien thi nut phan trang
-//   $scope.displayPageRange = function () {
-//     var range = [];
-//     for (var i = 1; i <= $scope.totalPages; i++) {
-//       range.push(i);
-//     }
-//     return range;
-//   };
+  //ham hien thi nut phan trang
+  $scope.displayPageRange = function () {
+    var range = [];
+    for (var i = 1; i <= $scope.totalPages; i++) {
+      range.push(i);
+    }
+    return range;
+  };
 
-//   //ham hien thi trang
-//   $scope.setPage = function (page) {
-//     page = page - 1;
-//     $http.get(apiUrlColor + "/page?page=" + page).then(function (response) {
-//       console.log(response);
-//       $scope.colors = response.data.content;
-//       $scope.totalPage = response.data.totalPages;
-//     });
-//   };
+  //ham hien thi trang
+  $scope.setPage = function (page) {
+    page = page - 1;
+    $http.get(apiUrlColor + "/page?page=" + page).then(function (response) {
+      console.log(response);
+      $scope.colors = response.data.content;
+      $scope.totalPage = response.data.totalPages;
+    });
+  };
 
-//   //tao doi tuong
-//   // const getProduct = function () {
-//   //     return {
-//   //         "name": $scope.name,
-//   //         "collar": $scope.collar,
-//   //         "wrist": $scope.wrist,
-//   //         "describe": $scope.describe,
-//   //         "brand": $scope.brand,
-//   //         "color": {
-//   //             id: $scope.idColor,
-//   //         },
-//   //         "material": {
-//   //             id: $scope.idMaterial,
-//   //         },
-//   //     }
-//   // }
-// });
+  //tao doi tuong
+  // const getProduct = function () {
+  //     return {
+  //         "name": $scope.name,
+  //         "collar": $scope.collar,
+  //         "wrist": $scope.wrist,
+  //         "describe": $scope.describe,
+  //         "brand": $scope.brand,
+  //         "color": {
+  //             id: $scope.idColor,
+  //         },
+  //         "material": {
+  //             id: $scope.idMaterial,
+  //         },
+  //     }
+  // }
+});
 
-// app.controller("category-ctrl", function ($scope, $http, $timeout) {
-//   const apiUrlCategory = "http://localhost:8080/api/category";
+app.controller("category-ctrl", function ($scope, $http, $timeout) {
+  const apiUrlCategory = "http://localhost:8080/api/category";
 
-//   $scope.categories = [];
-//   $scope.formUpdate = {};
-//   $scope.formInput = {};
-//   $scope.showAlert = false;
-//   $scope.showSuccessMessage = function (message) {
-//     $scope.alertMessage = message;
-//     $scope.showAlert = true;
-//     $timeout(function () {
-//       $scope.closeAlert();
-//     }, 5000);
-//   };
-//   $scope.closeAlert = function () {
-//     $scope.showAlert = false;
-//   };
-//   $scope.initialize = function () {
-//     $http.get(apiUrlCategory + "/page").then((resp) => {
-//       $scope.categories = resp.data.content;
-//       $scope.totalPages = resp.data.totalPages;
-//     });
-//   };
-//   $scope.initialize();
+  $scope.categories = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+  $scope.initialize = function () {
+    $http.get(apiUrlCategory + "/page").then((resp) => {
+      $scope.categories = resp.data.content;
+      $scope.totalPages = resp.data.totalPages;
+    });
+  };
+  $scope.initialize();
 
-//   $scope.edit = function (cate) {
-//     $scope.formUpdate = angular.copy(cate);
-//   };
-//   $scope.create = function () {
-//     let item = angular.copy($scope.formInput);
-//     $http
-//       .post(apiUrlCategory, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Create category successfully!");
-//         $scope.initialize();
-//         $("#modalAdd").modal("hide");
-//         $scope.resetFormInput();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.edit = function (cate) {
+    $scope.formUpdate = angular.copy(cate);
+  };
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    $http
+      .post(apiUrlCategory, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Create category successfully!");
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+        $scope.resetFormInput();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.update = function () {
-//     let item = angular.copy($scope.formUpdate);
-//     $http
-//       .put(`${apiUrlCategory}/${item.id}`, item)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Update category successfully!");
-//         $scope.initialize();
-//         $("#modalUpdate").modal("hide");
-//         $scope.resetFormUpdate();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    $http
+      .put(`${apiUrlCategory}/${item.id}`, item)
+      .then((resp) => {
+        $scope.showSuccessMessage("Update category successfully!");
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+        $scope.resetFormUpdate();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.delete = function (item) {
-//     $http
-//       .delete(`${apiUrlCategory}/${item.id}`)
-//       .then((resp) => {
-//         $scope.showSuccessMessage("Delete color successfully!");
-//         $scope.initialize();
-//       })
-//       .catch((error) => {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.delete = function (item) {
+    $http
+      .delete(`${apiUrlCategory}/${item.id}`)
+      .then((resp) => {
+        $scope.showSuccessMessage("Delete color successfully!");
+        $scope.initialize();
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormUpdate = function () {
-//     $scope.formUpdate = {};
-//     $scope.formUpdateColor.$setPristine();
-//     $scope.formUpdateColor.$setUntouched();
-//   };
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateColor.$setPristine();
+    $scope.formUpdateColor.$setUntouched();
+  };
 
-//   $scope.resetFormInput = function () {
-//     $scope.formInput = {};
-//     $scope.formAddColor.$setPristine();
-//     $scope.formAddColor.$setUntouched();
-//   };
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formAddColor.$setPristine();
+    $scope.formAddColor.$setUntouched();
+  };
 
-//   //ham hien thi nut phan trang
-//   $scope.displayPageRange = function () {
-//     var range = [];
-//     for (var i = 1; i <= $scope.totalPages; i++) {
-//       range.push(i);
-//     }
-//     return range;
-//   };
+  //ham hien thi nut phan trang
+  $scope.displayPageRange = function () {
+    var range = [];
+    for (var i = 1; i <= $scope.totalPages; i++) {
+      range.push(i);
+    }
+    return range;
+  };
 
-//   //ham hien thi trang
-//   $scope.setPage = function (page) {
-//     $currentPage = page;
-//     page = page - 1;
-//     $http.get(apiUrlCategory + "/page?page=" + page).then(function (response) {
-//       $scope.categories = response.data.content;
-//       $scope.totalPage = response.data.totalPages;
-//     });
-//   };
-// });
+  //ham hien thi trang
+  $scope.setPage = function (page) {
+    $currentPage = page;
+    page = page - 1;
+    $http.get(apiUrlCategory + "/page?page=" + page).then(function (response) {
+      $scope.categories = response.data.content;
+      $scope.totalPage = response.data.totalPages;
+    });
+  };
+});
 
 app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
   $scope.originalFavorite = [];
@@ -2895,475 +2898,477 @@ app.controller("rating-ctrl", function ($scope, $http, $timeout) {
 //     },
 //   };
 // });
-// app.controller("address-ctrl", function ($scope, $http, $timeout) {
-//   $scope.originalAddress = [];
-//   $scope.address = [];
-//   $scope.formUpdate = {};
-//   $scope.formInput = {};
-//   $scope.showAlert = false;
-//   $scope.currentDate = new Date();
 
-//   $scope.showSuccessMessage = function (message) {
-//     $scope.alertMessage = message;
-//     $scope.showAlert = true;
-//     $timeout(function () {
-//       $scope.closeAlert();
-//     }, 5000);
-//   };
-//   $scope.closeAlert = function () {
-//     $scope.showAlert = false;
-//   };
+app.controller("address-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalAddress = [];
+  $scope.address = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
 
-//   $scope.search = function () {
-//     // Kiểm tra từ khóa tìm kiếm
-//     if ($scope.searchKeyword.trim() !== "") {
-//       $scope.address = $scope.originalAddress.filter(function (item) {
-//         if (item && item.address) {
-//           return item.address
-//             .toLowerCase()
-//             .includes($scope.searchKeyword.toLowerCase());
-//         }
-//         return false;
-//       });
-//     } else {
-//       // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAddress
-//       $scope.address = angular.copy($scope.originalAddress);
-//     }
-//     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
-//     $scope.changePageSize();
-//   };
-//   $scope.initialize = function () {
-//     $http.get("/address").then(function (resp) {
-//       $scope.originalAddress = resp.data;
-//       $scope.address = angular.copy($scope.originalAddress);
-//     });
-//   };
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
 
-//   $scope.initialize();
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.address = $scope.originalAddress.filter(function (item) {
+        if (item && item.address) {
+          return item.address
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAddress
+      $scope.address = angular.copy($scope.originalAddress);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+  $scope.initialize = function () {
+    $http.get("/address").then(function (resp) {
+      $scope.originalAddress = resp.data;
+      $scope.address = angular.copy($scope.originalAddress);
+    });
+  };
 
-//   // $scope.customers = []; // Khởi tạo danh sách khách hàng
+  $scope.initialize();
 
-//   $scope.loadCustomers = function () {
-//     $http
-//       .get("/customer") // Thay đổi đường dẫn API tương ứng
-//       .then(function (resp) {
-//         $scope.customers = resp.data;
-//       })
-//       .catch(function (error) {
-//         console.log("Error loading customers", error);
-//       });
-//   };
+  // $scope.customers = []; // Khởi tạo danh sách khách hàng
 
-//   $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+  $scope.loadCustomers = function () {
+    $http
+      .get("/customer") // Thay đổi đường dẫn API tương ứng
+      .then(function (resp) {
+        $scope.customers = resp.data;
+      })
+      .catch(function (error) {
+        console.log("Error loading customers", error);
+      });
+  };
 
-//   $scope.edit = function (address) {
-//     if ($scope.formUpdate.updatedAt) {
-//       $scope.formUpdate = angular.copy(address);
-//     } else {
-//       $scope.formUpdate = angular.copy(address);
-//       $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-//     }
-//   };
-//   // $scope.edit = function (address) {
-//   //     $scope.formUpdate = angular.copy(address);
-//   // }
+  $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
-//   $scope.create = function () {
-//     let item = angular.copy($scope.formInput);
-//     item.createdAt = $scope.currentDate;
-//     item.address = getResult1();
+  $scope.edit = function (address) {
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(address);
+    } else {
+      $scope.formUpdate = angular.copy(address);
+      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+    }
+  };
+  // $scope.edit = function (address) {
+  //     $scope.formUpdate = angular.copy(address);
+  // }
 
-//     $http
-//       .post("/address", item)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Create address successfully");
-//         $scope.resetFormInput();
-//         $scope.initialize();
-//         $("#modalAdd").modal("hide");
-//       })
-//       .catch(function (error) {
-//         console.log("Error", error);
-//       });
-//   };
-//   function getResult1() {
-//     let houseNumber1 = $("#houseNumber1").val();
-//     let city1 = $("#city1 option:selected").text();
-//     let district1 = $("#district1 option:selected").text();
-//     let ward1 = $("#ward1 option:selected").text();
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    item.address = getResult1();
 
-//     return houseNumber1 && district1 && city1 && ward1
-//       ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
-//       : "";
-//   }
+    $http
+      .post("/address", item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Create address successfully");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+  function getResult1() {
+    let houseNumber1 = $("#houseNumber1").val();
+    let city1 = $("#city1 option:selected").text();
+    let district1 = $("#district1 option:selected").text();
+    let ward1 = $("#ward1 option:selected").text();
 
-//   $scope.update = function () {
-//     let item = angular.copy($scope.formUpdate);
-//     console.log(item);
-//     item.updatedAt = $scope.currentDate;
-//     item.address = getResult2();
+    return houseNumber1 && district1 && city1 && ward1
+      ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
+      : "";
+  }
 
-//     $http
-//       .put(`/address/${item.id}`, item)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Update address successfully");
-//         $scope.resetFormUpdate();
-//         $scope.initialize();
-//         $("#modalUpdate").modal("hide");
-//       })
-//       .catch(function (error) {
-//         console.log("Error", error);
-//       });
-//   };
-//   function getResult2() {
-//     let houseNumber2 = $("#houseNumber2").val();
-//     let city2 = $("#city2 option:selected").text();
-//     let district2 = $("#district2 option:selected").text();
-//     let ward2 = $("#ward2 option:selected").text();
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item);
+    item.updatedAt = $scope.currentDate;
+    item.address = getResult2();
 
-//     return houseNumber2 && district2 && city2 && ward2
-//       ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
-//       : "";
-//   }
+    $http
+      .put(`/address/${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Update address successfully");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+  function getResult2() {
+    let houseNumber2 = $("#houseNumber2").val();
+    let city2 = $("#city2 option:selected").text();
+    let district2 = $("#district2 option:selected").text();
+    let ward2 = $("#ward2 option:selected").text();
 
-//   $scope.delete = function (item) {
-//     $http
-//       .delete(`/address/${item.id}`)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Delete address successfully");
-//         $scope.initialize();
-//       })
-//       .catch(function (error) {
-//         console.log("Error", error);
-//       });
-//   };
+    return houseNumber2 && district2 && city2 && ward2
+      ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
+      : "";
+  }
 
-//   $scope.resetFormUpdate = function () {
-//     $scope.formUpdate = {};
-//     $scope.formUpdateAddress.$setPristine();
-//     $scope.formUpdateAddress.$setUntouched();
-//   };
+  $scope.delete = function (item) {
+    $http
+      .delete(`/address/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Delete address successfully");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormInput = function () {
-//     $scope.formInput = {};
-//     $scope.formCreateAddress.$setPristine();
-//     $scope.formCreateAddress.$setUntouched();
-//   };
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateAddress.$setPristine();
+    $scope.formUpdateAddress.$setUntouched();
+  };
 
-//   $scope.changePageSize = function () {
-//     $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
-//   };
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formCreateAddress.$setPristine();
+    $scope.formCreateAddress.$setUntouched();
+  };
 
-//   $scope.paper = {
-//     page: 0,
-//     size: 5, // Kích thước mặc định ban đầu
-//     get items() {
-//       let start = this.page * this.size;
-//       return $scope.address.slice(start, start + this.size);
-//     },
-//     get count() {
-//       return Math.ceil((1.0 * $scope.address.length) / this.size);
-//     },
-//     first() {
-//       this.page = 0;
-//     },
-//     prev() {
-//       if (this.page > 0) {
-//         this.page--;
-//       }
-//     },
-//     next() {
-//       if (this.page < this.count - 1) {
-//         this.page++;
-//       }
-//     },
-//     last() {
-//       this.page = this.count - 1;
-//     },
-//   };
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
 
-//   const host = "https://provinces.open-api.vn/api/";
+  $scope.paper = {
+    page: 0,
+    size: 5, // Kích thước mặc định ban đầu
+    get items() {
+      let start = this.page * this.size;
+      return $scope.address.slice(start, start + this.size);
+    },
+    get count() {
+      return Math.ceil((1.0 * $scope.address.length) / this.size);
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      if (this.page > 0) {
+        this.page--;
+      }
+    },
+    next() {
+      if (this.page < this.count - 1) {
+        this.page++;
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    },
+  };
 
-//   var callAPI = (api, callback) => {
-//     return axios
-//       .get(api)
-//       .then((response) => {
-//         callback(response.data);
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching data:", error);
-//       });
-//   };
+  const host = "https://provinces.open-api.vn/api/";
 
-//   // Load city data for the first set of elements
-//   callAPI(host + "?depth=1", (data) => {
-//     renderData(data, "city1");
-//   });
+  var callAPI = (api, callback) => {
+    return axios
+      .get(api)
+      .then((response) => {
+        callback(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
-//   // Load city data for the second set of elements
-//   callAPI(host + "?depth=1", (data) => {
-//     renderData(data, "city2");
-//   });
+  // Load city data for the first set of elements
+  callAPI(host + "?depth=1", (data) => {
+    renderData(data, "city1");
+  });
 
-//   var callApiDistrict = (api, dropdownId) => {
-//     callAPI(api, (data) => {
-//       renderData(data.districts, dropdownId);
-//     });
-//   };
+  // Load city data for the second set of elements
+  callAPI(host + "?depth=1", (data) => {
+    renderData(data, "city2");
+  });
 
-//   var callApiWard = (api, dropdownId) => {
-//     callAPI(api, (data) => {
-//       renderData(data.wards, dropdownId);
-//     });
-//   };
+  var callApiDistrict = (api, dropdownId) => {
+    callAPI(api, (data) => {
+      renderData(data.districts, dropdownId);
+    });
+  };
 
-//   var renderData = (array, select) => {
-//     let row = '<option disable value="">Chọn</option>';
-//     array.forEach((element) => {
-//       row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
-//     });
-//     document.querySelector("#" + select).innerHTML = row;
-//   };
+  var callApiWard = (api, dropdownId) => {
+    callAPI(api, (data) => {
+      renderData(data.wards, dropdownId);
+    });
+  };
 
-//   $("#city1, #city2").change(function () {
-//     const dropdownId = $(this).attr("id");
-//     const districtDropdownId = dropdownId.replace("city", "district");
-//     const selectedCityId = $(this).find(":selected").data("id");
+  var renderData = (array, select) => {
+    let row = '<option disable value="">Chọn</option>';
+    array.forEach((element) => {
+      row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
+    });
+    document.querySelector("#" + select).innerHTML = row;
+  };
 
-//     // Clear district and ward dropdowns
-//     $("#" + districtDropdownId)
-//       .empty()
-//       .html('<option value="" selected>Chọn quận huyện</option>');
+  $("#city1, #city2").change(function () {
+    const dropdownId = $(this).attr("id");
+    const districtDropdownId = dropdownId.replace("city", "district");
+    const selectedCityId = $(this).find(":selected").data("id");
 
-//     const wardDropdownId = dropdownId.replace("city", "ward");
-//     $("#" + wardDropdownId)
-//       .empty()
-//       .html('<option value="" selected>Chọn phường xã</option>');
+    // Clear district and ward dropdowns
+    $("#" + districtDropdownId)
+      .empty()
+      .html('<option value="" selected>Chọn quận huyện</option>');
 
-//     if (selectedCityId) {
-//       callApiDistrict(
-//         host + "p/" + selectedCityId + "?depth=2",
-//         districtDropdownId
-//       );
-//     }
-//     printResult();
-//   });
+    const wardDropdownId = dropdownId.replace("city", "ward");
+    $("#" + wardDropdownId)
+      .empty()
+      .html('<option value="" selected>Chọn phường xã</option>');
 
-//   $("#district1, #district2").change(function () {
-//     const dropdownId = $(this).attr("id");
-//     const wardDropdownId = dropdownId.replace("district", "ward");
-//     const selectedDistrictId = $(this).find(":selected").data("id");
+    if (selectedCityId) {
+      callApiDistrict(
+        host + "p/" + selectedCityId + "?depth=2",
+        districtDropdownId
+      );
+    }
+    printResult();
+  });
 
-//     $("#" + wardDropdownId)
-//       .empty()
-//       .html('<option value="" selected>Chọn phường xã</option>');
+  $("#district1, #district2").change(function () {
+    const dropdownId = $(this).attr("id");
+    const wardDropdownId = dropdownId.replace("district", "ward");
+    const selectedDistrictId = $(this).find(":selected").data("id");
 
-//     if (selectedDistrictId) {
-//       callApiWard(
-//         host + "d/" + selectedDistrictId + "?depth=2",
-//         wardDropdownId
-//       );
-//     }
-//     printResult();
-//   });
+    $("#" + wardDropdownId)
+      .empty()
+      .html('<option value="" selected>Chọn phường xã</option>');
 
-//   $("#ward1, #ward2, #houseNumber1, #houseNumber2").on(
-//     "change input",
-//     function () {
-//       printResult();
-//     }
-//   );
+    if (selectedDistrictId) {
+      callApiWard(
+        host + "d/" + selectedDistrictId + "?depth=2",
+        wardDropdownId
+      );
+    }
+    printResult();
+  });
 
-//   var printResult = () => {
-//     let houseNumber1 = $("#houseNumber1").val();
-//     let city1 = $("#city1 option:selected").text();
-//     let district1 = $("#district1 option:selected").text();
-//     let ward1 = $("#ward1 option:selected").text();
+  $("#ward1, #ward2, #houseNumber1, #houseNumber2").on(
+    "change input",
+    function () {
+      printResult();
+    }
+  );
 
-//     let houseNumber2 = $("#houseNumber2").val();
-//     let city2 = $("#city2 option:selected").text();
-//     let district2 = $("#district2 option:selected").text();
-//     let ward2 = $("#ward2 option:selected").text();
+  var printResult = () => {
+    let houseNumber1 = $("#houseNumber1").val();
+    let city1 = $("#city1 option:selected").text();
+    let district1 = $("#district1 option:selected").text();
+    let ward1 = $("#ward1 option:selected").text();
 
-//     let result1 =
-//       houseNumber1 && district1 && city1 && ward1
-//         ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
-//         : "";
-//     let result2 =
-//       houseNumber2 && district2 && city2 && ward2
-//         ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
-//         : "";
+    let houseNumber2 = $("#houseNumber2").val();
+    let city2 = $("#city2 option:selected").text();
+    let district2 = $("#district2 option:selected").text();
+    let ward2 = $("#ward2 option:selected").text();
 
-//     $("#inputAddress1").val(result1);
-//     $("#inputAddress2").val(result2);
-//   };
+    let result1 =
+      houseNumber1 && district1 && city1 && ward1
+        ? `Số nhà ${houseNumber1}, ${ward1}, ${district1}, ${city1}`
+        : "";
+    let result2 =
+      houseNumber2 && district2 && city2 && ward2
+        ? `Số nhà ${houseNumber2}, ${ward2}, ${district2}, ${city2}`
+        : "";
 
-//   // Initial call when the page loads
-//   printResult();
-// });
-// app.controller("account-ctrl", function ($scope, $http, $timeout) {
-//   $scope.originalAccount = [];
-//   $scope.account = [];
-//   $scope.formUpdate = {};
-//   $scope.formInput = {};
-//   $scope.showAlert = false;
-//   $scope.currentDate = new Date();
-//   const apiUrlAccount = "http://localhost:8080/account";
-//   const apiUrlRole = "http://localhost:8080/role";
+    $("#inputAddress1").val(result1);
+    $("#inputAddress2").val(result2);
+  };
 
-//   $scope.showSuccessMessage = function (message) {
-//     $scope.alertMessage = message;
-//     $scope.showAlert = true;
-//     $timeout(function () {
-//       $scope.closeAlert();
-//     }, 5000);
-//   };
+  // Initial call when the page loads
+  printResult();
+});
 
-//   $scope.closeAlert = function () {
-//     $scope.showAlert = false;
-//   };
+app.controller("account-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalAccount = [];
+  $scope.account = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+  const apiUrlAccount = "http://localhost:8080/account";
+  const apiUrlRole = "http://localhost:8080/role";
 
-//   $scope.search = function () {
-//     // Kiểm tra từ khóa tìm kiếm
-//     if ($scope.searchKeyword.trim() !== "") {
-//       $scope.account = $scope.originalAccount.filter(function (item) {
-//         if (item && item.account) {
-//           return item.account
-//             .toLowerCase()
-//             .includes($scope.searchKeyword.toLowerCase());
-//         }
-//         return false;
-//       });
-//     } else {
-//       // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAccount
-//       $scope.account = angular.copy($scope.originalAccount);
-//     }
-//     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
-//     $scope.changePageSize();
-//   };
-//   $scope.initialize = function () {
-//     $http.get(apiUrlAccount).then(function (resp) {
-//       $scope.originalAccount = resp.data;
-//       $scope.account = angular.copy($scope.originalAccount);
-//     });
-//   };
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
 
-//   $scope.initialize();
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
 
-//   $scope.loadRoles = function () {
-//     $http
-//       .get(apiUrlRole)
-//       .then(function (resp) {
-//         $scope.roles = resp.data;
-//       })
-//       .catch(function (error) {
-//         console.log("Error loading customers", error);
-//       });
-//   };
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.account = $scope.originalAccount.filter(function (item) {
+        if (item && item.account) {
+          return item.account
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalAccount
+      $scope.account = angular.copy($scope.originalAccount);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+  $scope.initialize = function () {
+    $http.get(apiUrlAccount).then(function (resp) {
+      $scope.originalAccount = resp.data;
+      $scope.account = angular.copy($scope.originalAccount);
+    });
+  };
 
-//   $scope.loadRoles();
+  $scope.initialize();
 
-//   $scope.edit = function (account) {
-//     if ($scope.formUpdate.updatedAt) {
-//       $scope.formUpdate = angular.copy(account);
-//     } else {
-//       $scope.formUpdate = angular.copy(account);
-//       $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-//     }
-//   };
-//   // $scope.edit = function (account) {
-//   //     $scope.formUpdate = angular.copy(account);
-//   // }
+  $scope.loadRoles = function () {
+    $http
+      .get(apiUrlRole)
+      .then(function (resp) {
+        $scope.roles = resp.data;
+      })
+      .catch(function (error) {
+        console.log("Error loading customers", error);
+      });
+  };
 
-//   $scope.create = function () {
-//     let item = angular.copy($scope.formInput);
-//     item.createdAt = $scope.currentDate;
-//     item.password = "fiveguys123";
-//     item.status = 1;
-//     $http
-//       .post(apiUrlAccount + "/save", item)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Thêm tài khoản thành công");
-//         $scope.resetFormInput();
-//         $scope.initialize();
-//         $("#modalAdd").modal("hide");
-//       })
-//       .catch(function (error) {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.loadRoles();
 
-//   $scope.update = function () {
-//     let item = angular.copy($scope.formUpdate);
-//     console.log(item);
-//     $http
-//       .put(apiUrlAccount + `${item.id}`, item)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Sửa tài khoản thành công");
-//         $scope.resetFormUpdate();
-//         $scope.initialize();
-//         $("#modalUpdate").modal("hide");
-//       })
-//       .catch(function (error) {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.edit = function (account) {
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(account);
+    } else {
+      $scope.formUpdate = angular.copy(account);
+      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+    }
+  };
+  // $scope.edit = function (account) {
+  //     $scope.formUpdate = angular.copy(account);
+  // }
 
-//   $scope.delete = function (item) {
-//     $http
-//       .delete(`/account/${item.id}`)
-//       .then(function (resp) {
-//         $scope.showSuccessMessage("Xoá thành công");
-//         $scope.initialize();
-//       })
-//       .catch(function (error) {
-//         console.log("Error", error);
-//       });
-//   };
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    item.password = "fiveguys123";
+    item.status = 1;
+    $http
+      .post(apiUrlAccount + "/save", item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Thêm tài khoản thành công");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormUpdate = function () {
-//     $scope.formUpdate = {};
-//     $scope.formUpdateAccount.$setPristine();
-//     $scope.formUpdateAccount.$setUntouched();
-//   };
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item);
+    $http
+      .put(apiUrlAccount + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Sửa tài khoản thành công");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.resetFormInput = function () {
-//     $scope.formInput = {};
-//     $scope.formCreateAccount.$setPristine();
-//     $scope.formCreateAccount.$setUntouched();
-//   };
+  $scope.delete = function (item) {
+    $http
+      .delete(`/account/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Xoá thành công");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
 
-//   $scope.changePageSize = function () {
-//     $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
-//   };
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateAccount.$setPristine();
+    $scope.formUpdateAccount.$setUntouched();
+  };
 
-//   $scope.paper = {
-//     page: 0,
-//     size: 5, // Kích thước mặc định ban đầu
-//     get items() {
-//       let start = this.page * this.size;
-//       return $scope.account.slice(start, start + this.size);
-//     },
-//     get count() {
-//       return Math.ceil((1.0 * $scope.account.length) / this.size);
-//     },
-//     first() {
-//       this.page = 0;
-//     },
-//     prev() {
-//       if (this.page > 0) {
-//         this.page--;
-//       }
-//     },
-//     next() {
-//       if (this.page < this.count - 1) {
-//         this.page++;
-//       }
-//     },
-//     last() {
-//       this.page = this.count - 1;
-//     },
-//   };
-// });
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formCreateAccount.$setPristine();
+    $scope.formCreateAccount.$setUntouched();
+  };
+
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
+
+  $scope.paper = {
+    page: 0,
+    size: 5, // Kích thước mặc định ban đầu
+    get items() {
+      let start = this.page * this.size;
+      return $scope.account.slice(start, start + this.size);
+    },
+    get count() {
+      return Math.ceil((1.0 * $scope.account.length) / this.size);
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      if (this.page > 0) {
+        this.page--;
+      }
+    },
+    next() {
+      if (this.page < this.count - 1) {
+        this.page++;
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    },
+  };
+});
 app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   $scope.originalCustomer = [];
   $scope.customer = [];
@@ -4630,7 +4635,7 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
           if (item && item.createdAt) {
             return (
               new Date(item.createdAt).getDate() >=
-                new Date(fromDate).getDate() &&
+              new Date(fromDate).getDate() &&
               new Date(item.createdAt).getDate() <= new Date(toDate).getDate()
             );
           }
@@ -4654,9 +4659,9 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
           if (item && item.typeBill && item.status && item.createdAt) {
             return (
               new Date(item.createdAt).getTime() >=
-                new Date(fromDate).getTime() &&
+              new Date(fromDate).getTime() &&
               new Date(item.createdAt).getTime() <=
-                new Date(toDate).getTime() &&
+              new Date(toDate).getTime() &&
               item.status == filterStatus &&
               item.typeBill == filterTypeBill
             );
