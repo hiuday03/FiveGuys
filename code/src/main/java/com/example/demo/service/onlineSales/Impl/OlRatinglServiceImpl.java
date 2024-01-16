@@ -39,9 +39,14 @@ public class OlRatinglServiceImpl implements OlRatingService {
     @Autowired
     private OlBillDetailService billDetailService;
 
+//    @Override
+//    public List<RatingEntity> findByProduct(Product productDetail) {
+//        return olRatingRepository.findByBillDetailAndStatus(productDetail,1);
+//    }
+
     @Override
     public List<RatingEntity> findByProduct(Product productDetail) {
-        return olRatingRepository.findByBillDetailAndStatus(productDetail,1);
+        return null;
     }
 
     @Override
