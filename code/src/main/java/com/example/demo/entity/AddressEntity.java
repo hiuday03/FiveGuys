@@ -34,6 +34,9 @@ public class AddressEntity {
     @Column(name = "Address")
     private String address;
 
+    @Column(name = "AddressId")
+    private String addressId;
+
     @Column(name = "AddressType")
     private String addressType;
 

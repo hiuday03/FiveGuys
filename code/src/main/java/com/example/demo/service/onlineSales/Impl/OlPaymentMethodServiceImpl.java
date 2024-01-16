@@ -21,7 +21,7 @@ public class OlPaymentMethodServiceImpl implements OlPaymentMethodService {
 
     @Override
     public List<PaymentMethod> findAll() {
-        return repository.findAll();
+        return repository.findActivePaymentMethods();
     }
 
 }

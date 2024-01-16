@@ -40,7 +40,7 @@ public class PaypalConfig {
         context.setConfigurationMap(paypalSdkConfig());
 
         // Hiển thị token ra console
-        System.out.println("Access Token: " + context.getAccessToken());
+//        System.out.println("Access Token: " + context.getAccessToken());
 
         return context;
     }

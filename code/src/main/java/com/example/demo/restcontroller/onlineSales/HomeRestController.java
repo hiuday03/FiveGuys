@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -94,10 +95,10 @@ public class HomeRestController {
 
     @GetMapping("/products/detail/{id}")
     public ResponseEntity<?> getProductDetail(@PathVariable("id") Long id) {
-        Optional<ProductDetail> productDetailOptional = olProductDetailService.findById(id);
+        Optional<OlProductDetailResponse> productDetailOptional = olProductDetailService.findByIdShow(id);
 
         if (productDetailOptional.isPresent()) {
-            ProductDetail productDetail = productDetailOptional.get();
+            OlProductDetailResponse productDetail = productDetailOptional.get();
 
             // Kiểm tra số lượng ở đây và gửi cả thông tin số lượng về
             if (productDetail.getQuantity() > 0) {
@@ -120,18 +121,31 @@ public class HomeRestController {
         if (coloId != null && productId != null) {
             List<ProductDetail> productDetails = olProductDetailService.findByColorIdAndProductId(coloId, productId);
 
+            List<Image> largestSizeImages = new ArrayList<>();
+
+            int maxSize = 0;
+
             for (ProductDetail productDetail : productDetails) {
                 if (productDetail != null) {
                     List<Image> images = olImageService.findByProductDetailId(productDetail.getId());
-                    if (!images.isEmpty()) {
-                        return ResponseEntity.ok(images);
+                    int currentSize = images.size();
+
+                    if (currentSize > maxSize) {
+                        maxSize = currentSize;
+                        largestSizeImages = images;
                     }
                 }
             }
+
+            if (!largestSizeImages.isEmpty()) {
+                return ResponseEntity.ok(largestSizeImages);
+            }
         }
 
-        return ResponseEntity.badRequest().body("Missing required parameters: coloId, sizeId, productId");
+        return ResponseEntity.badRequest().body("Missing required parameters: coloId, productId");
     }
+
+
 
 
 

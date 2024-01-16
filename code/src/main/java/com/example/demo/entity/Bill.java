@@ -49,6 +49,9 @@ public class Bill {
     @Column(name = "Address")
     private String address;
 
+//    @Column(name = "AddressId")
+//    private String addressId;
+
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 

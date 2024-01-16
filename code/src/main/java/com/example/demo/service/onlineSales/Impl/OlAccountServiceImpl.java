@@ -57,7 +57,9 @@ public class OlAccountServiceImpl implements OlAccountService {
                 customerNew.setGender(userInfoRequest.getGender());
                 customerNew.getAccount().setPhoneNumber(userInfoRequest.getAccount().getPhoneNumber());
                 customerNew.getAccount().setId(userInfoRequest.getAccount().getId());
-                accountRepository.save(customerNew.getAccount());
+            customerNew.setAvatar(userInfoRequest.getAvatar());
+
+            accountRepository.save(customerNew.getAccount());
                 olCustomerService.save(customerNew);
                 return true;
             } else if (userInfoRequest.getAccount().getRole().getFullName().equals("STAFF") || userInfoRequest.getAccount().getRole().equals("ADMIN")) {
@@ -69,6 +71,7 @@ public class OlAccountServiceImpl implements OlAccountService {
                 customerNew.setGender(userInfoRequest.getGender());
                 customerNew.getAccount().setPhoneNumber(userInfoRequest.getAccount().getPhoneNumber());
                 customerNew.getAccount().setId(userInfoRequest.getAccount().getId());
+                customerNew.setAvatar(userInfoRequest.getAvatar());
                 accountRepository.save(customerNew.getAccount());
                 olEmployeeService.save(customerNew);
                 return true;

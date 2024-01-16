@@ -202,12 +202,16 @@ public class OlBillUntility {
                         if (bill.getPaymentMethod().getName().equals("MoMo")) {
                             if (authenticationCheckMoMo(encodeId(bill.getId()))) {
                                 bill.setStatus(1);
+                                bill.setPaymentDate(new Date());
+
                                 olBillService.save(bill);
                                 return;
                             }
                         } else if (bill.getPaymentMethod().getName().equals("VNPAY")) {
                             if (authenticationCheckVnPay(encodeId(bill.getId()),req)) {
                                 bill.setStatus(1);
+                                bill.setPaymentDate(new Date());
+
                                 olBillService.save(bill);
                                 return;
                             }

@@ -15,6 +15,7 @@ public class UserInfoRequest {
     private AccountInfoRequest account;
 //    private String birthday;
     private Boolean gender;
+    private String avatar;
 
 
 }

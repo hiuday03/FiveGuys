@@ -71,6 +71,9 @@ public class BillRestController {
     private PaypalService paypalService;
 
     @Autowired
+    private OlBillDetailService billDetailService;
+
+    @Autowired
     private OlCartService olCartService;
 
     @Autowired
@@ -90,14 +93,18 @@ public class BillRestController {
     public ResponseEntity<?> TaoHoaDonNguoiDungChuaDangNhap(@RequestBody JsonNode orderData, HttpServletResponse  response, HttpServletRequest req, HttpSession session) throws IOException {
 
 
-
-
         ResponseEntity<?> newBill = olBillService.TaoHoaDonNguoiDungChuaDangNhap(orderData);
         Object body = newBill.getBody();
         if (body != null && body instanceof Bill) {
             Bill billData = (Bill) body;
 
+//            BigDecimal totalAmountAfterDiscount = new BigDecimal(String.valueOf(billData.getTotalAmountAfterDiscount()));
+//            BigDecimal shippingfee = new BigDecimal(String.valueOf(billData.getShippingFee()));
             BigDecimal totalAmountAfterDiscount = new BigDecimal(String.valueOf(billData.getTotalAmountAfterDiscount()));
+            BigDecimal shippingFee = new BigDecimal(String.valueOf(billData.getShippingFee()));
+
+// Cộng hai đối tượng BigDecimal
+            BigDecimal totalPayment = totalAmountAfterDiscount.add(shippingFee);
 //            String describe = String.valueOf(billData.getNote());
             String namePayment = billData.getPaymentMethod().getName();
             String codeBill = String.valueOf(olBillUntility.encodeId(billData.getId()));
@@ -114,7 +121,7 @@ public class BillRestController {
                 vnp_Params.put("vnp_Version", vnp_Version);
                 vnp_Params.put("vnp_Command", vnp_Command);
                 vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-                vnp_Params.put("vnp_Amount", String.valueOf(totalAmountAfterDiscount.multiply(BigDecimal.valueOf(100))));
+                vnp_Params.put("vnp_Amount", String.valueOf(totalPayment.multiply(BigDecimal.valueOf(100))));
                 vnp_Params.put("vnp_CurrCode", "VND");
                 vnp_Params.put("vnp_BankCode", "");
                 vnp_Params.put("vnp_TxnRef", codeBill);
@@ -176,7 +183,7 @@ public class BillRestController {
                 String ipnUrl = "http://localhost:8080/api/ol/payment-momo/success";
                 Environment environment = Environment.selectEnv("dev");
                 try {
-                    PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, codeBill, codeBill, (String.valueOf(totalAmountAfterDiscount)), orderInfo, redirectUrl, ipnUrl, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
+                    PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, codeBill, codeBill, (String.valueOf(totalPayment)), orderInfo, redirectUrl, ipnUrl, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
                     Map<String, String> jsonResponse = new HashMap<>();
                     jsonResponse.put("redirect", captureWalletMoMoResponse.getPayUrl());
                     Gson gson = new Gson();
@@ -191,6 +198,8 @@ public class BillRestController {
 
             else if (namePayment.equals("COD")){
                 billData.setStatus(1);
+                billData.setPaymentDate(new Date());
+
                 olBillService.save(billData);
 
                 if (billData.getCustomerEntity() != null){
@@ -243,6 +252,28 @@ public class BillRestController {
 
 
 // Tỷ giá USD so với VND
+
+@PutMapping("/bill/updateStatus/{billId}")
+public ResponseEntity<?> updateBillStatus(@PathVariable Long billId) {
+        Optional<Bill> optionalBill = Optional.ofNullable(olBillService.findById(billId));
+
+        if (optionalBill.isPresent()) {
+            Bill bill = optionalBill.get();
+            olBillUntility.restoreProductQuantity(billDetailService.findByBill_IdAndStatus(bill.getId()));
+            if (bill.getVoucher() != null){
+                olBillUntility.increaseVoucherQuantity(bill.getVoucher().getId());
+            }
+            bill.setStatus(4);
+            olBillService.save(bill);
+
+            return ResponseEntity.ok(1);
+        } else {
+            return ResponseEntity.ok(0);
+        }
+
+}
+
+
 
 
 }

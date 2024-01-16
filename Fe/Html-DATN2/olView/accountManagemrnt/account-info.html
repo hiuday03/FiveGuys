@@ -111,8 +111,27 @@
             
                 <div class="block-account-information col-lg-6 col-md-6 col-sm-6 mb-4">
                     <!-- Hiển thị ảnh đại diện -->
-                    <img style="max-width: 100%; margin: auto" class="rounded-4 fit" ng-src="{{ userData.avatar }}" />
+                    <img style="width: 168x;height: 200px; margin: auto;    margin-bottom: 30px;" class="rounded-4 fit" ng-src="{{ userData.avatar }}" />
                 
+
+                    <div class="row mb-3">
+                      <label for="image-update" class="col-sm-3 col-form-label">Hình Ảnh</label>
+                      <div class="col-sm-9">
+                          <input class="form-control" name="path" type="file" id="image-update" ng-model="fileInput" ng-change="handleImageChange()"  />
+                          <span ng-if="showError" class="error-message text-danger form-text">
+                              {{alertErrorImg}}
+                          </span>
+                      </div>
+                  </div>
+
+                  <button class="btn btn-primary" ng-click="handleImageChange()">Cập nhật ảnh</button>
+                  
+                  <!-- <div class="col-lg-4">
+                      <label for="image">
+                          <img id="image-preview-update" ng-src="{{imagePreview || '/assets/img/no-img.png'}}" style="width: 100px; height: 100px;" />
+                      </label>
+                  </div> -->
+                  
                     <form class="form-edit-account" style="margin-top: 40px;">
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">Mật khẩu mới:</label>

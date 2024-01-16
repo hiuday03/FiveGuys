@@ -4,6 +4,7 @@ import com.example.demo.entity.Color;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.ProductDetail;
 import com.example.demo.entity.Size;
+import com.example.demo.model.response.onlineSales.OlProductDetailResponse;
 
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface OLProductDetailService {
     List<Size> findDistinctSizesBySanPhamId( Long productId);
 
     ProductDetail findByColorIdAndSizeIdAndProductId(Long colorId, Long sizeId, Long productId);
+
+    Optional<OlProductDetailResponse> findByIdShow(Long productDetailId);
 
     Optional<ProductDetail> findById(Long productDetailId);
 
