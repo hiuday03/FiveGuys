@@ -17,6 +17,15 @@ public class RatingServiceImpl implements RatingService {
 
     private final RatingRepository ratingRepository;
 
+    @Override
+    public void updateStatusRatingXacNhan(Long id){
+        ratingRepository.updateStatusRatingXacNhan(id);
+    }
+    @Override
+    public void updateStatusRatingHuy(Long id){
+        ratingRepository.updateStatusRatingHuy(id);
+    }
+
     @Autowired
     public RatingServiceImpl(RatingRepository ratingRepository) {
         this.ratingRepository = ratingRepository;

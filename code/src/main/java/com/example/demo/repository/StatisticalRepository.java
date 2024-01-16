@@ -32,7 +32,7 @@ public interface StatisticalRepository extends JpaRepository<Bill, Long> {
     @Query("select b from Bill b where DATEPART(YEAR, b.paymentDate) = YEAR(:date) and b.status=3")
     List<Bill> sumBillYear(Date date);
 
-    //Tổng số khách hàng trong 1 nam
+    //Tổng số sản phẩm
     @Query("SELECT COALESCE(SUM(hdct.quantity), 0) from BillDetail hdct where hdct.bill.paymentDate  = :date and hdct.bill.status=3")
     Integer sanPhamBanDuocNgay(Date date);
     @Query("SELECT COALESCE(SUM(hdct.quantity), 0) from BillDetail hdct where DATEPART(MONTH, hdct.bill.paymentDate) =  Month(:date) and DATEPART(YEAR, hdct.bill.paymentDate) = YEAR(:date) and hdct.bill.status=3")

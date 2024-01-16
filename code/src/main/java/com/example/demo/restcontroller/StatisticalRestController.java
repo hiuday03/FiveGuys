@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/statistical")
+@RequestMapping("/thong-ke")
 @CrossOrigin("*")
 public class StatisticalRestController {
     @Autowired

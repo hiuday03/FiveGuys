@@ -3,15 +3,19 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.Set;
-
+@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Customers")
-@Data
+
 
 public class CustomerEntity {
 
@@ -30,7 +34,7 @@ public class CustomerEntity {
     private Date birthDate;
 
     @Column(name = "Gender")
-    private boolean gender;
+    private Boolean gender;
 
     @ManyToOne
     @JoinColumn(name = "IdAccount")

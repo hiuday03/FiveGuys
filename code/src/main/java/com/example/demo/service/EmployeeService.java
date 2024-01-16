@@ -26,5 +26,7 @@ public interface EmployeeService {
 
 //     List<Employees> searchMa(@PathVariable String ma);
      Page<Employees>  searchMa(String ma, Integer page, Integer size);
+
+     List<Employees> getAllStatus(Integer status);
 }
 
