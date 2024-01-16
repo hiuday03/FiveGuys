@@ -48,6 +48,7 @@ create table Vouchers
 create table PaymentMethods
 (
 	Id			bigint identity(1,1) primary key,
+	Path		nvarchar(MAX),
 	Name		nvarchar(100),
 	CreatedAt	datetime,
 	UpdatedAt	datetime,
@@ -282,7 +283,6 @@ create table RefreshToken
 (
 	Id			bigint identity(1,1) primary key,
 	Token		nchar(100),
-	ExpiryDate		int,
-	IdAccount	bigint, 
-	FOREIGN KEY (IdAccount) REFERENCES Accounts(Id),
+	ExpiryDate		date,
+	IdAccount	bigint references Accounts(Id),
 )
