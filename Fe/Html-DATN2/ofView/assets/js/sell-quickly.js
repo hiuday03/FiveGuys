@@ -11,6 +11,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
+
 let app_sellQuickly = angular.module("sell-quickly", ["kendo.directives", "angular-jwt"]);
 
 app_sellQuickly.config(function($httpProvider) {
@@ -73,6 +74,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 if (response.data.employeeLoggedIn === true) {
                   $scope.isEmployeeLoggedIn = true;
                   $scope.userData = response.data;
+                  $scope.initialize();
                   console.log("Employee is logged in.");
                   return ;
                 } else if(response.data.loggedIn === false){
@@ -133,7 +135,45 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
         }
         // check người dùng đã đăng nhập chưa
         isUserLoggedIn();
-        
+
+        var html5QrcodeScanner = null;
+
+        $scope.createBarcode = () => {
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", { fps: 10, qrbox: 250 });
+            html5QrcodeScanner.render(onScanSuccess);
+        }
+
+        $scope.clearBarCode = () => {
+            html5QrcodeScanner.clear();
+        }
+
+        function onScanSuccess(decodedText) {
+            var item = $scope.selectedItem.cart.find(item => item.barcode == decodedText);
+            if (item) {
+                item.qty++;
+                $scope.count($scope.selectedItem);
+                toastr["success"]("Đã thêm 1 sản phẩm: " + item.product.name + " vào giỏ hàng");
+            } else {
+                $http.get('http://localhost:8080/api/off-productDetail/' + decodedText).then(resp => {
+                    if (resp.data == null) {
+                        toastr["error"]("Không tìm thấy sản phẩm, vui lòng kiểm tra lại!");
+                        return;
+                    }
+                    resp.data.qty = 1;
+                    $scope.selectedItem.cart.push(resp.data);
+                    $scope.count($scope.selectedItem);
+                    toastr["success"]("Đã thêm 1 sản phẩm: " + resp.data.product.name + " vào giỏ hàng");
+                }).catch(error => {
+                    toastr["error"]("Không tìm thấy sản phẩm, vui lòng kiểm tra lại!");
+                    console.log(error);
+                })
+            }
+            $scope.$apply();   
+            $('#barcode').modal('hide');
+            html5QrcodeScanner.clear();
+        }
+
         function createDataSource(apiUrl) {
             return new kendo.data.DataSource({
                 transport: {
@@ -234,16 +274,20 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 }
             };
         }
+        
     
         $scope.cityComboBoxOptions1 = createComboBoxOptionsCity("city1", "district1", "ward1");
         $scope.cityComboBoxOptions2 = createComboBoxOptionsCity("city2", "district2", "ward2");
+        $scope.cityComboBoxOptions3 = createComboBoxOptionsCity("city3", "district3", "ward3");
     
     
         $scope.districtComboBoxOptions1 = createComboBoxOptionsDistrict("district1", "ward1");
         $scope.districtComboBoxOptions2 = createComboBoxOptionsDistrict("district2", "ward2");
+        $scope.districtComboBoxOptions3 = createComboBoxOptionsDistrict("district3", "ward3");
     
         $scope.wardComboBoxOptions1 = createComboBoxOptionsWard("ward1");
         $scope.wardComboBoxOptions2 = createComboBoxOptionsWard("ward2");
+        $scope.wardComboBoxOptions3 = createComboBoxOptionsWard("ward3");
     
         $scope.resetInputAddress = (idHouseNumber, idCity, idDistrict, idWard) => {
             $("#" + idHouseNumber).val("");
@@ -310,6 +354,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 var addressParts = selectedItem.address.address.split(', ');
                 $("#houseNumber3").val(addressParts[0]);
                 $("#city3").data("kendoComboBox").text(addressParts[3]);
+                $("#city3").data("kendoComboBox").trigger("change");
                 $("#district3").data("kendoComboBox").text(addressParts[2]);
                 $("#ward3").data("kendoComboBox").text(addressParts[1]);
                 localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
@@ -416,7 +461,6 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
             $scope.resetInputAddress("houseNumber1","city1", "district1", "ward1");
         }
     
-        $scope.initialize();
         // bill tab
         $scope.treeData = new kendo.data.HierarchicalDataSource({
             data: JSON.parse(localStorage.getItem("treeData")) || [
@@ -438,10 +482,6 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 reciverName: null,
                 deliveryDate: new Date(),
                 shippingFee: 0,
-                houseNumber: null,
-                city: null,
-                district: null,
-                ward: null,
                 phoneNumber: null,
                 note: null,
                 status: 1,
@@ -449,12 +489,17 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 payMethod:  $scope.payMethods[0],
                 typeBill: 1,
                 cart: [],
-                tabShip: false
+                tabShip: false,
+                shippingFee: 0
             }
             return bill;
         };
     
         $scope.addBill = () => {
+            if ($scope.treeData.data().length >= 5) {
+                toastr["error"]("Chỉ được tạo tối đa 5 hóa đơn");
+                return;
+            }
             var newbill = makeBill();
             $scope.treeData.add(newbill);
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
@@ -531,13 +576,13 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
         $scope.setCustomerPay = selectedItem => {
             if (selectedItem.voucher != null) {
                 if (selectedItem.voucher.valueType == 2) {
-                    selectedItem.totalCustomerPay = selectedItem.totalAmount * ((100 - selectedItem.voucher.value)/100);
+                    selectedItem.totalCustomerPay = selectedItem.totalAmount * ((100 - selectedItem.voucher.value)/100) +  selectedItem.shippingFee;
                 } else {
-                    selectedItem.totalCustomerPay = selectedItem.totalAmount - selectedItem.voucher.value;
+                    selectedItem.totalCustomerPay = selectedItem.totalAmount - selectedItem.voucher.value +  selectedItem.shippingFee;
                 }
                 selectedItem.customerPay = selectedItem.totalCustomerPay;
             } else {
-                selectedItem.totalCustomerPay = selectedItem.totalAmount;
+                selectedItem.totalCustomerPay = selectedItem.totalAmount +  selectedItem.shippingFee;
                 selectedItem.customerPay = selectedItem.totalCustomerPay;
             }
             $scope.changeCustomerPay(selectedItem);
@@ -548,6 +593,16 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 selectedItem.moneyReturn = selectedItem.customerPay - selectedItem.totalCustomerPay;
             } else {
                 selectedItem.moneyReturn = 0;
+            }
+            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+        }
+
+        $scope.changeShippingFee = (selectedItem) => {
+            if (selectedItem.shippingFee < 0 || selectedItem.shippingFee > selectedItem.totalAmount) {
+                selectedItem.shippingFee = 0;
+                $scope.setCustomerPay(selectedItem);
+            } else {
+                $scope.setCustomerPay(selectedItem);
             }
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
         }
@@ -581,6 +636,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 return;
             } else if (selectedItem.cart.some(item => item.quantity < item.qty)) {
                 toastr["error"]("Không đủ số lượng tồn kho");
+                $scope.initialize();
                 return;
             } else if (selectedItem.customerPay < selectedItem.totalCustomerPay) {
                 toastr["error"]("Hệ thống không theo dõi công nợ vui lòng nhập đầy đủ số tiền");
@@ -592,14 +648,14 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 totalAmount: selectedItem.totalAmount,
                 totalAmountAfterDiscount: selectedItem.totalCustomerPay == selectedItem.totalAmount ? 0 : selectedItem.totalCustomerPay,
                 customerEntity: selectedItem.address ? selectedItem.address.customer : null,
-                address: selectedItem.address ? selectedItem.address.address : null,
-                reciverName: selectedItem.address ? selectedItem.address.customer.fullName : null,
-                phoneNumber: selectedItem.address ? selectedItem.address.phoneNumber : null,
+                reciverName: $("#reciverName").val() ? $("#reciverName").val() : null,
+                phoneNumber: $("#phoneNumber").val() ? $("#phoneNumber").val() : null,
                 employee: $scope.userData,
                 paymentMethod: selectedItem.payMethod,
                 voucher: selectedItem.voucher,
                 note: selectedItem.note,
                 typeBill: selectedItem.typeBill,
+                shippingFee: selectedItem.shippingFee,
                 status: 1,
                 get billDetail() {
                     return selectedItem.cart.map(item => {
@@ -612,13 +668,39 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                     })
                 }
             };
+            if (selectedItem.typeBill == 3) {
+                var address = printResult("houseNumber3", "city3", "district3", "ward3");
+                if (address == null) {
+                    toastr["error"]("Vui lòng nhập đầy đủ địa chỉ");
+                    return;
+                }
+                bill.address = address;
+            }
+            
             $http.post(`http://localhost:8080/api/payos/create`, bill).then(resp => {
                 if (resp.data.bill.paymentMethod.name.toLowerCase() === "chuyển khoản") {
                     $scope.openPaymentPopup(resp.data, selectedItem);
                 } else if(resp.data.bill.paymentMethod.name.toLowerCase() === "tiền mặt") {
+                    if (resp.data == null) {
+                        toastr["error"]("Thanh toán thất bại, vui lòng kiểm tra lại số lượng");
+                        return;
+                    }
                     toastr["success"]("Thanh toán thành công");
                     $scope.removeBill(selectedItem);
-                    $scope.billAddress = null;
+                    $scope.initialize();
+                    if (resp.data.bill.customerEntity) {
+                        $http.get(`http://localhost:8080/address/get-by-customer/${resp.data.bill.customerEntity.id}`).then(resp2 => {
+                            resp.data.bill.addressCustomer = resp2.data;
+                        })
+                    }
+                    $http.get(`http://localhost:8080/api/bill-detail/${resp.data.bill.id}`).then(billDT => {
+                        resp.data.bill.billDetail = billDT.data;
+                        $scope.confirmPrintBill(resp.data.bill);
+                    })
+                } else if (resp.data.bill.paymentMethod.name.toLowerCase() === "cod") {
+                    toastr["success"]("Thanh toán thành công");
+                    $scope.removeBill(selectedItem);
+                    $scope.initialize();
                     if (resp.data.bill.customerEntity) {
                         $http.get(`http://localhost:8080/address/get-by-customer/${resp.data.bill.customerEntity.id}`).then(resp2 => {
                             resp.data.bill.addressCustomer = resp2.data;
@@ -644,20 +726,25 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
     
         $scope.printBill = resp => {
             const invoiceHTML = generateInvoiceHTML(resp);
-            const invoiceWindow = window.open('', '_blank');
+            const invoiceWindow = window.open('', 'fiveguys');
             invoiceWindow.document.write(invoiceHTML);
             invoiceWindow.document.close();
         }
     
         $scope.openPaymentPopup = (data, selectedItem) => {
             let payOSConfig = {
-                RETURN_URL: "http://127.0.0.1:5502/Fe/Html-DATN2/ofView/Thuong/sell-quicklly.html",
+                RETURN_URL: "http://127.0.0.1:5555/Html-DATN2/ofView/Thuong/sell-quicklly.html",
                 ELEMENT_ID: "tab-page",
                 CHECKOUT_URL: data.data.checkoutUrl,
                 onSuccess: (event) => {
                     $http.post(`http://localhost:8080/api/payment/payos-of/success`, JSON.stringify(data.bill)).then(resp => {
+                        if (resp.data == null) {
+                            toastr["error"]("Thanh toán thất bại, vui lòng kiểm tra lại số lượng");
+                            return;
+                        }
                         toastr["success"]("Thanh toán thành công");
-                        $scope.removeBill(selectedItem);
+                        $scope.resetInputAddress("houseNumber3","city3", "district3", "ward3");
+                        $scope.removeBill(selectedItem);                       
                         $scope.initialize();
                         if (resp.data.bill.customerEntity) {
                             $http.get(`http://localhost:8080/address/get-by-customer/${resp.data.bill.customerEntity.id}`).then(resp2 => {
@@ -673,7 +760,7 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 onCancel: (event) => {
                     $http.put(`http://localhost:8080/api/payos/${event.orderCode}`).then(resp => {
                         toastr["warning"]("Đã hủy thanh toán");
-                        console.log(resp.data);
+                        $scope.initialize();
                     });
                 },
                 onExit: (event) => {},
@@ -711,28 +798,15 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
         $scope.changeCashAndCod = selectedItem => {
             if (selectedItem.payMethod.paymentType === 3) {
                 selectedItem.payMethod =  $scope.payMethods[0];
-                selectedItem.typeBill = 1;
             } else {
                 selectedItem.payMethod =  $scope.cod;
-                selectedItem.typeBill = 3;
             }
             localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
         }
     
-        $scope.changeHouseNumber = () => {
-            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
-        }
-    
-        $scope.changeCity = () => {
-            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
-        }
-    
-        $scope.changeDistrict = () => {
-            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
-        }
-    
-        $scope.changeWard = () => {
-            localStorage.setItem("treeData", JSON.stringify($scope.treeData.data()));
+
+        $scope.dashboard = () => {
+            window.location.href = 'http://127.0.0.1:5555/ofView/index.html#!/homeTest/123';
         }
   
   });

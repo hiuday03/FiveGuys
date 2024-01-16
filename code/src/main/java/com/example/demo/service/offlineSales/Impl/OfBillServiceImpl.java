@@ -58,22 +58,30 @@ public class OfBillServiceImpl implements OfBillService {
         if (billDetailNode != null && billDetailNode.isArray()) {
             TypeReference<List<BillDetail>> type = new TypeReference<>() {};
             List<BillDetail> billDetails = mapper.convertValue(billDetailNode, type)
-                    .stream().peek(d -> d.setBill(saveBill)).collect(Collectors.toList());
+                    .stream().peek(d -> d.setBill(bill)).collect(Collectors.toList());
              List<BillDetail> lstBillDT = billDetailRepository.saveAll(billDetails);
              List<ProductDetail> updateProductDetails = lstBillDT.stream()
                      .map(billDetail -> {
                          ProductDetail productDetail = productDetailRepository.
                                  findById(billDetail.getProductDetail().getId()).orElse(null);
+                         if(billDetail.getQuantity() > productDetail.getQuantity()) {
+                             billRepository.delete(saveBill);
+                             return null;
+                         }
                          int currentQuantity = productDetail.getQuantity();
                          int billDetailQuantity = billDetail.getQuantity();
                          int newQuantity = currentQuantity - billDetailQuantity;
                          if (newQuantity == 0) {
-                             productDetail.setStatus(0);
+                             productDetail.setStatus(2);
                          }
                          productDetail.setQuantity(newQuantity);
                          return productDetail;
                      }).collect(Collectors.toList());
-             productDetailRepository.saveAll(updateProductDetails);
+             if (updateProductDetails != null) {
+                 productDetailRepository.saveAll(updateProductDetails);
+             } else {
+                 return null;
+             }
         } else {
             throw new IllegalArgumentException("orderDetails must be a non-null array");
         }

@@ -9,5 +9,7 @@ import java.util.List;
 public interface OfProductDetailService {
     List<OfModelProductDetail> getAll();
 
+    OfModelProductDetail getByBarCode(String barcode);
+
 //    List<ProductDetail> updateQuantity(JsonNode data);
 }

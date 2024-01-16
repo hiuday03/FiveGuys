@@ -12,6 +12,6 @@ public interface PaymentMethodOfflineSalesRepository extends JpaRepository<Payme
     @Query("SELECT v FROM PaymentMethod v WHERE v.status = 1 AND v.paymentType = 1")
     List<PaymentMethod> findActivePaymentMethods();
 
-    @Query("SELECT v from PaymentMethod v WHERE v.paymentType = 3")
+    @Query("SELECT v from PaymentMethod v WHERE v.paymentType = 3 AND v.status = 1")
     PaymentMethod getCOD();
 }
