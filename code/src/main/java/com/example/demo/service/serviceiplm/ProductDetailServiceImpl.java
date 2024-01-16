@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ProductDetailServiceImpl implements ProductDetailService {
@@ -59,10 +60,15 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     public String genBarcode(){
-        Integer random = (int ) (Math.random() * 893999999 + 893000000);
+        Random random = new Random();
+        long randomNumber = random.nextLong();
+        String randomString = String.valueOf(randomNumber);
+        randomString = randomString.substring(1, 14);
+        System.out.println(randomString);
+//        Integer random = (int ) (Math.random() * 893999999 + 893000000);
 //        Random rand = new Random();
 //        Integer barcode = rand.nextInt((893999999 - 893000000) + 1) + 893000000;
-        return random + "";
+        return randomString  + "";
     }
 
     @Override
@@ -176,8 +182,13 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public ProductDetail checkTrungFKUpdate(ProductDetail productDetail, Product product, Color color, Size size) {
-
-        return null;
+        ProductDetail productDetailCurrent = getById(productDetail.getId());
+        if(productDetailCurrent != null){
+            if(productDetailCurrent.getColor() == color && productDetailCurrent.getSize() == size){
+                return null;
+            }
+        }
+        return productDetailRepository.findProductDetailByProductAndColorAndSize(product, color, size);
     }
 
     @Override
