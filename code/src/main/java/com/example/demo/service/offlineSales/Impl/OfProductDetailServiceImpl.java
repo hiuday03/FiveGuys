@@ -23,6 +23,11 @@ public class OfProductDetailServiceImpl implements OfProductDetailService {
         return repository.getAll();
     }
 
+    @Override
+    public OfModelProductDetail getByBarCode(String barcode) {
+        return repository.getByBarcode(barcode);
+    }
+
 //    @Override
 //    public List<ProductDetail> updateQuantity(JsonNode data) {
 //        if (data == null) {

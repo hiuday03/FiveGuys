@@ -32,15 +32,15 @@
   <!-- angular-jwt -->
   <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
 
-
+    
   <link rel="stylesheet" href="../assets/css/default-main.css">
   <link rel="stylesheet" href="../assets/css/sellquickly.css">
   <script src="../assets/js/kendo.all.min.js"></script>
   <script src="../assets/js/kendo-ui-license.js"></script>
+
 </head>
 <body ng-app="sell-quickly">
-
-    <div  ng-controller="sell-quickly-ctrl" class="tab-content" id="tab-page">
+    <div ng-controller="sell-quickly-ctrl" class="tab-content" id="tab-page">
     <nav class="navbar p-0 bg-primary">
         <div class="container-fluid justify-content-start">
             <div class="form-group has-search">
@@ -63,6 +63,7 @@
                 </div>
             </div>
             <div class="nav nav-pills ms-3">
+                <button ng-if="selectedItem" ng-click="createBarcode()" type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#barcode"><i class="ri-barcode-line"></i></button>
                 <ul style="display: flex;" class="horizontal-list" kendo-panel-bar="tree"
                     k-data-source="treeData"
                     k-on-change="selectedItem = dataItem">
@@ -70,7 +71,17 @@
                         {{dataItem.code}} <i ng-show="selectedItem === dataItem" class="ri-close-fill" ng-click='removeBill(selectedItem)'></i>
                     </span>
                 </ul>
-                <button ng-click="addBill()" class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button></div>
+                <button ng-click="addBill()" class="nav-link text-light" id="add-tab-button" type="button"><i class="ri-add-circle-line"></i></button>
+            </div>
+            <div class="ms-auto">
+                <span class="text-light">{{userData.account.account}}</span>
+                <button ng-click="dashboard()" type="button" class="btn btn-primary"><i class="ri-dashboard-fill"></i></button>
+                <!-- <div class="list-group list-menu-quickly">
+                    <button type="button" class="list-group-item list-group-item-action">A second item</button>
+                    <button type="button" class="list-group-item list-group-item-action">A third button item</button>
+                    <button type="button" class="list-group-item list-group-item-action">A fourth button item</button>
+                </div> -->
+            </div>
         </div>
     </nav>
     <div class="tab-pane fade" ng-class="{ 'show active': selectedItem.tabShip === false }" id="sell-quickly" role="tabpanel" aria-labelledby="sell-quickly">
@@ -209,7 +220,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div ng-if="selectedItem" class="modal fade" id="modalCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -219,8 +230,8 @@
                 <div class="modal-body">
                     <form id="formAddCustomer" name="formAddCustomer" ng-submit="formAddCustomer.$valid && create(selectedItem)" novalidate>
                         <div class="row mb-3">
-                            <label for="inputfullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
-                            <div class="col-sm-10">
+                            <label for="inputfullName" class="col-sm-3 col-form-label">Tên khách hàng</label>
+                            <div class="col-sm-9">
                                 <input ng-model="formCustomer.fullName" name="fullName" id="inputfullName" type="text" class="form-control" required>
                                 <span ng-show="formAddCustomer.$submitted">
                                     <div ng-show="formAddCustomer.fullName.$invalid" class="error-message text-danger form-text">
@@ -230,8 +241,8 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="inputPhone" class="col-sm-2 col-form-label">Điện thoại</label>
-                            <div class="col-sm-10">
+                            <label for="inputPhone" class="col-sm-3 col-form-label">Điện thoại</label>
+                            <div class="col-sm-9">
                                 <input ng-model="formAddress.phoneNumber" name="phoneNumber" id="inputPhone" type="number" class="form-control" required>
                                 <span ng-if="formAddCustomer.$submitted && formAddCustomer.phoneNumber.$invalid" class="error-message text-danger form-text">
                                 <span ng-if="formAddCustomer.phoneNumber.$error.required">Số điện thoại không được để trống</span>
@@ -240,8 +251,8 @@
                             </div>
                         </div>
                         <div class="row mb-3 justify-content-end">
-                            <label class="col-sm-2 col-form-label">Địa chỉ</label>
-                            <div class="form-outline custom-bg col-sm-10">
+                            <label class="col-sm-3 col-form-label">Địa chỉ</label>
+                            <div class="form-outline custom-bg col-sm-9">
                                 <input type="text" name="address" id="houseNumber1" placeholder="Số nhà" class="form-control mt-2" />
                             </div>
                             <div class="col-sm-3 mt-3">
@@ -254,21 +265,21 @@
                                     <input kendo-combo-box k-options="districtComboBoxOptions1" id="district1" class="k-input" />
                                 </div>
                             </div>
-                            <div class="col-sm-4 mt-3">
+                            <div class="col-sm-3 mt-3">
                                 <div class="form-outline">
                                     <input kendo-combo-box k-options="wardComboBoxOptions1" id="ward1" class="k-input" />
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="inputDate" class="col-sm-2 col-form-label">Ngày sinh</label>
-                            <div class="col-sm-10">
+                            <label for="inputDate" class="col-sm-3 col-form-label">Ngày sinh</label>
+                            <div class="col-sm-9">
                                 <input ng-model="formCustomer.birthDate" name="birthDate" id="inputDate" type="date" class="form-control">
                             </div>
                         </div>
                         <fieldset class="row mb-3">
-                            <legend class="col-form-label col-sm-2 pt-0">Giới tính</legend>
-                            <div class="col-sm-10" ng-init="formCustomer.gender='true'">
+                            <legend class="col-form-label col-sm-3 pt-0">Giới tính</legend>
+                            <div class="col-sm-9" ng-init="formCustomer.gender='true'">
                                 <div class="form-check form-check-inline">
                                     <input ng-model="formCustomer.gender" class="form-check-input" type="radio" name="gioiTinh" id="addRadioMan" value="true">
                                     <label class="form-check-label" for="addRadioMan">
@@ -284,8 +295,8 @@
                             </div>
                         </fieldset>
                         <fieldset class="row mb-3">
-                            <legend class="col-form-label col-sm-2 pt-0">Loại khách</legend>
-                            <div class="col-sm-10">
+                            <legend class="col-form-label col-sm-3 pt-0">Loại khách</legend>
+                            <div class="col-sm-9">
                                 <div class="form-check form-check-inline" ng-init="formAddress.addressType='Cá nhân'">
                                     <input ng-model="formAddress.addressType" class="form-check-input" type="radio" name="loaiKhach" id="addRadioPersonal" value="Cá nhân">
                                     <label class="form-check-label" for="addRadioMan">
@@ -309,7 +320,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalCustomerUpdate" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div ng-if="selectedItem" class="modal fade" id="modalCustomerUpdate" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -319,8 +330,8 @@
                 <div class="modal-body">
                     <form name="formUpdate" ng-submit="formUpdate.$valid && update(selectedItem)" novalidate>
                         <div class="row mb-3">
-                            <label for="updatefullName" class="col-sm-2 col-form-label">Tên khách hàng</label>
-                            <div class="col-sm-10">
+                            <label for="updatefullName" class="col-sm-3 col-form-label">Tên khách hàng</label>
+                            <div class="col-sm-9">
                                 <input ng-model="formCustomer2.fullName" name="fullName" id="updatefullName" type="text" class="form-control" required>
                                 <span ng-show="formUpdate.$submitted">
                                             <div ng-show="formUpdate.fullName.$invalid" class="error-message text-danger form-text">
@@ -329,8 +340,8 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="updatePhone" class="col-sm-2 col-form-label">Điện thoại</label>
-                            <div class="col-sm-10">
+                            <label for="updatePhone" class="col-sm-3 col-form-label">Điện thoại</label>
+                            <div class="col-sm-9">
                                 <input ng-model="formAddress2.phoneNumber" name="phoneNumber" id="updatePhone" type="text" class="form-control" required>
                                 <span ng-if="formUpdate.$submitted && form.phoneNumber.$invalid" class="error-message text-danger form-text">
                                                     <span ng-if="formUpdate.phoneNumber.$error.required">Số điện thoại không được để trống</span>
@@ -339,8 +350,8 @@
                             </div>
                         </div>
                         <div class="row mb-3 justify-content-end">
-                            <label class="col-sm-2 col-form-label">Địa chỉ</label>
-                            <div class="form-outline custom-bg col-sm-10">
+                            <label class="col-sm-3 col-form-label">Địa chỉ</label>
+                            <div class="form-outline custom-bg col-sm-9">
                                 <input type="text" name="address" id="houseNumber2" placeholder="Số nhà" class="form-control mt-2" />
                             </div>
                             <div class="col-sm-3 mt-3">
@@ -353,21 +364,21 @@
                                     <input kendo-combo-box k-options="districtComboBoxOptions2" id="district2" class="k-input" />
                                 </div>
                             </div>
-                            <div class="col-sm-4 mt-3">
+                            <div class="col-sm-3 mt-3">
                                 <div class="form-outline">
                                     <input kendo-combo-box k-options="wardComboBoxOptions2" id="ward2" class="k-input" />
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="updateDate" class="col-sm-2 col-form-label">Ngày sinh</label>
-                            <div class="col-sm-10">
+                            <label for="updateDate" class="col-sm-3 col-form-label">Ngày sinh</label>
+                            <div class="col-sm-9">
                                 <input ng-model="formCustomer2.birthDate" name="birthDate" id="updateDate" type="date" class="form-control">
                             </div>
                         </div>
                         <fieldset class="row mb-3">
-                            <legend class="col-form-label col-sm-2 pt-0">Giới tính</legend>
-                            <div class="col-sm-10">
+                            <legend class="col-form-label col-sm-3 pt-0">Giới tính</legend>
+                            <div class="col-sm-9">
                                 <div class="form-check form-check-inline">
                                     <input ng-model="formCustomer2.gender" class="form-check-input" ng-checked="selectedItem.address.customer.gender === 'True'" type="radio" name="gioiTinh" id="updateRadioMan" value="true">
                                     <label class="form-check-label" for="addRadioMan">
@@ -383,8 +394,8 @@
                             </div>
                         </fieldset>
                         <fieldset class="row mb-3">
-                            <legend class="col-form-label col-sm-2 pt-0">Loại khách</legend>
-                            <div class="col-sm-10">
+                            <legend class="col-form-label col-sm-3 pt-0">Loại khách</legend>
+                            <div class="col-sm-9">
                                 <div class="form-check form-check-inline">
                                     <input ng-model="formAddress2.addressType" ng-checked="selectedItem.address.addressType === 'Cá nhân'" class="form-check-input" type="radio" name="loaiKhach" id="updateRadioPersonal" value="Cá nhân">
                                     <label class="form-check-label" for="addRadioMan">
@@ -408,6 +419,19 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="barcode" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Quét barcode</h5>
+              <button type="button" ng-click="clearBarCode()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="qr-reader" style="width: 600px; left: 70px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     <div ng-if="selectedItem" class="modal fade" id="modalVoucher" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -420,7 +444,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div ng-repeat="voucher in vouchers | filter:searchVoucher" class="col-sm-4 mb-2" ng-click="addVoucher(selectedItem, voucher)">
-                            <div class="card voucher">
+                            <div class="card voucher" ng-class="{'disabled-voucher' : selectedItem.totalAmount < voucher.minimumTotalAmount}">
                                 <div class="cross-bg"></div>
                                 <div class="content">
                                     <div class="text-center text-uppercase text-white off">
@@ -500,6 +524,16 @@
                                                 <button ng-click="removeVoucher(selectedItem)" type="button" class="ms-2 small btn-close" aria-label="Close"></button>
                                             </div>
                                             <button ng-if="selectedItem.voucher == null" data-bs-toggle="modal" data-bs-target="#modalVoucher" ng-click="getListVoucher(selectedItem)" type="button" class="btn btn-outline-success"><i class="ri-add-line"></i> Chọn voucher</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-5">
+                                            <p>Phí vận chuyển</p>
+                                        </div>
+                                        <div class="col-xl-7">
+                                            <p class="float-end">
+                                                <input ng-model="selectedItem.shippingFee" ng-change="changeShippingFee(selectedItem)" id="reciverName" type="number" class="input-customerPay text-end" >                                       
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -586,22 +620,22 @@
                                 </div>
                                 <div class="col-xl-11">
                                     <div class="row mb-3">
-                                        <input ng-model="selectedItem.address.customer.fullName" type="text" placeholder="Tên người nhận" class="input-customerPay" >
+                                        <input ng-value="selectedItem.address.customer.fullName" id="reciverName" type="text" placeholder="Tên người nhận" class="input-customerPay" >
                                     </div>
                                     <div class="row mb-3">
-                                        <input ng-model="selectedItem.address.phoneNumber" type="text" placeholder="Điện thoại" class="input-customerPay" >
+                                        <input ng-value="selectedItem.address.phoneNumber" id="phoneNumber" type="text" placeholder="Điện thoại" class="input-customerPay" >
                                     </div>
                                     <div class="row mb-3">
-                                        <input ng-model="selectedItem.houseNumber" ng-change="changeHouseNumber()" type="text" placeholder="Số nhà" class="input-customerPay" >
+                                        <input type="text" placeholder="Số nhà" id="houseNumber3" class="input-customerPay" >
                                     </div>
                                     <div class="row mb-3">
-                                        <input ng-model="selectedItem.city" ng-change="changeCity()" placeholder="Tỉnh/thành..." type="text" class="input-customerPay" />
+                                        <input kendo-combo-box k-options="cityComboBoxOptions3" id="city3" class="k-input" />                                    
                                     </div>
                                     <div class="row mb-3">
-                                        <input ng-model="selectedItem.district" ng-change="changeDistrict()" placeholder="Quận/huyện..." type="text" class="input-customerPay" />
+                                        <input kendo-combo-box k-options="districtComboBoxOptions3" id="district3" class="k-input" />
                                     </div>
                                     <div class="row mb-3">
-                                        <input ng-model="selectedItem.ward" ng-change="changeWard()" placeholder="Thị trấn/Xã/Phường..." type="text" class="input-customerPay" />
+                                        <input kendo-combo-box k-options="wardComboBoxOptions3" id="ward3" class="k-input" />
                                     </div>
                                 </div>
                             </div>
@@ -621,6 +655,7 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" ng-class="{ 'active': selectedItem.tabShip === true, 'disabled': !selectedItem}" id="tab-shipment" ng-click="paymethodCOD(selectedItem)" data-bs-toggle="pill" data-bs-target="#shipment" type="button" role="tab" aria-controls="pills-profile" aria-selected="{{selectedItem.tabShip === true}}"><i class="ri-e-bike-2-line"></i> Bán giao hàng</button>
         </li>
+
     </ul>
 </div>
 
@@ -630,5 +665,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <script type="module" src="../assets/js/sell-quickly.js"></script>
+<script src="../assets/js/qrcode.js"></script>
 </body>
 </html>

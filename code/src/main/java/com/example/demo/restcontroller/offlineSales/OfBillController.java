@@ -40,12 +40,13 @@ public class OfBillController {
         ObjectMapper mapper = new ObjectMapper();
         Bill bill = mapper.convertValue(orderData, Bill.class);
         BigDecimal money = bill.getTotalAmountAfterDiscount().compareTo(BigDecimal.ZERO) == 0 ? new BigDecimal(String.valueOf(bill.getTotalAmount())) : new BigDecimal(String.valueOf(bill.getTotalAmountAfterDiscount()));
+        money.add(new BigDecimal(String.valueOf(bill.getShippingFee())));
         String namePayment = bill.getPaymentMethod().getName();
         if (namePayment.equals("Chuyển khoản")) {
             try {
                 final String description = "Thanh toán đơn hàng";
-                final String returnUrl = "http://127.0.0.1:5502/Fe/Html-DATN2/ofView/Thuong/sell-quicklly.html";
-                final String cancelUrl = "http://127.0.0.1:5502/Fe/Html-DATN2/ofView/Thuong/sell-quicklly.html";
+                final String returnUrl = "http://127.0.0.1:5555/Html-DATN2/ofView/Thuong/sell-quicklly.html";
+                final String cancelUrl = "http://127.0.0.1:5555/Html-DATN2/ofView/Thuong/sell-quicklly.html";
 
                 List<ItemData> itemList = new ArrayList<>();
                 JsonNode billDetailNode = orderData.get("billDetail");
