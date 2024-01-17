@@ -158,7 +158,7 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         }
         for (let i = 0; i < $scope.products.length; i++) {
             let data = $scope.products[i]
-            if (data.name == inputName.trim()) {
+            if (toLowerCaseNonAccentVietnamese(data.name) == toLowerCaseNonAccentVietnamese(inputName.trim())) {
                 console.log("a");
                 $scope.checkTrungTenCreate = true;
                 return;
@@ -725,12 +725,12 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
             category: "",
             material: "",
             brand: "",
+            describe: "",
             createdAt: "",
             createdBy: "",
-            describe: "",
             status: ""
         }
-        let heading = [["ID", "Mã", "Tên SP", "Cổ áo", "Tay áo", "Loại", "Chất liệu", "Thương hiệu", "Ngày tạo", "Người tạo", "Mô tả", "Trạng thái"]]
+        let heading = [["ID", "Mã", "Tên SP", "Cổ áo", "Tay áo", "Loại", "Chất liệu", "Thương hiệu", "Mô tả", "Ngày tạo", "Người tạo", "Trạng thái"]]
 
         for (let i = 0; i < products.length; i++) {
             item = products[i]
@@ -742,9 +742,9 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
             formData.category = item.category.name
             formData.material = item.material.name
             formData.brand = item.brand.name
+            formData.describe = item.describe
             formData.createdAt = new Date(item.createdAt).getDay() + "/" + (new Date(item.createdAt).getMonth() + 1) + "/" + new Date(item.createdAt).getFullYear()
             formData.createdBy = item.createdBy
-            formData.describe = item.describe
             formData.status = item.status == 1 ? "Đang bán" : "Ngừng bán"
 
             data.push(formData)
@@ -823,12 +823,14 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
             });
         if (nameCate == undefined || nameCate == null || nameCate == "") return null;
         for (let i = 0; i < $scope.categories.length; i++) {
+            // console.log(nameCate);
+            // console.log($scope.categories[i].name);
+
             if ($scope.categories[i].name == nameCate) {
                 return $scope.categories[i].id
-            } else {
-                return null
             }
         }
+        return null
     }
     $scope.getMaterialById = function (nameM) {
         $http.get(apiUrlMaterial)
@@ -839,10 +841,9 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         for (let i = 0; i < $scope.materials.length; i++) {
             if ($scope.materials[i].name == nameM) {
                 return $scope.materials[i].id
-            } else {
-                return null
             }
         }
+        return null
     }
     $scope.getBrandById = function (nameB) {
         $http.get(apiUrlBrand)
@@ -853,10 +854,9 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         for (let i = 0; i < $scope.brands.length; i++) {
             if ($scope.brands[i].name == nameB) {
                 return $scope.brands[i].id
-            } else {
-                return null
             }
         }
+        return null
     }
     $scope.checkTrungNameP = function (name) {
         if (name == undefined || name == null || name == "") {
@@ -899,20 +899,21 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
 
                         if (rowNumber > 1) {
                             let product = {
-                                name: row.getCell(3).value,
-                                collar: row.getCell(4).value,
-                                wrist: row.getCell(5).value,
+                                name: row.getCell(2).value,
+                                collar: row.getCell(3).value,
+                                wrist: row.getCell(4).value,
                                 category: {
-                                    id: $scope.getCategoryById(row.getCell(6).value)
+                                    id: $scope.getCategoryById(row.getCell(5).value)
                                 },
                                 material: {
-                                    id: $scope.getMaterialById(row.getCell(7).value)
+                                    id: $scope.getMaterialById(row.getCell(6).value)
                                 },
                                 brand: {
-                                    id: $scope.getBrandById(row.getCell(8).value)
+                                    id: $scope.getBrandById(row.getCell(7).value)
                                 },
-                                describe: row.getCell(11).value,
+                                describe: row.getCell(8).value,
                             }
+                            console.log(product);
                             if ($scope.checkTrungNameP(product.name) == null) {
                                 $scope.rowOfError.push(rowNumber);
                                 return;
@@ -941,7 +942,6 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
                                 $scope.rowOfError.push(rowNumber);
                                 return;
                             }
-                            // console.log(product);
                             listData.push(product)
                         }
                     });
@@ -953,6 +953,7 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
                         $scope.unload()
                         $scope.showSuccessNotification("Thêm sản phẩm thành công!")
                         $scope.initialize();
+                        $('#modalExel').modal('hide')
                     }).catch(error => {
                         console.log("Error", error);
                     })
