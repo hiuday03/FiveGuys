@@ -3,6 +3,7 @@ package com.example.demo.restcontroller;
 import com.example.demo.entity.Brands;
 import com.example.demo.entity.Category;
 import com.example.demo.service.CategoryService;
+import com.example.demo.service.serviceiplm.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 public class CategoryRestController {
 
     @Autowired
-    CategoryService categoryService;
+    CategoryServiceImpl categoryService;
 
     @GetMapping("")
     public ResponseEntity<?> index(){
