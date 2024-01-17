@@ -2,6 +2,7 @@ package com.example.demo.restcontroller;
 
 import com.example.demo.entity.Size;
 import com.example.demo.service.SizeService;
+import com.example.demo.service.serviceiplm.SizeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 public class SizeRestController{
 
     @Autowired
-    SizeService sizeService;
+    SizeServiceImpl sizeService;
 
     @GetMapping("")
     public ResponseEntity<?> index(){
