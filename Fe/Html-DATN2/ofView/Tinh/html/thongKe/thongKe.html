@@ -30,12 +30,13 @@
                   <i class="bi bi-cart"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>{{getcodeday}}</h6>
+                  <h6>{{getcodeday}} đơn</h6>
                   <span class="text-success small pt-1 fw-bold"
                     >{{getcodeday/getcodedaytile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
-                    >{{getcodeday >= getcodedaytile ? 'Tăng': 'Giảm'}}</span
+                    >{{getcodeday >= getcodedaytile ? 'Tăng': 'Giảm'}} so với
+                    trước</span
                   >
                 </div>
               </div>
@@ -57,13 +58,13 @@
                   <i class="bi bi-people"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>{{listcustomeryear}}</h6>
+                  <h6>{{listcustomeryear}} sp</h6>
                   <span class="text-danger small pt-1 fw-bold"
                     >{{listcustomeryear/listcustomeryeartile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
                     >{{listcustomeryear >= listcustomeryeartile ? 'Tăng':
-                    'Giảm'}}</span
+                    'Giảm'}} so với trước</span
                   >
                 </div>
               </div>
@@ -85,12 +86,13 @@
                   <i class="bi bi-currency-dollar"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>{{getsum}}</h6>
+                  <h6>{{getsum}} vnđ</h6>
                   <span class="text-success small pt-1 fw-bold"
                     >{{getsum/getsumtile}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
-                    >{{getsum >= getsumtile ? 'Tăng': 'Giảm'}}</span
+                    >{{getsum >= getsumtile ? 'Tăng': 'Giảm'}} so với
+                    trước</span
                   >
                 </div>
               </div>
@@ -124,11 +126,11 @@
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th scope="col">Preview</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Sold</th>
-                    <th scope="col">Revenue</th>
+                    <th scope="col">Ảnh</th>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Doanh thu</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,9 +149,9 @@
                         >{{top.ten_sanpham}}</a
                       >
                     </td>
-                    <td>{{top.price}}</td>
+                    <td>{{top.price | number}} đ</td>
                     <td class="fw-bold">{{top.so_luong_ban}}</td>
-                    <td>{{top.price * top.so_luong_ban}}</td>
+                    <td>{{top.price * top.so_luong_ban | number}} đ</td>
                   </tr>
                 </tbody>
               </table>
@@ -198,7 +200,7 @@
                     topbanchaymonth
                     +
                     ng-model="searchVoucher"
-                    placeholder="Search"
+                    placeholder="Tìm theo khách hàng hoặc sản phẩm"
                   />
                 </div>
               </div>
@@ -206,12 +208,12 @@
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Customer</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">STT</th>
+                    <th scope="col">Khách hàng</th>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Giá</th>
                     <th scope="col">Loại</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Trạng thái</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -227,7 +229,7 @@
                         >{{get.employee.fullName}}</a
                       >
                     </td>
-                    <td>{{get.totalAmountAfterDiscount}}</td>
+                    <td>{{get.totalAmountAfterDiscount| number}} đ</td>
                     <td class="col-1" ng-switch="get.typeBill">
                       <span ng-switch-when="1">
                         <div

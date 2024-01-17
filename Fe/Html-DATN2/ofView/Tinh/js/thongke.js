@@ -780,7 +780,7 @@ app.controller(
       // Delay execution of delayedAction() by 2 seconds (2000 milliseconds)
       $timeout($scope.listCustomerDay, 2000);
     };
-
+    $scope.listCustomerDay();
     function renderChartNgay() {
       //------------
 
@@ -1062,9 +1062,9 @@ app.controller(
       }).render();
     }
 
-    angular.element(document).ready(function () {
-      $scope.listCustomerDay();
-    });
+    // angular.element(document).ready(function () {
+    //   $scope.listCustomerDay();
+    // });
 
     $scope.changePageSize = function () {
       $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
@@ -1121,7 +1121,7 @@ app.controller(
         },
         series: [
           {
-            name: "Access From",
+            name: "Sản phẩm bán",
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
