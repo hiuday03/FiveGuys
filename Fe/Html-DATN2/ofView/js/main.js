@@ -170,7 +170,7 @@ app.config(function ($httpProvider) {
 //---------------------------------Tịnh end Voucher---------------------------
 
 app.controller("brand-ctrl", function ($scope, $http, $timeout) {
-  $scope.originalbrand = [];
+  $scope.originalBrand = [];
   $scope.brand = [];
   $scope.formUpdate = {};
   $scope.formInput = {};
@@ -179,52 +179,52 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   const apiBrand = "http://localhost:8080/brand";
 
   $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
+      $scope.alertMessage = message;
+      $scope.showAlert = true;
+      $timeout(function () {
+          $scope.closeAlert();
+      }, 5000);
   };
 
   $scope.closeAlert = function () {
-    $scope.showAlert = false;
+      $scope.showAlert = false;
   };
 
   $scope.search = function () {
-    // Kiểm tra từ khóa tìm kiếm
-    if ($scope.searchKeyword.trim() !== "") {
-      $scope.brand = $scope.originalBrand.filter(function (item) {
-        if (item && item.name) {
-          return item.name
-            .toLowerCase()
-            .includes($scope.searchKeyword.toLowerCase());
-        }
-        return false;
-      });
-    } else {
-      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBrand
-      $scope.brand = angular.copy($scope.originalBrand);
-    }
-    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
-    $scope.changePageSize();
+      // Kiểm tra từ khóa tìm kiếm
+      if ($scope.searchKeyword.trim() !== "") {
+          $scope.brand = $scope.originalBrand.filter(function (item) {
+              if (item && item.name) {
+                  return item.name
+                      .toLowerCase()
+                      .includes($scope.searchKeyword.toLowerCase());
+              }
+              return false;
+          });
+      } else {
+          // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBrand
+          $scope.brand = angular.copy($scope.originalBrand);
+      }
+      // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+      $scope.changePageSize();
   };
 
   $scope.initialize = function () {
-    $http.get(apiBrand).then(function (resp) {
-      $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
-      $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
-    });
+      $http.get(apiBrand).then(function (resp) {
+          $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
+          $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
+      });
   };
 
   $scope.initialize();
 
   $scope.edit = function (brand) {
-    if ($scope.formUpdate.updatedAt) {
-      $scope.formUpdate = angular.copy(brand);
-    } else {
-      $scope.formUpdate = angular.copy(brand);
-      $scope.formUpdate.updatedAt = new Date();
-    }
+      if ($scope.formUpdate.updatedAt) {
+          $scope.formUpdate = angular.copy(brand);
+      } else {
+          $scope.formUpdate = angular.copy(brand);
+          $scope.formUpdate.updatedAt = new Date();
+      }
   };
 
   // $scope.create = function () {
@@ -240,738 +240,739 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   //     });
   // }
   $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    item.createdAt = $scope.currentDate;
-    $http
-      .post(apiBrand, item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Create brand successfully");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch(function (error) {
-        if (error.status === 400 && error.data === "Name already exists") {
-          $scope.nameExists = true;
-        } else {
-          console.log("Error", error);
-        }
-      });
+      let item = angular.copy($scope.formInput);
+      item.createdAt = $scope.currentDate;
+      $http
+          .post(apiBrand, item)
+          .then(function (resp) {
+              $scope.showSuccessMessage("Create brand successfully");
+              $scope.resetFormInput();
+              $scope.initialize();
+              $("#modalAdd").modal("hide");
+          })
+          .catch(function (error) {
+              if (error.status === 400 && error.data === "Name already exists") {
+                  $scope.nameExists = true;
+              } else {
+                  console.log("Error", error);
+              }
+          });
   };
 
   $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    console.log(item);
-    item.updatedAt = $scope.currentDate;
-    $http
-      .put(apiBrand + `${item.id}`, item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Update Brand successfully");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch(function (error) {
-        if (error.status === 400 && error.data === "Name already exists") {
-          $scope.nameExists = true;
-        } else {
-          console.log("Error", error);
-        }
-      });
+      let item = angular.copy($scope.formUpdate);
+      console.log(item);
+      item.updatedAt = $scope.currentDate;
+      $http
+          .put(apiBrand + `${item.id}`, item)
+          .then(function (resp) {
+              $scope.showSuccessMessage("Update Brand successfully");
+              $scope.resetFormUpdate();
+              $scope.initialize();
+              $("#modalUpdate").modal("hide");
+          })
+          .catch(function (error) {
+              if (error.status === 400 && error.data === "Name already exists") {
+                  $scope.nameExists = true;
+              } else {
+                  console.log("Error", error);
+              }
+          });
   };
 
   $scope.delete = function (item) {
-    $http
-      .delete(`/brand/${item.id}`)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Delete Brand successfully");
-        $scope.initialize();
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
+      $http
+          .delete(apiBrand + `/${item.id}`)
+          .then(function (resp) {
+              $scope.showSuccessMessage("Delete Brand successfully");
+              $scope.initialize();
+          })
+          .catch(function (error) {
+              console.log("Error", error);
+          });
   };
 
   $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateBrand.$setPristine();
-    $scope.formUpdateBrand.$setUntouched();
+      $scope.formUpdate = {};
+      $scope.formUpdateBrand.$setPristine();
+      $scope.formUpdateBrand.$setUntouched();
   };
 
   $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formCreateBrand.$setPristine();
-    $scope.formCreateBrand.$setUntouched();
+      $scope.formInput = {};
+      $scope.formCreateBrand.$setPristine();
+      $scope.formCreateBrand.$setUntouched();
   };
 
   $scope.changePageSize = function () {
-    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+      $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
   };
 
   $scope.paper = {
-    page: 0,
-    size: 5, // Kích thước mặc định ban đầu
-    get items() {
-      let start = this.page * this.size;
-      return $scope.brand.slice(start, start + this.size);
-    },
-    get count() {
-      return Math.ceil((1.0 * $scope.brand.length) / this.size);
-    },
-    first() {
-      this.page = 0;
-    },
-    prev() {
-      if (this.page > 0) {
-        this.page--;
-      }
-    },
-    next() {
-      if (this.page < this.count - 1) {
-        this.page++;
-      }
-    },
-    last() {
-      this.page = this.count - 1;
-    },
-  };
-});
-app.controller("size-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlSize = "http://localhost:8080/api/size";
-
-  $scope.sizes = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlSize + "/page").then((resp) => {
-      $scope.sizes = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
-
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlSize, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create size successfully!");
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-        $scope.resetFormInput();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlSize}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update size successfully!");
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-        $scope.resetFormUpdate();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlSize}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
-
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
-
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
-
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    $currentPage = page;
-    page = page - 1;
-    $http.get(apiUrlSize + "/page?page=" + page).then(function (response) {
-      $scope.sizes = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
+      page: 0,
+      size: 5, // Kích thước mặc định ban đầu
+      get items() {
+          let start = this.page * this.size;
+          return $scope.size.slice(start, start + this.size);
+      },
+      get count() {
+          return Math.ceil((1.0 * $scope.size.length) / this.size);
+      },
+      first() {
+          this.page = 0;
+      },
+      prev() {
+          if (this.page > 0) {
+              this.page--;
+          }
+      },
+      next() {
+          if (this.page < this.count - 1) {
+              this.page++;
+          }
+      },
+      last() {
+          this.page = this.count - 1;
+      },
   };
 });
 
-app.controller("material-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlMaterial = "http://localhost:8080/api/material";
+// app.controller("size-ctrl", function ($scope, $http, $timeout) {
+//   const apiUrlSize = "http://localhost:8080/api/size";
 
-  $scope.materials = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlMaterial + "/page").then((resp) => {
-      $scope.materials = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
+//   $scope.sizes = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
+//   $scope.initialize = function () {
+//     $http.get(apiUrlSize + "/page").then((resp) => {
+//       $scope.sizes = resp.data.content;
+//       $scope.totalPages = resp.data.totalPages;
+//     });
+//   };
+//   $scope.initialize();
 
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlMaterial, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create material successfully!");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.edit = function (cate) {
+//     $scope.formUpdate = angular.copy(cate);
+//   };
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     $http
+//       .post(apiUrlSize, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Create size successfully!");
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//         $scope.resetFormInput();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlMaterial}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update material successfully!");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     $http
+//       .put(`${apiUrlSize}/${item.id}`, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Update size successfully!");
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//         $scope.resetFormUpdate();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlMaterial}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`${apiUrlSize}/${item.id}`)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Delete color successfully!");
+//         $scope.initialize();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateColor.$setPristine();
+//     $scope.formUpdateColor.$setUntouched();
+//   };
 
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formAddColor.$setPristine();
+//     $scope.formAddColor.$setUntouched();
+//   };
 
-  // //ham lay tat ca san pham co phan trang
-  // $scope.getProduct = function () {
-  //     $http.get(apiUrlProduct + "/page")
-  //         .then(function (response) {
-  //             $scope.products = response.data.content;
-  //             $scope.totalPages = response.data.totalPages;
-  //         });
-  // }
-  // $scope.getProduct();
+//   //ham hien thi nut phan trang
+//   $scope.displayPageRange = function () {
+//     var range = [];
+//     for (var i = 1; i <= $scope.totalPages; i++) {
+//       range.push(i);
+//     }
+//     return range;
+//   };
 
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
+//   //ham hien thi trang
+//   $scope.setPage = function (page) {
+//     $currentPage = page;
+//     page = page - 1;
+//     $http.get(apiUrlSize + "/page?page=" + page).then(function (response) {
+//       $scope.sizes = response.data.content;
+//       $scope.totalPage = response.data.totalPages;
+//     });
+//   };
+// });
 
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    page = page - 1;
-    $http.get(apiUrlMaterial + "/page?page=" + page).then(function (response) {
-      console.log(response);
-      $scope.materials = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
-  };
+// app.controller("material-ctrl", function ($scope, $http, $timeout) {
+//   const apiUrlMaterial = "http://localhost:8080/api/material";
 
-  //tao doi tuong
-  // const getProduct = function () {
-  //     return {
-  //         "name": $scope.name,
-  //         "collar": $scope.collar,
-  //         "wrist": $scope.wrist,
-  //         "describe": $scope.describe,
-  //         "brand": $scope.brand,
-  //         "material": {
-  //             id: $scope.idMaterial,
-  //         },
-  //         "material": {
-  //             id: $scope.idMaterial,
-  //         },
-  //     }
-  // }
-});
+//   $scope.materials = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
+//   $scope.initialize = function () {
+//     $http.get(apiUrlMaterial + "/page").then((resp) => {
+//       $scope.materials = resp.data.content;
+//       $scope.totalPages = resp.data.totalPages;
+//     });
+//   };
+//   $scope.initialize();
 
-app.controller("color-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlColor = "http://localhost:8080/api/color";
+//   $scope.edit = function (cate) {
+//     $scope.formUpdate = angular.copy(cate);
+//   };
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     $http
+//       .post(apiUrlMaterial, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Create material successfully!");
+//         $scope.resetFormInput();
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.colors = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlColor + "/page").then((resp) => {
-      $scope.colors = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     $http
+//       .put(`${apiUrlMaterial}/${item.id}`, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Update material successfully!");
+//         $scope.resetFormUpdate();
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlColor, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create color successfully!");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`${apiUrlMaterial}/${item.id}`)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Delete color successfully!");
+//         $scope.initialize();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlColor}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update color successfully!");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateColor.$setPristine();
+//     $scope.formUpdateColor.$setUntouched();
+//   };
 
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlColor}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formAddColor.$setPristine();
+//     $scope.formAddColor.$setUntouched();
+//   };
 
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
+//   // //ham lay tat ca san pham co phan trang
+//   // $scope.getProduct = function () {
+//   //     $http.get(apiUrlProduct + "/page")
+//   //         .then(function (response) {
+//   //             $scope.products = response.data.content;
+//   //             $scope.totalPages = response.data.totalPages;
+//   //         });
+//   // }
+//   // $scope.getProduct();
 
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
+//   //ham hien thi nut phan trang
+//   $scope.displayPageRange = function () {
+//     var range = [];
+//     for (var i = 1; i <= $scope.totalPages; i++) {
+//       range.push(i);
+//     }
+//     return range;
+//   };
 
-  // //ham lay tat ca san pham co phan trang
-  // $scope.getProduct = function () {
-  //     $http.get(apiUrlProduct + "/page")
-  //         .then(function (response) {
-  //             $scope.products = response.data.content;
-  //             $scope.totalPages = response.data.totalPages;
-  //         });
-  // }
-  // $scope.getProduct();
+//   //ham hien thi trang
+//   $scope.setPage = function (page) {
+//     page = page - 1;
+//     $http.get(apiUrlMaterial + "/page?page=" + page).then(function (response) {
+//       console.log(response);
+//       $scope.materials = response.data.content;
+//       $scope.totalPage = response.data.totalPages;
+//     });
+//   };
 
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
+//   //tao doi tuong
+//   // const getProduct = function () {
+//   //     return {
+//   //         "name": $scope.name,
+//   //         "collar": $scope.collar,
+//   //         "wrist": $scope.wrist,
+//   //         "describe": $scope.describe,
+//   //         "brand": $scope.brand,
+//   //         "material": {
+//   //             id: $scope.idMaterial,
+//   //         },
+//   //         "material": {
+//   //             id: $scope.idMaterial,
+//   //         },
+//   //     }
+//   // }
+// });
 
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    page = page - 1;
-    $http.get(apiUrlColor + "/page?page=" + page).then(function (response) {
-      console.log(response);
-      $scope.colors = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
-  };
+// app.controller("color-ctrl", function ($scope, $http, $timeout) {
+//   const apiUrlColor = "http://localhost:8080/api/color";
 
-  //tao doi tuong
-  // const getProduct = function () {
-  //     return {
-  //         "name": $scope.name,
-  //         "collar": $scope.collar,
-  //         "wrist": $scope.wrist,
-  //         "describe": $scope.describe,
-  //         "brand": $scope.brand,
-  //         "color": {
-  //             id: $scope.idColor,
-  //         },
-  //         "material": {
-  //             id: $scope.idMaterial,
-  //         },
-  //     }
-  // }
-});
+//   $scope.colors = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
+//   $scope.initialize = function () {
+//     $http.get(apiUrlColor + "/page").then((resp) => {
+//       $scope.colors = resp.data.content;
+//       $scope.totalPages = resp.data.totalPages;
+//     });
+//   };
+//   $scope.initialize();
 
-app.controller("category-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlCategory = "http://localhost:8080/api/category";
+//   $scope.edit = function (cate) {
+//     $scope.formUpdate = angular.copy(cate);
+//   };
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     $http
+//       .post(apiUrlColor, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Create color successfully!");
+//         $scope.resetFormInput();
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.categories = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlCategory + "/page").then((resp) => {
-      $scope.categories = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     $http
+//       .put(`${apiUrlColor}/${item.id}`, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Update color successfully!");
+//         $scope.resetFormUpdate();
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlCategory, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create category successfully!");
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-        $scope.resetFormInput();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`${apiUrlColor}/${item.id}`)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Delete color successfully!");
+//         $scope.initialize();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlCategory}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update category successfully!");
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-        $scope.resetFormUpdate();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateColor.$setPristine();
+//     $scope.formUpdateColor.$setUntouched();
+//   };
 
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlCategory}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formAddColor.$setPristine();
+//     $scope.formAddColor.$setUntouched();
+//   };
 
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
+//   // //ham lay tat ca san pham co phan trang
+//   // $scope.getProduct = function () {
+//   //     $http.get(apiUrlProduct + "/page")
+//   //         .then(function (response) {
+//   //             $scope.products = response.data.content;
+//   //             $scope.totalPages = response.data.totalPages;
+//   //         });
+//   // }
+//   // $scope.getProduct();
 
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
+//   //ham hien thi nut phan trang
+//   $scope.displayPageRange = function () {
+//     var range = [];
+//     for (var i = 1; i <= $scope.totalPages; i++) {
+//       range.push(i);
+//     }
+//     return range;
+//   };
 
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
+//   //ham hien thi trang
+//   $scope.setPage = function (page) {
+//     page = page - 1;
+//     $http.get(apiUrlColor + "/page?page=" + page).then(function (response) {
+//       console.log(response);
+//       $scope.colors = response.data.content;
+//       $scope.totalPage = response.data.totalPages;
+//     });
+//   };
 
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    $currentPage = page;
-    page = page - 1;
-    $http.get(apiUrlCategory + "/page?page=" + page).then(function (response) {
-      $scope.categories = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
-  };
-});
+//   //tao doi tuong
+//   // const getProduct = function () {
+//   //     return {
+//   //         "name": $scope.name,
+//   //         "collar": $scope.collar,
+//   //         "wrist": $scope.wrist,
+//   //         "describe": $scope.describe,
+//   //         "brand": $scope.brand,
+//   //         "color": {
+//   //             id: $scope.idColor,
+//   //         },
+//   //         "material": {
+//   //             id: $scope.idMaterial,
+//   //         },
+//   //     }
+//   // }
+// });
 
-app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
-  $scope.originalFavorite = [];
-  $scope.favorite = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.currentDate = new Date();
+// app.controller("category-ctrl", function ($scope, $http, $timeout) {
+//   const apiUrlCategory = "http://localhost:8080/api/category";
 
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
+//   $scope.categories = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
+//   $scope.initialize = function () {
+//     $http.get(apiUrlCategory + "/page").then((resp) => {
+//       $scope.categories = resp.data.content;
+//       $scope.totalPages = resp.data.totalPages;
+//     });
+//   };
+//   $scope.initialize();
 
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
+//   $scope.edit = function (cate) {
+//     $scope.formUpdate = angular.copy(cate);
+//   };
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     $http
+//       .post(apiUrlCategory, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Create category successfully!");
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//         $scope.resetFormInput();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.search = function () {
-    // Kiểm tra từ khóa tìm kiếm
-    if ($scope.searchKeyword.trim() !== "") {
-      $scope.favorite = $scope.originalFavorite.filter(function (item) {
-        if (item && item.content) {
-          return item.content
-            .toLowerCase()
-            .includes($scope.searchKeyword.toLowerCase());
-        }
-        return false;
-      });
-    } else {
-      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalFavorite
-      $scope.favorite = angular.copy($scope.originalFavorite);
-    }
-    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
-    $scope.changePageSize();
-  };
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     $http
+//       .put(`${apiUrlCategory}/${item.id}`, item)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Update category successfully!");
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//         $scope.resetFormUpdate();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.initialize = function () {
-    $http.get("/favorite").then(function (resp) {
-      $scope.originalFavorite = resp.data;
-      $scope.favorite = angular.copy($scope.originalFavorite);
-    });
-  };
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`${apiUrlCategory}/${item.id}`)
+//       .then((resp) => {
+//         $scope.showSuccessMessage("Delete color successfully!");
+//         $scope.initialize();
+//       })
+//       .catch((error) => {
+//         console.log("Error", error);
+//       });
+//   };
 
-  $scope.initialize();
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateColor.$setPristine();
+//     $scope.formUpdateColor.$setUntouched();
+//   };
 
-  $scope.loadCustomers = function () {
-    $http
-      .get("/customer") // Thay đổi đường dẫn API tương ứng
-      .then(function (resp) {
-        $scope.customers = resp.data;
-      })
-      .catch(function (error) {
-        console.log("Error loading customers", error);
-      });
-  };
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formAddColor.$setPristine();
+//     $scope.formAddColor.$setUntouched();
+//   };
 
-  $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+//   //ham hien thi nut phan trang
+//   $scope.displayPageRange = function () {
+//     var range = [];
+//     for (var i = 1; i <= $scope.totalPages; i++) {
+//       range.push(i);
+//     }
+//     return range;
+//   };
 
-  $scope.loadProducts = function () {
-    $http
-      .get("/api/product") // Thay đổi đường dẫn API tương ứng
-      .then(function (resp) {
-        $scope.products = resp.data;
-      })
-      .catch(function (error) {
-        console.log("Error loading products", error);
-      });
-  };
+//   //ham hien thi trang
+//   $scope.setPage = function (page) {
+//     $currentPage = page;
+//     page = page - 1;
+//     $http.get(apiUrlCategory + "/page?page=" + page).then(function (response) {
+//       $scope.categories = response.data.content;
+//       $scope.totalPage = response.data.totalPages;
+//     });
+//   };
+// });
 
-  $scope.loadProducts();
+// app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
+//   $scope.originalFavorite = [];
+//   $scope.favorite = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.currentDate = new Date();
 
-  $scope.edit = function (favorite) {
-    if ($scope.formUpdate.updatedAt) {
-      $scope.formUpdate = angular.copy(favorite);
-    } else {
-      $scope.formUpdate = angular.copy(favorite);
-      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
-    }
-  };
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
 
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    item.createdAt = $scope.currentDate;
-    item.createdAt = $scope.currentDate;
-    $http
-      .post("/favorite", item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Create favorite successfully");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
 
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    console.log(item);
-    item.updatedAt = $scope.currentDate;
+//   $scope.search = function () {
+//     // Kiểm tra từ khóa tìm kiếm
+//     if ($scope.searchKeyword.trim() !== "") {
+//       $scope.favorite = $scope.originalFavorite.filter(function (item) {
+//         if (item && item.content) {
+//           return item.content
+//             .toLowerCase()
+//             .includes($scope.searchKeyword.toLowerCase());
+//         }
+//         return false;
+//       });
+//     } else {
+//       // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalFavorite
+//       $scope.favorite = angular.copy($scope.originalFavorite);
+//     }
+//     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+//     $scope.changePageSize();
+//   };
 
-    $http
-      .put(`/favorite/${item.id}`, item)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Update Favorite successfully");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
+//   $scope.initialize = function () {
+//     $http.get("/favorite").then(function (resp) {
+//       $scope.originalFavorite = resp.data;
+//       $scope.favorite = angular.copy($scope.originalFavorite);
+//     });
+//   };
 
-  $scope.delete = function (item) {
-    $http
-      .delete(`/favorite/${item.id}`)
-      .then(function (resp) {
-        $scope.showSuccessMessage("Delete Favorite successfully");
-        $scope.initialize();
-      })
-      .catch(function (error) {
-        console.log("Error", error);
-      });
-  };
+//   $scope.initialize();
 
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateFavorite.$setPristine();
-    $scope.formUpdateFavorite.$setUntouched();
-  };
+//   $scope.loadCustomers = function () {
+//     $http
+//       .get("/customer") // Thay đổi đường dẫn API tương ứng
+//       .then(function (resp) {
+//         $scope.customers = resp.data;
+//       })
+//       .catch(function (error) {
+//         console.log("Error loading customers", error);
+//       });
+//   };
 
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formCreateFavorite.$setPristine();
-    $scope.formCreateFavorite.$setUntouched();
-  };
+//   $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
 
-  $scope.changePageSize = function () {
-    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
-  };
+//   $scope.loadProducts = function () {
+//     $http
+//       .get("/api/product") // Thay đổi đường dẫn API tương ứng
+//       .then(function (resp) {
+//         $scope.products = resp.data;
+//       })
+//       .catch(function (error) {
+//         console.log("Error loading products", error);
+//       });
+//   };
 
-  $scope.paper = {
-    page: 0,
-    size: 5, // Kích thước mặc định ban đầu
-    get items() {
-      let start = this.page * this.size;
-      return $scope.favorite.slice(start, start + this.size);
-    },
-    get count() {
-      return Math.ceil((1.0 * $scope.favorite.length) / this.size);
-    },
-    first() {
-      this.page = 0;
-    },
-    prev() {
-      if (this.page > 0) {
-        this.page--;
-      }
-    },
-    next() {
-      if (this.page < this.count - 1) {
-        this.page++;
-      }
-    },
-    last() {
-      this.page = this.count - 1;
-    },
-  };
-});
+//   $scope.loadProducts();
+
+//   $scope.edit = function (favorite) {
+//     if ($scope.formUpdate.updatedAt) {
+//       $scope.formUpdate = angular.copy(favorite);
+//     } else {
+//       $scope.formUpdate = angular.copy(favorite);
+//       $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+//     }
+//   };
+
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     item.createdAt = $scope.currentDate;
+//     item.createdAt = $scope.currentDate;
+//     $http
+//       .post("/favorite", item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Create favorite successfully");
+//         $scope.resetFormInput();
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
+
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     console.log(item);
+//     item.updatedAt = $scope.currentDate;
+
+//     $http
+//       .put(`/favorite/${item.id}`, item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Update Favorite successfully");
+//         $scope.resetFormUpdate();
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
+
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`/favorite/${item.id}`)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Delete Favorite successfully");
+//         $scope.initialize();
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
+
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateFavorite.$setPristine();
+//     $scope.formUpdateFavorite.$setUntouched();
+//   };
+
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formCreateFavorite.$setPristine();
+//     $scope.formCreateFavorite.$setUntouched();
+//   };
+
+//   $scope.changePageSize = function () {
+//     $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+//   };
+
+//   $scope.paper = {
+//     page: 0,
+//     size: 5, // Kích thước mặc định ban đầu
+//     get items() {
+//       let start = this.page * this.size;
+//       return $scope.favorite.slice(start, start + this.size);
+//     },
+//     get count() {
+//       return Math.ceil((1.0 * $scope.favorite.length) / this.size);
+//     },
+//     first() {
+//       this.page = 0;
+//     },
+//     prev() {
+//       if (this.page > 0) {
+//         this.page--;
+//       }
+//     },
+//     next() {
+//       if (this.page < this.count - 1) {
+//         this.page++;
+//       }
+//     },
+//     last() {
+//       this.page = this.count - 1;
+//     },
+//   };
+// });
 
 app.controller("role-ctrl", function ($scope, $http, $timeout) {
   $scope.originalRole = [];
@@ -1769,14 +1770,182 @@ app.config(function ($routeProvider) {
 // Hieu js
 // --------------------------------tinh thong kê-----------------------------
 
-app.controller("brand-ctrl", function ($scope, $http, $timeout) {
-  $scope.originalbrand = [];
-  $scope.brand = [];
+// app.controller("brand-ctrl", function ($scope, $http, $timeout) {
+//   $scope.originalbrand = [];
+//   $scope.brand = [];
+//   $scope.formUpdate = {};
+//   $scope.formInput = {};
+//   $scope.showAlert = false;
+//   $scope.currentDate = new Date();
+//   const apiBrand = "http://localhost:8080/brand";
+
+//   $scope.showSuccessMessage = function (message) {
+//     $scope.alertMessage = message;
+//     $scope.showAlert = true;
+//     $timeout(function () {
+//       $scope.closeAlert();
+//     }, 5000);
+//   };
+
+//   $scope.closeAlert = function () {
+//     $scope.showAlert = false;
+//   };
+
+//   $scope.search = function () {
+//     // Kiểm tra từ khóa tìm kiếm
+//     if ($scope.searchKeyword.trim() !== "") {
+//       $scope.brand = $scope.originalBrand.filter(function (item) {
+//         if (item && item.name) {
+//           return item.name
+//             .toLowerCase()
+//             .includes($scope.searchKeyword.toLowerCase());
+//         }
+//         return false;
+//       });
+//     } else {
+//       // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBrand
+//       $scope.brand = angular.copy($scope.originalBrand);
+//     }
+//     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+//     $scope.changePageSize();
+//   };
+
+//   $scope.initialize = function () {
+//     $http.get(apiBrand).then(function (resp) {
+//       $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
+//       $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
+//     });
+//   };
+
+//   $scope.initialize();
+
+//   $scope.edit = function (brand) {
+//     if ($scope.formUpdate.updatedAt) {
+//       $scope.formUpdate = angular.copy(brand);
+//     } else {
+//       $scope.formUpdate = angular.copy(brand);
+//       $scope.formUpdate.updatedAt = new Date();
+//     }
+//   };
+
+//   // $scope.create = function () {
+//   //     let item = angular.copy($scope.formInput);
+//   //     item.createdAt = $scope.currentDate;
+//   //     $http.post("/brand", item).then(function (resp) {
+//   //         $scope.showSuccessMessage("Create brand successfully");
+//   //         $scope.resetFormInput();
+//   //         $scope.initialize();
+//   //         $('#modalAdd').modal('hide');
+//   //     }).catch(function (error) {
+//   //         console.log("Error", error);
+//   //     });
+//   // }
+//   $scope.create = function () {
+//     let item = angular.copy($scope.formInput);
+//     item.createdAt = $scope.currentDate;
+//     $http
+//       .post(apiBrand, item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Create brand successfully");
+//         $scope.resetFormInput();
+//         $scope.initialize();
+//         $("#modalAdd").modal("hide");
+//       })
+//       .catch(function (error) {
+//         if (error.status === 400 && error.data === "Name already exists") {
+//           $scope.nameExists = true;
+//         } else {
+//           console.log("Error", error);
+//         }
+//       });
+//   };
+
+//   $scope.update = function () {
+//     let item = angular.copy($scope.formUpdate);
+//     console.log(item);
+//     item.updatedAt = $scope.currentDate;
+//     $http
+//       .put(apiBrand + `${item.id}`, item)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Update Brand successfully");
+//         $scope.resetFormUpdate();
+//         $scope.initialize();
+//         $("#modalUpdate").modal("hide");
+//       })
+//       .catch(function (error) {
+//         if (error.status === 400 && error.data === "Name already exists") {
+//           $scope.nameExists = true;
+//         } else {
+//           console.log("Error", error);
+//         }
+//       });
+//   };
+
+//   $scope.delete = function (item) {
+//     $http
+//       .delete(`/brand/${item.id}`)
+//       .then(function (resp) {
+//         $scope.showSuccessMessage("Delete Brand successfully");
+//         $scope.initialize();
+//       })
+//       .catch(function (error) {
+//         console.log("Error", error);
+//       });
+//   };
+
+//   $scope.resetFormUpdate = function () {
+//     $scope.formUpdate = {};
+//     $scope.formUpdateBrand.$setPristine();
+//     $scope.formUpdateBrand.$setUntouched();
+//   };
+
+//   $scope.resetFormInput = function () {
+//     $scope.formInput = {};
+//     $scope.formCreateBrand.$setPristine();
+//     $scope.formCreateBrand.$setUntouched();
+//   };
+
+//   $scope.changePageSize = function () {
+//     $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+//   };
+
+//   $scope.paper = {
+//     page: 0,
+//     size: 5, // Kích thước mặc định ban đầu
+//     get items() {
+//       let start = this.page * this.size;
+//       return $scope.brand.slice(start, start + this.size);
+//     },
+//     get count() {
+//       return Math.ceil((1.0 * $scope.brand.length) / this.size);
+//     },
+//     first() {
+//       this.page = 0;
+//     },
+//     prev() {
+//       if (this.page > 0) {
+//         this.page--;
+//       }
+//     },
+//     next() {
+//       if (this.page < this.count - 1) {
+//         this.page++;
+//       }
+//     },
+//     last() {
+//       this.page = this.count - 1;
+//     },
+//   };
+// });
+
+app.controller("size-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalSize = [];
+  $scope.size = [];
   $scope.formUpdate = {};
   $scope.formInput = {};
   $scope.showAlert = false;
   $scope.currentDate = new Date();
-  const apiBrand = "http://localhost:8080/brand";
+  const apiSize = "http://localhost:8080/api/size";
 
   $scope.showSuccessMessage = function (message) {
     $scope.alertMessage = message;
@@ -1793,7 +1962,7 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   $scope.search = function () {
     // Kiểm tra từ khóa tìm kiếm
     if ($scope.searchKeyword.trim() !== "") {
-      $scope.brand = $scope.originalBrand.filter(function (item) {
+      $scope.size = $scope.originalSize.filter(function (item) {
         if (item && item.name) {
           return item.name
             .toLowerCase()
@@ -1802,27 +1971,27 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
         return false;
       });
     } else {
-      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalBrand
-      $scope.brand = angular.copy($scope.originalBrand);
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalSize
+      $scope.size = angular.copy($scope.originalSize);
     }
     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
     $scope.changePageSize();
   };
 
   $scope.initialize = function () {
-    $http.get(apiBrand).then(function (resp) {
-      $scope.originalBrand = resp.data; // Lưu dữ liệu gốc
-      $scope.brand = angular.copy($scope.originalBrand); // Sao chép dữ liệu gốc sang mảng hiển thị
+    $http.get(apiSize).then(function (resp) {
+      $scope.originalSize = resp.data; // Lưu dữ liệu gốc
+      $scope.size = angular.copy($scope.originalSize); // Sao chép dữ liệu gốc sang mảng hiển thị
     });
   };
 
   $scope.initialize();
 
-  $scope.edit = function (brand) {
+  $scope.edit = function (size) {
     if ($scope.formUpdate.updatedAt) {
-      $scope.formUpdate = angular.copy(brand);
+      $scope.formUpdate = angular.copy(size);
     } else {
-      $scope.formUpdate = angular.copy(brand);
+      $scope.formUpdate = angular.copy(size);
       $scope.formUpdate.updatedAt = new Date();
     }
   };
@@ -1830,8 +1999,8 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
   // $scope.create = function () {
   //     let item = angular.copy($scope.formInput);
   //     item.createdAt = $scope.currentDate;
-  //     $http.post("/brand", item).then(function (resp) {
-  //         $scope.showSuccessMessage("Create brand successfully");
+  //     $http.post("/size", item).then(function (resp) {
+  //         $scope.showSuccessMessage("Create size successfully");
   //         $scope.resetFormInput();
   //         $scope.initialize();
   //         $('#modalAdd').modal('hide');
@@ -1843,9 +2012,9 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
     let item = angular.copy($scope.formInput);
     item.createdAt = $scope.currentDate;
     $http
-      .post(apiBrand, item)
+      .post(apiSize, item)
       .then(function (resp) {
-        $scope.showSuccessMessage("Create brand successfully");
+        $scope.showSuccessMessage("Create Size successfully");
         $scope.resetFormInput();
         $scope.initialize();
         $("#modalAdd").modal("hide");
@@ -1864,9 +2033,9 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
     console.log(item);
     item.updatedAt = $scope.currentDate;
     $http
-      .put(apiBrand + `${item.id}`, item)
+      .put(apiSize + `${item.id}`, item)
       .then(function (resp) {
-        $scope.showSuccessMessage("Update Brand successfully");
+        $scope.showSuccessMessage("Update Size successfully");
         $scope.resetFormUpdate();
         $scope.initialize();
         $("#modalUpdate").modal("hide");
@@ -1882,9 +2051,9 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/brand/${item.id}`)
+      .delete(apiSize + `/${item.id}`)
       .then(function (resp) {
-        $scope.showSuccessMessage("Delete Brand successfully");
+        $scope.showSuccessMessage("Delete Size successfully");
         $scope.initialize();
       })
       .catch(function (error) {
@@ -1894,14 +2063,14 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
 
   $scope.resetFormUpdate = function () {
     $scope.formUpdate = {};
-    $scope.formUpdateBrand.$setPristine();
-    $scope.formUpdateBrand.$setUntouched();
+    $scope.formUpdateSize.$setPristine();
+    $scope.formUpdateSize.$setUntouched();
   };
 
   $scope.resetFormInput = function () {
     $scope.formInput = {};
-    $scope.formCreateBrand.$setPristine();
-    $scope.formCreateBrand.$setUntouched();
+    $scope.formCreateSize.$setPristine();
+    $scope.formCreateSize.$setUntouched();
   };
 
   $scope.changePageSize = function () {
@@ -1913,10 +2082,10 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
     size: 5, // Kích thước mặc định ban đầu
     get items() {
       let start = this.page * this.size;
-      return $scope.brand.slice(start, start + this.size);
+      return $scope.size.slice(start, start + this.size);
     },
     get count() {
-      return Math.ceil((1.0 * $scope.brand.length) / this.size);
+      return Math.ceil((1.0 * $scope.size.length) / this.size);
     },
     first() {
       this.page = 0;
@@ -1936,475 +2105,16 @@ app.controller("brand-ctrl", function ($scope, $http, $timeout) {
     },
   };
 });
-app.controller("size-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlSize = "http://localhost:8080/api/size";
 
-  $scope.sizes = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlSize + "/page").then((resp) => {
-      $scope.sizes = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
-
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlSize, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create size successfully!");
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-        $scope.resetFormInput();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlSize}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update size successfully!");
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-        $scope.resetFormUpdate();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlSize}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
-
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
-
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
-
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    $currentPage = page;
-    page = page - 1;
-    $http.get(apiUrlSize + "/page?page=" + page).then(function (response) {
-      $scope.sizes = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
-  };
-});
 
 app.controller("material-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlMaterial = "http://localhost:8080/api/material";
-
-  $scope.materials = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlMaterial + "/page").then((resp) => {
-      $scope.materials = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
-
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlMaterial, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create material successfully!");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlMaterial}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update material successfully!");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlMaterial}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
-
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
-
-  // //ham lay tat ca san pham co phan trang
-  // $scope.getProduct = function () {
-  //     $http.get(apiUrlProduct + "/page")
-  //         .then(function (response) {
-  //             $scope.products = response.data.content;
-  //             $scope.totalPages = response.data.totalPages;
-  //         });
-  // }
-  // $scope.getProduct();
-
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
-
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    page = page - 1;
-    $http.get(apiUrlMaterial + "/page?page=" + page).then(function (response) {
-      console.log(response);
-      $scope.materials = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
-  };
-
-  //tao doi tuong
-  // const getProduct = function () {
-  //     return {
-  //         "name": $scope.name,
-  //         "collar": $scope.collar,
-  //         "wrist": $scope.wrist,
-  //         "describe": $scope.describe,
-  //         "brand": $scope.brand,
-  //         "material": {
-  //             id: $scope.idMaterial,
-  //         },
-  //         "material": {
-  //             id: $scope.idMaterial,
-  //         },
-  //     }
-  // }
-});
-
-app.controller("color-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlColor = "http://localhost:8080/api/color";
-
-  $scope.colors = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlColor + "/page").then((resp) => {
-      $scope.colors = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
-
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlColor, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create color successfully!");
-        $scope.resetFormInput();
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlColor}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update color successfully!");
-        $scope.resetFormUpdate();
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlColor}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
-
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
-
-  // //ham lay tat ca san pham co phan trang
-  // $scope.getProduct = function () {
-  //     $http.get(apiUrlProduct + "/page")
-  //         .then(function (response) {
-  //             $scope.products = response.data.content;
-  //             $scope.totalPages = response.data.totalPages;
-  //         });
-  // }
-  // $scope.getProduct();
-
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
-
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    page = page - 1;
-    $http.get(apiUrlColor + "/page?page=" + page).then(function (response) {
-      console.log(response);
-      $scope.colors = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
-  };
-
-  //tao doi tuong
-  // const getProduct = function () {
-  //     return {
-  //         "name": $scope.name,
-  //         "collar": $scope.collar,
-  //         "wrist": $scope.wrist,
-  //         "describe": $scope.describe,
-  //         "brand": $scope.brand,
-  //         "color": {
-  //             id: $scope.idColor,
-  //         },
-  //         "material": {
-  //             id: $scope.idMaterial,
-  //         },
-  //     }
-  // }
-});
-
-app.controller("category-ctrl", function ($scope, $http, $timeout) {
-  const apiUrlCategory = "http://localhost:8080/api/category";
-
-  $scope.categories = [];
-  $scope.formUpdate = {};
-  $scope.formInput = {};
-  $scope.showAlert = false;
-  $scope.showSuccessMessage = function (message) {
-    $scope.alertMessage = message;
-    $scope.showAlert = true;
-    $timeout(function () {
-      $scope.closeAlert();
-    }, 5000);
-  };
-  $scope.closeAlert = function () {
-    $scope.showAlert = false;
-  };
-  $scope.initialize = function () {
-    $http.get(apiUrlCategory + "/page").then((resp) => {
-      $scope.categories = resp.data.content;
-      $scope.totalPages = resp.data.totalPages;
-    });
-  };
-  $scope.initialize();
-
-  $scope.edit = function (cate) {
-    $scope.formUpdate = angular.copy(cate);
-  };
-  $scope.create = function () {
-    let item = angular.copy($scope.formInput);
-    $http
-      .post(apiUrlCategory, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Create category successfully!");
-        $scope.initialize();
-        $("#modalAdd").modal("hide");
-        $scope.resetFormInput();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.update = function () {
-    let item = angular.copy($scope.formUpdate);
-    $http
-      .put(`${apiUrlCategory}/${item.id}`, item)
-      .then((resp) => {
-        $scope.showSuccessMessage("Update category successfully!");
-        $scope.initialize();
-        $("#modalUpdate").modal("hide");
-        $scope.resetFormUpdate();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.delete = function (item) {
-    $http
-      .delete(`${apiUrlCategory}/${item.id}`)
-      .then((resp) => {
-        $scope.showSuccessMessage("Delete color successfully!");
-        $scope.initialize();
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  $scope.resetFormUpdate = function () {
-    $scope.formUpdate = {};
-    $scope.formUpdateColor.$setPristine();
-    $scope.formUpdateColor.$setUntouched();
-  };
-
-  $scope.resetFormInput = function () {
-    $scope.formInput = {};
-    $scope.formAddColor.$setPristine();
-    $scope.formAddColor.$setUntouched();
-  };
-
-  //ham hien thi nut phan trang
-  $scope.displayPageRange = function () {
-    var range = [];
-    for (var i = 1; i <= $scope.totalPages; i++) {
-      range.push(i);
-    }
-    return range;
-  };
-
-  //ham hien thi trang
-  $scope.setPage = function (page) {
-    $currentPage = page;
-    page = page - 1;
-    $http.get(apiUrlCategory + "/page?page=" + page).then(function (response) {
-      $scope.categories = response.data.content;
-      $scope.totalPage = response.data.totalPages;
-    });
-  };
-});
-
-app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
-  $scope.originalFavorite = [];
-  $scope.favorite = [];
+  $scope.originalMaterial = [];
+  $scope.material = [];
   $scope.formUpdate = {};
   $scope.formInput = {};
   $scope.showAlert = false;
   $scope.currentDate = new Date();
+  const apiMaterial = "http://localhost:8080/api/material";
 
   $scope.showSuccessMessage = function (message) {
     $scope.alertMessage = message;
@@ -2421,80 +2131,69 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
   $scope.search = function () {
     // Kiểm tra từ khóa tìm kiếm
     if ($scope.searchKeyword.trim() !== "") {
-      $scope.favorite = $scope.originalFavorite.filter(function (item) {
-        if (item && item.content) {
-          return item.content
+      $scope.material = $scope.originalMaterial.filter(function (item) {
+        if (item && item.name) {
+          return item.name
             .toLowerCase()
             .includes($scope.searchKeyword.toLowerCase());
         }
         return false;
       });
     } else {
-      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalFavorite
-      $scope.favorite = angular.copy($scope.originalFavorite);
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalMaterial
+      $scope.material = angular.copy($scope.originalMaterial);
     }
     // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
     $scope.changePageSize();
   };
 
   $scope.initialize = function () {
-    $http.get("/favorite").then(function (resp) {
-      $scope.originalFavorite = resp.data;
-      $scope.favorite = angular.copy($scope.originalFavorite);
+    $http.get(apiMaterial).then(function (resp) {
+      $scope.originalMaterial = resp.data; // Lưu dữ liệu gốc
+      $scope.material = angular.copy($scope.originalMaterial); // Sao chép dữ liệu gốc sang mảng hiển thị
     });
   };
 
   $scope.initialize();
 
-  $scope.loadCustomers = function () {
-    $http
-      .get("/customer") // Thay đổi đường dẫn API tương ứng
-      .then(function (resp) {
-        $scope.customers = resp.data;
-      })
-      .catch(function (error) {
-        console.log("Error loading customers", error);
-      });
-  };
-
-  $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
-
-  $scope.loadProducts = function () {
-    $http
-      .get("/api/product") // Thay đổi đường dẫn API tương ứng
-      .then(function (resp) {
-        $scope.products = resp.data;
-      })
-      .catch(function (error) {
-        console.log("Error loading products", error);
-      });
-  };
-
-  $scope.loadProducts();
-
-  $scope.edit = function (favorite) {
+  $scope.edit = function (material) {
     if ($scope.formUpdate.updatedAt) {
-      $scope.formUpdate = angular.copy(favorite);
+      $scope.formUpdate = angular.copy(material);
     } else {
-      $scope.formUpdate = angular.copy(favorite);
-      $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+      $scope.formUpdate = angular.copy(material);
+      $scope.formUpdate.updatedAt = new Date();
     }
   };
 
+  // $scope.create = function () {
+  //     let item = angular.copy($scope.formInput);
+  //     item.createdAt = $scope.currentDate;
+  //     $http.post("/material", item).then(function (resp) {
+  //         $scope.showSuccessMessage("Create material successfully");
+  //         $scope.resetFormInput();
+  //         $scope.initialize();
+  //         $('#modalAdd').modal('hide');
+  //     }).catch(function (error) {
+  //         console.log("Error", error);
+  //     });
+  // }
   $scope.create = function () {
     let item = angular.copy($scope.formInput);
     item.createdAt = $scope.currentDate;
-    item.createdAt = $scope.currentDate;
     $http
-      .post("/favorite", item)
+      .post(apiMaterial, item)
       .then(function (resp) {
-        $scope.showSuccessMessage("Create favorite successfully");
+        $scope.showSuccessMessage("Create Material successfully");
         $scope.resetFormInput();
         $scope.initialize();
         $("#modalAdd").modal("hide");
       })
       .catch(function (error) {
-        console.log("Error", error);
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
       });
   };
 
@@ -2502,25 +2201,28 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     let item = angular.copy($scope.formUpdate);
     console.log(item);
     item.updatedAt = $scope.currentDate;
-
     $http
-      .put(`/favorite/${item.id}`, item)
+      .put(apiMaterial + `${item.id}`, item)
       .then(function (resp) {
-        $scope.showSuccessMessage("Update Favorite successfully");
+        $scope.showSuccessMessage("Update Material successfully");
         $scope.resetFormUpdate();
         $scope.initialize();
         $("#modalUpdate").modal("hide");
       })
       .catch(function (error) {
-        console.log("Error", error);
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
       });
   };
 
   $scope.delete = function (item) {
     $http
-      .delete(`/favorite/${item.id}`)
+      .delete(apiMaterial + `/${item.id}`)
       .then(function (resp) {
-        $scope.showSuccessMessage("Delete Favorite successfully");
+        $scope.showSuccessMessage("Delete Material successfully");
         $scope.initialize();
       })
       .catch(function (error) {
@@ -2530,14 +2232,14 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
 
   $scope.resetFormUpdate = function () {
     $scope.formUpdate = {};
-    $scope.formUpdateFavorite.$setPristine();
-    $scope.formUpdateFavorite.$setUntouched();
+    $scope.formUpdateMaterial.$setPristine();
+    $scope.formUpdateMaterial.$setUntouched();
   };
 
   $scope.resetFormInput = function () {
     $scope.formInput = {};
-    $scope.formCreateFavorite.$setPristine();
-    $scope.formCreateFavorite.$setUntouched();
+    $scope.formCreateMaterial.$setPristine();
+    $scope.formCreateMaterial.$setUntouched();
   };
 
   $scope.changePageSize = function () {
@@ -2549,10 +2251,10 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     size: 5, // Kích thước mặc định ban đầu
     get items() {
       let start = this.page * this.size;
-      return $scope.favorite.slice(start, start + this.size);
+      return $scope.size.slice(start, start + this.size);
     },
     get count() {
-      return Math.ceil((1.0 * $scope.favorite.length) / this.size);
+      return Math.ceil((1.0 * $scope.size.length) / this.size);
     },
     first() {
       this.page = 0;
@@ -2572,6 +2274,522 @@ app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
     },
   };
 });
+
+
+app.controller("color-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalColor = [];
+  $scope.color = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+  const apiColor = "http://localhost:8080/api/color";
+
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.color = $scope.originalColor.filter(function (item) {
+        if (item && item.name) {
+          return item.name
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalColor
+      $scope.color = angular.copy($scope.originalColor);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+
+  $scope.initialize = function () {
+    $http.get(apiColor).then(function (resp) {
+      $scope.originalColor = resp.data; // Lưu dữ liệu gốc
+      $scope.color = angular.copy($scope.originalColor); // Sao chép dữ liệu gốc sang mảng hiển thị
+    });
+  };
+
+  $scope.initialize();
+
+  $scope.edit = function (color) {
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(color);
+    } else {
+      $scope.formUpdate = angular.copy(color);
+      $scope.formUpdate.updatedAt = new Date();
+    }
+  };
+
+  // $scope.create = function () {
+  //     let item = angular.copy($scope.formInput);
+  //     item.createdAt = $scope.currentDate;
+  //     $http.post("/color", item).then(function (resp) {
+  //         $scope.showSuccessMessage("Create color successfully");
+  //         $scope.resetFormInput();
+  //         $scope.initialize();
+  //         $('#modalAdd').modal('hide');
+  //     }).catch(function (error) {
+  //         console.log("Error", error);
+  //     });
+  // }
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    $http
+      .post(apiColor, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Create Color successfully");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
+
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item);
+    item.updatedAt = $scope.currentDate;
+    $http
+      .put(apiColor + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Update Color successfully");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
+
+  $scope.delete = function (item) {
+    $http
+      .delete(apiColor + `/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Delete Color successfully");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateColor.$setPristine();
+    $scope.formUpdateColor.$setUntouched();
+  };
+
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formCreateColor.$setPristine();
+    $scope.formCreateColor.$setUntouched();
+  };
+
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
+
+  $scope.paper = {
+    page: 0,
+    size: 5, // Kích thước mặc định ban đầu
+    get items() {
+      let start = this.page * this.size;
+      return $scope.size.slice(start, start + this.size);
+    },
+    get count() {
+      return Math.ceil((1.0 * $scope.size.length) / this.size);
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      if (this.page > 0) {
+        this.page--;
+      }
+    },
+    next() {
+      if (this.page < this.count - 1) {
+        this.page++;
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    },
+  };
+});
+
+
+
+app.controller("category-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalCategory = [];
+  $scope.category = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+  const apiCategory = "http://localhost:8080/api/category";
+
+  $scope.showSuccessMessage = function (message) {
+    $scope.alertMessage = message;
+    $scope.showAlert = true;
+    $timeout(function () {
+      $scope.closeAlert();
+    }, 5000);
+  };
+
+  $scope.closeAlert = function () {
+    $scope.showAlert = false;
+  };
+
+  $scope.search = function () {
+    // Kiểm tra từ khóa tìm kiếm
+    if ($scope.searchKeyword.trim() !== "") {
+      $scope.category = $scope.originalCategory.filter(function (item) {
+        if (item && item.name) {
+          return item.name
+            .toLowerCase()
+            .includes($scope.searchKeyword.toLowerCase());
+        }
+        return false;
+      });
+    } else {
+      // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalCategory
+      $scope.category = angular.copy($scope.originalCategory);
+    }
+    // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+    $scope.changePageSize();
+  };
+
+  $scope.initialize = function () {
+    $http.get(apiCategory).then(function (resp) {
+      $scope.originalCategory = resp.data; // Lưu dữ liệu gốc
+      $scope.category = angular.copy($scope.originalCategory); // Sao chép dữ liệu gốc sang mảng hiển thị
+    });
+  };
+
+  $scope.initialize();
+
+  $scope.edit = function (category) {
+    if ($scope.formUpdate.updatedAt) {
+      $scope.formUpdate = angular.copy(category);
+    } else {
+      $scope.formUpdate = angular.copy(category);
+      $scope.formUpdate.updatedAt = new Date();
+    }
+  };
+
+  // $scope.create = function () {
+  //     let item = angular.copy($scope.formInput);
+  //     item.createdAt = $scope.currentDate;
+  //     $http.post("/category", item).then(function (resp) {
+  //         $scope.showSuccessMessage("Create category successfully");
+  //         $scope.resetFormInput();
+  //         $scope.initialize();
+  //         $('#modalAdd').modal('hide');
+  //     }).catch(function (error) {
+  //         console.log("Error", error);
+  //     });
+  // }
+  $scope.create = function () {
+    let item = angular.copy($scope.formInput);
+    item.createdAt = $scope.currentDate;
+    $http
+      .post(apiCategory, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Create Category successfully");
+        $scope.resetFormInput();
+        $scope.initialize();
+        $("#modalAdd").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
+
+  $scope.update = function () {
+    let item = angular.copy($scope.formUpdate);
+    console.log(item);
+    item.updatedAt = $scope.currentDate;
+    $http
+      .put(apiCategory + `${item.id}`, item)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Update Category successfully");
+        $scope.resetFormUpdate();
+        $scope.initialize();
+        $("#modalUpdate").modal("hide");
+      })
+      .catch(function (error) {
+        if (error.status === 400 && error.data === "Name already exists") {
+          $scope.nameExists = true;
+        } else {
+          console.log("Error", error);
+        }
+      });
+  };
+
+  $scope.delete = function (item) {
+    $http
+      .delete(apiCategory + `/${item.id}`)
+      .then(function (resp) {
+        $scope.showSuccessMessage("Delete Category successfully");
+        $scope.initialize();
+      })
+      .catch(function (error) {
+        console.log("Error", error);
+      });
+  };
+
+  $scope.resetFormUpdate = function () {
+    $scope.formUpdate = {};
+    $scope.formUpdateCategory.$setPristine();
+    $scope.formUpdateCategory.$setUntouched();
+  };
+
+  $scope.resetFormInput = function () {
+    $scope.formInput = {};
+    $scope.formCreateCategory.$setPristine();
+    $scope.formCreateCategory.$setUntouched();
+  };
+
+  $scope.changePageSize = function () {
+    $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
+
+  $scope.paper = {
+    page: 0,
+    size: 5, // Kích thước mặc định ban đầu
+    get items() {
+      let start = this.page * this.size;
+      return $scope.category.slice(start, start + this.size);
+    },
+    get count() {
+      return Math.ceil((1.0 * $scope.category.length) / this.size);
+    },
+    first() {
+      this.page = 0;
+    },
+    prev() {
+      if (this.page > 0) {
+        this.page--;
+      }
+    },
+    next() {
+      if (this.page < this.count - 1) {
+        this.page++;
+      }
+    },
+    last() {
+      this.page = this.count - 1;
+    },
+  };
+});
+
+
+app.controller("favorite-ctrl", function ($scope, $http, $timeout) {
+  $scope.originalFavorite = [];
+  $scope.favorite = [];
+  $scope.formUpdate = {};
+  $scope.formInput = {};
+  $scope.showAlert = false;
+  $scope.currentDate = new Date();
+
+  $scope.showSuccessMessage = function (message) {
+      $scope.alertMessage = message;
+      $scope.showAlert = true;
+      $timeout(function () {
+          $scope.closeAlert();
+      }, 5000);
+  };
+
+  $scope.closeAlert = function () {
+      $scope.showAlert = false;
+  };
+
+  $scope.search = function () {
+      // Kiểm tra từ khóa tìm kiếm
+      if ($scope.searchKeyword.trim() !== "") {
+          $scope.favorite = $scope.originalFavorite.filter(function (item) {
+              if (item && item.content) {
+                  return item.content
+                      .toLowerCase()
+                      .includes($scope.searchKeyword.toLowerCase());
+              }
+              return false;
+          });
+      } else {
+          // Nếu từ khóa tìm kiếm trống, hiển thị lại dữ liệu ban đầu từ originalFavorite
+          $scope.favorite = angular.copy($scope.originalFavorite);
+      }
+      // Sau khi lọc, cập nhật dữ liệu hiển thị cho trang đầu tiên
+      $scope.changePageSize();
+  };
+
+  $scope.initialize = function () {
+      $http.get("/favorite").then(function (resp) {
+          $scope.originalFavorite = resp.data;
+          $scope.favorite = angular.copy($scope.originalFavorite);
+      });
+  };
+
+  $scope.initialize();
+
+  $scope.loadCustomers = function () {
+      $http
+          .get("/customer") // Thay đổi đường dẫn API tương ứng
+          .then(function (resp) {
+              $scope.customers = resp.data;
+          })
+          .catch(function (error) {
+              console.log("Error loading customers", error);
+          });
+  };
+
+  $scope.loadCustomers(); // Gọi hàm để nạp danh sách khách hàng khi controller khởi chạy
+
+  $scope.loadProducts = function () {
+      $http
+          .get("/api/product") // Thay đổi đường dẫn API tương ứng
+          .then(function (resp) {
+              $scope.products = resp.data;
+          })
+          .catch(function (error) {
+              console.log("Error loading products", error);
+          });
+  };
+
+  $scope.loadProducts();
+
+  $scope.edit = function (favorite) {
+      if ($scope.formUpdate.updatedAt) {
+          $scope.formUpdate = angular.copy(favorite);
+      } else {
+          $scope.formUpdate = angular.copy(favorite);
+          $scope.formUpdate.updatedAt = new Date(); // Hoặc là giá trị ngày mặc định của bạn
+      }
+  };
+
+  $scope.create = function () {
+      let item = angular.copy($scope.formInput);
+      item.createdAt = $scope.currentDate;
+      item.createdAt = $scope.currentDate;
+      $http
+          .post("/favorite", item)
+          .then(function (resp) {
+              $scope.showSuccessMessage("Create favorite successfully");
+              $scope.resetFormInput();
+              $scope.initialize();
+              $("#modalAdd").modal("hide");
+          })
+          .catch(function (error) {
+              console.log("Error", error);
+          });
+  };
+
+  $scope.update = function () {
+      let item = angular.copy($scope.formUpdate);
+      console.log(item);
+      item.updatedAt = $scope.currentDate;
+
+      $http
+          .put(`/favorite/${item.id}`, item)
+          .then(function (resp) {
+              $scope.showSuccessMessage("Update Favorite successfully");
+              $scope.resetFormUpdate();
+              $scope.initialize();
+              $("#modalUpdate").modal("hide");
+          })
+          .catch(function (error) {
+              console.log("Error", error);
+          });
+  };
+
+  $scope.delete = function (item) {
+      $http
+          .delete(`/favorite/${item.id}`)
+          .then(function (resp) {
+              $scope.showSuccessMessage("Delete Favorite successfully");
+              $scope.initialize();
+          })
+          .catch(function (error) {
+              console.log("Error", error);
+          });
+  };
+
+  $scope.resetFormUpdate = function () {
+      $scope.formUpdate = {};
+      $scope.formUpdateFavorite.$setPristine();
+      $scope.formUpdateFavorite.$setUntouched();
+  };
+
+  $scope.resetFormInput = function () {
+      $scope.formInput = {};
+      $scope.formCreateFavorite.$setPristine();
+      $scope.formCreateFavorite.$setUntouched();
+  };
+
+  $scope.changePageSize = function () {
+      $scope.paper.page = 0; // Reset về trang đầu tiên khi thay đổi kích thước trang
+  };
+
+  $scope.paper = {
+      page: 0,
+      size: 5, // Kích thước mặc định ban đầu
+      get items() {
+          let start = this.page * this.size;
+          return $scope.favorite.slice(start, start + this.size);
+      },
+      get count() {
+          return Math.ceil((1.0 * $scope.favorite.length) / this.size);
+      },
+      first() {
+          this.page = 0;
+      },
+      prev() {
+          if (this.page > 0) {
+              this.page--;
+          }
+      },
+      next() {
+          if (this.page < this.count - 1) {
+              this.page++;
+          }
+      },
+      last() {
+          this.page = this.count - 1;
+      },
+  };
+});
+
 app.controller("rating-ctrl", function ($scope, $http, $timeout) {
   $scope.originalRating = [];
   $scope.rating = [];
