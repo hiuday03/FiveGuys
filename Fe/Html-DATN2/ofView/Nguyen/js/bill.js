@@ -238,7 +238,7 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
     $scope.getInfoBill = function (bill) {
         $scope.tongTien = bill.totalAmount;
         $scope.giamGia = bill.totalAmount - bill.totalAmountAfterDiscount;
-        $scope.khachPhaiTra = bill.totalAmountAfterDiscount;
+        $scope.khachPhaiTra = bill.totalAmountAfterDiscount  + bill.shippingFee;;
         $scope.khachDaTra = 0
 
         // console.log(bill.typeBill)
@@ -264,7 +264,7 @@ app.controller("nguyen-bill-ctrl", function ($scope, $http, $timeout) {
         if (bill.typeBill == 3 && bill.paymentMethod.name == "COD" && bill.status == 3) {
             $scope.khachDaTra = $scope.khachPhaiTra
         }
-        $scope.khachDaTra = $scope.khachDaTra + bill.shippingFee;
+        
     }
 
     //change tab

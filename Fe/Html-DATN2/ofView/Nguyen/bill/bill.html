@@ -182,6 +182,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row mt-3" ng-if="((currentStatus != 2 || currentStatus != 1 || currentStatus != 4)) && formUpdate.paymentMethod.name == 'COD' )">
+                                    <label class="col-sm-2">Ngày thanh toán</label>
+                                    <div class="col-sm-4">
+                                        <input name="paymentDate" type="text" class="form-control bg-secondary-light"
+                                            disabled ng-model="formUpdate.paymentDate | date: 'dd-MM-yyyy HH:mm'"
+                                            ng-required="true">
+                                    </div>
+                                </div>
                                 <!-- <div class="row mt-2">
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-4"></div>
