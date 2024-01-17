@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.AddressEntity;
 import com.example.demo.entity.CustomerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,6 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
 
     Optional<CustomerEntity> findByAccount_Id(Long accountId);
 
+    @Query("SELECT c FROM CustomerEntity c WHERE c.status = :c")
+    List<CustomerEntity> getSStatus(Integer c);
 }

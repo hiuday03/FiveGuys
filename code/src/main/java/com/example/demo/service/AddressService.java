@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.AddressEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +24,7 @@ public interface AddressService {
     AddressEntity updateAddress(AddressEntity addressEntity, Long id);
 
     void deleteAddress(Long id);
+
+    List<AddressEntity> getSStatus(Integer status);
 
 }

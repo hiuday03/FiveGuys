@@ -2,6 +2,7 @@ package com.example.demo.service.serviceiplm;
 
 import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.Brands;
+import com.example.demo.entity.Vouchers;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.security.Request.UserRequestDTO;
 import com.example.demo.security.service.AccountEmailSender;
@@ -131,6 +132,11 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAll();
     }
 
+    @Override
+    public List<AccountEntity> getSStatus(Integer status) {
+        List<AccountEntity> a = accountRepository.getSStatus(status);
+        return a;
+    }
 
 
     public  UserRequestDTO mapAccountToUserRequestDTO(AccountEntity account) {
@@ -173,8 +179,6 @@ public class AccountServiceImpl implements AccountService {
         if (account != null){
             return account;
         }
-
-
         return null;
     }
 }

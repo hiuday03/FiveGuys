@@ -1,5 +1,6 @@
 package com.example.demo.service.serviceiplm;
 
+import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.AddressEntity;
 import com.example.demo.repository.AddressRepository;
 import com.example.demo.service.AddressService;
@@ -58,6 +59,7 @@ public class AddressServiceImpl implements AddressService {
             address.setName(addressEntity.getName());
             address.setPhoneNumber(addressEntity.getPhoneNumber());
             address.setAddress(addressEntity.getAddress());
+            address.setAddressId(addressEntity.getAddressId());
             address.setAddressType(addressEntity.getAddressType());
             address.setCustomer(addressEntity.getCustomer());
             address.setCreatedAt(addressEntity.getCreatedAt());
@@ -81,5 +83,11 @@ public class AddressServiceImpl implements AddressService {
             // Xử lý lỗi nếu không tìm thấy khách hàng với ID này
             throw new IllegalArgumentException("Không tìm thấy Địa chỉ với ID " + id);
         }
+    }
+
+    @Override
+    public List<AddressEntity> getSStatus(Integer status) {
+        List<AddressEntity> a = addressRepository.getSStatus(status);
+        return a;
     }
 }

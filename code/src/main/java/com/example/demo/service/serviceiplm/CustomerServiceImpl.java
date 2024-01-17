@@ -1,5 +1,6 @@
 package com.example.demo.service.serviceiplm;
 
+import com.example.demo.entity.AddressEntity;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.service.CustomerService;
@@ -101,6 +102,12 @@ private CustomerRepository customerRepository;
             throw new IllegalArgumentException("Không tìm thấy khách hàng với ID " + id);
 //            return null;
         }
+    }
+
+    @Override
+    public List<CustomerEntity> getSStatus(Integer status) {
+        List<CustomerEntity> c = customerRepository.getSStatus(status);
+        return c;
     }
 
 

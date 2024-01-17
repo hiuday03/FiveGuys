@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.AccountEntity;
+import com.example.demo.entity.Vouchers;
 import com.example.demo.security.Request.UserRequestDTO;
 import org.springframework.data.domain.Page;
 
@@ -28,6 +29,7 @@ public interface AccountService {
 
     List<AccountEntity> getAll();
 
+    List<AccountEntity> getSStatus(Integer status);
 
 //    Tôi viết thêm hàm này nhiệm vụ security
 

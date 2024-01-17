@@ -24,4 +24,6 @@ public interface CustomerService {
 
     CustomerEntity updateStatusCustomer(Long id, CustomerEntity customerEntity);
 
+    List<CustomerEntity> getSStatus(Integer status);
+
 }

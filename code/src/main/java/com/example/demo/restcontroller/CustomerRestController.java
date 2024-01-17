@@ -63,6 +63,11 @@ public class CustomerRestController {
         return ResponseEntity.ok(customers);
     }
 
+    @GetMapping("/timkiem-status/{st}")
+    public ResponseEntity<?> getSStatus(@PathVariable Integer st){
+        return ResponseEntity.ok(customerRepository.getSStatus(st));
+    }
+
     @PostMapping("")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customerEntity) {
         try {

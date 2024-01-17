@@ -39,6 +39,10 @@ public class AccountRestController {
         List<AccountEntity> account = accountService.getAllAccount();
         return ResponseEntity.ok(account);
     }
+    @GetMapping("/timkiem-status/{st}")
+    public ResponseEntity<?> getSStatus(@PathVariable Integer st){
+        return ResponseEntity.ok(accountService.getSStatus(st));
+    }
     @GetMapping("/not-in-customer-employee")
     public List<AccountEntity> loadAccount() {
         return accountService.loadAccount();

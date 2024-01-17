@@ -35,6 +35,11 @@ public class AddressRestController {
         return ResponseEntity.ok(address);
     }
 
+    @GetMapping("/timkiem-status/{st}")
+    public ResponseEntity<?> getSStatus(@PathVariable Integer st){
+        return ResponseEntity.ok(addressService.getSStatus(st));
+    }
+
     @RequestMapping("/get-by-customer/{id}")
     public ResponseEntity<List<AddressEntity>> getAllByCustomerId(@PathVariable Long id) {
         return ResponseEntity.ok(addressService.findByCustomerId(id));

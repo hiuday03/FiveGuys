@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.AddressEntity;
+import com.example.demo.entity.Vouchers;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +17,9 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
             "LEFT JOIN Employees E ON A.Id = E.IdAccount\n" +
             "WHERE C.Id IS NULL AND E.Id IS NULL", nativeQuery = true)
     List<AccountEntity> loadAccount();
+
+    @Query("SELECT a FROM AccountEntity a WHERE a.status = :a")
+    List<AccountEntity> getSStatus(Integer a);
 
     Optional<AccountEntity> findByAccount(String account);
 
