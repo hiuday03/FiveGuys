@@ -203,6 +203,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
             account: $scope.formInput.account,
             email: $scope.formInput.email,
             phoneNumber: $scope.formInput.phoneNumber,
+            password: fiveguys123,
             status: 1,
             role: {
               id: 2,
@@ -288,6 +289,7 @@ app.controller("employee-ctrl", function ($scope, $http, $timeout) {
               account: row.getCell(5).value,
               email: row.getCell(6).value,
               phoneNumber: row.getCell(7).value,
+              password: fiveguys123,
               status: 1,
               role: {
                 id: 1,

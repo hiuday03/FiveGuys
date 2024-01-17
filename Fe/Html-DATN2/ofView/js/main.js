@@ -3419,6 +3419,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   $scope.showAlert = false;
   $scope.currentDate = new Date();
   $scope.showError = false;
+  $scope.formtimkiem = "1";
 
   $scope.load = function () {
     $scope.loading = true;
@@ -3620,6 +3621,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
             account: $scope.formInput.account,
             email: $scope.formInput.email,
             phoneNumber: $scope.formInput.phoneNumber,
+            password: fiveguys123,
             status: 1,
             role: {
               id: 3,

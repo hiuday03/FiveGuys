@@ -87,7 +87,9 @@
             <td class="col-2">
               {{l.valueType == 0 ? "Giam theo gia tien" : "Giam theo %"}}
             </td>
-            <td class="col-2">{{l.minimumTotalAmount}}</td>
+            <td class="text-right col-2">
+              {{l.minimumTotalAmount | number}} đ
+            </td>
             <td class="col-1">{{l.quantity}}</td>
             <!-- <td class="col-2" ng-switch="l.status">
               <span ng-switch-when="0">Chưa hoạt động</span>
