@@ -3622,7 +3622,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
             phoneNumber: $scope.formInput.phoneNumber,
             status: 1,
             role: {
-              id: 2,
+              id: 3,
             },
           };
 
