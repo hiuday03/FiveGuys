@@ -532,7 +532,7 @@ $scope.calculateShippingFee = function (toDistrictId, toWardCode) {
 
   
   $scope.goToOfView = function() {
-    window.location.href = '/ofView/index.html#!/homeTest/123'; // Đổi URL tương ứng
+    window.location.href = '/ofView/index.html#!/admin/index'; // Đổi URL tương ứng
   };
 
 
@@ -793,8 +793,6 @@ $scope.setMainImage = function(path) {
 
 
 $scope.userData = null;
-// $scope.isCustomerLoggedIn = false;
-// $scope.isEmployeeLoggedIn = false;
 $scope.isAdmin = false;
 $scope.username = null;
 

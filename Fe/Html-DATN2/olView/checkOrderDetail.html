@@ -201,7 +201,7 @@
                     </div>
     
                     <div style="justify-content: flex-end;
-                    display: flex;"  ng-if="selectedBill2.status === 1 && selectedBill2.paymentMethod.name === 'COD'">
+                    display: flex;"  ng-if="selectedBill2.status === 1 && selectedBill2.paymentMethod.name === 'COD' && role === 'CUSTOMER' ">
                       <button ng-click="updateBillStatus(selectedBill2.id)" class="btn btn-danger">Hủy đơn hàng</button>
                     </div>
                     
