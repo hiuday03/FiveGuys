@@ -16,7 +16,15 @@
         ng-options="size for size in [5, 10, 20, 50, 100]">
       </select>
     </div>
-    <div class="col-md-11">
+    <div class="col-md-2">
+      <select name="" id="formtimkiemstatus" class="form-control" aria-label="Default select example"
+        ng-model="formtimkiem" ng-change="timkiemStatus()">
+        <option value="0">Chọn trạng thái</option>
+        <option value="1">Đang hoạt động</option>
+        <option value="2">Ngừng hoạt động</option>
+      </select>
+    </div>
+    <div class="col-md-9">
       <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search Address..."
         class="form-control" />
     </div>

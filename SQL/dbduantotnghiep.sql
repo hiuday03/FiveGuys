@@ -152,6 +152,7 @@ create table Address
 	Name		nvarchar(100),
 	PhoneNumber	nvarchar(15),
 	Address		nvarchar(MAX),
+	AddressId	nvarchar(MAX),
 	AddressType	nvarchar(100),
 	DefaultAddress		bit,
 	IdCustomer	bigint references Customers(Id),
