@@ -144,7 +144,7 @@ public class CustomerRestController {
                 int s = list.size();
                 for (int i = 0; i < s; i++) {
                     CustomerEntity hd = list.get(i);
-                    row = sheet.createRow(6 + i);
+                    row = sheet.createRow(1 + i);
 
                     cell = row.createCell(0, CellType.NUMERIC);
                     cell.setCellValue(i + 1);
