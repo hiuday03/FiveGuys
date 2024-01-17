@@ -62,7 +62,6 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
         $scope.formAddress = {};
         $scope.formCustomer2 = {};
         $scope.formAddress2 = {};
-        $scope.employee = {};
         $scope.customers = [];
         $scope.userData = null; 
         $scope.username = null; 
@@ -70,8 +69,8 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
         function checkUserLoggedIn(username) {
           $http.get('http://localhost:8080/api/ol/user?username=' + username)
             .then(function (response) {
-              if (response.status === 200 && response.data !== null) {
-                if (response.data.employeeLoggedIn === true) {
+              if (response.status === 200 && response.data !== null ) {
+                if (response.data.account.role.fullName === 'STAFF' || response.data.account.role.fullName === 'ADMIN') {
                   $scope.isEmployeeLoggedIn = true;
                   $scope.userData = response.data;
                   $scope.initialize();
@@ -675,16 +674,17 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                     return;
                 }
                 bill.address = address;
+                bill.deliveryDate = new Date();
             }
             
             $http.post(`http://localhost:8080/api/payos/create`, bill).then(resp => {
+                if (resp.data.bill == null) {
+                    toastr["error"]("Thanh toán thất bại, vui lòng kiểm tra lại số lượng tồn");
+                    return;
+                }
                 if (resp.data.bill.paymentMethod.name.toLowerCase() === "chuyển khoản") {
                     $scope.openPaymentPopup(resp.data, selectedItem);
                 } else if(resp.data.bill.paymentMethod.name.toLowerCase() === "tiền mặt") {
-                    if (resp.data == null) {
-                        toastr["error"]("Thanh toán thất bại, vui lòng kiểm tra lại số lượng");
-                        return;
-                    }
                     toastr["success"]("Thanh toán thành công");
                     $scope.removeBill(selectedItem);
                     $scope.initialize();
@@ -738,8 +738,8 @@ app_sellQuickly.controller("sell-quickly-ctrl", function ($scope, $http,jwtHelpe
                 CHECKOUT_URL: data.data.checkoutUrl,
                 onSuccess: (event) => {
                     $http.post(`http://localhost:8080/api/payment/payos-of/success`, JSON.stringify(data.bill)).then(resp => {
-                        if (resp.data == null) {
-                            toastr["error"]("Thanh toán thất bại, vui lòng kiểm tra lại số lượng");
+                        if (resp.data.bill == null) {
+                            toastr["error"]("Thanh toán thất bại, vui lòng kiểm tra lại số lượng tồn");
                             return;
                         }
                         toastr["success"]("Thanh toán thành công");
