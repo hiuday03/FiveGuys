@@ -72,12 +72,12 @@ app_brand.controller("brand-ctrl", function ($scope, $http, $timeout) {
         let item = angular.copy($scope.formInput);
         item.createdAt = $scope.currentDate;
         $http.post("/brand", item).then(function (resp) {
-            $scope.showSuccessMessage("Create brand successfully");
+            $scope.showSuccessMessage("Thêm thành công");
             $scope.resetFormInput();
             $scope.initialize();
             $('#modalAdd').modal('hide');
         }).catch(function (error) {
-            if (error.status === 400 && error.data === 'Name already exists') {
+            if (error.status === 400 && error.data === 'Đã tồn tại') {
                 $scope.nameExists = true;
             } else {
                 console.log("Error", error);
@@ -91,12 +91,12 @@ app_brand.controller("brand-ctrl", function ($scope, $http, $timeout) {
         console.log(item)
         item.updatedAt = $scope.currentDate;
         $http.put(`/brand/${item.id}`, item).then(function (resp) {
-            $scope.showSuccessMessage("Update Brand successfully");
+            $scope.showSuccessMessage("UUpate thành công");
             $scope.resetFormUpdate();
             $scope.initialize();
             $('#modalUpdate').modal('hide');
         }).catch(function (error) {
-            if (error.status === 400 && error.data === 'Name already exists') {
+            if (error.status === 400 && error.data === 'Đã tồn tại') {
                 $scope.nameExists = true;
             } else {
                 console.log("Error", error);
