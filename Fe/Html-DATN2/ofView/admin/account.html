@@ -15,7 +15,15 @@
       <select class="form-select" ng-model="paper.size" ng-change="changePageSize()"
         ng-options="size for size in [5, 10, 20, 50, 100]"></select>
     </div>
-    <div class="col-md-11">
+    <div class="col-md-2">
+      <select name="" id="formtimkiemstatus" class="form-control" aria-label="Default select example"
+        ng-model="formtimkiem" ng-change="timkiemStatus()">
+        <option value="0">Chọn trạng thái</option>
+        <option value="1">Đang hoạt động</option>
+        <option value="2">Ngừng hoạt động</option>
+      </select>
+    </div>
+    <div class="col-md-9">
       <input type="text" ng-model="searchKeyword" ng-change="search()" placeholder="Search ..." class="form-control" />
     </div>
   </div>
@@ -281,8 +289,13 @@
                                 <td>{{account.phoneNumber}}</td>
                                 <td>{{account.email}}</td> -->
             <td>{{account.role.fullName}}</td>
-            <td>
-              {{account.status == 1 ?'Đang hoạt động' : 'Ngừng hoạt động'}}
+            <td class="col-1" ng-switch="account.status">
+              <span ng-switch-when="1">
+                <div class="badge bg-success text-wrap">Đang Hoạt Động'</div>
+              </span>
+              <span ng-switch-when="2">
+                <div class="badge bg-danger text-wrap">Ngừng Hoạt Động</div>
+              </span>
             </td>
             <td>
               <button ng-click="edit(account)" type="button" class="btn btn-info" data-bs-toggle="modal"

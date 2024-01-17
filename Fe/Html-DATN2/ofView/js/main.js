@@ -2904,6 +2904,8 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
   $scope.formInput = {};
   $scope.showAlert = false;
   $scope.currentDate = new Date();
+  const apiAddress = "http://localhost:8080/address";
+  const apiCustomer = "http://localhost:8080/customer";
 
   $scope.showSuccessMessage = function (message) {
     $scope.alertMessage = message;
@@ -2915,6 +2917,27 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
   $scope.closeAlert = function () {
     $scope.showAlert = false;
   };
+
+  $scope.timkiemStatus = function () {
+    if ($scope.formtimkiem === "1") {
+      $http.get(apiAddress + "/timkiem-status/1").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "2") {
+      $http.get(apiAddress + "/timkiem-status/2").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "0") {
+      $http.get(apiAddress + "/timkiem-status/0").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "1") {
+      $http.get(apiAddress).then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    }
+  };
+  $scope.timkiemStatus();
 
   $scope.search = function () {
     // Kiểm tra từ khóa tìm kiếm
@@ -2935,7 +2958,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
     $scope.changePageSize();
   };
   $scope.initialize = function () {
-    $http.get("/address").then(function (resp) {
+    $http.get(apiAddress).then(function (resp) {
       $scope.originalAddress = resp.data;
       $scope.address = angular.copy($scope.originalAddress);
     });
@@ -2947,7 +2970,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
 
   $scope.loadCustomers = function () {
     $http
-      .get("/customer") // Thay đổi đường dẫn API tương ứng
+      .get(apiCustomer) // Thay đổi đường dẫn API tương ứng
       .then(function (resp) {
         $scope.customers = resp.data;
       })
@@ -2976,7 +2999,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
     item.address = getResult1();
 
     $http
-      .post("/address", item)
+      .post(apiAddress, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Create address successfully");
         $scope.resetFormInput();
@@ -3005,7 +3028,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
     item.address = getResult2();
 
     $http
-      .put(`/address/${item.id}`, item)
+      .put(apiAddress + `/${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Update address successfully");
         $scope.resetFormUpdate();
@@ -3029,7 +3052,7 @@ app.controller("address-ctrl", function ($scope, $http, $timeout) {
 
   $scope.delete = function (item) {
     $http
-      .delete(`/address/${item.id}`)
+      .delete(apiAddress + `/${item.id}`)
       .then(function (resp) {
         $scope.showSuccessMessage("Delete address successfully");
         $scope.initialize();
@@ -3225,6 +3248,27 @@ app.controller("account-ctrl", function ($scope, $http, $timeout) {
     $scope.showAlert = false;
   };
 
+  $scope.timkiemStatus = function () {
+    if ($scope.formtimkiem === "1") {
+      $http.get(apiUrlAccount + "/timkiem-status/1").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "2") {
+      $http.get(apiUrlAccount + "/timkiem-status/2").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "0") {
+      $http.get(apiUrlAccount + "/timkiem-status/0").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "1") {
+      $http.get(apiUrlAccount).then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    }
+  };
+  $scope.timkiemStatus();
+
   $scope.search = function () {
     // Kiểm tra từ khóa tìm kiếm
     if ($scope.searchKeyword.trim() !== "") {
@@ -3299,7 +3343,7 @@ app.controller("account-ctrl", function ($scope, $http, $timeout) {
     let item = angular.copy($scope.formUpdate);
     console.log(item);
     $http
-      .put(apiUrlAccount + `${item.id}`, item)
+      .put(apiUrlAccount + "/" + `${item.id}`, item)
       .then(function (resp) {
         $scope.showSuccessMessage("Sửa tài khoản thành công");
         $scope.resetFormUpdate();
@@ -3430,6 +3474,27 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   $scope.closeAlert = function () {
     $scope.showAlert = false;
   };
+
+  $scope.timkiemStatus = function () {
+    if ($scope.formtimkiem === "1") {
+      $http.get(apiCustomer + "/timkiem-status/1").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "2") {
+      $http.get(apiCustomer + "/timkiem-status/2").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "0") {
+      $http.get(apiCustomer + "/timkiem-status/0").then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    } else if ($scope.formtimkiem === "1") {
+      $http.get(apiCustomer).then(function (response) {
+        $scope.listVoucher = response.data;
+      });
+    }
+  };
+  $scope.timkiemStatus();
 
   $scope.search = function () {
     // Kiểm tra từ khóa tìm kiếm
