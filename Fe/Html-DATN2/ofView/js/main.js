@@ -3419,6 +3419,7 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   $scope.showAlert = false;
   $scope.currentDate = new Date();
   $scope.showError = false;
+
   $scope.load = function () {
     $scope.loading = true;
   };
@@ -3476,16 +3477,12 @@ app.controller("customer-ctrl", function ($scope, $http, $timeout) {
   };
 
   $scope.timkiemStatus = function () {
-    if ($scope.formtimkiem === "1") {
+    if ($scope.formtimkiem === "0") {
       $http.get(apiCustomer + "/timkiem-status/1").then(function (response) {
         $scope.listVoucher = response.data;
       });
     } else if ($scope.formtimkiem === "2") {
       $http.get(apiCustomer + "/timkiem-status/2").then(function (response) {
-        $scope.listVoucher = response.data;
-      });
-    } else if ($scope.formtimkiem === "0") {
-      $http.get(apiCustomer + "/timkiem-status/0").then(function (response) {
         $scope.listVoucher = response.data;
       });
     } else if ($scope.formtimkiem === "1") {
