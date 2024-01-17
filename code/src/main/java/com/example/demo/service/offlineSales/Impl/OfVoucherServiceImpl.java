@@ -37,7 +37,8 @@ public class OfVoucherServiceImpl implements OfVoucherService {
             }
             else if(startdate < newDate && enddate > newDate){
                 vouchers1.setStatus(1);
-            } else if (qty == 0) {
+            } 
+            if (qty == 0) {
                 vouchers1.setStatus(2);
             }
             return repository.save(vouchers1);
