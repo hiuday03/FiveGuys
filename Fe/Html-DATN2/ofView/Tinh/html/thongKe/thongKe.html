@@ -32,7 +32,7 @@
                 <div class="ps-3">
                   <h6>{{getcodeday}} đơn</h6>
                   <span class="text-success small pt-1 fw-bold"
-                    >{{getcodeday/getcodedaytile}}%</span
+                    >{{getcodeday/getcodedaytile | number:2}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
                     >{{getcodeday >= getcodedaytile ? 'Tăng': 'Giảm'}} so với
@@ -60,7 +60,7 @@
                 <div class="ps-3">
                   <h6>{{listcustomeryear}} sp</h6>
                   <span class="text-danger small pt-1 fw-bold"
-                    >{{listcustomeryear/listcustomeryeartile}}%</span
+                    >{{listcustomeryear/listcustomeryeartile | number:2}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
                     >{{listcustomeryear >= listcustomeryeartile ? 'Tăng':
@@ -88,7 +88,7 @@
                 <div class="ps-3">
                   <h6>{{getsum}} vnđ</h6>
                   <span class="text-success small pt-1 fw-bold"
-                    >{{getsum/getsumtile}}%</span
+                    >{{getsum/getsumtile | number:2}}%</span
                   >
                   <span class="text-muted small pt-2 ps-1"
                     >{{getsum >= getsumtile ? 'Tăng': 'Giảm'}} so với
