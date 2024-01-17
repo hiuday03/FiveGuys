@@ -91,15 +91,39 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
     $scope.getSelectOption = function () {
         $http.get(apiUrlCategory)
             .then(function (response) {
-                $scope.categories = response.data;
+                let a = response.data
+                let b = []
+                for (let index = 0; index < a.length; index++) {
+                    const element = a[index];
+                    if(element.status == 1){
+                        b.push(element)
+                    }
+                }
+                $scope.categories = b;
             });
         $http.get(apiUrlMaterial)
             .then(function (response) {
-                $scope.materials = response.data;
+                let a = response.data
+                let b = []
+                for (let index = 0; index < a.length; index++) {
+                    const element = a[index];
+                    if(element.status == 1){
+                        b.push(element)
+                    }
+                }
+                $scope.materials = b;
             });
         $http.get(apiUrlBrand)
             .then(function (response) {
-                $scope.brands = response.data;
+                let a = response.data
+                let b = []
+                for (let index = 0; index < a.length; index++) {
+                    const element = a[index];
+                    if(element.status == 1){
+                        b.push(element)
+                    }
+                }
+                $scope.brands = b;
             });
     }
     $scope.getSelectOption();
@@ -377,11 +401,27 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
     $scope.getSelectOptionPD = function () {
         $http.get(apiUrlSize)
             .then(function (response) {
-                $scope.sizes = response.data;
+                let a = response.data
+                let b = []
+                for (let index = 0; index < a.length; index++) {
+                    const element = a[index];
+                    if(element.status == 1){
+                        b.push(element)
+                    }
+                }
+                $scope.sizes = b;
             });
         $http.get(apiUrlColor)
             .then(function (response) {
-                $scope.colors = response.data;
+                let a = response.data
+                let b = []
+                for (let index = 0; index < a.length; index++) {
+                    const element = a[index];
+                    if(element.status == 1){
+                        b.push(element)
+                    }
+                }
+                $scope.colors = b;
             });
     }
     $scope.getSelectOptionPD();
@@ -1025,6 +1065,7 @@ app.controller("nguyen-product-ctrl", function ($scope, $http, $timeout) {
         let a = angular.copy($scope.originalProduct);
 
         if (searchName != undefined) {
+            console.log("cccc");
             a = a.filter(function (item) {
                 if (item && item.name) {
                     return toLowerCaseNonAccentVietnamese(item.name).includes(toLowerCaseNonAccentVietnamese(searchName));
